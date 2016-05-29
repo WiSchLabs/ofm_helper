@@ -23,6 +23,9 @@ class Player(models.Model):
         ("RS", "Rechter Stürmer")
     )
 
+    class Meta:
+        ordering = ['position']
+
     position = models.CharField(max_length=3, choices=POSITIONS)
     name = models.CharField(max_length=200)
     nationality = models.CharField(max_length=200)
@@ -36,7 +39,7 @@ class Player(models.Model):
 
 class PlayerStatistics(models.Model):
     class Meta:
-        ordering = ['player.position']
+        order_with_respect_to = 'player'
 
     player = models.ForeignKey(Player)
     matchday = models.ForeignKey(Matchday)
