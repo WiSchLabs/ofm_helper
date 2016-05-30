@@ -2,10 +2,11 @@
 omit =  
     */python?.?/*
     */site-packages/nose/*
-    *__init__*
     */migrations/*
     */tests/*
+    *__init__*
     *manage*
+    *settings*
 
 exclude_lines =
     pragma: no cover
