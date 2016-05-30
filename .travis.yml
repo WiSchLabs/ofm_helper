@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.5"
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+script:
+  - ./recreate_db.sh
+  - coverage run --branch --source . manage.py test
+
+notifications:
+  email:
+    recipients:
+      - witmic1@gmail.com
+      - stegschreck@gmail.com
+    on_success: change
+    on_failure: always
+
+after_success: coveralls
