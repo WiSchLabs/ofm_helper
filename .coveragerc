@@ -5,6 +5,7 @@ omit =
     *__init__*
     */migrations/*
     */tests/*
+    *manage*
 
 exclude_lines =
     pragma: no cover
