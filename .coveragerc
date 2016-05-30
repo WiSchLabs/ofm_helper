@@ -4,6 +4,8 @@ omit =
     */site-packages/nose/*
     */migrations/*
     */tests/*
+    */apps*
+    */wsgi*
     *__init__*
     *manage*
     *settings*
