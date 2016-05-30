@@ -5,7 +5,7 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 script:
-  - ./recreate_db.sh
+  - ./manage.py migrate
   - coverage run --branch --source . manage.py test
 
 notifications:
