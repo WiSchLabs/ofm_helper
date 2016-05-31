@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Season, Quarter
+from core.models import Season, Quarter, Matchday
 
 
 class SeasonFactory(factory.django.DjangoModelFactory):
@@ -16,3 +16,12 @@ class QuarterFactory(factory.django.DjangoModelFactory):
 
     season = factory.SubFactory(SeasonFactory)
     quarter = 1
+
+
+class MatchdayFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Matchday
+
+    season = factory.SubFactory(SeasonFactory)
+    matchday = 1
+

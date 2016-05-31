@@ -17,10 +17,6 @@ class Matchday(models.Model):
     matchday = models.IntegerField()
 
 
-class CurrentMatchday(models.Model):
-    matchday = models.ForeignKey(Matchday)
-
-
 class Country(models.Model):
     COUNTRIES = (
         (1, 'Ägypten'),
