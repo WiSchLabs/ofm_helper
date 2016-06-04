@@ -10,7 +10,7 @@ class CreatePlayerTest(unittest.TestCase):
         self.assertEquals(p.position, 1)
         self.assertEquals(p.name, 'tw1')
         self.assertEquals(p.nationality, 'Deutschland')
-        self.assertEquals(p.birth.season, 1)
+        self.assertEquals(p.birthSeason.number, 1)
         self.assertEquals(p.age, 17)
         self.assertEquals(p.matchday.matchday, 1)
 

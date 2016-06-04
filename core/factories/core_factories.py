@@ -7,7 +7,7 @@ class SeasonFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Season
 
-    season = 1
+    number = 1
 
 
 class QuarterFactory(factory.django.DjangoModelFactory):

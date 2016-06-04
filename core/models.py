@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Season(models.Model):
-    season = models.IntegerField()
+    number = models.IntegerField()
 
 
 class Quarter(models.Model):
@@ -17,6 +17,7 @@ class Matchday(models.Model):
     matchday = models.IntegerField()
 
 
+# incomplete
 class Country(models.Model):
     COUNTRIES = (
         (1, 'Ägypten'),
@@ -40,6 +41,8 @@ class Country(models.Model):
     country = models.IntegerField(choices=COUNTRIES)
 
 
+# not quite correct? 2. Liga Nord, 2. Liga Süd etc.
+# how to generate them properly?
 class League(models.Model):
     LEAGUES = (
         (1, '1. Liga'),

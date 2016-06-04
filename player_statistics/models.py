@@ -29,12 +29,12 @@ class Player(models.Model):
     position = models.CharField(max_length=3, choices=POSITIONS)
     name = models.CharField(max_length=200)
     nationality = models.CharField(max_length=200)
-    birth = models.ForeignKey(Season)
+    birthSeason = models.ForeignKey(Season)
     matchday = models.ForeignKey(Matchday)
 
     @property
     def age(self):
-        return (self.matchday.season.season - self.birth.season) + AGE_AT_BIRTH
+        return (self.matchday.season.number - self.birthSeason.number) + AGE_AT_BIRTH
 
 
 class PlayerStatistics(models.Model):
