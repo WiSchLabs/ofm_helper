@@ -44,3 +44,14 @@ class StatisticsHtmlParserTest(TestCase):
     def test_parsed_player_stat_contains_correct_scored_goals(self):
         player_stat = self.player_stat_list[3]
         self.assertEquals('4', player_stat.goals_in_season)
+
+    def test_parsed_player_stat_contains_correct_tacklings(self):
+        self.assertEquals('32', self.first_player_stat.won_tacklings_in_season)
+        self.assertEquals('36', self.first_player_stat.lost_tacklings_in_season)
+        self.assertEquals('37', self.first_player_stat.won_friendly_tacklings_in_season)
+        self.assertEquals('5', self.first_player_stat.lost_friendly_tacklings_in_season)
+
+    def test_parsed_player_stat_contains_correct_cards_received(self):
+        player_stat = self.player_stat_list[1]
+        self.assertEquals('3', player_stat.yellow_cards_in_season)
+        self.assertEquals('1', player_stat.red_cards_in_season)

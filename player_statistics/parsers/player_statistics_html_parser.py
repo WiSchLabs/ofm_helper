@@ -34,6 +34,12 @@ class PlayerStatisticsHtmlParser(BaseParser):
         parsed_player_stat.freshness = player_stat_values[6].get_text()
         parsed_player_stat.games_in_season = player_stat_values[7].get_text()
         parsed_player_stat.goals_in_season = player_stat_values[8].get_text()
+        parsed_player_stat.won_tacklings_in_season = player_stat_values[9].get_text().split(' / ')[0]
+        parsed_player_stat.lost_tacklings_in_season = player_stat_values[9].get_text().split(' / ')[1]
+        parsed_player_stat.won_friendly_tacklings_in_season = player_stat_values[10].get_text().split(' / ')[0]
+        parsed_player_stat.lost_friendly_tacklings_in_season = player_stat_values[10].get_text().split(' / ')[1]
+        parsed_player_stat.yellow_cards_in_season = player_stat_values[13].get_text().split(' / ')[0]
+        parsed_player_stat.red_cards_in_season = player_stat_values[13].get_text().split(' / ')[1]
 
         parsed_player_stat.player = self.parse_player(player_stat_values)
 
