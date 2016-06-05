@@ -55,3 +55,11 @@ class StatisticsHtmlParserTest(TestCase):
         player_stat = self.player_stat_list[1]
         self.assertEquals('3', player_stat.yellow_cards_in_season)
         self.assertEquals('1', player_stat.red_cards_in_season)
+
+    def test_parsed_player_stat_contains_correct_player_enhancement_data(self):
+        self.assertEquals('8599', self.first_player_stat.ep)
+        self.assertEquals('13227', self.first_player_stat.tp)
+        self.assertEquals('10422', self.first_player_stat.awp)
+
+    def test_parsed_player_stat_contains_correct_equity(self):
+        self.assertEquals('16015782', self.first_player_stat.equity)

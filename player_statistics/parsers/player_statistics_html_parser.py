@@ -40,6 +40,10 @@ class PlayerStatisticsHtmlParser(BaseParser):
         parsed_player_stat.lost_friendly_tacklings_in_season = player_stat_values[10].get_text().split(' / ')[1]
         parsed_player_stat.yellow_cards_in_season = player_stat_values[13].get_text().split(' / ')[0]
         parsed_player_stat.red_cards_in_season = player_stat_values[13].get_text().split(' / ')[1]
+        parsed_player_stat.ep = player_stat_values[14].get_text().strip('\n').split('\n')[0].strip('\n').strip('\t').replace('.', '')
+        parsed_player_stat.tp = player_stat_values[16].get_text().strip('\n').split('\n')[0].strip('\n').strip('\t').replace('.', '')
+        parsed_player_stat.awp = player_stat_values[18].span.get_text().replace('.', '')
+        parsed_player_stat.equity = player_stat_values[21].get_text().strip('\n').strip('\t').replace('.', '').replace('€', '').strip(' ')
 
         parsed_player_stat.player = self.parse_player(player_stat_values)
 
