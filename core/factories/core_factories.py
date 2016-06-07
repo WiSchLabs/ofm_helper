@@ -23,5 +23,5 @@ class MatchdayFactory(factory.django.DjangoModelFactory):
         model = Matchday
 
     season = factory.SubFactory(SeasonFactory)
-    matchday = 1
+    number = 1
 

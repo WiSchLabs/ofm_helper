@@ -14,7 +14,7 @@ class Quarter(models.Model):
 
 class Matchday(models.Model):
     season = models.ForeignKey(Season)
-    matchday = models.IntegerField()
+    number = models.IntegerField()
 
 
 # incomplete
