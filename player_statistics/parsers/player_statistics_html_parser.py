@@ -11,11 +11,11 @@ class PlayerStatisticsHtmlParser(BaseParser):
         soup = BeautifulSoup(page, "html.parser")
         return self.parse_player_statistics_html(soup)
 
-    def parse_player_statistics_html(self, soup: BeautifulSoup) -> PlayerStatistics:
+    def parse_player_statistics_html(self, soup):
         """
         :param soup: BeautifulSoup of player statistics page
-        :return: parsed player statistics
-        :rtype: PlayerStatistics
+        :return: list of parsed player statistics
+        :rtype: list
         """
         parsed_player_stat_list = []
         players_stat_table = soup.find(id="playersStatisticsTable").tbody

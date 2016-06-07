@@ -15,9 +15,6 @@ class StatisticsHtmlParserTest(TestCase):
         self.player_stat_list = parser.parse(testdata)
         self.first_player_stat = self.player_stat_list[0]
 
-    def test_parser_returns_list_of_player_statistics(self):
-        self.assertEquals(type(self.player_stat_list[0]), PlayerStatistics)
-
     def test_parsed_player_stat_contains_all_foreign_keys(self):
         self.assertEquals(type(self.first_player_stat), PlayerStatistics)
         self.assertEquals(type(self.first_player_stat.player), Player)
