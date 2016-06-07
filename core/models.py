@@ -41,8 +41,6 @@ class Country(models.Model):
     country = models.IntegerField(choices=COUNTRIES)
 
 
-# not quite correct? 2. Liga Nord, 2. Liga Süd etc.
-# how to generate them properly?
 class League(models.Model):
     LEAGUES = (
         (1, '1. Liga'),
