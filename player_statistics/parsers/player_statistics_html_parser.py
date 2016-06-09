@@ -17,16 +17,10 @@ class PlayerStatisticsHtmlParser(BaseParser):
         :return: list of parsed player statistics
         :rtype: list
         """
-        parsed_player_stat_list = []
         players_stat_table = soup.find(id="playersStatisticsTable").tbody
+        player_list = players_stat_table.find_all('tr')  # 1 row per player
 
-        # 1 row per player
-        player_list = players_stat_table.find_all('tr')
-        for player_row in player_list:
-            parsed_player_stat = self.parse_player_stat_row(player_row)
-            parsed_player_stat_list.append(parsed_player_stat)
-
-        return parsed_player_stat_list
+        return [self.parse_player_stat_row(player_row) for player_row in player_list]
 
     def parse_player_stat_row(self, player_row):
         parsed_player_stat = PlayerStatistics()
