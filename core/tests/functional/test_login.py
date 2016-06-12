@@ -15,7 +15,7 @@ class CreateCoreModelsTest(unittest.TestCase):
             from pyvirtualdisplay import Display
             self.display = Display(visible=0, size=(1024, 768))
             self.display.start()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         cfg = ConfigurationProvider()
         self.login_user = cfg.get("credentials", "OFM_USERNAME")

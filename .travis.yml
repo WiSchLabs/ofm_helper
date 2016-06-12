@@ -6,6 +6,15 @@ env:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install xvfb
+  - sudo apt-get install build-essential chrpath libssl-dev libxft-dev
+  - sudo apt-get install libfreetype6 libfreetype6-dev
+  - sudo apt-get install libfontconfig1 libfontconfig1-dev
+  - export PHANTOM_VERSION="2.1.0"
+  - export PHANTOM_JS="phantomjs-$PHANTOM_VERSION"
+  - wget https://bitbucket.org/ariya/phantomjs/get/$PHANTOM_VERSION.zip -O $PHANTOM_JS.zip
+  - unzip $PHANTOM_JS.zip
+  - sudo mv ariya-phantomjs-* /usr/local/share/$PHANTOM_JS
+  - sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 install:
   - pip install -r requirements.txt
   - pip install -r travis_requirements.txt
