@@ -3,6 +3,7 @@ import os
 import time
 import unittest
 
+from pyvirtualdisplay import Display
 from selenium import webdriver
 
 TESTDATA_PATH = 'core/tests/assets'
@@ -10,8 +11,9 @@ TESTDATA_PATH = 'core/tests/assets'
 
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
+        display = Display(visible=0, size=(1024, 768))
+        display.start()
         self.browser = webdriver.Firefox()
-        time.sleep(1)
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         config = configparser.ConfigParser()
         config.read(os.path.join(TESTDATA_PATH, 'config.txt'))
@@ -23,7 +25,7 @@ class CreateCoreModelsTest(unittest.TestCase):
 
     def test_login(self):
         if self.login_user == "XXX":
-            return
+            return unittest.skip("login credentials not set")
         self.assertNotIn("OFM", self.browser.title)
         self.login()
         self.assertIn("OFM", self.browser.title)
