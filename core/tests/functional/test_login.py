@@ -24,8 +24,8 @@ class CreateCoreModelsTest(unittest.TestCase):
         self.browser.quit()
 
     def test_login(self):
-        if self.login_user == "XXX":
-            return unittest.skip("login credentials not set")
+        #if self.login_user == "XXX":
+        #    return unittest.skip("login credentials not set")
         self.assertNotIn("OFM", self.browser.title)
         self.login()
         self.assertIn("OFM", self.browser.title)
