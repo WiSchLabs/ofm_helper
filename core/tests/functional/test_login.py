@@ -2,7 +2,6 @@ import time
 import unittest
 
 from django.conf import settings
-from pyvirtualdisplay import Display
 from selenium import webdriver
 
 from core.configuration_provider import ConfigurationProvider
@@ -13,6 +12,7 @@ TESTDATA_PATH = 'core/config'
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
         if settings.USE_DISPLAY_FOR_AWS:
+            from pyvirtualdisplay import Display
             self.display = Display(visible=0, size=(1024, 768))
             self.display.start()
         self.browser = webdriver.Firefox()
