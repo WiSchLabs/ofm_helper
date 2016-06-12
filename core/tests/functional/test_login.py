@@ -1,6 +1,7 @@
 import time
 import unittest
 
+from django.conf import settings
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
@@ -11,8 +12,9 @@ TESTDATA_PATH = 'core/config'
 
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
-        display = Display(visible=0, size=(1024, 768))
-        display.start()
+        if settings.USE_DISPLAY_FOR_AWS:
+            self.display = Display(visible=0, size=(1024, 768))
+            self.display.start()
         self.browser = webdriver.Firefox()
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         cfg = ConfigurationProvider()
@@ -21,6 +23,8 @@ class CreateCoreModelsTest(unittest.TestCase):
 
     def tearDown(self):
         self.browser.quit()
+        if settings.USE_DISPLAY_FOR_AWS:
+            self.display.stop()
 
     def test_login(self):
         self.assertNotIn("OFM", self.browser.title)
