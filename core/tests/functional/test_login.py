@@ -1,10 +1,10 @@
-import configparser
-import os
 import time
 import unittest
 
 from pyvirtualdisplay import Display
 from selenium import webdriver
+
+from core.configuration_provider import ConfigurationProvider
 
 TESTDATA_PATH = 'core/config'
 
@@ -15,17 +15,14 @@ class CreateCoreModelsTest(unittest.TestCase):
         display.start()
         self.browser = webdriver.Firefox()
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
-        config = configparser.ConfigParser()
-        config.read(os.path.join(TESTDATA_PATH, 'test.cfg'))
-        self.login_user = config.get("configuration", "OFM_USERNAME")
-        self.login_password = config.get("configuration", "OFM_PASSWORD")
+        cfg = ConfigurationProvider()
+        self.login_user = cfg.get("credentials", "OFM_USERNAME")
+        self.login_password = cfg.get("credentials", "OFM_PASSWORD")
 
     def tearDown(self):
         self.browser.quit()
 
     def test_login(self):
-        #if self.login_user == "XXX":
-        #    return unittest.skip("login credentials not set")
         self.assertNotIn("OFM", self.browser.title)
         self.login()
         self.assertIn("OFM", self.browser.title)
