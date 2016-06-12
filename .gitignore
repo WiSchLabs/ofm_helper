@@ -1,6 +1,10 @@
 env_ofm/
 db.sqlite3
 .idea
+!/.idea/runConfigurations/
+
+# DEV configuration
+/core/config/dev.cfg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -65,4 +69,3 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
-/core/config/dev.cfg
