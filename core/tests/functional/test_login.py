@@ -3,19 +3,20 @@ import os
 import time
 import unittest
 
+from pyvirtualdisplay import Display
 from selenium import webdriver
 
-TESTDATA_PATH = 'core/tests/assets'
+TESTDATA_PATH = 'core/config'
 
 
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
-        #display = Display(visible=0, size=(1024, 768))
-        #display.start()
+        display = Display(visible=0, size=(1024, 768))
+        display.start()
         self.browser = webdriver.Firefox()
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         config = configparser.ConfigParser()
-        config.read(os.path.join(TESTDATA_PATH, 'config.txt'))
+        config.read(os.path.join(TESTDATA_PATH, 'test.cfg'))
         self.login_user = config.get("configuration", "username")
         self.login_password = config.get("configuration", "password")
 
