@@ -1,0 +1,3 @@
+[configuration]
+login = XXX
+password = 1234
