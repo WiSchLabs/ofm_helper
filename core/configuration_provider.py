@@ -1,4 +1,5 @@
 import configparser
+import os
 
 
 class ConfigurationProvider:
@@ -7,4 +8,6 @@ class ConfigurationProvider:
         self.config.read(config_file)
 
     def get(self, config_param):
+        if os.environ.get(config_param):
+            return os.environ[config_param]
         return self.config.get('configuration', config_param)

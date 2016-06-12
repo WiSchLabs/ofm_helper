@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from django.conf import settings
@@ -6,12 +7,24 @@ from core.configuration_provider import ConfigurationProvider
 
 
 class ConfigurationProviderTest(unittest.TestCase):
+    def setUp(self):
+        self.cp = ConfigurationProvider(settings.CONFIGURATION_FILE)
+
     def test_get_login_username(self):
-        cp = ConfigurationProvider(settings.CONFIGURATION_FILE)
-        username = cp.get('username')
+        username = self.cp.get('OFM_USERNAME')
         self.assertEqual(username, 'XXX')
 
     def test_get_login_password(self):
-        cp = ConfigurationProvider(settings.CONFIGURATION_FILE)
-        username = cp.get('password')
-        self.assertEqual(username, '1234')
+        password = self.cp.get('OFM_PASSWORD')
+        self.assertEqual(password, '1234')
+
+    def test_override_env_variable_and_get_correct_result(self):
+        if os.environ.get('OFM_USERNAME'):
+            curr = os.environ['OFM_USERNAME']
+        else:
+            curr = ''
+        os.environ['OFM_USERNAME'] = "YYY"
+        username = self.cp.get('OFM_USERNAME')
+        self.assertEqual(username, "YYY")
+        os.environ['OFM_USERNAME'] = curr
+

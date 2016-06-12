@@ -17,8 +17,8 @@ class CreateCoreModelsTest(unittest.TestCase):
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         config = configparser.ConfigParser()
         config.read(os.path.join(TESTDATA_PATH, 'test.cfg'))
-        self.login_user = config.get("configuration", "username")
-        self.login_password = config.get("configuration", "password")
+        self.login_user = config.get("configuration", "OFM_USERNAME")
+        self.login_password = config.get("configuration", "OFM_PASSWORD")
 
     def tearDown(self):
         self.browser.quit()
