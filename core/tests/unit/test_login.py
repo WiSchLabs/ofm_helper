@@ -11,6 +11,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
+        time.sleep(1)
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
         config = configparser.ConfigParser()
         config.read(os.path.join(TESTDATA_PATH, 'config.txt'))
