@@ -11,13 +11,16 @@ TESTDATA_PATH = 'core/config'
 
 class CreateCoreModelsTest(unittest.TestCase):
     def setUp(self):
+        cfg = ConfigurationProvider()
         if settings.USE_DISPLAY_FOR_AWS:
             from pyvirtualdisplay import Display
             self.display = Display(visible=0, size=(1024, 768))
             self.display.start()
-        self.browser = webdriver.PhantomJS()
+        if cfg.get("phantomjs", "PHANTOMJS_PATH"):
+            self.browser = webdriver.PhantomJS(executable_path=r'' + cfg.get("phantomjs", "PHANTOMJS_PATH"))
+        else:
+            self.browser = webdriver.PhantomJS()
         self.browser.get("http://v7.www.onlinefussballmanager.de/")
-        cfg = ConfigurationProvider()
         self.login_user = cfg.get("credentials", "OFM_USERNAME")
         self.login_password = cfg.get("credentials", "OFM_PASSWORD")
 
