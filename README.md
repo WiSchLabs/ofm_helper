@@ -8,3 +8,18 @@
 [![Stories in review](https://badge.waffle.io/Sh4kE/ofm_helper.png?label=in%20review&title=In%20review)](http://waffle.io/Autostew/autostew)
 
 [![Throughput Graph](https://graphs.waffle.io/Sh4kE/ofm_helper/throughput.svg)](https://waffle.io/Sh4kE/ofm_helper/metrics/throughput)
+
+
+
+# Usage in Windows
+
+1. Install Kitematic (https://kitematic.com/)
+2. Download ofm_helper docker image (Sh4kE/ofm_helper)
+3. overwrite environment variables (OFM_USERNAME and OFM_PASSWORD)
+3. run the container
+
+# Usage in Linux
+
+1. install docker
+2. docker pull Sh4kE/ofm_helper
+3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" ofm_helper

@@ -5,6 +5,7 @@ db.sqlite3
 
 # DEV configuration
 /core/config/dev.cfg
+/core/config/prod.cfg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
