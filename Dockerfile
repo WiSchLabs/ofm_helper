@@ -18,10 +18,11 @@ RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic --no-input
 
 RUN cp /code/core/config/test.cfg /code/core/config/prod.cfg
-RUN sed -i 's/XXX/$OFM_USERNAME/' /code/core/config/prod.cfg
-RUN sed -i 's/1234/$OFM_PASSWORD/' /code/core/config/prod.cfg
+# does not make sense here :(
+#RUN sed -i 's/XXX/$OFM_USERNAME/' /code/core/config/prod.cfg
+#RUN sed -i 's/1234/$OFM_PASSWORD/' /code/core/config/prod.cfg
 
-RUN echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'pass')" | python3 manage.py shell
+RUN echo "from django.contrib.auth.models import User; User.objects.create_superuser('$OFM_USERNAME', '', '$OFM_PASSWORD')" | python3 manage.py shell
 
 expose 8000
 ENTRYPOINT ["python3", "manage.py"]
