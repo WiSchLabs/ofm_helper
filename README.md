@@ -22,4 +22,4 @@
 
 1. install docker
 2. docker pull sh4ke/ofm_helper
-3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" ofm_helper
+3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" sh4ke/ofm_helper
