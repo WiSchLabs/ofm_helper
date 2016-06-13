@@ -3,7 +3,7 @@
 
 # Task board
 
-[![Stories ready](https://badge.waffle.io/Sh4kE/ofm_helper.png?label=Backlog&title=Backlog)](http://waffle.io/Sh4kE/ofm_helper)
+[![Stories ready](https://badge.waffle.io/Sh4kE/ofm_helper.png?label=backlog&title=Backlog)](http://waffle.io/Sh4kE/ofm_helper)
 [![Stories in progress](https://badge.waffle.io/Sh4kE/ofm_helper.png?label=in%20progress&title=In%20progress)](http://waffle.io/Sh4kE/ofm_helper)
 [![Stories in review](https://badge.waffle.io/Sh4kE/ofm_helper.png?label=in%20review&title=In%20review)](http://waffle.io/Sh4kE/ofm_helper)
 
