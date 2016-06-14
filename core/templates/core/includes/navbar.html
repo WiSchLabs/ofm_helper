@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+{% block content %}
+    <div class="well bs-sidebar" id="sidebar">
+        <ul class="nav nav-pills nav-stacked">
+            <li>
+                <a href='{% url 'core:home' %}'>
+                    <span class="glyphicon glyphicon-home" style="margin-right: 8%"></span> Home
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
