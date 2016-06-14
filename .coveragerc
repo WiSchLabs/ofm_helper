@@ -7,7 +7,7 @@ omit =
     */apps*
     */wsgi*
     *__init__*
-    *manage*
+    manage.py
     *settings*
 
 exclude_lines =
