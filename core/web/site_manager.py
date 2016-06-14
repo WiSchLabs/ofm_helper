@@ -1,7 +1,7 @@
 import time
 
 from core.configuration_provider import ConfigurationProvider
-from core.web import ofm_page_constants
+from core.web.ofm_page_constants import LOGIN
 from django.conf import settings
 from selenium import webdriver
 
@@ -19,7 +19,7 @@ class SiteManager:
         self._login_password = cfg.get("credentials", "OFM_PASSWORD")
 
     def login(self):
-        self.browser.get(ofm_page_constants.LOGIN)
+        self.browser.get(LOGIN)
         self._switch_to_login_div()
 
         self._insert_login_credentials()
