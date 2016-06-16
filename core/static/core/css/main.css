@@ -1,15 +1,46 @@
+@font-face {
+    font-family: Gotham;
+    font-weight: normal;
+    src: url('../fonts/Gotham-Thin.otf') format('otf');
+    src: local('../fonts/Gotham-Thin.otf');
+}
+@font-face {
+    font-family: Gotham;
+    font-weight: bold;
+    src: url('../fonts/Gotham-Bold.otf') format('otf');
+    src: local('../fonts/Gotham-Bold.otf');
+}
+@font-face {
+    font-family: Gotham;
+    font-style: italic;
+    src: url('../fonts/Gotham-ThinItalic.otf') format('otf');
+    src: local('../fonts/Gotham-ThinItalic.otf');
+}
+@font-face {
+    font-family: Sugarcubes;
+    font-weight: normal;
+    src: url('../fonts/SugarcubesRegular.ttf') format('truetype');
+    src: local('../fonts/SugarcubesRegular.ttf');
+}
+@font-face {
+    font-family: Sugarcubes;
+    font-weight: bold;
+    src: url('../fonts/SugarcubesBold.ttf') format('truetype');
+    src: local('../fonts/SugarcubesBold.ttf');
+}
+
 body {
-    font-family:Gotham;
+    font-family: Gotham, sans-serif;
     font-weight: bold;
 }
 
-#ofmh-logo {
+#logo {
     width: 100%;
-    margin: 10px 0;
+    margin: 15px 0 25px 0;
 }
 
 h1 {
-    font-family:Sugarcubes;
+    font-family: Sugarcubes, serif;
     font-weight: bold;
 }
 
