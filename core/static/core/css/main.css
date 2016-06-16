@@ -1,0 +1,27 @@
+body {
+    font-family:Gotham;
+    font-weight: bold;
+}
+
+#ofmh-logo {
+    width: 100%;
+    margin: 10px 0;
+}
+
+h1 {
+    font-family:Sugarcubes;
+    font-weight: bold;
+}
+
+a {
+    color:#239123;
+}
+
+a:hover {
+    color:#1b6f1b;
+}
+
+footer.footer {
+    border-top: 1px solid #239123;
+    text-align: center;
+}
