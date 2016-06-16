@@ -13,6 +13,7 @@
 
 # Usage in Windows
 
+0. boot into BIOS / EFI and enable Virtualization
 1. Install Kitematic (https://kitematic.com/)
 2. Download ofm_helper docker image (sh4ke/ofm_helper)
 3. overwrite environment variables (OFM_USERNAME and OFM_PASSWORD)
@@ -21,6 +22,7 @@
 
 # Usage in Linux
 
+0. boot into BIOS / EFI and enable Virtualization
 1. install docker
 2. docker pull sh4ke/ofm_helper
 3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" sh4ke/ofm_helper
