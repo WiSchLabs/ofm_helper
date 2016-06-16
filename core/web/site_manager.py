@@ -1,9 +1,10 @@
 import time
 
-from core.configuration_provider import ConfigurationProvider
-from core.web.ofm_page_constants import LOGIN
 from django.conf import settings
 from selenium import webdriver
+
+from core.configuration_provider import ConfigurationProvider
+from core.web.ofm_page_constants import LOGIN
 
 
 class SiteManager:
@@ -13,7 +14,6 @@ class SiteManager:
         self.browser = webdriver.PhantomJS()
 
         self._handle_aws_display_bug()
-        self._handle_phantomjs_bug(cfg)
 
         self._login_user = cfg.get("credentials", "OFM_USERNAME")
         self._login_password = cfg.get("credentials", "OFM_PASSWORD")
@@ -24,10 +24,6 @@ class SiteManager:
 
         self._insert_login_credentials()
         self._click_login_button()
-
-    def _handle_phantomjs_bug(self, cfg):
-        if cfg.get("phantomjs", "PHANTOMJS_PATH"):
-            self.browser = webdriver.PhantomJS(executable_path=r'' + cfg.get("phantomjs", "PHANTOMJS_PATH"))
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
