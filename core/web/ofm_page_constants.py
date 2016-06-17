@@ -6,12 +6,12 @@ class Constants:
         pass
     OFFICE = Office()
     OFFICE.OFFICE = 'http://v7.www.onlinefussballmanager.de/office/buero.php'
-    OFFICE.TEAMINFO = 'http://v7.www.onlinefussballmanager.de/league/teaminfo.php'
-    OFFICE.INGAMEEMAIL = 'http://v7.www.onlinefussballmanager.de/user/ingamemail/index.php'
+    OFFICE.TEAM_INFO = 'http://v7.www.onlinefussballmanager.de/league/teaminfo.php'
+    OFFICE.INGAME_EMAIL = 'http://v7.www.onlinefussballmanager.de/user/ingamemail/index.php'
     OFFICE.NOTES = 'http://v7.www.onlinefussballmanager.de/user/ingamemail/index.php?page=notizen'
     OFFICE.BETTING = 'http://v7.www.onlinefussballmanager.de/office/wetten.php'
     OFFICE.HISTORY = 'http://v7.www.onlinefussballmanager.de/office/history.php'
-    OFFICE.OFMHISTORY = 'http://v7.www.onlinefussballmanager.de/office/ofm_history.php'
+    OFFICE.OFM_HISTORY = 'http://v7.www.onlinefussballmanager.de/office/ofm_history.php'
     OFFICE.PROFILE = 'http://v7.www.onlinefussballmanager.de/user/profil.php'
 
     class Team:
@@ -19,11 +19,11 @@ class Constants:
     TEAM = Team()
     TEAM.PLAYERS = 'http://v7.www.onlinefussballmanager.de/team/players.php'
     TEAM.LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=liga'
-    TEAM.FRIENDLYLINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=friendly'
-    TEAM.CUPLINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=pokal'
-    TEAM.FUNCUPLINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=funcup'
+    TEAM.FRIENDLY_LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=friendly'
+    TEAM.CUP_LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=pokal'
+    TEAM.FUNCUP_LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung3d.php?game=funcup'
     TEAM.TRAINING = 'http://v7.www.onlinefussballmanager.de/team/training_2011.php'
-    TEAM.PLAYERSTATISTICS = 'http://v7.www.onlinefussballmanager.de/team/players-statistics.php'
+    TEAM.PLAYER_STATISTICS = 'http://v7.www.onlinefussballmanager.de/team/players-statistics.php'
     TEAM.YOUTH = 'http://v7.www.onlinefussballmanager.de/team/youth.php'
 
     class Transfer:
@@ -31,15 +31,40 @@ class Constants:
     TRANSFER = Transfer()
     TRANSFER.OFFERS = 'http://v7.www.onlinefussballmanager.de/transfer/angebote.php'
     TRANSFER.AMATEURS = 'http://v7.www.onlinefussballmanager.de/transfer/amas.php'
-    TRANSFER.TRANSFERMARKET = 'http://v7.www.onlinefussballmanager.de/transfer/transfermarkt.php'
+    TRANSFER.TRANSFER_MARKET = 'http://v7.www.onlinefussballmanager.de/transfer/transfermarkt.php'
     TRANSFER.PLAYERSWITCH = 'http://v7.www.onlinefussballmanager.de/transfer/spielerwechsel.php'
     TRANSFER.BIDDING = 'http://v7.www.onlinefussballmanager.de/transfer/transfer_gebote.php'
-    TRANSFER.AWPCALCULATOR = 'http://v7.www.onlinefussballmanager.de/010_transfer/awp_rechner_noplus.php'
-    TRANSFER.MARKETVALUES = 'http://v7.www.onlinefussballmanager.de/transfer/marketvalues.php'
+    TRANSFER.AWP_CALCULATOR = 'http://v7.www.onlinefussballmanager.de/010_transfer/awp_rechner_noplus.php'
+    TRANSFER.MARKET_VALUES = 'http://v7.www.onlinefussballmanager.de/transfer/marketvalues.php'
 
-STADIUM = 'http://v7.www.onlinefussballmanager.de/stadium/_frame_stadion.php'
-FINANCES = 'http://v7.www.onlinefussballmanager.de/finances/_frame_finanzen.php'
-LEAGUE = 'http://v7.www.onlinefussballmanager.de/league/_frame_liga.php'
+    class Stadium:
+        pass
+    STADIUM = Stadium()
+    STADIUM.OVERVIEW = 'http://v7.www.onlinefussballmanager.de/stadium/stadium.php'
+    STADIUM.SPECTATORS = 'http://v7.www.onlinefussballmanager.de/stadium/zuschauer.php'
+    STADIUM.ENVIRONMENT = 'http://v7.www.onlinefussballmanager.de/stadium/stadium-environment.php'
+
+    class Finances:
+        pass
+    FINANCES = Finances()
+    FINANCES.OVERVIEW = 'http://v7.www.onlinefussballmanager.de/finances/finanzen.php'
+    FINANCES.BANK = 'http://v7.www.onlinefussballmanager.de/finances/bank.php'
+    FINANCES.SPONSOR = 'http://v7.www.onlinefussballmanager.de/finances/spon_waehlen.php'
+
+    class League:
+        pass
+    LEAGUE = League()
+    LEAGUE.MATCHDAY_TABLE = 'http://v7.www.onlinefussballmanager.de/league/spieltag_tabelle_2.php'
+    LEAGUE.TOPSTARS = 'http://v7.www.onlinefussballmanager.de/league/bestespieler.php'
+    LEAGUE.GOAL_SCORERS = 'http://v7.www.onlinefussballmanager.de/league/torschuetzen.php'
+    LEAGUE.TACKLINGS = 'http://v7.www.onlinefussballmanager.de/league/bestezwk.php'
+    LEAGUE.BAN_OR_INJURY = 'http://v7.www.onlinefussballmanager.de/league/sperrenstatistik.php'
+    LEAGUE.FAIRPLAY = 'http://v7.www.onlinefussballmanager.de/league/fairplay.php'
+    LEAGUE.STADIUMS = 'http://v7.www.onlinefussballmanager.de/league/ligastadien.php'
+    LEAGUE.TEAMS = 'http://v7.www.onlinefussballmanager.de/league/teamstatistik3.php'
+    LEAGUE.MATCH_SCHEDULE = 'http://v7.www.onlinefussballmanager.de/league/teaminfo.php'
+    LEAGUE.SEASON_PATHWAY = 'http://v7.www.onlinefussballmanager.de/league/saisonverlauf.php'
+
 OFM_CUP = 'http://v7.www.onlinefussballmanager.de/ofm_cup/_frame_pokal.php'
 WORLD_CUP = 'http://v7.www.onlinefussballmanager.de/world_cup/_frame_worldcup.php'
 FUN_CUP = 'http://v7.www.onlinefussballmanager.de/funcups/_frame_funcup.php'
