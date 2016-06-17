@@ -1,0 +1,1229 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OFM Spielerstatistik</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+	<meta name="title" content="OFM - Kostenloses Browsergame Online Fussball Manager" />
+	<meta name="description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="keywords" content="Fussball, Manager, Fußballmanager, Browsergame, Onlinemanager, Browserspiel, Internetspiel, Managerspiel, Game, Footballmanager" />
+	<meta name="author" content="OnlineFussballManager GmbH, Maik Dokter" />
+	<meta name="publisher" content="OnlineFussballManager GmbH" />
+	<meta name="copyright" content="OnlineFussballManager GmbH" />
+	<meta name="audience" content="Alle" />
+	<meta name="page-topic" content="Fussball/Internet" />
+	<meta name="Robots" content="index,nofollow" />
+	<meta name="revisit-after" content="1 days" />
+	<meta name="expires" content="never" />
+	<meta name="abstract" content="Online Fussball Manager ist ein kostenloses Fußballmanager Browsergame. übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="language" content="Deutsch,DE,AT,CH" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<link rel="schema.DC" href="http://www.purl.org/dc/elements/1.1/" />
+	<meta name="DC.type" scheme="DCMIType" content="Text" />
+	<meta name="DC.format" scheme="IMT" content="text/html" />
+	<meta name="DC.language" content="de" />
+	<meta name="DC.title" content="OFM - Kostenloses Browsergame Online Fussball Manager" />
+	<meta name="DC.description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="DC.creator" content="OnlineFussballManager GmbH, Deutschland" />
+	<meta name="DC.publisher" content="OnlineFussballManager GmbH, Deutschland" />
+	<meta name="DC.copyright" content="OnlineFussballManager GmbH, Deutschland" />
+	<link href="/style/team/core/layout.css492.css" rel="stylesheet" type="text/css" media="all" />
+	        <link href="/style/core/base.css492.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/base-int.css492.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/layout.css492.css" rel="stylesheet" type="text/css" media="all" />
+    			<script type="text/javascript" src="/java/jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="/java/jquery/js/jquery-ui-1.8.7.custom.min.js"></script>
+	<script type="text/javascript" src="/java/datatables/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="/java/datatables/dataTables.ofm-custom-plugins.js"></script>
+	<script type="text/javascript" src="/java/ofm_biblio.js357.js"></script>
+
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$("#playersStatisticsTable").dataTable( {
+				fnDrawCallback: function(oSettings) {
+					if($("#plusLink").length == 1) {
+						var icon = $("#plusLink");
+						$("#plusLink").parent().html($("#playersStatisticsTable tbody tr:first-child td.plusIcon").html());
+						$("#playersStatisticsTable tbody tr:first-child td.plusIcon").html(icon);
+					}
+				},
+				bFilter : false,
+				bInfo: false,
+				bPaginate: false,
+				bSort: false,
+				aoColumnDefs: [
+					{"sType" : "num-html", aTargets: [5]},
+					{"sType" : "numeric-comma", aTargets: [ 14, 16, 18, 21 ] },
+					{"sType" : "small-span", aTargets: [ 20 ] },
+					{"sType" : "double-value", aTargets: [ 13 ]},
+					{"sType" : "tackle", aTargets: [ 9, 10 ]},
+					{"bVisible" : false, aTargets: [2, 15, 17, 19]}
+				]
+			});
+			$(".sortTable").click(function(){
+				var direction, index, temp;
+				temp = $(this).attr('rel').split("-");
+				index = temp[0];
+				direction = temp[1];
+				$("#playersStatisticsTable tr th p").removeClass("arrowDown arrowUp");
+				$("#playersStatisticsTable").dataTable().fnSort([[index,direction]]);
+				if(!$(this).hasClass("noChange")) {
+					if(direction == 'desc') {
+						$(this).attr('rel', index+'-asc');
+						if($(this).prop("tagName") == 'P') {
+							$(this).addClass("arrowDown");
+						} else {
+							$(this).next("p").addClass("arrowDown");
+						}
+					} else {
+						$(this).attr("rel", index+"-desc");
+						if($(this).prop("tagName") == 'P') {
+							$(this).addClass("arrowUp");
+						} else {
+							$(this).next("p").addClass("arrowUp");
+						}
+					}
+				}
+			});
+		});
+	</script>
+
+	<script type="text/javascript" src="/java/ofm_javascript.js357.js"></script>
+	<style>
+		@media only screen
+		and (min-device-width : 320px)
+		and (max-device-width : 568px)
+		and (orientation : portrait){
+			body{
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+				font-size: 12px !important;
+				line-height: 1.428571429 !important;
+			}
+
+		}
+	</style>
+	</head>
+<body>
+<style>
+    .scrollTop{
+		background-color:#808080;
+		background-color:rgba(128, 128, 128, 0.8);
+		border:1px solid #808080;
+		border-radius:3px;
+		bottom:25px;
+		box-shadow:0 0 5px 1px #808080;
+		color:#fff;
+		cursor:pointer;
+		outline:0;
+		padding:10px 30px 10px 10px;
+		position:fixed;
+		right:25px;
+		-webkit-transition:opacity .1s ease-out;
+		-moz-transition:opacity .1s ease-out;
+		-ms-transition:opacity .1s ease-out;
+		-o-transition:opacity .1s ease-out;
+		transition:opacity .1s ease-out;
+		white-space:nowrap;
+		z-index:1000;
+		text-align:center;
+		text-transform:capitalize;
+		}
+
+		.scrollTop:before{
+		background-color:rgba(240, 240, 240, 0.6);
+		border-radius:2px 2px 2px 2px;
+		content:"";
+		height:20px;
+		position:absolute;
+		right:5px;
+		top:8px;
+		width:20px;
+		}
+
+		.scrollTop:hover{
+		background-color:#808080;
+		text-decoration:none;
+		}
+
+		.scrollTop span{
+		height:6px;
+		position:absolute;
+		right:10px;
+		top:16px;
+		width:9px;
+		background:url(/bilder/icons/scroll-top.png) no-repeat transparent;
+		}
+
+        @media all and (max-width: 1024px) {div.scrollTop{display:none !important;}}
+    </style>
+
+    <script>
+		$(document).ready(function(){
+
+         $(".scrollTop").click(function(){
+	      $("html, body").animate({ scrollTop: 0 }, 600);
+	      return false;
+	     });
+
+			var $scrollTop = $(".scrollTop");
+
+			var $win = $(window).scroll(function() {
+			    if($win.scrollTop() > 50) {
+			        if(!$scrollTop.is(":visible")) {
+			            $scrollTop.stop(true, true).fadeIn();
+			        }
+			    } else {
+			        if(!$scrollTop.is(":animated")) {
+			            $scrollTop.stop(true, true).fadeOut();
+			        }
+			    }
+			});
+
+		});
+		</script>
+		<div class="scrollTop nonvisible">
+			top
+			<span></span>
+		</div>
+		
+<script type="text/javascript" src="/java/wz_tooltip.js357.js"></script>
+
+<div align="center" id="spieler-statistik">
+
+
+<div class="pageWrapper" style="margin-top:20px;">
+<div class="standardHeader">
+	<p class="white bold standardHeadline textLeft">Spielerstatistik</p>
+</div>
+<table id="playersStatisticsTable" class="tableDefine pos-rel" cellspacing="0" cellpadding="0" style="top:-25px;">
+<thead>
+<tr>
+	<th colspan="14">&nbsp;</th>
+	<th colspan="7" class="tableInfoHeader">
+		<!--<a href="spielerstatistik_hilfe.php" class="white_small" onclick="NewWindow(this.href,'Aufwertungssystem','630','330','no','no');return false">-->
+		<span class="white bold small-font">Aufwertungssystem (Hilfe)</span>
+		<img src="/bilder/icons/icon_info_v3.png" alt="Info" class="pos-rel infoIconPos cursor" onclick="$('#playerStatisticInfo').show();" />
+		<!-- Infotext Start -->
+		<div id="playerStatisticInfo" class="requestBox pos-abs shadow" style="right:30px;top:0;display:none;width:320px;height:auto;">
+			<div onclick="$('#playerStatisticInfo').hide();" class="floatR officeMap pos-rel cursor closeIcon">&nbsp;</div>
+			<h1>Hilfe Aufwertungssystem</h1><br />
+						<img src="/db/images/instructions/upgrade_system_help2.png" alt="" />
+			<div class="textLeft" style="width:300px;">
+				<h3 class="bold">1.Erfahrungspunkte:</h3>
+				 <b>s</b>ammelt der Spieler bei Einsätzen in Liga, Pokal und bei Freundschaftsspielen, sowie bei Trainingsturnieren. Es wird die Gesamterfahrung sowie die heute gesammelte Erfahrung angezeigt. <br /><br />
+				<h3 class="bold">2. Trainingspunkte:</h3>
+				 <b>s</b>ammelt der Spieler beim Training und bei Trainingslagern. Es werden die gesamten Trainingspunkte sowie die heute erworbenen Trainingspunkte angezeigt. <br /><br />
+				<h3 class="bold">3. Relevante Aufwertungspunkte</h3>
+				 berechnen sich aus den Erfahrungs- und Trainingspunkten. Dieser Wert dient als Grundlage für eine mögliche Stärke-Aufwertung (oder Abwertung) des Spielers. Es wird der Gesamtwert sowie die heutige Entwicklung angezeigt. <br /><br />
+				<h3 class="bold">4.										Letzte Aufwertungsgrenze:				</h3>
+								Dieser dynamische Grenzwert hat im OFM Aufwertungs-Pyramidensystem bei der letzten Aufwertung gereicht, um die nächst höhere Spielerstärke zu erreichen. In unserem Beispiel haben wir einen Spieler mit 833 relevanten Aufwertungspunkten. Beim letzten Aufwertungstag haben 913 Punkte für einen Stärkeanstieg gereicht. Anhand dieser Werte und der angezeigten Differenz kann man erkennen, wann möglicherweise die nächste Stärkeaufwertung des Spielers bevorsteht.                <br /><br />
+                Die Stärke-Aufwertungen finden jeweils am <font color="#005286">0., 9., 18. und 27. Spieltag</font> statt				<br /><br />
+				<a class="blue" title="zum OFM-Forum" href="http://www.ofm-forum.de/forumdisplay.php?f=7340" target="_blank">
+					Mehr dazu hier im Forum				</a>
+			</div>
+		</div>
+		<!-- Infotext End -->
+		<!--</a>-->
+	</th>
+	<th>&nbsp;</th>
+</tr>
+<tr>
+	<th>&nbsp;</th>
+	<th class="textLeft">
+		<a class="cursor sortTable" rel="2-desc">Pos</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="2-desc">&nbsp;</p>
+	</th>
+	<th></th>
+	<th class="textLeft">Spielername</th>
+	<th>
+		<a class="cursor sortTable" rel="4-desc">Alter</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="4-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="5-desc">Stärke</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="5-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="6-desc">Frische</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="6-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="7-desc">Spiele<br>Saison</a>
+		<p class="floatR  cursor pos-rel clearfix sortTable" rel="7-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="8-desc">Tore<br>Saison</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="8-desc">&nbsp;</p>
+	</th>
+	<th>
+		Zweik.<br />
+		<a href="javascript:void(0)" class="cursor sortLink sortTable noChange" rel="9-asc" title='Sortiert nach gewonnenen Liga-Zweikämpfen'>+</a>/<a href="javascript:void(0)" title='Sortiert nach verlorenen Liga-Zweikämpfen' class="cursor sortLink sortTable noChange" rel="9-desc">-</a>
+	</th>
+	<th>
+		Zweik.<br>Freund.<br />
+		<a href="javascript:void(0)" class="cursor sortLink sortTable noChange" rel="10-asc" title='Sortiert nach gewonnenen Friendly-Zweikämpfen'>+</a>/<a href='javascript:void(0)' title='Sortiert nach verlorenen Friendly-Zweikämpfen' class="sortLink sortTable noChange" rel="10-desc">-</a>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="11-desc">Spiele<br>Ewig</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="11-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="12-desc">Tore<br>Ewig</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="12-desc">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="13-desc">Gelbe&nbsp;/&nbsp;Rote</a>
+				<p class="floatR  cursor pos-rel clearfix sortTable" rel="13-desc" style="right:5px;">&nbsp;</p>
+	</th>
+	<th class="greenBack" style="border-left:1px solid #007200;">
+		<a class="cursor sortTable" rel="14-desc">Erfahrung</a>
+		<p class="floatR  cursor pos-rel clearfix sortTable" rel="14-desc">&nbsp;</p>
+		<br />
+		<span class="xSmall cursor sortTable" rel="15-desc">EP heute</span>
+		<p class="floatR  cursor pos-rel clearfix sortTable" rel="15-desc">&nbsp;</p>
+	</th>
+	<th></th>
+	<th class="greenBack"><a class="cursor sortTable" rel="16-desc">Training</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel=16-desc">&nbsp;</p>
+		<br />
+		<span class="xSmall cursor sortTable" rel="17-desc">TP heute</span>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="17-desc">&nbsp;</p>
+	</th>
+	<th></th>
+	<th class="greenBack">
+		<a class="cursor sortTable" rel="18-desc">Relevante<br>Aufw.Pkt.</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="18-desc">&nbsp;</p>
+		<br />
+		<span class="xSmall cursor sortTable" rel="19-desc">AWP heute</span>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="19-desc">&nbsp;</p>
+	</th>
+	<th></th>
+		<th class="greenBack" style="border-right:1px solid #007200;" title="Diese Grenze hat bei der letzten Aufwertung auf eine höhere Stärke gereicht. ">
+		<a class="cursor sortTable" rel="20-desc">letzte Aufw.-<br>Grenze</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="20-desc" style="right:2px;">&nbsp;</p>
+	</th>
+	<th>
+		<a class="cursor sortTable" rel="21-desc">Marktwert</a>
+		<p class="floatR cursor pos-rel clearfix sortTable" rel="21-desc" style="right:2px;">&nbsp;</p>
+	</th>
+</tr>
+</thead>
+<tbody>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Torwart'>TW</td>
+		<td>1</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739266-Igor-Vernon" onclick="NewWindow(this.href,'163739266','400','400','yes');return false" style="font-size:11px;">
+				Igor Vernon 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 28 Jahre'>28</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 61'>61</td>
+		<td class="table-middle textCenter" title='13 Saisonspiele'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='14 Liga-Zweikämpfe gewonnen, 39 Liga-Zweikämpfe verloren'>14 / 39</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='13 Spiele in der Karriere'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='470 Erfahrungspunkte'>
+			470<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='581 Trainingspunkte'>
+			581<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='520 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">520</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<a id="plusLink" href="/premium/_frame_plus.php" target="content1"><img src="../bilder/plus_icon.png" alt="Plus" /></a>
+			</td>
+					<td class="table-middle textRight" title="Aktueller Marktwert: 3" style="padding-right:5px;white-space:nowrap;">
+			3 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Torwart'>TW</td>
+		<td>1</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703532-Saliou-Dass%C3%A9" onclick="NewWindow(this.href,'163703532','400','400','yes');return false" style="font-size:11px;">
+				Saliou Dassé 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 25 Jahre'>25</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 65'>65</td>
+		<td class="table-middle textCenter" title='4 Saisonspiele'>4</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='5 Liga-Zweikämpfe gewonnen, 2 Liga-Zweikämpfe verloren'>5 / 2</td>
+		<td class="table-middle textCenter" title='4 Friendly-Zweikämpfe gewonnen, 33 Friendly-Zweikämpfe verloren'>4 / 33</td>
+		<td class="table-middle textCenter" title='16 Spiele in der Karriere'>16</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='184 Erfahrungspunkte'>
+			184<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='421 Trainingspunkte'>
+			421<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='256 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">256</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 3" style="padding-right:5px;white-space:nowrap;">
+			3 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Libero'>LIB</td>
+		<td>2</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163742695-Camille-Adolphe-Meite" onclick="NewWindow(this.href,'163742695','400','400','yes');return false" style="font-size:11px;">
+				Camille-Adolphe Meite 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 32 Jahre'>32</td>
+		<td class="table-middle textCenter" title='Stärke: 4'>4 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 61'>61</td>
+		<td class="table-middle textCenter" title='12 Saisonspiele'>12</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='6 Liga-Zweikämpfe gewonnen, 4 Liga-Zweikämpfe verloren'>6 / 4</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='12 Spiele in der Karriere'>12</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 0 rote Karten in dieser Saison'>1 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='714 Erfahrungspunkte'>
+			714<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='775 Trainingspunkte'>
+			775<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='743 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">743</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 6" style="padding-right:5px;white-space:nowrap;">
+			6 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Libero'>LIB</td>
+		<td>2</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739269-Manio-Lopas" onclick="NewWindow(this.href,'163739269','400','400','yes');return false" style="font-size:11px;">
+				Manio Lopas 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 28 Jahre'>28</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 63'>63</td>
+		<td class="table-middle textCenter" title='1 Saisonspiele'>1</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='0 Liga-Zweikämpfe gewonnen, 1 Liga-Zweikämpfe verloren'>0 / 1</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='1 Spiele in der Karriere'>1</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 0 rote Karten in dieser Saison'>1 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='443 Erfahrungspunkte'>
+			443<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='572 Trainingspunkte'>
+			572<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='499 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">499</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 7" style="padding-right:5px;white-space:nowrap;">
+			7 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Linker Verteidiger'>LV</td>
+		<td>3</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703534-Maduka-Rutaganda" onclick="NewWindow(this.href,'163703534','400','400','yes');return false" style="font-size:11px;">
+				Maduka Rutaganda 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 28 Jahre'>28</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 63'>63</td>
+		<td class="table-middle textCenter" title='0 Saisonspiele'>0</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='0 Liga-Zweikämpfe gewonnen, 0 Liga-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='4 Friendly-Zweikämpfe gewonnen, 11 Friendly-Zweikämpfe verloren'>4 / 11</td>
+		<td class="table-middle textCenter" title='14 Spiele in der Karriere'>14</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='318 Erfahrungspunkte'>
+			318<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='422 Trainingspunkte'>
+			422<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='363 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">363</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 5" style="padding-right:5px;white-space:nowrap;">
+			5 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Linker Manndecker'>LMD</td>
+		<td>4</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739268-Manu-Amara" onclick="NewWindow(this.href,'163739268','400','400','yes');return false" style="font-size:11px;">
+				Manu Amara 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 27 Jahre'>27</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 56'>56</td>
+		<td class="table-middle textCenter" title='13 Saisonspiele'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='14 Liga-Zweikämpfe gewonnen, 6 Liga-Zweikämpfe verloren'>14 / 6</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='13 Spiele in der Karriere'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='2 gelbe Karten und 0 rote Karten in dieser Saison'>2 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='531 Erfahrungspunkte'>
+			531<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='551 Trainingspunkte'>
+			551<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='541 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">541</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 1.695" style="padding-right:5px;white-space:nowrap;">
+			1.695 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Linker Manndecker'>LMD</td>
+		<td>4</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703535-Didier-Yah-Goze-Kipre" onclick="NewWindow(this.href,'163703535','400','400','yes');return false" style="font-size:11px;">
+				Didier Yah Goze Kipre 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 25 Jahre'>25</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 69'>69</td>
+		<td class="table-middle textCenter" title='4 Saisonspiele'>4</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='0 Liga-Zweikämpfe gewonnen, 0 Liga-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='20 Friendly-Zweikämpfe gewonnen, 60 Friendly-Zweikämpfe verloren'>20 / 60</td>
+		<td class="table-middle textCenter" title='18 Spiele in der Karriere'>18</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='217 Erfahrungspunkte'>
+			217<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='345 Trainingspunkte'>
+			345<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='266 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">266</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 7" style="padding-right:5px;white-space:nowrap;">
+			7 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Rechter Manndecker'>RMD</td>
+		<td>5</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739270-Banta-Bindian" onclick="NewWindow(this.href,'163739270','400','400','yes');return false" style="font-size:11px;">
+				Banta Bindian 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 26 Jahre'>26</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 59'>59</td>
+		<td class="table-middle textCenter" title='13 Saisonspiele'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='16 Liga-Zweikämpfe gewonnen, 7 Liga-Zweikämpfe verloren'>16 / 7</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='13 Spiele in der Karriere'>13</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='2 gelbe Karten und 0 rote Karten in dieser Saison'>2 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='505 Erfahrungspunkte'>
+			505<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='590 Trainingspunkte'>
+			590<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='544 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">544</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 652" style="padding-right:5px;white-space:nowrap;">
+			652 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Rechter Manndecker'>RMD</td>
+		<td>5</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703536-Bagassa-Kenda" onclick="NewWindow(this.href,'163703536','400','400','yes');return false" style="font-size:11px;">
+				Bagassa Kenda 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 28 Jahre'>28</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 67'>67</td>
+		<td class="table-middle textCenter" title='4 Saisonspiele'>4</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='3 Liga-Zweikämpfe gewonnen, 2 Liga-Zweikämpfe verloren'>3 / 2</td>
+		<td class="table-middle textCenter" title='7 Friendly-Zweikämpfe gewonnen, 11 Friendly-Zweikämpfe verloren'>7 / 11</td>
+		<td class="table-middle textCenter" title='18 Spiele in der Karriere'>18</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='2 gelbe Karten und 0 rote Karten in dieser Saison'>2 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='274 Erfahrungspunkte'>
+			274<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='479 Trainingspunkte'>
+			479<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='349 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">349</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 5" style="padding-right:5px;white-space:nowrap;">
+			5 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Rechter Verteidiger'>RV</td>
+		<td>6</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703537-Sagina-Gedevanishvili" onclick="NewWindow(this.href,'163703537','400','400','yes');return false" style="font-size:11px;">
+				Sagina Gedevanishvili 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 27 Jahre'>27</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 67'>67</td>
+		<td class="table-middle textCenter" title='0 Saisonspiele'>0</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='0 Liga-Zweikämpfe gewonnen, 0 Liga-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='2 Friendly-Zweikämpfe gewonnen, 14 Friendly-Zweikämpfe verloren'>2 / 14</td>
+		<td class="table-middle textCenter" title='14 Spiele in der Karriere'>14</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='322 Erfahrungspunkte'>
+			322<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='354 Trainingspunkte'>
+			354<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='337 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">337</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 4" style="padding-right:5px;white-space:nowrap;">
+			4 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Vorstopper'>VS</td>
+		<td>7</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703538-Zizis-Katsavakis" onclick="NewWindow(this.href,'163703538','400','400','yes');return false" style="font-size:11px;">
+				Zizis Katsavakis 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 24 Jahre'>24</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 57'>57</td>
+		<td class="table-middle textCenter" title='17 Saisonspiele'>17</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='8 Liga-Zweikämpfe gewonnen, 10 Liga-Zweikämpfe verloren'>8 / 10</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='17 Spiele in der Karriere'>17</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 0 rote Karten in dieser Saison'>1 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='251 Erfahrungspunkte'>
+			251<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='352 Trainingspunkte'>
+			352<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='293 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">293</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 205" style="padding-right:5px;white-space:nowrap;">
+			205 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Linkes Mittelfeld'>LM</td>
+		<td>8</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739276-Gabriel-Felicit%C3%A9-Zoro-Bi" onclick="NewWindow(this.href,'163739276','400','400','yes');return false" style="font-size:11px;">
+				Gabriel-Felicité Zoro Bi 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 31 Jahre'>31</td>
+		<td class="table-middle textCenter" title='Stärke: 4'>4 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 51'>51</td>
+		<td class="table-middle textCenter" title='12 Saisonspiele'>12</td>
+		<td class="table-middle textCenter" title='1 Tore in dieser Saison'>1</td>
+		<td class="table-middle textCenter" title='16 Liga-Zweikämpfe gewonnen, 6 Liga-Zweikämpfe verloren'>16 / 6</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='12 Spiele in der Karriere'>12</td>
+		<td class="table-middle textCenter" title='1 Tore in der Karriere'>1</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 1 rote Karten in dieser Saison'>1 / 1</td>
+		<td class="table-middle textCenter greenSoft" title='768 Erfahrungspunkte'>
+			768<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='741 Trainingspunkte'>
+			741<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='754 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">754</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 363" style="padding-right:5px;white-space:nowrap;">
+			363 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Linkes Mittelfeld'>LM</td>
+		<td>8</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703539-Stan-Patterson" onclick="NewWindow(this.href,'163703539','400','400','yes');return false" style="font-size:11px;">
+				Stan Patterson 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 27 Jahre'>27</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 67'>67</td>
+		<td class="table-middle textCenter" title='5 Saisonspiele'>5</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='10 Liga-Zweikämpfe gewonnen, 1 Liga-Zweikämpfe verloren'>10 / 1</td>
+		<td class="table-middle textCenter" title='6 Friendly-Zweikämpfe gewonnen, 5 Friendly-Zweikämpfe verloren'>6 / 5</td>
+		<td class="table-middle textCenter" title='11 Spiele in der Karriere'>11</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 0 rote Karten in dieser Saison'>1 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='251 Erfahrungspunkte'>
+			251<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='519 Trainingspunkte'>
+			519<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='338 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">338</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 5" style="padding-right:5px;white-space:nowrap;">
+			5 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Defensives Mittelfeld'>DM</td>
+		<td>9</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703540-Rikk-Petteri-Olofsson" onclick="NewWindow(this.href,'163703540','400','400','yes');return false" style="font-size:11px;">
+				Rikk-Petteri Olofsson 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 23 Jahre'>23</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 57'>57</td>
+		<td class="table-middle textCenter" title='17 Saisonspiele'>17</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='11 Liga-Zweikämpfe gewonnen, 11 Liga-Zweikämpfe verloren'>11 / 11</td>
+		<td class="table-middle textCenter" title='2 Friendly-Zweikämpfe gewonnen, 13 Friendly-Zweikämpfe verloren'>2 / 13</td>
+		<td class="table-middle textCenter" title='31 Spiele in der Karriere'>31</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='2 gelbe Karten und 0 rote Karten in dieser Saison'>2 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='271 Erfahrungspunkte'>
+			271<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='361 Trainingspunkte'>
+			361<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='310 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">310</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 4" style="padding-right:5px;white-space:nowrap;">
+			4 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Zentrales Mittelfeld'>ZM</td>
+		<td>10</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703541-Cawaale-Idmaan" onclick="NewWindow(this.href,'163703541','400','400','yes');return false" style="font-size:11px;">
+				Cawaale Idmaan 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 29 Jahre'>29</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_gruen.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 56'>56</td>
+		<td class="table-middle textCenter" title='17 Saisonspiele'>17</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='12 Liga-Zweikämpfe gewonnen, 2 Liga-Zweikämpfe verloren'>12 / 2</td>
+		<td class="table-middle textCenter" title='4 Friendly-Zweikämpfe gewonnen, 1 Friendly-Zweikämpfe verloren'>4 / 1</td>
+		<td class="table-middle textCenter" title='23 Spiele in der Karriere'>23</td>
+		<td class="table-middle textCenter" title='1 Tore in der Karriere'>1</td>
+		<td class="table-middle textCenter" title='2 gelbe Karten und 0 rote Karten in dieser Saison'>2 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='516 Erfahrungspunkte'>
+			516<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='372 Trainingspunkte'>
+			372<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='432 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">432</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 6" style="padding-right:5px;white-space:nowrap;">
+			6 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Rechtes Mittelfeld'>RM</td>
+		<td>11</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163739272-Garry-Ciss%C3%A9" onclick="NewWindow(this.href,'163739272','400','400','yes');return false" style="font-size:11px;">
+				Garry Cissé 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 27 Jahre'>27</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 54'>54</td>
+		<td class="table-middle textCenter" title='13 Saisonspiele'>13</td>
+		<td class="table-middle textCenter" title='1 Tore in dieser Saison'>1</td>
+		<td class="table-middle textCenter" title='17 Liga-Zweikämpfe gewonnen, 14 Liga-Zweikämpfe verloren'>17 / 14</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='13 Spiele in der Karriere'>13</td>
+		<td class="table-middle textCenter" title='1 Tore in der Karriere'>1</td>
+		<td class="table-middle textCenter" title='3 gelbe Karten und 0 rote Karten in dieser Saison'>3 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='503 Erfahrungspunkte'>
+			503<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='615 Trainingspunkte'>
+			615<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='553 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">553</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 8" style="padding-right:5px;white-space:nowrap;">
+			8 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Rechtes Mittelfeld'>RM</td>
+		<td>11</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703542-Cedric-Kana-Biyik" onclick="NewWindow(this.href,'163703542','400','400','yes');return false" style="font-size:11px;">
+				Cedric Kana-Biyik 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 27 Jahre'>27</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 63'>63</td>
+		<td class="table-middle textCenter" title='4 Saisonspiele'>4</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='5 Liga-Zweikämpfe gewonnen, 2 Liga-Zweikämpfe verloren'>5 / 2</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='4 Spiele in der Karriere'>4</td>
+		<td class="table-middle textCenter" title='0 Tore in der Karriere'>0</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='276 Erfahrungspunkte'>
+			276<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='483 Trainingspunkte'>
+			483<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='351 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">351</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 6" style="padding-right:5px;white-space:nowrap;">
+			6 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Linker Stürmer'>LS</td>
+		<td>12</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703543-Anselme-Kalou" onclick="NewWindow(this.href,'163703543','400','400','yes');return false" style="font-size:11px;">
+				Anselme Kalou 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 30 Jahre'>30</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 57'>57</td>
+		<td class="table-middle textCenter" title='17 Saisonspiele'>17</td>
+		<td class="table-middle textCenter" title='6 Tore in dieser Saison'>6</td>
+		<td class="table-middle textCenter" title='7 Liga-Zweikämpfe gewonnen, 65 Liga-Zweikämpfe verloren'>7 / 65</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='17 Spiele in der Karriere'>17</td>
+		<td class="table-middle textCenter" title='6 Tore in der Karriere'>6</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='425 Erfahrungspunkte'>
+			425<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='424 Trainingspunkte'>
+			424<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='424 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">424</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 5" style="padding-right:5px;white-space:nowrap;">
+			5 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'></td>
+		<td class="textCenter table-middle" title='Mittelstürmer'>MS</td>
+		<td>13</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703544-Herv%C3%A9-Gabo-Ou%C3%A9draogo" onclick="NewWindow(this.href,'163703544','400','400','yes');return false" style="font-size:11px;">
+				Hervé Gabo Ouédraogo 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 30 Jahre'>30</td>
+		<td class="table-middle textCenter" title='Stärke: 2'>2 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 69'>69</td>
+		<td class="table-middle textCenter" title='0 Saisonspiele'>0</td>
+		<td class="table-middle textCenter" title='0 Tore in dieser Saison'>0</td>
+		<td class="table-middle textCenter" title='0 Liga-Zweikämpfe gewonnen, 0 Liga-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='5 Friendly-Zweikämpfe gewonnen, 47 Friendly-Zweikämpfe verloren'>5 / 47</td>
+		<td class="table-middle textCenter" title='12 Spiele in der Karriere'>12</td>
+		<td class="table-middle textCenter" title='3 Tore in der Karriere'>3</td>
+		<td class="table-middle textCenter" title='0 gelbe Karten und 0 rote Karten in dieser Saison'>0 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='240 Erfahrungspunkte'>
+			240<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='548 Trainingspunkte'>
+			548<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='334 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">334</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 2" style="padding-right:5px;white-space:nowrap;">
+			2 €		</td>
+	</tr>
+	<tr>
+		<td class="textCenter table-middle" style="padding:0 2px;" title='aufgestellt'><img src="/db/images/ingame/aufgestellt_liga2.png" /></td>
+		<td class="textCenter table-middle" title='Rechter Stürmer'>RS</td>
+		<td>14</td>
+		<td class="table-middle">
+			<a class="blue" href="/player/163703545-Estan%C3%ADsl%C3%A3o-Euklidio" onclick="NewWindow(this.href,'163703545','400','400','yes');return false" style="font-size:11px;">
+				Estaníslão Euklidio 			</a>
+		</td>
+		<td class="table-middle textCenter" title='Alter: 30 Jahre'>30</td>
+		<td class="table-middle textCenter" title='Stärke: 3'>3 <img src="/bilder/pfeil_aufw_grau.gif" title="Stärkeveränderung seit dem letzten Auf-/Abwertungstag" class="pos-rel" style="top:2px;" /></td>
+		<td class="table-middle textCenter red" title='Frische: 58'>58</td>
+		<td class="table-middle textCenter" title='17 Saisonspiele'>17</td>
+		<td class="table-middle textCenter" title='5 Tore in dieser Saison'>5</td>
+		<td class="table-middle textCenter" title='11 Liga-Zweikämpfe gewonnen, 53 Liga-Zweikämpfe verloren'>11 / 53</td>
+		<td class="table-middle textCenter" title='0 Friendly-Zweikämpfe gewonnen, 0 Friendly-Zweikämpfe verloren'>0 / 0</td>
+		<td class="table-middle textCenter" title='17 Spiele in der Karriere'>17</td>
+		<td class="table-middle textCenter" title='5 Tore in der Karriere'>5</td>
+		<td class="table-middle textCenter" title='1 gelbe Karten und 0 rote Karten in dieser Saison'>1 / 0</td>
+		<td class="table-middle textCenter greenSoft" title='391 Erfahrungspunkte'>
+			391<br />
+						<span class="smallGreenFont">
+						heute:  ??						</span>
+		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenSoft" title='469 Trainingspunkte'>
+			469<br />
+						<span class="smallGreenFont">
+						heute:  ??		</td>
+		<td>
+			??		</td>
+		<td class="table-middle textCenter greenMedium" title='426 relevante Punkte für die Aufwertung'>
+			<span class="bold" style="color:#00600b;">426</span><br />
+						<span class="smallGreenFont">
+						heute:  ??							<td>
+								??							</td>
+		</td>
+					<td class="table-middle textCenter greenMedium plusIcon">
+				<span class="bold" style="color:#1b518f;">--</span><br />
+							<span class="smallGreenFont">
+								Diff.: ??							</span>
+			</td>
+				<td class="table-middle textRight" title="Aktueller Marktwert: 2" style="padding-right:5px;white-space:nowrap;">
+			2 €		</td>
+	</tr>
+</tbody>
+<tfoot>
+<tr>
+	<td colspan="18" class="bold">
+					<div class="float printIcon cursor printMargin pos-rel" style="top:7px;margin:0 10px 0 20px;">&nbsp;</div>
+			<img src="../bilder/plus_icon.png" alt="" class="float" style="margin-bottom:-5px;" />
+				<div class="float pos-rel" style="top:7px;margin-left:5px;">| <a href="spielerstatistik_print.php" class="intLink" target="_blank">Export-Version anzeigen</a> | <a href="spielerstatistik_export.php" class="intLink" target="_blank">Export-Datei</a> |</div>
+		<br class="clear" />
+	</td>
+</tr>
+</tfoot>
+</table>
+<!-- Balacing Start -->
+<!-- Balacing End -->
+</div>
+</div>
+</body>
+</html>

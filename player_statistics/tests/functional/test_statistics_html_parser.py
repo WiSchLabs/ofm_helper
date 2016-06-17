@@ -2,7 +2,6 @@ from django.test import TestCase
 
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
-
 from player_statistics.models import Player, PlayerStatistics
 from player_statistics.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 
@@ -12,6 +11,7 @@ class StatisticsHtmlParserTest(TestCase):
         self.site_manager = SiteManager()
         self.site_manager.login()
         self.site_manager.browser.get(Constants.TEAM.PLAYER_STATISTICS)
+        self.assertIn('Spielerstatistik', self.site_manager.browser.title)
         parser = PlayerStatisticsHtmlParser()
         self.player_stat_list = parser.parse(self.site_manager.browser.page_source)
         self.first_player_stat = self.player_stat_list[0]
