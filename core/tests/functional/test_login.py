@@ -1,6 +1,6 @@
 import unittest
 
-from core.web.ofm_page_constants import HEAD
+from core.web.ofm_page_constants import constants
 from core.web.site_manager import SiteManager
 from django.conf import settings
 
@@ -17,7 +17,7 @@ class LoginTest(unittest.TestCase):
 
     def test_login(self):
         self.assertIn("OFM", self.site_manager.browser.title)
-        self.site_manager.browser.get(HEAD)
+        self.site_manager.browser.get(constants['HEAD'])
         self.assertIn("Spieltag", self.site_manager.browser.page_source)
         self.assertIn("Saison", self.site_manager.browser.page_source)
         self.assertIn("Team", self.site_manager.browser.page_source)
