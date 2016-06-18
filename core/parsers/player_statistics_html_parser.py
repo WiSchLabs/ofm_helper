@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from core.models import Player, PlayerStatistics
+from core.models import Player, PlayerStatistics, Matchday
 from core.parsers.base_parser import BaseParser
 from core.web.ofm_page_constants import Constants
 
@@ -28,6 +28,7 @@ class PlayerStatisticsHtmlParser(BaseParser):
 
     def parse_player_stat_row(self, player_row):
         parsed_player_stat = PlayerStatistics()
+        parsed_player_stat.matchday = Matchday.objects.all()[0]
         player_stat_values = self._filter_invalid_cells(player_row.find_all('td'))
 
         parsed_player_stat.strength = player_stat_values[4].get_text().strip(' ')

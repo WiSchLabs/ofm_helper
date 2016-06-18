@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from core.factories.core_factories import MatchdayFactory
 from core.models import Player, PlayerStatistics
 from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 from core.web.ofm_page_constants import Constants
@@ -14,6 +15,7 @@ class StatisticsHtmlParserTest(TestCase):
         self.assertIn('Spielerstatistik', self.site_manager.browser.title)
         parser = PlayerStatisticsHtmlParser()
         parser.url = self.site_manager.browser.page_source
+        MatchdayFactory.create()
         self.player_stat_list = parser.parse()
         self.first_player_stat = self.player_stat_list[0]
 

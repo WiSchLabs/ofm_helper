@@ -1,4 +1,9 @@
+from core.parsers.matchday_parser import MatchdayParser
+
+
 class ParserPipeline:
-    @classmethod
-    def parse_all(cls):
+    def __init__(self):
+        self.matchday_parser = MatchdayParser()
+
+    def parse_all(self):
         pass

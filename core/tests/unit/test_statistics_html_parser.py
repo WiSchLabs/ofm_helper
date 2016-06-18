@@ -2,6 +2,7 @@ import os
 
 from django.test import TestCase
 
+from core.factories.core_factories import MatchdayFactory
 from core.models import PlayerStatistics, Player
 from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 
@@ -13,13 +14,15 @@ class StatisticsHtmlParserTest(TestCase):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         parser = PlayerStatisticsHtmlParser()
         parser.url = testdata
+        MatchdayFactory.create()
         self.player_stat_list = parser.parse()
         self.first_player_stat = self.player_stat_list[0]
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):
         self.assertEquals(type(self.first_player_stat), PlayerStatistics)
         self.assertEquals(type(self.first_player_stat.player), Player)
-        #self.assertEquals(self.first_player_stat.player.matchday), Player)
+        self.assertEquals(self.first_player_stat.matchday.number, 0)
+        self.assertEquals(self.first_player_stat.matchday.season.number, 1)
 
     def test_parsed_player_stat_contains_all_fields(self):
         self.assertEquals(12, len(self.player_stat_list))
