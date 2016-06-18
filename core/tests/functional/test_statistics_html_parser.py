@@ -13,7 +13,8 @@ class StatisticsHtmlParserTest(TestCase):
         self.site_manager.browser.get(Constants.TEAM.PLAYER_STATISTICS)
         self.assertIn('Spielerstatistik', self.site_manager.browser.title)
         parser = PlayerStatisticsHtmlParser()
-        self.player_stat_list = parser.parse(self.site_manager.browser.page_source)
+        parser.url = self.site_manager.browser.page_source
+        self.player_stat_list = parser.parse()
         self.first_player_stat = self.player_stat_list[0]
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):

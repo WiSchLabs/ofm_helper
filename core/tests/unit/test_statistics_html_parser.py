@@ -1,7 +1,9 @@
 import os
+
+from django.test import TestCase
+
 from core.models import PlayerStatistics, Player
 from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
-from django.test import TestCase
 
 TESTDATA_PATH = 'core/tests/assets'
 
@@ -10,7 +12,8 @@ class StatisticsHtmlParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         parser = PlayerStatisticsHtmlParser()
-        self.player_stat_list = parser.parse(testdata)
+        parser.url = testdata
+        self.player_stat_list = parser.parse()
         self.first_player_stat = self.player_stat_list[0]
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):

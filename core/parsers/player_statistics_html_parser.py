@@ -2,13 +2,17 @@ from bs4 import BeautifulSoup
 
 from core.models import Player, PlayerStatistics
 from core.parsers.base_parser import BaseParser
+from core.web.ofm_page_constants import Constants
 
 MULTIVALUE_SEPARATOR = ' / '
 
 
 class PlayerStatisticsHtmlParser(BaseParser):
-    def parse(self, page):
-        soup = BeautifulSoup(page, "html.parser")
+    def __init__(self):
+        self.url = Constants.TEAM.PLAYER_STATISTICS
+
+    def parse(self):
+        soup = BeautifulSoup(self.url, "html.parser")
         return self.parse_player_statistics_html(soup)
 
     def parse_player_statistics_html(self, soup):

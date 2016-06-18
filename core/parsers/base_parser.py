@@ -1,6 +1,6 @@
 class BaseParser:
     def __init__(self):
-        pass
+        self.url = ''
 
-    def parse(self, page):
+    def parse(self):
         raise NotImplementedError("Should have implemented this")
