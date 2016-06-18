@@ -1,11 +1,9 @@
 import os
-
+from core.models import PlayerStatistics, Player
+from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 from django.test import TestCase
 
-from player_statistics.models import Player, PlayerStatistics
-from player_statistics.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
-
-TESTDATA_PATH = 'player_statistics/tests/assets'
+TESTDATA_PATH = 'core/tests/assets'
 
 
 class StatisticsHtmlParserTest(TestCase):

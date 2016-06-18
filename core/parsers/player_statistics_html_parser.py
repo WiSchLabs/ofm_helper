@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
-from player_statistics.models import Player, PlayerStatistics
-from player_statistics.parsers.base_parser import BaseParser
+from core.models import Player, PlayerStatistics
+from core.parsers.base_parser import BaseParser
 
 MULTIVALUE_SEPARATOR = ' / '
 

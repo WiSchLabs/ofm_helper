@@ -1,6 +1,6 @@
 import unittest
 
-from player_statistics.factories.player_factories import PlayerFactory
+from core.factories.core_factories import PlayerFactory
 
 
 class CreatePlayerTest(unittest.TestCase):

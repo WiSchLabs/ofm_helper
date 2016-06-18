@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Season, Quarter, Matchday
+from core.models import Season, Quarter, Matchday, Player
 
 
 class SeasonFactory(factory.django.DjangoModelFactory):
@@ -24,4 +24,15 @@ class MatchdayFactory(factory.django.DjangoModelFactory):
 
     season = factory.SubFactory(SeasonFactory)
     number = 1
+
+
+class PlayerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Player
+
+    position = 'TW'
+    name = factory.Sequence(lambda n: 'Torwart%d' % n)
+    nationality = "Deutschland"
+    birthSeason = factory.SubFactory(SeasonFactory)
+    matchday = factory.SubFactory(MatchdayFactory)
 

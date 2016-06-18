@@ -1,9 +1,9 @@
 from django.test import TestCase
 
+from core.models import Player, PlayerStatistics
+from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
-from player_statistics.models import Player, PlayerStatistics
-from player_statistics.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
 
 
 class StatisticsHtmlParserTest(TestCase):
