@@ -1,12 +1,12 @@
 import os
-import unittest
+
+from django.test import TestCase
 
 from core.configuration_provider import ConfigurationProvider
 
 
-class ConfigurationProviderTest(unittest.TestCase):
+class ConfigurationProviderTest(TestCase):
     def setUp(self):
-
         self.cp = ConfigurationProvider()
 
     def test_get_login_username(self):

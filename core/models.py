@@ -4,6 +4,9 @@ AGE_AT_BIRTH = 17
 
 
 class Season(models.Model):
+    class Meta:
+        ordering = ['-number']
+
     number = models.IntegerField()
 
 
@@ -15,6 +18,9 @@ class Quarter(models.Model):
 
 
 class Matchday(models.Model):
+    class Meta:
+        ordering = ['season', '-number']
+
     season = models.ForeignKey(Season)
     number = models.IntegerField()
 
@@ -88,11 +94,6 @@ class Player(models.Model):
     name = models.CharField(max_length=200)
     nationality = models.CharField(max_length=200)
     birthSeason = models.ForeignKey(Season)
-    matchday = models.ForeignKey(Matchday)
-
-    @property
-    def age(self):
-        return (self.matchday.season.number - self.birthSeason.number) + AGE_AT_BIRTH
 
 
 class PlayerStatistics(models.Model):
@@ -116,3 +117,7 @@ class PlayerStatistics(models.Model):
     yellow_cards_in_season = models.IntegerField(default=0)
     red_cards_in_season = models.IntegerField(default=0)
     equity = models.IntegerField(default=0)
+
+    @property
+    def age(self):
+        return (self.matchday.season.number - self.birthSeason.number) + AGE_AT_BIRTH
