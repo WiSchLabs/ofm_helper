@@ -1,7 +1,12 @@
+{% load staticfiles %}
+
 {% block content %}
         <footer class="footer">
             <div class="container">
-                <p class="text-muted">&copy; 2016 OFM Helper</p>
+                <p class="text-muted">
+                    &copy; 2016 OFM Helper by
+                    <img src="{% static 'core/img/WiSch-Labs_lang.png' %}" id="WiSch-logo" alt="WiSch Labs" />
+                </p>
             </div>
         </footer>
 {% endblock %}

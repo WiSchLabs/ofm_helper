@@ -39,6 +39,11 @@ body {
     margin: 15px 0 25px 0;
 }
 
+#WiSch-logo {
+    margin-left:5px;
+    height: 1em;
+}
+
 h1 {
     font-family: Sugarcubes, serif;
     font-weight: bold;
@@ -53,6 +58,7 @@ a:hover {
 }
 
 footer.footer {
+    padding-top: 10px;
     border-top: 1px solid #239123;
     text-align: center;
 }
