@@ -4,6 +4,9 @@ AGE_AT_BIRTH = 17
 
 
 class Season(models.Model):
+    class Meta:
+        ordering = ['-number']
+
     number = models.IntegerField()
 
 
@@ -15,6 +18,9 @@ class Quarter(models.Model):
 
 
 class Matchday(models.Model):
+    class Meta:
+        ordering = ['season', '-number']
+
     season = models.ForeignKey(Season)
     number = models.IntegerField()
 
