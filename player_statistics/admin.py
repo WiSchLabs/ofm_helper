@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from player_statistics.models import PlayerStatistics, Player
+
+admin.site.register(Player)
+admin.site.register(PlayerStatistics)
