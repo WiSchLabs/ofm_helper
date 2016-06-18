@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
 from core.models import PlayerStatistics, Player
-from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
+from core.parsers.player_statistics_parser import PlayerStatisticsParser
 
 TESTDATA_PATH = 'core/tests/assets'
 
@@ -12,7 +12,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class StatisticsHtmlParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
-        parser = PlayerStatisticsHtmlParser()
+        parser = PlayerStatisticsParser()
         parser.url = testdata
         MatchdayFactory.create()
         self.player_stat_list = parser.parse()

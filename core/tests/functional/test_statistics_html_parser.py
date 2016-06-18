@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
 from core.models import Player, PlayerStatistics
-from core.parsers.player_statistics_html_parser import PlayerStatisticsHtmlParser
+from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 
@@ -13,7 +13,7 @@ class StatisticsHtmlParserTest(TestCase):
         self.site_manager.login()
         self.site_manager.browser.get(Constants.TEAM.PLAYER_STATISTICS)
         self.assertIn('Spielerstatistik', self.site_manager.browser.title)
-        parser = PlayerStatisticsHtmlParser()
+        parser = PlayerStatisticsParser()
         parser.url = self.site_manager.browser.page_source
         MatchdayFactory.create()
         self.player_stat_list = parser.parse()

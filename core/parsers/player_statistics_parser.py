@@ -7,7 +7,7 @@ from core.web.ofm_page_constants import Constants
 MULTIVALUE_SEPARATOR = ' / '
 
 
-class PlayerStatisticsHtmlParser(BaseParser):
+class PlayerStatisticsParser(BaseParser):
     def __init__(self):
         self.url = Constants.TEAM.PLAYER_STATISTICS
 
