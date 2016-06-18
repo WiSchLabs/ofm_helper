@@ -19,6 +19,7 @@ class StatisticsHtmlParserTest(TestCase):
     def test_parsed_player_stat_contains_all_foreign_keys(self):
         self.assertEquals(type(self.first_player_stat), PlayerStatistics)
         self.assertEquals(type(self.first_player_stat.player), Player)
+        #self.assertEquals(self.first_player_stat.player.matchday), Player)
 
     def test_parsed_player_stat_contains_all_fields(self):
         self.assertEquals(12, len(self.player_stat_list))

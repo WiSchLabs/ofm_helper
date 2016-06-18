@@ -11,5 +11,3 @@ class CreatePlayerTest(TestCase):
         self.assertEquals(p.name, 'tw1')
         self.assertEquals(p.nationality, 'Deutschland')
         self.assertEquals(p.birthSeason.number, 1)
-        self.assertEquals(p.age, 17)
-        self.assertEquals(p.matchday.number, 1)
