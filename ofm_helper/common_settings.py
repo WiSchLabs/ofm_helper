@@ -125,3 +125,5 @@ STATIC_URL = '/static/'
 CONFIGURATION_BASE_PATH = 'core/config'
 
 ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'
+
+AUTH_USER_MODEL = 'users.OFMUser'
