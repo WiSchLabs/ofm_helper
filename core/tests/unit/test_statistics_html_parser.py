@@ -12,10 +12,10 @@ TESTDATA_PATH = 'core/tests/assets'
 class StatisticsHtmlParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
-        parser = PlayerStatisticsParser()
-        parser.url = testdata
+        self.parser = PlayerStatisticsParser()
+        self.parser.url = testdata
         MatchdayFactory.create()
-        self.player_stat_list = parser.parse()
+        self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):
@@ -54,3 +54,8 @@ class StatisticsHtmlParserTest(TestCase):
 
     def test_parsed_player_stat_contains_correct_equity(self):
         self.assertEquals('16015782', self.first_player_stat.equity)
+
+    def test_parse_player_stat_should_return_same_instance_if_nothing_changes(self):
+        self.parser.url = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
+        stat2 = self.parser.parse()
+        self.assertEqual(self.player_stat_list, stat2)
