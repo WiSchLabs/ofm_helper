@@ -1,0 +1,1 @@
+{"name": "Test", "purpose": "DECRYPT_AND_ENCRYPT", "type": "AES", "versions": [{"status": "PRIMARY", "versionNumber": 1, "exportable": false}], "encrypted": false}

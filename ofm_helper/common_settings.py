@@ -123,3 +123,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CONFIGURATION_BASE_PATH = 'core/config'
+
+ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'

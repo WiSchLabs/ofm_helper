@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from users.models import OFMUser
+
+admin.site.register(OFMUser)
