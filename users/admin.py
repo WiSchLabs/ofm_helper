@@ -4,6 +4,7 @@ from users.models import OFMUser
 
 
 @admin.register(OFMUser)
-class VehicleClassAdmin(admin.ModelAdmin):
+class OFMUserAdmin(admin.ModelAdmin):
     list_display = ['username']
     search_fields = ['username']
+    exclude = ('password',)
