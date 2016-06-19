@@ -22,4 +22,6 @@ class MatchdayParserTest(TestCase):
         matchday1 = self.parser.parse()
         self.parser.url = open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8')
         matchday2 = self.parser.parse()
+        self.assertEqual(matchday1.number, matchday2.number)
+        self.assertEqual(matchday1.season.number, matchday2.season.number)
         self.assertEqual(matchday1, matchday2)

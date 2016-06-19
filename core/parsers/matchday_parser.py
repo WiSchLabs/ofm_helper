@@ -10,9 +10,20 @@ class MatchdayParser(BaseParser):
         self.url = Constants.HEAD
 
     def parse(self):
-        matchday = Matchday()
-        matchday.season = Season()
         soup = BeautifulSoup(self.url, "html.parser")
-        matchday.number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[0].get_text())
-        matchday.season.number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[1].get_text())
+        matchday_number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[0].get_text())
+        matchday_season_number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[1].get_text())
+
+        season, season_creation_success = Season.objects.get_or_create(
+            number=matchday_season_number,
+        )
+
+        matchday, matchday_creation_success = Matchday.objects.get_or_create(
+            number=matchday_number,
+            season=season,
+        )
+
+        matchday.season.save()
+        matchday.save()
+
         return matchday
