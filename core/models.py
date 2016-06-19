@@ -27,6 +27,8 @@ class Matchday(models.Model):
 
 # incomplete
 class Country(models.Model):
+    class Meta:
+        verbose_name_plural = "Countries"
     COUNTRIES = (
         (1, 'Ägypten'),
         (2, 'Bosnien und Herzegowina'),
@@ -98,6 +100,7 @@ class Player(models.Model):
 
 class PlayerStatistics(models.Model):
     class Meta:
+        verbose_name_plural = "Player statistics"
         order_with_respect_to = 'player'
 
     player = models.ForeignKey(Player)
