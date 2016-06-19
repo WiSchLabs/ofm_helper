@@ -1,3 +1,7 @@
 from django.db import models
+from encrypted_fields import EncryptedTextField
 
-# Create your models here.
+
+class OFMUser(models.Model):
+    username = models.CharField(max_length=255)
+    password = EncryptedTextField()

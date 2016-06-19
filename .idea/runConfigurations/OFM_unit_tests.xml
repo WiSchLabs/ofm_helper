@@ -3,8 +3,8 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="DJANGO_SETTINGS_MODULE" value="ofm_helper.settings.test" />
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="DJANGO_SETTINGS_MODULE" value="ofm_helper.settings.test" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -14,7 +14,7 @@
     <module name="ofm_helper" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-    <option name="PARAMETERS" value="test core/tests/unit" />
+    <option name="PARAMETERS" value="test core/tests/unit users/tests/unit" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <method />
   </configuration>
