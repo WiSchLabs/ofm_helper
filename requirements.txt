@@ -4,3 +4,4 @@ factory-boy==2.6.1
 requests==2.9.1
 selenium==2.53.2
 configparser==3.5.0
+django-encrypted-fields-python3==1.1.3
