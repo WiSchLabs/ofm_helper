@@ -1,22 +1,26 @@
 import os
+from unittest.mock import Mock
 
 from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player
+from core.models import PlayerStatistics, Player, Matchday
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class StatisticsHtmlParserTest(TestCase):
+class StatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
-        self.parser = PlayerStatisticsParser()
-        self.parser.url = testdata
         MatchdayFactory.create()
+        matchday_parser_mock = Mock()
+        self.parser = PlayerStatisticsParser(matchday_parser=matchday_parser_mock)
+        self.parser.url = testdata
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
+        self.assertTrue(matchday_parser_mock.parse.called)
+        self.assertEqual(Matchday.objects.all().count(), 1)
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):
         self.assertEquals(type(self.first_player_stat), PlayerStatistics)
@@ -59,3 +63,4 @@ class StatisticsHtmlParserTest(TestCase):
         self.parser.url = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         stat2 = self.parser.parse()
         self.assertEqual(self.player_stat_list, stat2)
+        self.assertEqual(Matchday.objects.all().count(), 1)
