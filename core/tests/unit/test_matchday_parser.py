@@ -10,10 +10,16 @@ TESTDATA_PATH = 'core/tests/assets'
 class MatchdayParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8')
-        parser = MatchdayParser()
-        parser.url = testdata
-        self.matchday = parser.parse()
+        self.parser = MatchdayParser()
+        self.parser.url = testdata
 
     def test_parse_matchday(self):
-        self.assertEqual(139, self.matchday.season.number)
-        self.assertEqual(23, self.matchday.number)
+        matchday = self.parser.parse()
+        self.assertEqual(139, matchday.season.number)
+        self.assertEqual(23, matchday.number)
+
+    def test_parse_matchday_should_return_same_instance_if_nothing_changes(self):
+        matchday1 = self.parser.parse()
+        self.parser.url = open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8')
+        matchday2 = self.parser.parse()
+        self.assertEqual(matchday1, matchday2)
