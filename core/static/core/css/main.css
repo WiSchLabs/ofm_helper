@@ -29,10 +29,15 @@
     src: local('../fonts/SugarcubesBold.ttf');
 }
 
+/*:root{
+    --ofm-green: #239123;
+    --ofm-dark-green: #1b6f1b;
+}*/
+
 body {
     font-family: Gotham, sans-serif;
     font-weight: bold;
-    background-color: darkgray;
+    background-color: lightgray;
 }
 
 #logo {
@@ -45,25 +50,33 @@ h1 {
     font-weight: bold;
 }
 
+p {
+    text-align: justify;
+}
+
 a {
-    color:#239123;
+    /*color: var(--ofm-green);*/
+    color: #239123;
 }
 
 a:hover {
-    color:#1b6f1b;
+    /*color: var(--ofm-dark-green);*/
+    color: #1b6f1b;
 }
 
 footer.footer {
-    position: absolute;
-    bottom: 0;
-    width:100%;
+    width: 100%;
     padding-top: 10px;
+    /*border-top: 1px solid var(--ofm-green);*/
     border-top: 1px solid #239123;
-    text-align: center;
-    background-color: lightgray;
+    background-color: white;
 }
 
+    footer.footer p {
+        text-align: center;
+    }
+
     footer.footer #WiSch-logo {
-        margin-left:5px;
+        margin-left: 5px;
         height: 1em;
     }
