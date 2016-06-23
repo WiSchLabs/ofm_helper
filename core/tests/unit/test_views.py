@@ -13,18 +13,21 @@ class LoginTestCase(TestCase):
         response = c.post('/login/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_login_with_correct_credentials(self):
         c = Client()
         response = c.post('/login/', {'username': 'temporary', 'password': 'temporary'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
 
     def test_login_with_wrong_password(self):
         c = Client()
         response = c.post('/login/', {'username': 'temporary', 'password': 'incorect'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_login_already_logged_in(self):
         c = Client()
@@ -32,6 +35,7 @@ class LoginTestCase(TestCase):
         response = c.post('/login/', {'username': 'temporary', 'password': 'temporary'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
 
     def test_login_with_inactive_account(self):
         c = Client()
@@ -39,6 +43,7 @@ class LoginTestCase(TestCase):
         response = c.post('/login/', {'username': 'disabled', 'password': 'disabled'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_call_login_page_when_already_logged_in(self):
         c = Client()
@@ -46,6 +51,7 @@ class LoginTestCase(TestCase):
         response = c.get('/login/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
 
     def test_logout_when_logged_in(self):
         c = Client()
@@ -53,12 +59,14 @@ class LoginTestCase(TestCase):
         response = c.get('/logout/')
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_logout_when_not_logged_in(self):
         c = Client()
         response = c.get('/logout/')
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_view_account_when_logged_in(self):
         c = Client()
@@ -66,6 +74,14 @@ class LoginTestCase(TestCase):
         response = c.get('/account/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
+
+    def test_view_account_when_not_logged_in(self):
+        c = Client()
+        response = c.get('/account/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
 
 class RegistrationTestCase(TestCase):
@@ -80,6 +96,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_with_existing_username(self):
         c = Client()
@@ -88,6 +105,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/register')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_with_unmatching_passwords(self):
         c = Client()
@@ -96,6 +114,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/register')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_with_unmatching_ofm_passwords(self):
         c = Client()
@@ -104,6 +123,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'ghj'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/register')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_with_already_registered_ofm_username(self):
         c = Client()
@@ -112,6 +132,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'ofm', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/register')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_with_already_registered_email(self):
         c = Client()
@@ -120,6 +141,7 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'new', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/register')
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
 
     def test_register_when_already_logged_in(self):
         c = Client()
@@ -129,3 +151,4 @@ class RegistrationTestCase(TestCase):
                                          'ofm_username': 'new', 'ofm_password': 'def', 'ofm_password2': 'def'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
