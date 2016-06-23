@@ -9,6 +9,29 @@
                     <span class="glyphicon glyphicon-home" style="margin-right: 8%"></span> Home
                 </a>
             </li>
+    {% if not user.is_authenticated %}
+            <li>
+                <a href="{% url 'core:register' %}">
+                    <span class="glyphicon glyphicon-pencil" style="margin-right: 8%"></span> Register
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'core:login' %}">
+                    <span class="glyphicon glyphicon-log-in" style="margin-right: 8%"></span> Login
+                </a>
+            </li>
+    {% else %}
+            <li>
+                <a href="{% url 'core:account' %}">
+                    <span class="glyphicon glyphicon-user" style="margin-right: 8%"></span> My account
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'core:logout' %}">
+                    <span class="glyphicon glyphicon-log-out" style="margin-right: 8%"></span> Logout
+                </a>
+            </li>
+    {% endif %}
         </ul>
     </div>
 {% endblock %}

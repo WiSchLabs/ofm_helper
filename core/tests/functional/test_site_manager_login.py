@@ -1,8 +1,9 @@
 import unittest
 
+from django.conf import settings
+
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
-from django.conf import settings
 
 
 class LoginTest(unittest.TestCase):
