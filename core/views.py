@@ -1,6 +1,8 @@
+from chartit import DataPool, Chart
+from core.models import PlayerStatistics
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, render_to_response
 
 from users.models import OFMUser
 
@@ -98,3 +100,36 @@ def account_view(request):
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')
+
+def weather_chart_view(request):
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    statistics_data = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': PlayerStatistics.objects.all()},
+              'terms': [
+                'ep',
+                'tp',
+                'awp']}
+             ])
+
+    #Step 2: Create the Chart object
+    cht = Chart(
+            datasource = statistics_data,
+            series_options =
+              [{'options':{
+                  'type': 'line',
+                  'stacking': False},
+                'terms': {
+                  'awp': ['ep', 'tp']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Player statistics'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Foobar'}}})
+
+    #Step 3: Send the chart object to the template.
+    return render_to_response('core/chart.html',{'chart': cht})

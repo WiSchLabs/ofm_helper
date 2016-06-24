@@ -16,6 +16,18 @@
                                integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
                                crossorigin="anonymous">
 
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- Highcharts -->
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+
+        {% load chartit %}
+        {% if chart %}
+            {{ chart|load_charts:"chart_container" }}
+        {% endif %}
+
+
         <!-- custom stylings -->
         <link rel="stylesheet" type="text/css" href="{% static 'core/css/main.css' %}" />
 
@@ -53,8 +65,6 @@
 
         {% include "core/includes/footer.html" %}
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 
         <!-- Latest compiled and minified JavaScript -->
