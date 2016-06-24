@@ -101,7 +101,7 @@ def account_view(request):
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')
 
-def weather_chart_view(request):
+def test_chart_view(request):
     #Step 1: Create a DataPool with the data we want to retrieve.
     statistics_data = \
         DataPool(

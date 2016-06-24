@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
     url(r'^logout/?$', views.logout_view, name='logout'),
-    url(r'^chart/?$', views.weather_chart_view, name='chart'),
+    url(r'^chart/?$', views.test_chart_view, name='chart'),
 ]
