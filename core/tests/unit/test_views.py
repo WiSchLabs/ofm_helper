@@ -24,7 +24,7 @@ class LoginTestCase(TestCase):
 
     def test_login_with_wrong_password(self):
         c = Client()
-        response = c.post('/login/', {'username': 'temporary', 'password': 'incorect'})
+        response = c.post('/login/', {'username': 'temporary', 'password': 'incorrect'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/login')
         self.assertFalse(response.wsgi_request.user.is_authenticated())
@@ -80,7 +80,7 @@ class LoginTestCase(TestCase):
         c = Client()
         response = c.get('/account/')
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, '/login')
         self.assertFalse(response.wsgi_request.user.is_authenticated())
 
 

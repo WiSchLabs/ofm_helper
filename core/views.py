@@ -97,4 +97,4 @@ def account_view(request):
         return render(request, 'core/account/home.html')
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
-        return redirect('core:home')
+        return redirect('core:login')
