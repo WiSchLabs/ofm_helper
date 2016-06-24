@@ -37,7 +37,7 @@
 body {
     font-family: Gotham, sans-serif;
     font-weight: bold;
-    background-color: lightgray;
+    background-color: rgba(177, 180, 151, 0.35);
 }
 
 #logo {
