@@ -83,7 +83,6 @@ def login_view(request):
             return render(request, 'core/account/login.html')
 
 
-#@login_required
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
@@ -91,7 +90,6 @@ def logout_view(request):
     return redirect('core:home')
 
 
-#@login_required
 def account_view(request):
     if request.user.is_authenticated():
         return render(request, 'core/account/home.html')
