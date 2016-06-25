@@ -3,6 +3,7 @@ from core.models import PlayerStatistics
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render, render_to_response
+from django.template import RequestContext
 
 from users.models import OFMUser
 
@@ -129,5 +130,8 @@ def test_chart_view(request):
                     'text': 'Player statistics'},
             })
 
+    context = RequestContext(request)
+    context['chart'] = cht
+
     # Step 3: Send the chart object to the template.
-    return render_to_response('core/ofm/single_chart.html', {'chart': cht})
+    return render_to_response('core/ofm/single_chart.html', context)
