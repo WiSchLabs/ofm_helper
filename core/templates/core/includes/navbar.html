@@ -50,4 +50,8 @@
     {% endif %}
         </ul>
     </div>
+
+    {% if 'ofm' in request.path %}
+        <script src="{% static 'core/js/toggle_ofm_menu.js' %}"></script>
+    {% endif %}
 {% endblock %}
