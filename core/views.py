@@ -105,31 +105,30 @@ def test_chart_view(request):
     #Step 1: Create a DataPool with the data we want to retrieve.
     statistics_data = \
         DataPool(
-           series=
-            [{'options': {
-               'source': PlayerStatistics.objects.all()},
-              'terms': [
-                'ep',
-                'tp',
-                'awp']}
-             ])
+                series=
+                [{'options': {
+                    'source': PlayerStatistics.objects.all()},
+                    'terms': [
+                        'id',
+                        'ep',
+                        'tp',
+                        'awp']}
+                ])
 
     #Step 2: Create the Chart object
     cht = Chart(
-            datasource = statistics_data,
-            series_options =
-              [{'options':{
-                  'type': 'line',
-                  'stacking': False},
-                'terms': {
-                  'awp': ['ep', 'tp']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Player statistics'},
-               'xAxis': {
-                    'title': {
-                       'text': 'Foobar'}}})
+            datasource=statistics_data,
+            series_options=
+            [{'options': {
+                'type': 'column',
+                'stacking': False},
+                'terms': {'id': ['ep', 'tp', 'awp', ]}
+            }],
+            chart_options=
+            {
+                'title': {
+                    'text': 'Player statistics'},
+            })
 
     #Step 3: Send the chart object to the template.
     return render_to_response('core/chart.html',{'chart': cht})
