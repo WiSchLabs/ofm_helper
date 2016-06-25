@@ -85,7 +85,6 @@ def login_view(request):
             return render(request, 'core/account/login.html')
 
 
-#@login_required
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
@@ -93,7 +92,6 @@ def logout_view(request):
     return redirect('core:home')
 
 
-#@login_required
 def account_view(request):
     if request.user.is_authenticated():
         return render(request, 'core/account/home.html')
@@ -101,8 +99,9 @@ def account_view(request):
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')
 
+
 def test_chart_view(request):
-    #Step 1: Create a DataPool with the data we want to retrieve.
+    # Step 1: Create a DataPool with the data we want to retrieve.
     statistics_data = \
         DataPool(
                 series=
@@ -115,7 +114,7 @@ def test_chart_view(request):
                         'awp']}
                 ])
 
-    #Step 2: Create the Chart object
+    # Step 2: Create the Chart object
     cht = Chart(
             datasource=statistics_data,
             series_options=
@@ -130,5 +129,5 @@ def test_chart_view(request):
                     'text': 'Player statistics'},
             })
 
-    #Step 3: Send the chart object to the template.
-    return render_to_response('core/chart.html',{'chart': cht})
+    # Step 3: Send the chart object to the template.
+    return render_to_response('core/ofm/single_chart.html', {'chart': cht})

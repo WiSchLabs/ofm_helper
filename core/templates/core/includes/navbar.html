@@ -27,6 +27,22 @@
                 </a>
             </li>
             <li>
+
+                <a data-target="#OfmSubMenu" data-toggle="collapse">
+                    <span class="glyphicon" style="margin-right: 3.5%">
+                        <img src="{% static "core/img/OFM_icon.png" %}" style="height: 3rem"/>
+                    </span>
+                    Statistiken
+                </a>
+
+                <ul class="collapse nav nav-sub" id="OfmSubMenu" style="margin-left: 15%">
+                  <li><a href="{% url 'core:ofm:player_statistics' %}">
+                      <span class="glyphicon glyphicon-user" style="margin-right: 8%"></span> Spieler Statistiken</a>
+                  </li>
+                </ul>
+
+            </li>
+            <li>
                 <a href="{% url 'core:logout' %}">
                     <span class="glyphicon glyphicon-log-out" style="margin-right: 8%"></span> Logout
                 </a>
