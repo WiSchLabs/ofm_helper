@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.views.generic.base import TemplateView, RedirectView
 
 from core import views
@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
     url(r'^logout/?$', views.logout_view, name='logout'),
+    url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
+    url(r'^chart/?$', views.test_chart_view, name='chart'),
 ]
