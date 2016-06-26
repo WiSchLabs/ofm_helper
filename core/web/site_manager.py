@@ -8,15 +8,19 @@ from core.web.ofm_page_constants import Constants
 
 
 class SiteManager:
-    def __init__(self):
+    def __init__(self, user=None):
         cfg = ConfigurationProvider()
 
         self.browser = webdriver.PhantomJS()
 
         self._handle_aws_display_bug()
 
-        self._login_user = cfg.get("credentials", "OFM_USERNAME")
-        self._login_password = cfg.get("credentials", "OFM_PASSWORD")
+        if user:
+            self._login_user = user.ofm_username
+            self._login_password = user.ofm_password
+        else:
+            self._login_user = cfg.get('credentials', 'OFM_USERNAME')
+            self._login_password = cfg.get('credentials', 'OFM_PASSWORD')
 
     def login(self):
         self.browser.get(Constants.LOGIN)
