@@ -8,12 +8,10 @@ MULTIVALUE_SEPARATOR = ' / '
 
 
 class PlayerStatisticsParser(BaseParser):
-    def __init__(self, matchday_parser):
-        self.matchday_parser = matchday_parser
+    def __init__(self):
         self.url = Constants.TEAM.PLAYER_STATISTICS
 
     def parse(self):
-        self.matchday_parser.parse()
         soup = BeautifulSoup(self.url, "html.parser")
         return self.parse_player_statistics_html(soup)
 

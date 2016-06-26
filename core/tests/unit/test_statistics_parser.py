@@ -14,12 +14,10 @@ class StatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
-        matchday_parser_mock = Mock()
-        self.parser = PlayerStatisticsParser(matchday_parser=matchday_parser_mock)
+        self.parser = PlayerStatisticsParser()
         self.parser.url = testdata
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
-        self.assertTrue(matchday_parser_mock.parse.called)
         self.assertEqual(Matchday.objects.all().count(), 1)
 
     def test_parsed_player_stat_contains_all_foreign_keys(self):
