@@ -2,31 +2,26 @@
     font-family: Gotham;
     font-weight: normal;
     src: url('../fonts/Gotham-Thin.otf') format('otf');
-    src: local('../fonts/Gotham-Thin.otf');
 }
 @font-face {
     font-family: Gotham;
     font-weight: bold;
     src: url('../fonts/Gotham-Bold.otf') format('otf');
-    src: local('../fonts/Gotham-Bold.otf');
 }
 @font-face {
     font-family: Gotham;
     font-style: italic;
     src: url('../fonts/Gotham-ThinItalic.otf') format('otf');
-    src: local('../fonts/Gotham-ThinItalic.otf');
 }
 @font-face {
     font-family: Sugarcubes;
     font-weight: normal;
     src: url('../fonts/SugarcubesRegular.ttf') format('truetype');
-    src: local('../fonts/SugarcubesRegular.ttf');
 }
 @font-face {
     font-family: Sugarcubes;
     font-weight: bold;
     src: url('../fonts/SugarcubesBold.ttf') format('truetype');
-    src: local('../fonts/SugarcubesBold.ttf');
 }
 
 body {
