@@ -1,19 +1,17 @@
 import os
-
-from django.test import TestCase
-
 from core.configuration_provider import ConfigurationProvider
+from django.test import TestCase
 
 
 class ConfigurationProviderTest(TestCase):
     def setUp(self):
         self.cp = ConfigurationProvider()
 
-    def test_get_login_username(self):
+    def test_get_login_username_from_config(self):
         username = self.cp.get('credentials', 'OFM_USERNAME', use_env_vars=False)
         self.assertEqual(username, 'XXX')
 
-    def test_get_login_password(self):
+    def test_get_login_password_from_config(self):
         password = self.cp.get('credentials', 'OFM_PASSWORD', use_env_vars=False)
         self.assertEqual(password, '1234')
 
@@ -26,4 +24,3 @@ class ConfigurationProviderTest(TestCase):
         username = self.cp.get('credentials', 'OFM_USERNAME')
         self.assertEqual(username, 'YYY')
         os.environ['OFM_USERNAME'] = curr
-
