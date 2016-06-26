@@ -62,6 +62,9 @@ ul.nav li span.glyphicon-ofm {
 
 ul.nav li span.glyphicon-ofm img {
     height: 2rem;
+    position: relative;
+    top: -0.5rem;
+    left: -1em;
 }
 
 ul.nav-sub {
