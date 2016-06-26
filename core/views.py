@@ -1,10 +1,14 @@
 from chartit import DataPool, Chart
-from core.models import PlayerStatistics
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render, render_to_response
 from django.template import RequestContext
 
+from core.models import PlayerStatistics
+from core.parsers.matchday_parser import MatchdayParser
+from core.parsers.player_statistics_parser import PlayerStatisticsParser
+from core.web.ofm_page_constants import Constants
+from core.web.site_manager import SiteManager
 from users.models import OFMUser
 
 
@@ -101,6 +105,23 @@ def account_view(request):
         return redirect('core:login')
 
 
+def trigger_player_statistics_parsing(request):
+    if request.user.is_authenticated():
+        site_manager = SiteManager()
+        site_manager.login()
+        matchday_parser = MatchdayParser()
+        site_manager.browser.get(Constants.HEAD)
+        matchday_parser.url = site_manager.browser.page_source
+        player_stat_parser = PlayerStatisticsParser(matchday_parser=matchday_parser)
+        site_manager.browser.get(Constants.TEAM.PLAYER_STATISTICS)
+        player_stat_parser.url = site_manager.browser.page_source
+        player_stat_parser.parse()
+        return redirect('core:ofm:player_statistics')
+    else:
+        messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
+        return redirect('core:login')
+
+
 def test_chart_view(request):
     # Step 1: Create a DataPool with the data we want to retrieve.
     statistics_data = \
@@ -109,20 +130,20 @@ def test_chart_view(request):
                 [{'options': {
                     'source': PlayerStatistics.objects.all()},
                     'terms': [
-                        'id',
+                        'player__name',
                         'ep',
                         'tp',
                         'awp']}
                 ])
 
     # Step 2: Create the Chart object
-    cht = Chart(
+    chart = Chart(
             datasource=statistics_data,
             series_options=
             [{'options': {
                 'type': 'column',
                 'stacking': False},
-                'terms': {'id': ['ep', 'tp', 'awp', ]}
+                'terms': {'player__name': ['ep', 'tp', 'awp', ]}
             }],
             chart_options=
             {
@@ -130,8 +151,8 @@ def test_chart_view(request):
                     'text': 'Player statistics'},
             })
 
-    context = RequestContext(request)
-    context['chart'] = cht
-
     # Step 3: Send the chart object to the template.
+    context = RequestContext(request)
+    context['chart'] = chart
+
     return render_to_response('core/ofm/single_chart.html', context)
