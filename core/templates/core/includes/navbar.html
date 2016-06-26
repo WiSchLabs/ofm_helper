@@ -6,45 +6,47 @@
         <ul class="nav nav-pills nav-stacked">
             <li>
                 <a href="{% url 'core:home' %}">
-                    <span class="glyphicon glyphicon-home" style="margin-right: 8%"></span> Home
+                    <span class="glyphicon glyphicon-home"></span> Home
                 </a>
             </li>
     {% if not user.is_authenticated %}
             <li>
                 <a href="{% url 'core:register' %}">
-                    <span class="glyphicon glyphicon-pencil" style="margin-right: 8%"></span> Register
+                    <span class="glyphicon glyphicon-pencil"></span> Register
                 </a>
             </li>
             <li>
                 <a href="{% url 'core:login' %}">
-                    <span class="glyphicon glyphicon-log-in" style="margin-right: 8%"></span> Login
+                    <span class="glyphicon glyphicon-log-in"></span> Login
                 </a>
             </li>
     {% else %}
             <li>
                 <a href="{% url 'core:account' %}">
-                    <span class="glyphicon glyphicon-user" style="margin-right: 8%"></span> My account
+                    <span class="glyphicon glyphicon-user"></span> My account
                 </a>
             </li>
             <li>
 
                 <a data-target="#OfmSubMenu" data-toggle="collapse">
-                    <span class="glyphicon" style="margin-right: 3.5%">
-                        <img src="{% static "core/img/OFM_icon.png" %}" style="height: 3rem"/>
+                    <span class="glyphicon glyphicon-ofm">
+                        <img src="{% static 'core/img/OFM_icon.png' %}"/>
                     </span>
                     Statistiken
                 </a>
 
-                <ul class="collapse nav nav-sub" id="OfmSubMenu" style="margin-left: 15%">
-                  <li><a href="{% url 'core:ofm:player_statistics' %}">
-                      <span class="glyphicon glyphicon-user" style="margin-right: 8%"></span> Spieler Statistiken</a>
-                  </li>
+                <ul class="collapse nav nav-sub" id="OfmSubMenu">
+                    <li>
+                        <a href="{% url 'core:ofm:player_statistics' %}">
+                            <span class="glyphicon glyphicon-user"></span> Spieler Statistiken
+                        </a>
+                    </li>
                 </ul>
 
             </li>
             <li>
                 <a href="{% url 'core:logout' %}">
-                    <span class="glyphicon glyphicon-log-out" style="margin-right: 8%"></span> Logout
+                    <span class="glyphicon glyphicon-log-out"></span> Logout
                 </a>
             </li>
     {% endif %}

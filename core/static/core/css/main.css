@@ -29,13 +29,8 @@
     src: local('../fonts/SugarcubesBold.ttf');
 }
 
-/*:root{
-    --ofm-green: #239123;
-    --ofm-dark-green: #1b6f1b;
-}*/
-
 body {
-    font-family: Gotham, sans-serif;
+    font-family: Gotham, "Helvetica Neue", Helvetica, sans-serif;
     font-weight: bold;
     background-color: rgba(177, 180, 151, 0.35);
 }
@@ -55,19 +50,32 @@ p {
 }
 
 a {
-    /*color: var(--ofm-green);*/
     color: #239123;
 }
 
 a:hover {
-    /*color: var(--ofm-dark-green);*/
     color: #1b6f1b;
+}
+
+ul.nav li span {
+    margin-right: 8%;
+}
+
+ul.nav li span.glyphicon-ofm {
+    margin-right: 3.5%;
+}
+
+ul.nav li span.glyphicon-ofm img {
+    height: 2rem;
+}
+
+ul.nav-sub {
+    margin-left: 15%;
 }
 
 footer.footer {
     width: 100%;
     padding-top: 10px;
-    /*border-top: 1px solid var(--ofm-green);*/
     border-top: 1px solid #239123;
     background-color: white;
 }
