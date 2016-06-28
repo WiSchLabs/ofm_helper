@@ -28,6 +28,7 @@ body {
     font-family: Gotham, "Helvetica Neue", Helvetica, sans-serif;
     font-weight: bold;
     background-color: rgba(177, 180, 151, 0.35);
+    padding-bottom: 10rem;
 }
 
 #logo {
@@ -48,27 +49,27 @@ a {
     color: #239123;
 }
 
-a:hover {
-    color: #1b6f1b;
-}
+    a:hover {
+        color: #1b6f1b;
+    }
 
 ul.nav li span {
-    margin-right: 8%;
+    margin-right: 2rem;
 }
 
-ul.nav li span.glyphicon-ofm {
-    margin-right: 3.5%;
-}
+    ul.nav li span.glyphicon-ofm {
+        margin-right: 0.5rem;
+        position: relative;
+        top: -0.3rem;
+        left: -0.75em;
+    }
 
-ul.nav li span.glyphicon-ofm img {
-    height: 2rem;
-    position: relative;
-    top: -0.5rem;
-    left: -1em;
-}
+        ul.nav li span.glyphicon-ofm img {
+            height: 2rem;
+        }
 
 ul.nav-sub {
-    margin-left: 15%;
+    padding-left: 10%;
 }
 
 footer.footer {
@@ -83,6 +84,7 @@ footer.footer {
     }
 
     footer.footer #WiSch-logo {
+        margin-top: -0.25rem;
         margin-left: 5px;
-        height: 1em;
+        height: 1.5rem;
     }
