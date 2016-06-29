@@ -1,6 +1,7 @@
 from unittest import skip
 
 from core.configuration_provider import ConfigurationProvider
+from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
 
 from core.factories.core_factories import MatchdayFactory
@@ -20,17 +21,5 @@ class StatisticsParserTest(TestCase):
 
         self.client.login(username='name', password='pass')
 
-        response = self.client.get('/account')
+        response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
         self.assertEqual(response.status_code, 200)
-
-        #self.assertIn('Spielerstatistik', self.site_manager.browser.title)
-        #parser = PlayerStatisticsParser()
-        #parser.url = self.site_manager.browser.page_source
-        #MatchdayFactory.create()
-        #self.player_stat_list = parser.parse()
-        #self.first_player_stat = self.player_stat_list[0]
-
-    @skip('because i say so, mindestens, digga')
-    def test_parsed_player_stat_contains_all_foreign_keys(self):
-        self.assertEquals(type(self.first_player_stat), PlayerStatistics)
-        self.assertEquals(type(self.first_player_stat.player), Player)
