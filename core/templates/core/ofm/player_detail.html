@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <h1 class="page-header">{{ player.name }}</h1>
+
+    Position: {{ player.position }}<br>
+    Nationalität: {{ player.nationality }}<br>
+    Geburtssaison: {{ player.birthSeason.number }}<br>
+
+{% endblock %}

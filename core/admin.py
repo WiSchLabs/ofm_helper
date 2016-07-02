@@ -8,3 +8,4 @@ admin.site.register(Matchday)
 admin.site.register(League)
 admin.site.register(Player)
 admin.site.register(PlayerStatistics)
+

@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 AGE_AT_BIRTH = 17
@@ -96,6 +97,9 @@ class Player(models.Model):
     name = models.CharField(max_length=200)
     nationality = models.CharField(max_length=200)
     birthSeason = models.ForeignKey(Season)
+
+    def get_absolute_url(self):
+        return reverse('core:ofm:player_detail', args=[str(self.id)])
 
 
 class PlayerStatistics(models.Model):

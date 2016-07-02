@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+    <h1 class="page-header">Spieler</h1>
+
+    {% for player in player_list %}
+        <a href="{{ player.get_absolute_url }}">{{ player.name }}</a>
+        <br>
+    {% endfor %}
+
+{% endblock %}
