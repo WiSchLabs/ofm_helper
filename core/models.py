@@ -123,4 +123,4 @@ class PlayerStatistics(models.Model):
 
     @property
     def age(self):
-        return (self.matchday.season.number - self.birthSeason.number) + AGE_AT_BIRTH
+        return (self.matchday.season.number - self.player.birthSeason.number)

@@ -1,14 +1,12 @@
 from chartit import DataPool, Chart
+from core.models import PlayerStatistics
+from core.parsers.player_statistics_parser import PlayerStatisticsParser
+from core.web.ofm_page_constants import Constants
+from core.web.site_manager import SiteManager
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render, render_to_response
 from django.template import RequestContext
-
-from core.models import PlayerStatistics
-from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.player_statistics_parser import PlayerStatisticsParser
-from core.web.ofm_page_constants import Constants
-from core.web.site_manager import SiteManager
 from users.models import OFMUser
 
 
@@ -109,13 +107,11 @@ def trigger_player_statistics_parsing(request):
     if request.user.is_authenticated():
         site_manager = SiteManager()
         site_manager.login()
-        matchday_parser = MatchdayParser()
-        site_manager.browser.get(Constants.HEAD)
-        matchday_parser.url = site_manager.browser.page_source
-        player_stat_parser = PlayerStatisticsParser(matchday_parser=matchday_parser)
-        site_manager.browser.get(Constants.TEAM.PLAYER_STATISTICS)
-        player_stat_parser.url = site_manager.browser.page_source
+        site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
+
+        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source)
         player_stat_parser.parse()
+
         return redirect('core:ofm:player_statistics')
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
