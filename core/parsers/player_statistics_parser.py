@@ -2,17 +2,16 @@ from bs4 import BeautifulSoup
 
 from core.models import Player, PlayerStatistics, Matchday, Season
 from core.parsers.base_parser import BaseParser
-from core.web.ofm_page_constants import Constants
 
-MULTIVALUE_SEPARATOR = ' / '
+MULTIVALUE_SEPARATOR = '/'
 
 
 class PlayerStatisticsParser(BaseParser):
-    def __init__(self):
-        self.url = Constants.TEAM.PLAYER_STATISTICS
+    def __init__(self, html_source):
+        self.html_source = html_source
 
     def parse(self):
-        soup = BeautifulSoup(self.url, "html.parser")
+        soup = BeautifulSoup(self.html_source, "html.parser")
         return self.parse_player_statistics_html(soup)
 
     def parse_player_statistics_html(self, soup):
@@ -85,7 +84,7 @@ class PlayerStatisticsParser(BaseParser):
         return player
 
     def _get_value_from_multivalue_table_cell(self, field, index):
-        return field.get_text().split(MULTIVALUE_SEPARATOR)[index]
+        return field.get_text().split(MULTIVALUE_SEPARATOR)[index].strip()
 
     def _get_ep_tp_value_from_table_cell(self, field):
         return field.get_text().strip('\n').split('\n')[0].strip('\n').strip('\t').replace('.', '')

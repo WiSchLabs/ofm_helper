@@ -1,11 +1,8 @@
 import os
-from unittest.mock import Mock
-
-from django.test import TestCase
-
 from core.factories.core_factories import MatchdayFactory
 from core.models import PlayerStatistics, Player, Matchday
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
+from django.test import TestCase
 
 TESTDATA_PATH = 'core/tests/assets'
 
@@ -14,8 +11,7 @@ class StatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
-        self.parser = PlayerStatisticsParser()
-        self.parser.url = testdata
+        self.parser = PlayerStatisticsParser(testdata)
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
         self.assertEqual(Matchday.objects.all().count(), 1)
@@ -58,7 +54,7 @@ class StatisticsParserTest(TestCase):
         self.assertEquals('16015782', self.first_player_stat.equity)
 
     def test_parse_player_stat_should_return_same_instance_if_nothing_changes(self):
-        self.parser.url = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
+        self.parser.html_source = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         stat2 = self.parser.parse()
         self.assertEqual(self.player_stat_list, stat2)
         self.assertEqual(Matchday.objects.all().count(), 1)
