@@ -17,10 +17,10 @@
                                crossorigin="anonymous">
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="{% static 'core/js/jquery.min.js' %}"></script>
 
         <!-- Highcharts -->
-        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="{% static 'core/js/highcharts.js' %}"></script>
 
         {% load chartit %}
         {% if chart %}
