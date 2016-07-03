@@ -105,7 +105,7 @@ def account_view(request):
 
 def trigger_player_statistics_parsing(request):
     if request.user.is_authenticated():
-        site_manager = SiteManager()
+        site_manager = SiteManager(request.user)
         site_manager.login()
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
 
