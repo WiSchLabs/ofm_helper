@@ -1,6 +1,8 @@
 from ofm_helper.common_settings import *
 
-DEBUG = True
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
 
 CONFIGURATION_FILE = os.path.join(CONFIGURATION_BASE_PATH, 'dev.cfg')
 
