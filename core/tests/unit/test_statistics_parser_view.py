@@ -1,4 +1,4 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import core
 import os
@@ -24,7 +24,8 @@ class StatisticsParserViewTest(TestCase):
 
         self.client.login(username='name', password='pass')
 
-    def test_parser_view(self):
+    @patch('core.views.SiteManager')
+    def test_parser_view(self, site_manager_mock):
         with open(os.path.join(TESTDATA_PATH, 'frame_player_statistics.html'), encoding='utf8') as f:
             p = PlayerStatisticsParser(f.read())
 
