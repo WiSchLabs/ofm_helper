@@ -1,10 +1,10 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-    <h1>Register</h1>
+    <h1>Registrierung</h1>
 
     {% if registered %}
-        <strong>Thank you for registering!</strong> <a href="{% url 'core:login' %}">Login here</a>.
+        <strong>Vielen Dank für die Registrierung!</strong> <a href="{% url 'core:login' %}">Hier geht's zum Login</a>.
     {% else %}
         <form id="user_form" method="post" action="{% url 'core:register' %}">
 
@@ -14,39 +14,39 @@
                  (<p>) element. This ensures each element appears on a new line,
                  making everything look neater. -->
             <div class="form-group">
-                <label for="username">Chosse a username</label>
-                <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+                <label for="username">Wähle einen Benutzernamen</label>
+                <input type="text" class="form-control" id="username" placeholder="Benutzername" name="username">
             </div>
             <div class="form-group">
-                <label for="email">What is your E-mail? <small>(we won't spam you)</small></label>
-                <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                <label for="email">E-Mail</label>
+                <input type="email" class="form-control" id="email" placeholder="E-Mail" name="email">
             </div>
             <div class="form-group">
-                <label for="password">Choose a new password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <label for="password">Passwort</label>
+                <input type="password" class="form-control" id="password" placeholder="Passwort" name="password">
             </div>
             <div class="form-group">
-                <label for="password2">Confirm password</label>
-                <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
+                <label for="password2">Passwort wiederholen</label>
+                <input type="password" class="form-control" id="password2" placeholder="Passwort" name="password2">
             </div>
             <div class="form-group">
-                <label for="ofm_username">Your OFM Username</label>
-                <input type="text" class="form-control" id="ofm_username" placeholder="Username" name="ofm_username">
+                <label for="ofm_username">Dein OFM Benutzername</label>
+                <input type="text" class="form-control" id="ofm_username" placeholder="OFM Benutzername" name="ofm_username">
             </div>
             <div class="form-group">
-                <label for="ofm_password">Your OFM Password</label>
-                <input type="password" class="form-control" id="ofm_password" placeholder="OFM password" name="ofm_password">
+                <label for="ofm_password">Dein OFM Passwort</label>
+                <input type="password" class="form-control" id="ofm_password" placeholder="OFM Passwort" name="ofm_password">
             </div>
             <div class="form-group">
-                <label for="ofm_password2">Confirm OFM password</label>
-                <input type="password" class="form-control" id="ofm_password2" placeholder="OFM password" name="ofm_password2">
+                <label for="ofm_password2">OFM Passwort wiederholen</label>
+                <input type="password" class="form-control" id="ofm_password2" placeholder="OFM Passwort" name="ofm_password2">
             </div>
 
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Registrieren</button>
         </form>
         <br><br>
         <p>
-            Already have an account? <a href="{% url 'core:login' %}">Login here</a>.
+            Du hast bereits einen Account bei uns? <a href="{% url 'core:login' %}">Hier geht's zum Login</a>.
         </p>
     {% endif %}
 {% endblock %}

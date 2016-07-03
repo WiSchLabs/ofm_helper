@@ -2,11 +2,10 @@
 
 {% block content %}
 
-    <h1 class="page-header">Spieler</h1>
+    <h1 class="page-header">Deine Spielerliste</h1>
 
     {% for player in player_list %}
-        <a href="{{ player.get_absolute_url }}">{{ player.name }}</a>
-        <br>
+        <a href="{{ player.get_absolute_url }}">{{ player.name }}</a><br>
     {% endfor %}
 
 {% endblock %}
