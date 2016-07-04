@@ -112,6 +112,7 @@ def trigger_player_statistics_parsing(request):
         player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source)
         player_stat_parser.parse()
 
+        site_manager.browser.close()
         site_manager.browser.quit()
 
         return redirect('core:ofm:player_statistics')
