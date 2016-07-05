@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 
+from users.models import OFMUser
+
 AGE_AT_BIRTH = 17
 
 
@@ -127,4 +129,11 @@ class PlayerStatistics(models.Model):
 
     @property
     def age(self):
-        return (self.matchday.season.number - self.player.birthSeason.number)
+        return self.matchday.season.number - self.player.birthSeason.number
+
+
+class PlayerUserOwnership(models.Model):
+    player = models.ForeignKey(Player)
+    user = models.ForeignKey(OFMUser)
+    boughtOnMatchday = models.ForeignKey(Matchday, related_name='buy')
+    soldOnMatchday = models.ForeignKey(Matchday, blank=True, null=True, related_name='sell')

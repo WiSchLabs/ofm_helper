@@ -1,6 +1,7 @@
 import factory
 
-from core.models import Season, Quarter, Matchday, Player, PlayerStatistics
+from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, PlayerUserOwnership
+from users.factories.users_factories import OFMUserFactory
 
 
 class SeasonFactory(factory.django.DjangoModelFactory):
@@ -57,3 +58,13 @@ class PlayerStatisticsFactory(factory.django.DjangoModelFactory):
     yellow_cards_in_season = 0
     red_cards_in_season = 0
     equity = 0
+
+
+class PlayerUserOwnershipFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PlayerUserOwnership
+
+    player = factory.SubFactory(PlayerFactory)
+    user = factory.SubFactory(OFMUserFactory)
+    boughtOnMatchday = factory.SubFactory(MatchdayFactory)
+    soldOnMatchday = None

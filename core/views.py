@@ -109,7 +109,7 @@ def trigger_player_statistics_parsing(request):
         site_manager.login()
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
 
-        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source)
+        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
         player_stat_parser.parse()
 
         site_manager.browser.close()

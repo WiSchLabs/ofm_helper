@@ -20,14 +20,14 @@ class StatisticsParserViewTest(TestCase):
         config = ConfigurationProvider()
         ofm_username = config.get('credentials', 'OFM_USERNAME')
         ofm_password = config.get('credentials', 'OFM_PASSWORD')
-        OFMUser.objects.create_user('name', 'mail@pro.com', 'pass', ofm_username=ofm_username, ofm_password=ofm_password)
+        self.user = OFMUser.objects.create_user('name', 'mail@pro.com', 'pass', ofm_username=ofm_username, ofm_password=ofm_password)
 
         self.client.login(username='name', password='pass')
 
     @patch('core.views.SiteManager')
     def test_parser_view(self, site_manager_mock):
         with open(os.path.join(TESTDATA_PATH, 'frame_player_statistics.html'), encoding='utf8') as f:
-            p = PlayerStatisticsParser(f.read())
+            p = PlayerStatisticsParser(f.read(), self.user)
 
             core.views.PlayerStatisticsParser = Mock(spec=p)
             core.views.PlayerStatisticsParser.return_value.parse = p.parse

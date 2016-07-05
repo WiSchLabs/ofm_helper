@@ -1,8 +1,10 @@
 import os
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Matchday
+from core.models import PlayerStatistics, Player, Matchday, PlayerUserOwnership
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from django.test import TestCase
+
+from users.factories.users_factories import OFMUserFactory
 
 TESTDATA_PATH = 'core/tests/assets'
 
@@ -11,7 +13,8 @@ class StatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
-        self.parser = PlayerStatisticsParser(testdata)
+        user = OFMUserFactory.create()
+        self.parser = PlayerStatisticsParser(testdata, user)
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
         self.assertEqual(Matchday.objects.all().count(), 1)
@@ -58,3 +61,6 @@ class StatisticsParserTest(TestCase):
         stat2 = self.parser.parse()
         self.assertEqual(self.player_stat_list, stat2)
         self.assertEqual(Matchday.objects.all().count(), 1)
+
+    def test_parsed_player_user_ownership_is_registered(self):
+        self.assertEquals(PlayerUserOwnership.objects.all().count(), 12)
