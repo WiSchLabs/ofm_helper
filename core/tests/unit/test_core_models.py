@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from core.factories.core_factories import SeasonFactory, QuarterFactory, MatchdayFactory, PlayerStatisticsFactory, \
-    PlayerUserOwnershipFactory
+    PlayerUserOwnershipFactory, PlayerFactory
 from core.models import Matchday
 
 
@@ -51,11 +51,19 @@ class CreateCoreModelsTest(TestCase):
         self.assertEquals(st.red_cards_in_season, 0)
         self.assertEquals(st.equity, 0)
 
+    def test_create_player(self):
+        p = PlayerFactory.create(position=1, name='tw1', nationality='Deutschland')
+        self.assertIsNotNone(p)
+        self.assertEquals(p.position, 1)
+        self.assertEquals(p.name, 'tw1')
+        self.assertEquals(p.nationality, 'Deutschland')
+        self.assertEquals(p.birthSeason.number, 1)
+
     def test_create_player_user_ownership(self):
         puo = PlayerUserOwnershipFactory.create()
         self.assertTrue(puo.player is not None)
         self.assertTrue(puo.user is not None)
-        self.assertTrue(puo.boughtOnMatchday is not None)
-        self.assertTrue(puo.soldOnMatchday is None)
+        self.assertTrue(puo.bought_on_matchday is not None)
+        self.assertTrue(puo.sold_on_matchday is None)
 
 

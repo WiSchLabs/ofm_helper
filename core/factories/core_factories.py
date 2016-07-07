@@ -66,5 +66,5 @@ class PlayerUserOwnershipFactory(factory.django.DjangoModelFactory):
 
     player = factory.SubFactory(PlayerFactory)
     user = factory.SubFactory(OFMUserFactory)
-    boughtOnMatchday = factory.SubFactory(MatchdayFactory)
-    soldOnMatchday = None
+    bought_on_matchday = factory.SubFactory(MatchdayFactory)
+    sold_on_matchday = None

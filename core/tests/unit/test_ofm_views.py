@@ -12,6 +12,7 @@ TESTDATA_PATH = 'core/tests/assets'
 
 class OFMViewTestCase(TestCase):
     def setUp(self):
+        # todo: refactor to use PlayerStatisticsFactory instead of PlayerStatisticsParser
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
         self.user1 = OFMUser.objects.create_user('alice', 'alice@ofmhelper.com', 'alice', ofm_username='alice', ofm_password='alice')

@@ -2,10 +2,17 @@
 
 {% block content %}
 
-    <h1 class="page-header">{{ player.name }}</h1>
+    {% if player %}
+        <h1 class="page-header">{{ player.name }}</h1>
 
-    Position: {{ player.position }}<br>
-    Nationalität: {{ player.nationality }}<br>
-    Geburtssaison: {{ player.birthSeason.number }}<br>
+        Position: {{ player.position }}<br>
+        Nationalität: {{ player.nationality }}<br>
+        Geburtssaison: {{ player.birthSeason.number }}<br>
+    {% else %}
+        <h1 class="page-header">Spieler nicht gefunden</h1>
+        <p>
+            Wir konnten den gesuchten Spieler leider nicht finden oder dieser gehört nicht zu deiner Spielerliste.
+        </p>
+    {% endif %}
 
 {% endblock %}

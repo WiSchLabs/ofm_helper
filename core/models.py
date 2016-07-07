@@ -135,5 +135,5 @@ class PlayerStatistics(models.Model):
 class PlayerUserOwnership(models.Model):
     player = models.ForeignKey(Player)
     user = models.ForeignKey(OFMUser)
-    boughtOnMatchday = models.ForeignKey(Matchday, related_name='buy')
-    soldOnMatchday = models.ForeignKey(Matchday, blank=True, null=True, related_name='sell')
+    bought_on_matchday = models.ForeignKey(Matchday, related_name='bought_players')
+    sold_on_matchday = models.ForeignKey(Matchday, blank=True, null=True, related_name='sold_players')

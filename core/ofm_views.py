@@ -7,7 +7,7 @@ class PlayerListView(ListView):
     template_name = 'core/ofm/player_list.html'
 
     def get_queryset(self):
-        contracts = PlayerUserOwnership.objects.filter(user=self.request.user, soldOnMatchday=None)
+        contracts = PlayerUserOwnership.objects.filter(user=self.request.user, sold_on_matchday=None)
         return [contract.player for contract in contracts]
 
 
@@ -18,5 +18,5 @@ class PlayerDetailView(DetailView):
 
     def get_object(self):
         player = super(PlayerDetailView, self).get_object()
-        contracts = PlayerUserOwnership.objects.filter(user=self.request.user, player=player, soldOnMatchday=None)
+        contracts = PlayerUserOwnership.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None
