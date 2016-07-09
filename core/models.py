@@ -150,7 +150,7 @@ class PlayerStatistics(models.Model):
         return self.matchday.season.number - self.player.birthSeason.number
 
     def __str__(self):
-        return "%s/%s: " % (self.matchday.season.number, self.matchday.number, self.player.name)
+        return "%s/%s: %s" % (self.matchday.season.number, self.matchday.number, self.player.name)
 
 
 class PlayerUserOwnership(models.Model):
