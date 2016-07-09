@@ -17,7 +17,7 @@ class ParsePlayersCronJob(CronJobBase):
         matchday_parses = CronJobLog.objects.filter(code='core.cron.parse_matchday')
 
         a = matchday_parses[0]
-        b = matchday_parses[-1]
+        b = matchday_parses[len(matchday_parses)-1]
         print("a: %s" % a.is_success)
         print("b: %s" % b.is_success)
         print("a: %s" % a)
