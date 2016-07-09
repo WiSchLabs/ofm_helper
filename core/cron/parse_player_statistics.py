@@ -11,9 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class ParsePlayerStatisticsCronJob(CronJobBase):
-    #RUN_AT_TIMES = ['03:20']
-    #schedule = Schedule(run_at_times=RUN_AT_TIMES)
-    schedule = Schedule(run_every_mins=2)
+    RUN_AT_TIMES = ['03:20']
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
 
     code = 'core.cron.parse_player_statistics'
 
