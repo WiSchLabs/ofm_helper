@@ -15,14 +15,9 @@ class ParsePlayersCronJob(CronJobBase):
 
     def do(self):
         matchday_parses = CronJobLog.objects.filter(code='core.cron.parse_matchday')
+        last_matchday_cronjob_run = matchday_parses[len(matchday_parses)-1]
 
-        a = matchday_parses[0]
-        b = matchday_parses[len(matchday_parses)-1]
-        print("a: %s" % a.is_success)
-        print("b: %s" % b.is_success)
-        print("a: %s" % a)
-
-        if a.is_success:
+        if last_matchday_cronjob_run.is_success:
             for user in OFMUser.objects.all():
                 if user.ofm_username and user.ofm_password:
                     site_manager = SiteManager()
