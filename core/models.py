@@ -12,12 +12,18 @@ class Season(models.Model):
 
     number = models.IntegerField()
 
+    def __str__(self):
+        return "%s" % self.number
+
 
 class Quarter(models.Model):
     QUARTERS = ((1, '1'), (2, '2'), (3, '3'), (4, '4'))
 
     season = models.ForeignKey(Season)
     quarter = models.IntegerField(choices=QUARTERS)
+
+    def __str__(self):
+        return "%s/%s" % (self.season.number, self.quarter)
 
 
 class Matchday(models.Model):
@@ -26,6 +32,9 @@ class Matchday(models.Model):
 
     season = models.ForeignKey(Season)
     number = models.IntegerField()
+
+    def __str__(self):
+        return "%s/%s" % (self.season.number, self.number)
 
 
 # incomplete
@@ -53,6 +62,9 @@ class Country(models.Model):
 
     country = models.IntegerField(choices=COUNTRIES)
 
+    def __str__(self):
+        return self.COUNTRIES[self.country][1]
+
 
 class League(models.Model):
     LEAGUES = (
@@ -72,6 +84,9 @@ class League(models.Model):
     league = models.IntegerField(choices=LEAGUES)
     relay = models.CharField(max_length=10)
     country = models.ForeignKey(Country)
+
+    def __str__(self):
+        return "%s %s (%s)" % (self.LEAGUES[self.league][1], self.relay, self.country)
 
 
 class Player(models.Model):
@@ -103,6 +118,9 @@ class Player(models.Model):
     def get_absolute_url(self):
         return reverse('core:ofm:player_detail', args=[str(self.id)])
 
+    def __str__(self):
+        return self.name
+
 
 class PlayerStatistics(models.Model):
     class Meta:
@@ -131,9 +149,15 @@ class PlayerStatistics(models.Model):
     def age(self):
         return self.matchday.season.number - self.player.birthSeason.number
 
+    def __str__(self):
+        return "%s/%s: " % (self.matchday.season.number, self.matchday.number, self.player.name)
+
 
 class PlayerUserOwnership(models.Model):
     player = models.ForeignKey(Player)
     user = models.ForeignKey(OFMUser)
     bought_on_matchday = models.ForeignKey(Matchday, related_name='bought_players')
     sold_on_matchday = models.ForeignKey(Matchday, blank=True, null=True, related_name='sold_players')
+
+    def __str__(self):
+        return "%s: %s " % (self.user.username, self.player.name)

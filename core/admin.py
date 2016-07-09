@@ -4,7 +4,6 @@ from django.contrib import admin
 
 @admin.register(Season)
 class SeasonAdmin(admin.ModelAdmin):
-    list_filter = ['number']
     list_display = ['number', ]
     search_fields = ['number', ]
 
@@ -17,21 +16,18 @@ class QuarterAdmin(admin.ModelAdmin):
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_filter = ['country']
     list_display = ['country', ]
     search_fields = ['country', ]
 
 
 @admin.register(Matchday)
 class MatchdayAdmin(admin.ModelAdmin):
-    list_display = ['season', 'number', ]
-    search_fields = ['number', ]
+    list_display = ['season__number', 'number', ]
 
 
 @admin.register(League)
 class LeagueAdmin(admin.ModelAdmin):
     list_display = ['league', 'relay', 'country']
-    search_fields = ['league', ]
 
 
 @admin.register(Player)
