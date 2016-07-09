@@ -25,7 +25,6 @@ class PlayersParser(BaseParser):
 
     def parse_player_row(self, player_row):
         matchday = Matchday.objects.all()[0]
-
         player_values = self._filter_invalid_cells(player_row.find_all('td'))
         ofm_id = player_row.find_all('input', class_='playerid')[0]['value']
         name = player_values[6].a.get_text().replace('\n', '').replace('\t', '').strip(' ')
@@ -52,7 +51,9 @@ class PlayersParser(BaseParser):
         return player
 
     def _create_player_user_ownership(self, player, matchday):
-        contract = PlayerUserOwnership.objects.get(player=player, user=self.user, sold_on_matchday=None)
-        if contract is None:
+        existing_contracts = PlayerUserOwnership.objects.filter(player=player, user=self.user, sold_on_matchday=None)
+        if existing_contracts.count() > 0:
+            contract = existing_contracts[0]
+        else:
             contract, success = PlayerUserOwnership.objects.get_or_create(player=player, user=self.user, bought_on_matchday=matchday)
         return contract
