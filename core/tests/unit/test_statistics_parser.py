@@ -1,6 +1,6 @@
 import os
-from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Matchday, PlayerUserOwnership
+from core.factories.core_factories import MatchdayFactory, SeasonFactory
+from core.models import PlayerStatistics, Player, Matchday, PlayerUserOwnership, Country
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from django.test import TestCase
 
@@ -14,6 +14,16 @@ class StatisticsParserTest(TestCase):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
         user = OFMUserFactory.create()
+        season = SeasonFactory.create()
+
+        country_choices = dict(Country._meta.get_field('country').choices)
+        country_no_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
+        nationality_greece, success = Country.objects.get_or_create(country=country_no_greece)
+
+        self.player = Player.objects.create(id='159883060', position='TW', name='Chrístos Tsigas', birth_season=season, nationality=nationality_greece)
+        self.player = Player.objects.create(id='160195494', position='LV', name='Irwin O\'Canny', birth_season=season, nationality=nationality_greece)
+        self.player = Player.objects.create(id='159341445', position='LMD', name='Jan Stemmler', birth_season=season, nationality=nationality_greece)
+
         self.parser = PlayerStatisticsParser(testdata, user)
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
@@ -26,15 +36,16 @@ class StatisticsParserTest(TestCase):
         self.assertEquals(self.first_player_stat.matchday.season.number, 1)
 
     def test_parsed_player_stat_contains_all_fields(self):
-        self.assertEquals(12, len(self.player_stat_list))
+        self.assertEquals(3, len(self.player_stat_list))
         self.assertEquals('TW', self.first_player_stat.player.position)
+        self.assertEquals(159883060, self.first_player_stat.player.id)
         self.assertEquals('Chrístos Tsigas', self.first_player_stat.player.name)
         self.assertEquals('15', self.first_player_stat.strength)
         self.assertEquals('47', self.first_player_stat.freshness)
         self.assertEquals('29', self.first_player_stat.games_in_season)
 
     def test_parsed_player_stat_contains_correct_scored_goals(self):
-        player_stat = self.player_stat_list[3]
+        player_stat = self.player_stat_list[2]
         self.assertEquals('4', player_stat.goals_in_season)
 
     def test_parsed_player_stat_contains_correct_tacklings(self):
@@ -60,7 +71,8 @@ class StatisticsParserTest(TestCase):
         self.parser.html_source = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         stat2 = self.parser.parse()
         self.assertEqual(self.player_stat_list, stat2)
+        self.assertEquals(Player.objects.all().count(), 3)
         self.assertEqual(Matchday.objects.all().count(), 1)
 
     def test_parsed_player_user_ownership_is_registered(self):
-        self.assertEquals(PlayerUserOwnership.objects.all().count(), 12)
+        self.assertEquals(PlayerUserOwnership.objects.all().count(), 3)

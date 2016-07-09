@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from core.models import Player, PlayerStatistics, Matchday, Season, PlayerUserOwnership
+from core.models import Player, PlayerStatistics, Matchday, Season, PlayerUserOwnership, Country
 from core.parsers.base_parser import BaseParser
 
 MULTIVALUE_SEPARATOR = '/'
@@ -27,6 +27,7 @@ class PlayerStatisticsParser(BaseParser):
         return [self.parse_player_stat_row(player_row) for player_row in player_list]
 
     def parse_player_stat_row(self, player_row):
+        # we assume to have parsed the matchday beforehand
         matchday = Matchday.objects.all()[0]
         player_stat_values = self._filter_invalid_cells(player_row.find_all('td'))
 
@@ -75,13 +76,14 @@ class PlayerStatisticsParser(BaseParser):
         return parsed_player_stat
 
     def _parse_player(self, player_stat_values):
-        position = player_stat_values[1].get_text()
-        name = player_stat_values[2].a.get_text().strip('\n').strip('\t').strip(' ')
-        matchday = Matchday.objects.all()[0]
-        age = int(player_stat_values[3].get_text())
-        birth_season, success = Season.objects.get_or_create(number=matchday.season.number - age)
+        ofm_id = player_stat_values[2].a['href'].split('/player/')[1].split('-')[0]
 
-        player, success = Player.objects.get_or_create(position=position, name=name, birthSeason=birth_season)
+        # we assume to have parsed the matchday beforehand
+        matchday = Matchday.objects.all()[0]
+
+        # we assume to have parsed the players beforehand
+        player = Player.objects.get(id=ofm_id)
+
         contract = self._create_player_user_ownership(player, matchday)
         return player
 
@@ -101,10 +103,3 @@ class PlayerStatisticsParser(BaseParser):
 
     def _get_equity_value_from_table_cell(self, field):
         return field.get_text().strip('\n').strip('\t').replace('.', '').replace('€', '').strip(' ')
-
-    def _filter_invalid_cells(self, table_cells):
-        import re
-        counter_cell_pattern = re.compile(r'<td>[0-9]+</td>')
-        return [cell for cell in table_cells
-                if str(cell).replace(' ', '').replace('\t', '').replace('\n', '') != '<td>??</td>' and not
-                counter_cell_pattern.match(str(cell))]

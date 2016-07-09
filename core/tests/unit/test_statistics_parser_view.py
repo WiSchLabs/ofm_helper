@@ -4,7 +4,7 @@ import core
 import os
 from core.configuration_provider import ConfigurationProvider
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics
+from core.models import PlayerStatistics, Country, Player
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -15,12 +15,20 @@ TESTDATA_PATH = 'core/tests/assets'
 
 class StatisticsParserViewTest(TestCase):
     def setUp(self):
-        MatchdayFactory.create(season__number=100)
+        matchday = MatchdayFactory.create(season__number=100)
 
         config = ConfigurationProvider()
         ofm_username = config.get('credentials', 'OFM_USERNAME')
         ofm_password = config.get('credentials', 'OFM_PASSWORD')
         self.user = OFMUser.objects.create_user('name', 'mail@pro.com', 'pass', ofm_username=ofm_username, ofm_password=ofm_password)
+
+        country_choices = dict(Country._meta.get_field('country').choices)
+        country_no_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
+        nationality_greece, success = Country.objects.get_or_create(country=country_no_greece)
+
+        self.player = Player.objects.create(id='159883060', position='TW', name='Chrístos Tsigas', birth_season=matchday.season, nationality=nationality_greece)
+        self.player = Player.objects.create(id='160195494', position='LV', name='Irwin O\'Canny', birth_season=matchday.season, nationality=nationality_greece)
+        self.player = Player.objects.create(id='159341445', position='LMD', name='Jan Stemmler', birth_season=matchday.season, nationality=nationality_greece)
 
         self.client.login(username='name', password='pass')
 
@@ -37,12 +45,10 @@ class StatisticsParserViewTest(TestCase):
 
         player_statistics = PlayerStatistics.objects.all()
 
-        self.assertEquals(player_statistics.count(), 12)
-        self.assertEquals(player_statistics.count(), 12)
+        self.assertEquals(player_statistics.count(), 2)
 
         self.assertEquals(player_statistics[0].matchday.number, 0)
         self.assertEquals(player_statistics[0].matchday.season.number, 100)
 
         self.assertEquals(player_statistics[0].player.name, 'Chrístos Tsigas')
-        self.assertEquals(player_statistics[0].age, 34)
         self.assertEquals(player_statistics[0].strength, 15)
