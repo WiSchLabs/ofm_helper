@@ -1,5 +1,6 @@
-from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics
+from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, PlayerUserOwnership
 from django.contrib import admin
+from django.contrib.admin import register
 
 
 @admin.register(Season)
@@ -42,3 +43,7 @@ class SeasonAdmin(admin.ModelAdmin):
     list_filter = ['player', 'matchday']
     list_display = ['player', 'matchday']
     search_fields = ['player', ]
+
+
+admin.site.register(PlayerUserOwnership)
+
