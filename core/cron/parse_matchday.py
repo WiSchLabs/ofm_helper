@@ -1,7 +1,11 @@
+import logging
+
 from core.parsers.matchday_parser import MatchdayParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django_cron import CronJobBase, Schedule
+
+logger = logging.getLogger(__name__)
 
 
 class ParseMatchdayCronJob(CronJobBase):
@@ -21,4 +25,4 @@ class ParseMatchdayCronJob(CronJobBase):
         site_manager.browser.close()
         site_manager.browser.quit()
 
-        print("parsed Matchday is: %s" % current_matchday)
+        logger.info("parsed Matchday is: %s" % current_matchday)
