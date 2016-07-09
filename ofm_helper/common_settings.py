@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'core',
     'users',
     'chartit',
+    'django_cron',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -128,3 +129,7 @@ CONFIGURATION_BASE_PATH = 'core/config'
 ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'
 
 AUTH_USER_MODEL = 'users.OFMUser'
+
+CRON_CLASSES = [
+    "core.cron.parse_matchday.ParseMatchdayCronJob",
+]

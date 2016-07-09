@@ -10,8 +10,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class MatchdayParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8')
-        self.parser = MatchdayParser()
-        self.parser.html_source = testdata
+        self.parser = MatchdayParser(testdata)
 
     def test_parse_matchday(self):
         matchday = self.parser.parse()

@@ -8,9 +8,8 @@ from core.web.ofm_page_constants import Constants
 
 
 class MatchdayParser(BaseParser):
-    def __init__(self):
-        url = Constants.HEAD
-        self.html_source = request.urlopen(url)
+    def __init__(self, html_source):
+        self.html_source = html_source
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
