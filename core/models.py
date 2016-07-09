@@ -112,7 +112,7 @@ class Player(models.Model):
 
     position = models.CharField(max_length=3, choices=POSITIONS)
     name = models.CharField(max_length=200)
-    nationality = models.CharField(max_length=200)
+    nationality = models.ForeignKey(Country)
     birthSeason = models.ForeignKey(Season)
 
     def get_absolute_url(self):
