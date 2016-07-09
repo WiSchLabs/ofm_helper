@@ -34,7 +34,7 @@ class PlayersParser(BaseParser):
         birth_season, success = Season.objects.get_or_create(number=matchday.season.number - age)
 
         displayed_country = player_values[8].get_text().replace('\n', '').replace('\t', '').strip(' ')
-        country_name = ' '.join([i for i in displayed_country if not i.isdigit()])
+        country_name = ''.join([i for i in displayed_country if not i.isdigit()])
         country_choices = dict(Country._meta.get_field('country').choices)
         country_no = list(country_choices.keys())[list(country_choices.values()).index(country_name)]
         nationality, success = Country.objects.get_or_create(country=country_no)
