@@ -22,7 +22,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 @admin.register(Matchday)
 class MatchdayAdmin(admin.ModelAdmin):
-    list_display = ['season__number', 'number', ]
+    list_display = ['season', 'number', ]
 
 
 @admin.register(League)
