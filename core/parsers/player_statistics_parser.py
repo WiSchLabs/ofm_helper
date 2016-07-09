@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from core.models import Player, PlayerStatistics, Matchday, Season, PlayerUserOwnership, Country
+from core.models import Player, PlayerStatistics, Matchday, PlayerUserOwnership
 from core.parsers.base_parser import BaseParser
 
 MULTIVALUE_SEPARATOR = '/'

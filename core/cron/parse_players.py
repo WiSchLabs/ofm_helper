@@ -1,8 +1,8 @@
-from core.cron.parse_matchday import ParseMatchdayCronJob
 from core.parsers.players_parser import PlayersParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django_cron import CronJobBase, Schedule
+from django_cron.models import CronJobLog
 from users.models import OFMUser
 
 
@@ -14,11 +14,15 @@ class ParsePlayersCronJob(CronJobBase):
     code = 'core.cron.parse_players'
 
     def do(self):
+        matchday_parses = CronJobLog.objects.filter(code='core.cron.parse_matchday')
 
-        matchday_success = ParseMatchdayCronJob.prev_success_cron()
-        print("macthday success: %s" % matchday_success)
+        a = matchday_parses[0]
+        b = matchday_parses[-1]
+        print("a: %s" % a.is_success)
+        print("b: %s" % b.is_success)
+        print("a: %s" % a)
 
-        if matchday_success:
+        if a.is_success:
             for user in OFMUser.objects.all():
                 if user.ofm_username and user.ofm_password:
                     site_manager = SiteManager()
