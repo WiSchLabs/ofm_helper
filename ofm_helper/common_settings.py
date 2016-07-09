@@ -133,3 +133,5 @@ AUTH_USER_MODEL = 'users.OFMUser'
 CRON_CLASSES = [
     "core.cron.parse_matchday.ParseMatchdayCronJob",
 ]
+DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 14  # Days
+FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Matchday Parser]: "  # EMail Prefix for Cron Jobs (send to admins)

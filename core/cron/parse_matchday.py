@@ -1,4 +1,3 @@
-from core.models import Matchday
 from core.parsers.matchday_parser import MatchdayParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
@@ -6,9 +5,9 @@ from django_cron import CronJobBase, Schedule
 
 
 class ParseMatchdayCronJob(CronJobBase):
-    RUN_EVERY_MINS = 1
+    RUN_AT_TIMES = ['03:00']
 
-    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'core.cron.parse_matchday'
 
     def do(self):
