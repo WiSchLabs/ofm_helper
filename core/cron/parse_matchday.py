@@ -17,9 +17,9 @@ class ParseMatchdayCronJob(CronJobBase):
         site_manager.jump_to_frame(Constants.HEAD)
 
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
-        matchday_parser.parse()
+        current_matchday = matchday_parser.parse()
 
         site_manager.browser.close()
         site_manager.browser.quit()
 
-        print("last Matchday is: " + Matchday.objects.all()[0])
+        print("parsed Matchday is: %s" % current_matchday)
