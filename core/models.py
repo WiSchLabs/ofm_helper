@@ -246,6 +246,7 @@ class Country(models.Model):
     country = models.IntegerField(choices=COUNTRIES)
 
     def __str__(self):
+        print(self.country)
         print(self.COUNTRIES[self.country])
         print(self.COUNTRIES[self.country][1])
         print(str(self.COUNTRIES[self.country][1]))
