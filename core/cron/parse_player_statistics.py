@@ -7,8 +7,6 @@ from django_cron import CronJobBase, Schedule
 from django_cron.models import CronJobLog
 from users.models import OFMUser
 
-logger = logging.getLogger(__name__)
-
 
 class ParsePlayerStatisticsCronJob(CronJobBase):
     RUN_AT_TIMES = ['03:20']
@@ -30,9 +28,7 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
                     player_statistics_parser = PlayerStatisticsParser(site_manager.browser.page_source, user)
                     statistics = player_statistics_parser.parse()
 
-                    site_manager.browser.close()
                     site_manager.browser.quit()
-                    site_manager.browser.exit()
 
-                    logger.info("parsed statistics count: %s" % len(statistics))
-                    logger.debug("first parsed Statistic is: %s" % statistics[0])
+                    print("parsed statistics count: %s" % len(statistics))
+                    print("first parsed Statistic is: %s" % statistics[0])

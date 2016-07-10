@@ -5,8 +5,6 @@ from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django_cron import CronJobBase, Schedule
 
-logger = logging.getLogger(__name__)
-
 
 class ParseMatchdayCronJob(CronJobBase):
     RUN_AT_TIMES = ['03:00']
@@ -22,8 +20,6 @@ class ParseMatchdayCronJob(CronJobBase):
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
         current_matchday = matchday_parser.parse()
 
-        site_manager.browser.close()
         site_manager.browser.quit()
-        site_manager.browser.exit()
-        
-        logger.info("parsed Matchday is: %s" % current_matchday)
+
+        print("parsed Matchday is: %s" % current_matchday)
