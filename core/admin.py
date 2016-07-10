@@ -39,10 +39,10 @@ class PlayerAdmin(admin.ModelAdmin):
 
 
 @admin.register(PlayerStatistics)
-class SeasonAdmin(admin.ModelAdmin):
-    list_filter = ['player', 'matchday']
+class PlayerStatisticsAdmin(admin.ModelAdmin):
+    list_filter = ['matchday']
     list_display = ['player', 'matchday']
-    search_fields = ['player', ]
+    search_fields = ['player', 'matchday']
 
 
 @admin.register(PlayerUserOwnership)
