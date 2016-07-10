@@ -247,6 +247,7 @@ class Country(models.Model):
 
     def __str__(self):
         print(self.COUNTRIES[self.country])
+        print(self.COUNTRIES[self.country][1])
         return self.COUNTRIES[self.country]
         #if self.country:
         #    return self.COUNTRIES[self.country][1]
