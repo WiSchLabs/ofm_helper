@@ -246,13 +246,10 @@ class Country(models.Model):
     country = models.IntegerField(choices=COUNTRIES)
 
     def __str__(self):
-        print(self.COUNTRIES[self.country])
-        print(self.COUNTRIES[self.country][1])
-        return self.COUNTRIES[self.country]
-        #if self.country:
-        #    return self.COUNTRIES[self.country][1]
-        #else:
-        #    return ""
+        if self.country:
+            return str(self.COUNTRIES[self.country][1])
+        else:
+            return ""
 
 
 class League(models.Model):
