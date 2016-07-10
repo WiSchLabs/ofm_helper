@@ -1,11 +1,7 @@
-import logging
-
 from bs4 import BeautifulSoup
 
 from core.models import Player, Matchday, Season, Country, PlayerUserOwnership
 from core.parsers.base_parser import BaseParser
-
-logger = logging.getLogger(__name__)
 
 
 class PlayersParser(BaseParser):
@@ -56,7 +52,7 @@ class PlayersParser(BaseParser):
 
     def _create_player_user_ownership(self, player, matchday):
         existing_contracts = PlayerUserOwnership.objects.filter(player=player, user=self.user, sold_on_matchday=None)
-        logger.debug(existing_contracts)
+        print(existing_contracts)
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
