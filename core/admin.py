@@ -45,5 +45,9 @@ class SeasonAdmin(admin.ModelAdmin):
     search_fields = ['player', ]
 
 
-admin.site.register(PlayerUserOwnership)
+@admin.register(PlayerUserOwnership)
+class PlayerUserOwnershipAdmin(admin.ModelAdmin):
+    list_filter = ['player', 'user']
+    search_fields = ['player', 'user']
+
 
