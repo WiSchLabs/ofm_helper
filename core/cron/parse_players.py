@@ -32,6 +32,7 @@ class ParsePlayersCronJob(CronJobBase):
 
                     site_manager.browser.close()
                     site_manager.browser.quit()
+                    site_manager.browser.exit()
 
                     logger.info("parsed Player count: %s" % len(players))
                     logger.debug("first parsed Player is: %s" % players[0])

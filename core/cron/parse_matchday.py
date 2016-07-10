@@ -24,5 +24,6 @@ class ParseMatchdayCronJob(CronJobBase):
 
         site_manager.browser.close()
         site_manager.browser.quit()
-
+        site_manager.browser.exit()
+        
         logger.info("parsed Matchday is: %s" % current_matchday)

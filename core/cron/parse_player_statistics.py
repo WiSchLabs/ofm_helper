@@ -32,6 +32,7 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
 
                     site_manager.browser.close()
                     site_manager.browser.quit()
+                    site_manager.browser.exit()
 
                     logger.info("parsed statistics count: %s" % len(statistics))
                     logger.debug("first parsed Statistic is: %s" % statistics[0])
