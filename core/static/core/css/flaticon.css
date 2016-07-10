@@ -1,0 +1,191 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 22/06/2016 15:03
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon.eot");
+  src: url("../fonts/Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/Flaticon.woff") format("woff"),
+       url("../fonts/Flaticon.ttf") format("truetype"),
+       url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-bees-panel-texture:before { content: "\f100"; }
+.flaticon-black-and-white-whistle-variant:before { content: "\f101"; }
+.flaticon-checkered-flags:before { content: "\f102"; }
+.flaticon-couple-of-football-cones:before { content: "\f103"; }
+.flaticon-flaming-football:before { content: "\f104"; }
+.flaticon-football-award-with-white-details:before { content: "\f105"; }
+.flaticon-football-award-with-white-details-1:before { content: "\f106"; }
+.flaticon-football-badge:before { content: "\f107"; }
+.flaticon-football-ball:before { content: "\f108"; }
+.flaticon-football-ball-variant:before { content: "\f109"; }
+.flaticon-football-ball-variant-1:before { content: "\f10a"; }
+.flaticon-football-ball-with-thick-outline:before { content: "\f10b"; }
+.flaticon-football-card-with-cross-mark:before { content: "\f10c"; }
+.flaticon-football-chalice-shaped-trophy:before { content: "\f10d"; }
+.flaticon-football-champion-trophy:before { content: "\f10e"; }
+.flaticon-football-championship-award-variant:before { content: "\f10f"; }
+.flaticon-football-championship-award-with-plus-sign:before { content: "\f110"; }
+.flaticon-football-championship-trophy:before { content: "\f111"; }
+.flaticon-football-championship-trophy-variant:before { content: "\f112"; }
+.flaticon-football-coach-screaming:before { content: "\f113"; }
+.flaticon-football-court-illumination-lamps:before { content: "\f114"; }
+.flaticon-football-court-top-view:before { content: "\f115"; }
+.flaticon-football-fan-raising-flag:before { content: "\f116"; }
+.flaticon-football-fan-with-facepaint:before { content: "\f117"; }
+.flaticon-football-fans-group:before { content: "\f118"; }
+.flaticon-football-field-in-perspective:before { content: "\f119"; }
+.flaticon-football-field-top-view:before { content: "\f11a"; }
+.flaticon-football-field-top-view-1:before { content: "\f11b"; }
+.flaticon-football-field-with-white-detailing:before { content: "\f11c"; }
+.flaticon-football-field-with-white-details:before { content: "\f11d"; }
+.flaticon-football-field-with-white-details-1:before { content: "\f11e"; }
+.flaticon-football-frontal-standing-player-with-the-ball:before { content: "\f11f"; }
+.flaticon-football-game-field-top-view:before { content: "\f120"; }
+.flaticon-football-game-on-tv:before { content: "\f121"; }
+.flaticon-football-game-plan-on-field:before { content: "\f122"; }
+.flaticon-football-game-referee-doing-hand-signals:before { content: "\f123"; }
+.flaticon-football-game-statistics:before { content: "\f124"; }
+.flaticon-football-game-top-view:before { content: "\f125"; }
+.flaticon-football-game-top-view-1:before { content: "\f126"; }
+.flaticon-football-glove-of-archer:before { content: "\f127"; }
+.flaticon-football-goal-outline:before { content: "\f128"; }
+.flaticon-football-goalkeeper-behind-the-ball:before { content: "\f129"; }
+.flaticon-football-goalkeeper-catching-the-ball:before { content: "\f12a"; }
+.flaticon-football-in-midair:before { content: "\f12b"; }
+.flaticon-football-jersey-shirt:before { content: "\f12c"; }
+.flaticon-football-leader-man:before { content: "\f12d"; }
+.flaticon-football-line-referee-t-shirt-with-stripes:before { content: "\f12e"; }
+.flaticon-football-list-and-field-outline:before { content: "\f12f"; }
+.flaticon-football-list-with-up-and-down-arrows:before { content: "\f130"; }
+.flaticon-football-long-socks:before { content: "\f131"; }
+.flaticon-football-long-socks-1:before { content: "\f132"; }
+.flaticon-football-long-socks-with-white-lines:before { content: "\f133"; }
+.flaticon-football-medal:before { content: "\f134"; }
+.flaticon-football-medal-hanging-of-a-ribbon-in-black-shaped:before { content: "\f135"; }
+.flaticon-football-medal-with-number-1:before { content: "\f136"; }
+.flaticon-football-or-soccer-board-with-results-of-games:before { content: "\f137"; }
+.flaticon-football-pads:before { content: "\f138"; }
+.flaticon-football-player-attempting-to-kick-ball:before { content: "\f139"; }
+.flaticon-football-player-blocking-another-player:before { content: "\f13a"; }
+.flaticon-football-player-chasing-ball:before { content: "\f13b"; }
+.flaticon-football-player-chasing-the-ball:before { content: "\f13c"; }
+.flaticon-football-player-close-up-with-delete-cross-symbol:before { content: "\f13d"; }
+.flaticon-football-player-holding-ball:before { content: "\f13e"; }
+.flaticon-football-player-inclined-to-front-flexed-on-knees:before { content: "\f13f"; }
+.flaticon-football-player-kicking-ball:before { content: "\f140"; }
+.flaticon-football-player-kicking-ball-1:before { content: "\f141"; }
+.flaticon-football-player-kicking-ball-2:before { content: "\f142"; }
+.flaticon-football-player-kicking-ball-upward:before { content: "\f143"; }
+.flaticon-football-player-landing-on-field-missing-the-ball:before { content: "\f144"; }
+.flaticon-football-player-long-socks:before { content: "\f145"; }
+.flaticon-football-player-number-10-out:before { content: "\f146"; }
+.flaticon-football-player-number-10-out-symbol-with-minus-sign:before { content: "\f147"; }
+.flaticon-football-player-options:before { content: "\f148"; }
+.flaticon-football-player-posture:before { content: "\f149"; }
+.flaticon-football-player-running:before { content: "\f14a"; }
+.flaticon-football-player-running-behind-the-ball:before { content: "\f14b"; }
+.flaticon-football-player-running-with-the-ball:before { content: "\f14c"; }
+.flaticon-football-player-setting-ball:before { content: "\f14d"; }
+.flaticon-football-player-silhouette-kicking-ball:before { content: "\f14e"; }
+.flaticon-football-player-stretching-with-flexed-leg-to-chest:before { content: "\f14f"; }
+.flaticon-football-player-using-head-to-hit-ball:before { content: "\f150"; }
+.flaticon-football-player-wearing-jersey-number-10-with-plus-sign:before { content: "\f151"; }
+.flaticon-football-player-with-injury:before { content: "\f152"; }
+.flaticon-football-player-with-number-10-jersey-and-check-mark:before { content: "\f153"; }
+.flaticon-football-player-with-the-ball-in-hands:before { content: "\f154"; }
+.flaticon-football-player-with-the-ball-on-his-chest:before { content: "\f155"; }
+.flaticon-football-player-with-the-ball-under-the-feet:before { content: "\f156"; }
+.flaticon-football-players-on-field:before { content: "\f157"; }
+.flaticon-football-players-on-game:before { content: "\f158"; }
+.flaticon-football-practice-strategic-sketch:before { content: "\f159"; }
+.flaticon-football-protector-vest:before { content: "\f15a"; }
+.flaticon-football-red-card-in-a-hand:before { content: "\f15b"; }
+.flaticon-football-referee-raising-card:before { content: "\f15c"; }
+.flaticon-football-referee-showing-a-foul-card-on-top:before { content: "\f15d"; }
+.flaticon-football-referee-showing-admonition-card:before { content: "\f15e"; }
+.flaticon-football-referee-with-check-mark:before { content: "\f15f"; }
+.flaticon-football-referee-with-hand-gestures:before { content: "\f160"; }
+.flaticon-football-referee-with-hand-signal:before { content: "\f161"; }
+.flaticon-football-referee-with-minus-sign:before { content: "\f162"; }
+.flaticon-football-referee-with-whistle:before { content: "\f163"; }
+.flaticon-football-referree-with-plus-sign:before { content: "\f164"; }
+.flaticon-football-shirt:before { content: "\f165"; }
+.flaticon-football-short:before { content: "\f166"; }
+.flaticon-football-short-1:before { content: "\f167"; }
+.flaticon-football-shorts-with-number-10:before { content: "\f168"; }
+.flaticon-football-shorts-with-number-12:before { content: "\f169"; }
+.flaticon-football-shorts-with-string-belt:before { content: "\f16a"; }
+.flaticon-football-signal-of-a-game-announcement-of-one-team-vs-other:before { content: "\f16b"; }
+.flaticon-football-sketch-for-practice:before { content: "\f16c"; }
+.flaticon-football-sketch-for-practice-1:before { content: "\f16d"; }
+.flaticon-football-sketch-on-a-court:before { content: "\f16e"; }
+.flaticon-football-socks:before { content: "\f16f"; }
+.flaticon-football-socks-with-white-lines-design:before { content: "\f170"; }
+.flaticon-football-sports-gloves:before { content: "\f171"; }
+.flaticon-football-stats-graphic:before { content: "\f172"; }
+.flaticon-football-strategic-sketch:before { content: "\f173"; }
+.flaticon-football-team-bench:before { content: "\f174"; }
+.flaticon-football-ticket:before { content: "\f175"; }
+.flaticon-football-triangle-award-with-minus-sign:before { content: "\f176"; }
+.flaticon-football-triangular-trophy-with-minus-sign:before { content: "\f177"; }
+.flaticon-football-trophy:before { content: "\f178"; }
+.flaticon-football-trophy-1:before { content: "\f179"; }
+.flaticon-football-trophy-2:before { content: "\f17a"; }
+.flaticon-football-trophy-3:before { content: "\f17b"; }
+.flaticon-football-trophy-award:before { content: "\f17c"; }
+.flaticon-football-trophy-cup:before { content: "\f17d"; }
+.flaticon-football-trophy-silhouette:before { content: "\f17e"; }
+.flaticon-football-trophy-with-ball-variant:before { content: "\f17f"; }
+.flaticon-football-trophy-with-check-mark:before { content: "\f180"; }
+.flaticon-football-trophy-with-cross-mark:before { content: "\f181"; }
+.flaticon-football-trophy-with-delete-symbol:before { content: "\f182"; }
+.flaticon-football-trophy-with-minus-sign:before { content: "\f183"; }
+.flaticon-football-warning-card-in-a-referee-hand:before { content: "\f184"; }
+.flaticon-football-whistle-of-referee:before { content: "\f185"; }
+.flaticon-football-winning-trophy-with-check-mark:before { content: "\f186"; }
+.flaticon-football-yellow-warning-card:before { content: "\f187"; }
+.flaticon-game-planning-on-a-football-field:before { content: "\f188"; }
+.flaticon-goal:before { content: "\f189"; }
+.flaticon-goalkeeper-chasing-the-ball:before { content: "\f18a"; }
+.flaticon-horn-speaker-with-handle:before { content: "\f18b"; }
+.flaticon-inflatable-cheerer:before { content: "\f18c"; }
+.flaticon-male-standing-with-helmet-and-jacket:before { content: "\f18d"; }
+.flaticon-man-wearing-suit-and-tie:before { content: "\f18e"; }
+.flaticon-rattle:before { content: "\f18f"; }
+.flaticon-referees-whistle-tool:before { content: "\f190"; }
+.flaticon-soccer-cup-trophy-black-shape:before { content: "\f191"; }
+.flaticon-soccer-t-shirt:before { content: "\f192"; }
+.flaticon-sportive-ball:before { content: "\f193"; }
+.flaticon-sportive-trophy-cup:before { content: "\f194"; }
+.flaticon-sports-badge-recognition:before { content: "\f195"; }
+.flaticon-substitution-of-player:before { content: "\f196"; }
+.flaticon-timer-clock:before { content: "\f197"; }
+.flaticon-trophy-black-silhouette:before { content: "\f198"; }
+.flaticon-trophy-cup-black-shape:before { content: "\f199"; }
+.flaticon-trophy-football-cup:before { content: "\f19a"; }
+.flaticon-up-and-down-arrows-inside-boxes:before { content: "\f19b"; }
+.flaticon-whistle:before { content: "\f19c"; }
+.flaticon-whistle-with-necklace:before { content: "\f19d"; }
+.flaticon-whistle-with-white-detail:before { content: "\f19e"; }
+.flaticon-white-flag-outline-with-thin-pole:before { content: "\f19f"; }
