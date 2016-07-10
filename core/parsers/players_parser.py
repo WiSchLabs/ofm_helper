@@ -52,12 +52,10 @@ class PlayersParser(BaseParser):
 
     def _create_player_user_ownership(self, player, matchday):
         existing_contracts = PlayerUserOwnership.objects.filter(player=player, user=self.user, sold_on_matchday=None)
-
+        
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
             contract, success = PlayerUserOwnership.objects.get_or_create(player=player, user=self.user, bought_on_matchday=matchday)
-        print(existing_contracts)
-        print(contract)
-        print(self.user)
+
         return contract

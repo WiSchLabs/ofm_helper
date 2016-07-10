@@ -23,7 +23,7 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
         if last_players_cronjob_run.is_success:
             for user in OFMUser.objects.all():
                 if user.ofm_username and user.ofm_password:
-                    site_manager = SiteManager()
+                    site_manager = SiteManager(user)
                     site_manager.login()
                     site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
 
