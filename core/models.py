@@ -17,7 +17,7 @@ class Season(models.Model):
 
 
 class Quarter(models.Model):
-    QUARTERS = ((1, '1'), (2, '2'), (3, '3'), (4, '4'))
+    QUARTERS = ((0, '1'), (1, '2'), (2, '3'), (3, '4'))
 
     season = models.ForeignKey(Season)
     quarter = models.IntegerField(choices=QUARTERS)
@@ -191,17 +191,17 @@ class Country(models.Model):
         (146, 'Saudi-Arabien'),
         (147, 'Schweden'),
         (148, 'Schweiz'),
-        (1590, 'Senegal'),
-        (151, 'Serbien'),
-        (152, 'Seychellen'),
-        (153, 'Sierra Leone'),
-        (154, 'Simbabwe'),
-        (155, 'Singapur'),
-        (156, 'Slowakei'),
-        (157, 'Slowenien'),
-        (158, 'Somalia'),
-        (159, 'Spanien'),
-        (15, 'Sri Lanka'),
+        (149, 'Senegal'),
+        (150, 'Serbien'),
+        (151, 'Seychellen'),
+        (152, 'Sierra Leone'),
+        (153, 'Simbabwe'),
+        (154, 'Singapur'),
+        (155, 'Slowakei'),
+        (156, 'Slowenien'),
+        (157, 'Somalia'),
+        (158, 'Spanien'),
+        (159, 'Sri Lanka'),
         (160, 'St Kitts und Nevis'),
         (161, 'St Lucia'),
         (162, 'St Vincent und die Grenadinen'),
@@ -246,22 +246,25 @@ class Country(models.Model):
     country = models.IntegerField(choices=COUNTRIES)
 
     def __str__(self):
-        return self.COUNTRIES[self.country][1]
+        if self.country:
+            return self.COUNTRIES[self.country][1]
+        else:
+            return ""
 
 
 class League(models.Model):
     LEAGUES = (
-        (1, '1. Liga'),
-        (2, '2. Liga'),
-        (3, 'Regionalliga'),
-        (4, 'Oberliga'),
-        (5, 'Verbandsliga'),
-        (6, 'Landesliga'),
-        (7, 'Landesklasse'),
-        (8, 'Bezirksliga'),
-        (9, 'Bezirksklasse'),
-        (10, 'Kreisliga'),
-        (11, 'Kreisklasse'),
+        (0, '1. Liga'),
+        (1, '2. Liga'),
+        (2, 'Regionalliga'),
+        (3, 'Oberliga'),
+        (4, 'Verbandsliga'),
+        (5, 'Landesliga'),
+        (6, 'Landesklasse'),
+        (7, 'Bezirksliga'),
+        (8, 'Bezirksklasse'),
+        (9, 'Kreisliga'),
+        (10, 'Kreisklasse'),
     )
 
     league = models.IntegerField(choices=LEAGUES)
