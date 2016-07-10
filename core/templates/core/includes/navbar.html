@@ -49,6 +49,11 @@
                 </ul>
 
             </li>
+
+            {% if user.is_staff %}
+                <li><a href='{% url 'admin:login' %}'><span class="glyphicon glyphicon-console" style="margin-right: 8%"></span> Admin</a></li>
+            {% endif %}
+
             <li>
                 <a href="{% url 'core:logout' %}">
                     <span class="glyphicon glyphicon-log-out"></span> Logout
