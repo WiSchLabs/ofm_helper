@@ -50,8 +50,9 @@ class StatisticsParserViewTest(TestCase):
         self.assertEquals(player_statistics[0].matchday.number, 0)
         self.assertEquals(player_statistics[0].matchday.season.number, 100)
 
-        self.assertEquals(player_statistics[0].player.name, "Irwin O'Canny")
-        self.assertEquals(player_statistics[0].strength, 14)
+        self.assertEquals(player_statistics[0].player.name, 'Chrístos Tsigas')
+        self.assertEquals(player_statistics[0].strength, 15)
 
-        self.assertEquals(player_statistics[1].player.name, 'Chrístos Tsigas')
-        self.assertEquals(player_statistics[1].strength, 15)
+        self.assertEquals(player_statistics[1].player.name, "Irwin O'Canny")
+        self.assertEquals(player_statistics[1].strength, 14)
+

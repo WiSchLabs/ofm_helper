@@ -290,9 +290,6 @@ class Player(models.Model):
         ("RS", "Rechter Stürmer")
     )
 
-    class Meta:
-        ordering = ['position']
-
     name = models.CharField(max_length=200)
     position = models.CharField(max_length=3, choices=POSITIONS)
     nationality = models.ForeignKey(Country, blank=True, null=True)
@@ -337,6 +334,9 @@ class PlayerStatistics(models.Model):
 
 
 class Contract(models.Model):
+    class Meta:
+        ordering = ['user', 'player']
+
     player = models.ForeignKey(Player)
     user = models.ForeignKey(OFMUser)
     bought_on_matchday = models.ForeignKey(Matchday, related_name='bought_players')
