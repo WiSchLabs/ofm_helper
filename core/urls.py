@@ -10,7 +10,6 @@ urlpatterns = [
     url(r'^register/?$', views.register_view, name='register'),
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
-    url(r'^trigger_player_statistics_parsing/?$', views.trigger_player_statistics_parsing, name='trigger_player_statistics_parsing'),
     url(r'^logout/?$', views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
     url(r'^chart/?$', views.test_chart_view, name='chart'),
