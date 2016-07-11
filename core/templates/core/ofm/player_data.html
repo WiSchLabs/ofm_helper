@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+    {% load staticfiles %}
+
+    <h1 class="page-header">Deine Spielerliste</h1>
+
+    <table id='player_data_table' class="table table-bordered table-striped">
+        <thead id="player_data_table_head">
+            <tr>
+                <th>Position</th>
+                <th>Name</th>
+                <th>EP</th>
+                <th>TP</th>
+                <th>AWP</th>
+                <th>Stärke</th>
+                <th>Frische</th>
+                <th>Spiele</th>
+                <th>Tore</th>
+                <th>Gewonnene Zweikämpfe</th>
+                <th>Verlorene Zweikämpfe</th>
+                <th>Gewonnene Friendly Zweikämpfe</th>
+                <th>Verlorene Friendly Zweikämpfe</th>
+                <th>Gelbe Karten</th>
+                <th>Rote karten</th>
+                <th>Marktwert</th>
+            </tr>
+        </thead>
+        <tbody id="player_data_table_body">
+            {% for statistics in player_statistics %}
+                {% for statistic in statistics %}
+                    <tr>
+                        <td>{{ statistic.player.position }}</td>
+                        <td><a href="{{ statistic.player.get_absolute_url }}">{{ statistic.player.name }}</a></td>
+                        <td>{{ statistic.ep }}</td>
+                        <td>{{ statistic.tp }}</td>
+                        <td>{{ statistic.awp }}</td>
+                        <td>{{ statistic.strength }}</td>
+                        <td>{{ statistic.freshness }}</td>
+                        <td>{{ statistic.games_in_season }}</td>
+                        <td>{{ statistic.goals_in_season }}</td>
+                        <td>{{ statistic.won_tacklings_in_season }}</td>
+                        <td>{{ statistic.lost_tacklings_in_season }}</td>
+                        <td>{{ statistic.won_friendly_tacklings_in_season }}</td>
+                        <td>{{ statistic.lost_friendly_tacklings_in_season }}</td>
+                        <td>{{ statistic.yellow_cards_in_season }}</td>
+                        <td>{{ statistic.red_cards_in_season }}</td>
+                        <td>{{ statistic.equity }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="{% static 'core/js/fill_player_data_table.js' %}"></script>
+
+{% endblock %}

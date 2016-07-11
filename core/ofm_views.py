@@ -16,7 +16,7 @@ class PlayerListView(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class PlayerDataView(TemplateView):
-    template_name = 'core/ofm/player_list.html'
+    template_name = 'core/ofm/player_data.html'
 
     def get_context_data(self, **kwargs):
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
