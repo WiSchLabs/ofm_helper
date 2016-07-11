@@ -305,7 +305,7 @@ class Player(models.Model):
 class PlayerStatistics(models.Model):
     class Meta:
         verbose_name_plural = "Player statistics"
-        ordering = ['player', 'matchday']
+        ordering = ['player', '-matchday']
 
     player = models.ForeignKey(Player, related_name='statistics')
     matchday = models.ForeignKey(Matchday, related_name='matchdays')
