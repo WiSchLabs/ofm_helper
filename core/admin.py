@@ -46,7 +46,7 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Contract)
-class PlayerUserOwnershipAdmin(admin.ModelAdmin):
+class ContractAdmin(admin.ModelAdmin):
     list_filter = ['player', 'user']
     search_fields = ['player', 'user']
 

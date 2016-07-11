@@ -84,10 +84,10 @@ class PlayerStatisticsParser(BaseParser):
         # we assume to have parsed the players beforehand
         player = Player.objects.get(id=ofm_id)
 
-        self._create_player_user_ownership(player, matchday)
+        self._create_contract(player, matchday)
         return player
 
-    def _create_player_user_ownership(self, player, matchday):
+    def _create_contract(self, player, matchday):
         existing_contracts = Contract.objects.filter(player=player, user=self.user, sold_on_matchday=None)
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
