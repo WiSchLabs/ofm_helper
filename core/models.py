@@ -307,8 +307,8 @@ class PlayerStatistics(models.Model):
         verbose_name_plural = "Player statistics"
         ordering = ['player', 'matchday']
 
-    player = models.ForeignKey(Player)
-    matchday = models.ForeignKey(Matchday)
+    player = models.ForeignKey(Player, related_name='statistics')
+    matchday = models.ForeignKey(Matchday, related_name='matchdays')
 
     ep = models.IntegerField(default=0)
     tp = models.IntegerField(default=0)

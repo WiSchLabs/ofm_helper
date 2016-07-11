@@ -36,9 +36,9 @@ class CreateCoreModelsTest(TestCase):
 
     def test_create_player_statistics(self):
         st = PlayerStatisticsFactory.create()
-        self.assertEquals(st.ep, 0)
-        self.assertEquals(st.tp, 0)
-        self.assertEquals(st.awp, 0)
+        self.assertEquals(st.ep, 2)
+        self.assertEquals(st.tp, 5)
+        self.assertEquals(st.awp, 3)
         self.assertEquals(st.strength, 1)
         self.assertEquals(st.freshness, 0)
         self.assertEquals(st.games_in_season, 0)

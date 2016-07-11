@@ -51,9 +51,9 @@ class PlayerStatisticsFactory(factory.django.DjangoModelFactory):
     player = factory.SubFactory(PlayerFactory)
     matchday = factory.SubFactory(MatchdayFactory)
 
-    ep = 0
-    tp = 0
-    awp = 0
+    ep = 2
+    tp = 5
+    awp = 3
     strength = 1
     freshness = 0
     games_in_season = 0
