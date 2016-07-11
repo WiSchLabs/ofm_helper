@@ -31,5 +31,5 @@ class PlayersParserTest(TestCase):
         self.assertEquals(29, self.matchday.season.number - self.first_player.birth_season.number)
         self.assertEquals('Frankreich', str(self.first_player.nationality))
 
-    def test_parsed_player_has_ownership_by_user(self):
+    def test_parsed_player_has_contract_with_user(self):
         self.assertEquals(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))

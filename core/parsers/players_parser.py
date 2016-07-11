@@ -46,11 +46,11 @@ class PlayersParser(BaseParser):
             nationality=nationality
         )
 
-        self._create_player_user_ownership(player, matchday)
+        self._create_contract(player, matchday)
 
         return player
 
-    def _create_player_user_ownership(self, player, matchday):
+    def _create_contract(self, player, matchday):
         existing_contracts = Contract.objects.filter(player=player, user=self.user, sold_on_matchday=None)
 
         if existing_contracts.count() > 0:

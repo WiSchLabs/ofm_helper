@@ -67,7 +67,7 @@ class PlayerStatisticsFactory(factory.django.DjangoModelFactory):
     equity = 0
 
 
-class PlayerUserOwnershipFactory(factory.django.DjangoModelFactory):
+class ContractFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Contract
 

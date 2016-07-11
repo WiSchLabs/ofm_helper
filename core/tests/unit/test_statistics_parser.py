@@ -74,5 +74,5 @@ class StatisticsParserTest(TestCase):
         self.assertEquals(Player.objects.all().count(), 3)
         self.assertEqual(Matchday.objects.all().count(), 1)
 
-    def test_parsed_player_user_ownership_is_registered(self):
+    def test_parsed_contract_is_registered(self):
         self.assertEquals(Contract.objects.all().count(), 3)
