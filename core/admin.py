@@ -1,4 +1,4 @@
-from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, PlayerUserOwnership
+from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract
 from django.contrib import admin
 from django.contrib.admin import register
 
@@ -45,7 +45,7 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
     search_fields = ['player', 'matchday']
 
 
-@admin.register(PlayerUserOwnership)
+@admin.register(Contract)
 class PlayerUserOwnershipAdmin(admin.ModelAdmin):
     list_filter = ['player', 'user']
     search_fields = ['player', 'user']

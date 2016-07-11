@@ -3,7 +3,7 @@ import os
 from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
-from core.models import Player, PlayerUserOwnership
+from core.models import Player, Contract
 from core.parsers.players_parser import PlayersParser
 from users.factories.users_factories import OFMUserFactory
 
@@ -32,4 +32,4 @@ class PlayersParserTest(TestCase):
         self.assertEquals('Frankreich', str(self.first_player.nationality))
 
     def test_parsed_player_has_ownership_by_user(self):
-        self.assertEquals(1, len(PlayerUserOwnership.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))
+        self.assertEquals(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))

@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, PlayerUserOwnership, Country
+from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country
 from users.factories.users_factories import OFMUserFactory
 
 
@@ -69,7 +69,7 @@ class PlayerStatisticsFactory(factory.django.DjangoModelFactory):
 
 class PlayerUserOwnershipFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = PlayerUserOwnership
+        model = Contract
 
     player = factory.SubFactory(PlayerFactory)
     user = factory.SubFactory(OFMUserFactory)

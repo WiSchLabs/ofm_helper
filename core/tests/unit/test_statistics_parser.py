@@ -1,6 +1,6 @@
 import os
 from core.factories.core_factories import MatchdayFactory, SeasonFactory
-from core.models import PlayerStatistics, Player, Matchday, PlayerUserOwnership, Country
+from core.models import PlayerStatistics, Player, Matchday, Contract, Country
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from django.test import TestCase
 
@@ -75,4 +75,4 @@ class StatisticsParserTest(TestCase):
         self.assertEqual(Matchday.objects.all().count(), 1)
 
     def test_parsed_player_user_ownership_is_registered(self):
-        self.assertEquals(PlayerUserOwnership.objects.all().count(), 3)
+        self.assertEquals(Contract.objects.all().count(), 3)

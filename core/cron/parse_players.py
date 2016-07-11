@@ -1,5 +1,3 @@
-import logging
-
 from core.parsers.players_parser import PlayersParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager

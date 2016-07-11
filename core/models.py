@@ -308,7 +308,7 @@ class Player(models.Model):
 class PlayerStatistics(models.Model):
     class Meta:
         verbose_name_plural = "Player statistics"
-        order_with_respect_to = 'player'
+        ordering = ['player', 'matchday']
 
     player = models.ForeignKey(Player)
     matchday = models.ForeignKey(Matchday)
@@ -336,7 +336,7 @@ class PlayerStatistics(models.Model):
         return "%s/%s: %s" % (self.matchday.season.number, self.matchday.number, self.player.name)
 
 
-class PlayerUserOwnership(models.Model):
+class Contract(models.Model):
     player = models.ForeignKey(Player)
     user = models.ForeignKey(OFMUser)
     bought_on_matchday = models.ForeignKey(Matchday, related_name='bought_players')

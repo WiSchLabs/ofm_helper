@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from core.models import Player, PlayerStatistics, Matchday, PlayerUserOwnership
+from core.models import Player, PlayerStatistics, Matchday, Contract
 from core.parsers.base_parser import BaseParser
 
 MULTIVALUE_SEPARATOR = '/'
@@ -84,15 +84,15 @@ class PlayerStatisticsParser(BaseParser):
         # we assume to have parsed the players beforehand
         player = Player.objects.get(id=ofm_id)
 
-        contract = self._create_player_user_ownership(player, matchday)
+        self._create_player_user_ownership(player, matchday)
         return player
 
     def _create_player_user_ownership(self, player, matchday):
-        existing_contracts = PlayerUserOwnership.objects.filter(player=player, user=self.user, sold_on_matchday=None)
+        existing_contracts = Contract.objects.filter(player=player, user=self.user, sold_on_matchday=None)
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
-            contract, success = PlayerUserOwnership.objects.get_or_create(player=player, user=self.user, bought_on_matchday=matchday)
+            contract, success = Contract.objects.get_or_create(player=player, user=self.user, bought_on_matchday=matchday)
         return contract
 
     def _get_value_from_multivalue_table_cell(self, field, index):

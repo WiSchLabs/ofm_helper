@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory, PlayerFactory
-from core.models import PlayerUserOwnership
+from core.models import Contract
 from users.models import OFMUser
 
 
@@ -12,7 +12,7 @@ class OFMViewTestCase(TestCase):
         matchday = MatchdayFactory.create()
         self.user1 = OFMUser.objects.create_user('alice', 'alice@ofmhelper.com', 'alice', ofm_username='alice', ofm_password='alice')
         self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob', ofm_password='bob')
-        PlayerUserOwnership.objects.create(user=self.user1, player=self.player, bought_on_matchday=matchday, sold_on_matchday=None)
+        Contract.objects.create(user=self.user1, player=self.player, bought_on_matchday=matchday, sold_on_matchday=None)
         self.client.login(username='alice', password='alice')
 
     def test_user_can_see_his_player_list(self):
