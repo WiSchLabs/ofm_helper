@@ -1,8 +1,9 @@
-from django.core.urlresolvers import reverse
-from django.test import TestCase
+import json
 
 from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory
-from core.models import Contract, PlayerStatistics
+from core.models import Contract
+from django.core.urlresolvers import reverse
+from django.test import TestCase
 from users.models import OFMUser
 
 
@@ -37,37 +38,58 @@ class OFMViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse('player' in response.context_data)
 
-    def test_user_can_see_his_player_statistic(self):
+    def test_user_can_see_table(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         response = self.client.get(reverse('core:ofm:player_data'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context_data['player_statistics']), 1)
-        self.assertEqual(response.context_data['player_statistics'][0][0].ep, 2)
-        self.assertEqual(response.context_data['player_statistics'][0][0].tp, 5)
-        self.assertEqual(response.context_data['player_statistics'][0][0].awp, 3)
 
-    def test_user_can_see_his_two_player_statistics(self):
+    def test_user_can_see_player_statistics(self):
+        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
+
+        response = self.client.get(reverse('core:ofm:player_data_json'))
+
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], 'TW')
+        self.assertEquals(returned_json_data[0]['name'], 'Martin Adomeit')
+        self.assertEquals(returned_json_data[0]['ep'], '2 ()')
+        self.assertEquals(returned_json_data[0]['tp'], '5 ()')
+        self.assertEquals(returned_json_data[0]['awp'], '3 ()')
+        self.assertEquals(returned_json_data[0]['strength'], 1)
+
+    def test_user_can_see_player_statistics_diff(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
         PlayerStatisticsFactory.create(player=self.player, matchday=next_matchday, ep=3, tp=6, awp=4)
-        response = self.client.get(reverse('core:ofm:player_data'))
+
+        response = self.client.get(reverse('core:ofm:player_data_json'))
+
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context_data['player_statistics'][0]), 2)
-        self.assertEqual(response.context_data['player_statistics'][0][0].ep, 2)
-        self.assertEqual(response.context_data['player_statistics'][0][0].tp, 5)
-        self.assertEqual(response.context_data['player_statistics'][0][0].awp, 3)
-        self.assertEqual(response.context_data['player_statistics'][0][1].ep, 3)
-        self.assertEqual(response.context_data['player_statistics'][0][1].tp, 6)
-        self.assertEqual(response.context_data['player_statistics'][0][1].awp, 4)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], 'TW')
+        self.assertEquals(returned_json_data[0]['name'], 'Martin Adomeit')
+        self.assertEquals(returned_json_data[0]['ep'], '3 (1)')
+        self.assertEquals(returned_json_data[0]['tp'], '6 (1)')
+        self.assertEquals(returned_json_data[0]['awp'], '4 (1)')
+        self.assertEquals(returned_json_data[0]['strength'], 1)
 
     def test_user_can_only_see_his_player_statistic(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
         player2 = PlayerFactory.create()
         PlayerStatisticsFactory.create(player=player2, matchday=next_matchday, ep=3, tp=6, awp=4)
-        response = self.client.get(reverse('core:ofm:player_data'))
+
+        response = self.client.get(reverse('core:ofm:player_data_json'))
+
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context_data['player_statistics'][0]), 1)
-        self.assertEqual(response.context_data['player_statistics'][0][0].ep, 2)
-        self.assertEqual(response.context_data['player_statistics'][0][0].tp, 5)
-        self.assertEqual(response.context_data['player_statistics'][0][0].awp, 3)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], 'TW')
+        self.assertEquals(returned_json_data[0]['name'], 'Martin Adomeit')
+        self.assertEquals(returned_json_data[0]['ep'], '2 ()')
+        self.assertEquals(returned_json_data[0]['tp'], '5 ()')
+        self.assertEquals(returned_json_data[0]['awp'], '3 ()')
+        self.assertEquals(returned_json_data[0]['strength'], 1)
+

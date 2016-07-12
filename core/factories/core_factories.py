@@ -39,7 +39,7 @@ class PlayerFactory(factory.django.DjangoModelFactory):
         model = Player
 
     position = 'TW'
-    name = factory.Sequence(lambda n: 'Torwart%d' % n)
+    name = factory.Sequence(lambda n: 'Martin Adomeit')
     nationality = factory.SubFactory(CountryFactory)
     birth_season = factory.SubFactory(SeasonFactory)
 
