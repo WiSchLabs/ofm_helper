@@ -32,10 +32,10 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         return self.render_json_response(player_data_json)
 
     def _get_last_two_statistics_diff(self, player):
-        size = player.statistics.all().count() - 1
-        st1 = player.statistics.all()[size]
+        size = player.statistics.all().count()
+        st1 = player.statistics.all()[size - 1]
         if size > 1:
-            st2 = player.statistics.all()[size - 1]
+            st2 = player.statistics.all()[size - 2]
             return self._player_statistics_diff(st1, st2)
         else:
             return self._player_statistics_diff(st1, None)
