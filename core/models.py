@@ -246,10 +246,7 @@ class Country(models.Model):
     country = models.CharField(max_length=10, choices=COUNTRIES)
 
     def __str__(self):
-        for c in self.COUNTRIES:
-            if c[0] is self.country:
-                return c[1]
-        return ''
+	return dict(self.COUNTRIES).get(self.country)
 
     def get_iso(self):
         return self.country
