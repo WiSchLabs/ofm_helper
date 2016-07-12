@@ -2,17 +2,7 @@ from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from core.models import Player, Contract, PlayerStatistics
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, TemplateView, View
-
-
-@method_decorator(login_required, name='dispatch')
-class PlayerListView(ListView):
-    context_object_name = 'player_list'
-    template_name = 'core/ofm/player_list.html'
-
-    def get_queryset(self):
-        contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
-        return [contract.player for contract in contracts]
+from django.views.generic import DetailView, TemplateView, View
 
 
 @method_decorator(login_required, name='dispatch')
@@ -52,7 +42,7 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         statistic_diff = dict()
         statistic_diff['position'] = st1.player.position
         statistic_diff['strength'] = st1.strength
-        statistic_diff['name'] = st1.player.name
+        statistic_diff['name'] = '<a href="%s">%s</a><br>' % (st1.player.get_absolute_url(), st1.player.name)
         statistic_diff['ep'] = "%s (%s)" % (st1.ep, st1.ep - st2.ep if st2 else '')
         statistic_diff['tp'] = "%s (%s)" % (st1.tp, st1.tp - st2.tp if st2 else '')
         statistic_diff['awp'] = "%s (%s)" % (st1.awp, st1.awp - st2.awp if st2 else '')
