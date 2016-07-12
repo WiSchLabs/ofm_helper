@@ -6,8 +6,8 @@
         <h1 class="page-header">{{ player.name }}</h1>
 
         Position: {{ player.position }}<br>
-        Nationalität: {{ player.nationality }}<br>
-        Geburtssaison: {{ player.birth_season.number }} ({{ player.nationality.get_iso }})<br>
+        Nationalität: <span class="flag-icon flag-icon-'{{ player.nationality.get_iso }}'"></span> {{ player.nationality }} ({{ player.nationality.get_iso }})<br>
+        Geburtssaison: {{ player.birth_season.number }}<br>
     {% else %}
         <h1 class="page-header">Spieler nicht gefunden</h1>
         <p>
