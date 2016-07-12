@@ -6,53 +6,45 @@
 
     <h1 class="page-header">Deine Spielerliste</h1>
 
-    <table id='player_data_table' class="table table-bordered table-striped">
+    <div id="table-toolbar">
+            <button id="button" class="btn btn-default">Irgend ein Button</button>
+    </div>
+
+    <table id='player_data_table' class="table table-bordered table-striped"
+           data-toolbar="#toolbar"
+           data-toggle="table"
+           data-url="/ofm/player_data_json">
         <thead id="player_data_table_head">
             <tr>
-                <th>Position</th>
-                <th>Name</th>
-                <th>EP</th>
-                <th>TP</th>
-                <th>AWP</th>
-                <th>Stärke</th>
-                <th>Frische</th>
-                <th>Spiele</th>
-                <th>Tore</th>
-                <th>Gewonnene Zweikämpfe</th>
-                <th>Verlorene Zweikämpfe</th>
-                <th>Gewonnene Friendly Zweikämpfe</th>
-                <th>Verlorene Friendly Zweikämpfe</th>
-                <th>Gelbe Karten</th>
-                <th>Rote karten</th>
-                <th>Marktwert</th>
+                <th data-field="position">Position</th>
+                <th data-field="name">Name</th>
+                <th data-field="ep">EP</th>
+                <th data-field="tp">TP</th>
+                <th data-field="awp">AWP</th>
+                <th data-field="strength">Stärke</th>
+                <th data-field="freshness">Frische</th>
+                <th data-field="games_in_season">Spiele</th>
+                <th data-field="goals_in_season">Tore</th>
+                <th data-field="won_tacklings_in_season">Gewonnene Zweikämpfe</th>
+                <th data-field="lost_tacklings_in_season">Verlorene Zweikämpfe</th>
+                <th data-field="won_friendly_tacklings_in_season">Gewonnene Friendly Zweikämpfe</th>
+                <th data-field="lost_friendly_tacklings_in_season">Verlorene Friendly Zweikämpfe</th>
+                <th data-field="yellow_cards_in_season">Gelbe Karten</th>
+                <th data-field="red_cards_in_season">Rote karten</th>
+                <th data-field="equity">Marktwert</th>
             </tr>
         </thead>
-        <tbody id="player_data_table_body">
-            {% for statistics in player_statistics %}
-                {% for statistic in statistics %}
-                    <tr>
-                        <td>{{ statistic.player.position }}</td>
-                        <td><a href="{{ statistic.player.get_absolute_url }}">{{ statistic.player.name }}</a></td>
-                        <td>{{ statistic.ep }}</td>
-                        <td>{{ statistic.tp }}</td>
-                        <td>{{ statistic.awp }}</td>
-                        <td>{{ statistic.strength }}</td>
-                        <td>{{ statistic.freshness }}</td>
-                        <td>{{ statistic.games_in_season }}</td>
-                        <td>{{ statistic.goals_in_season }}</td>
-                        <td>{{ statistic.won_tacklings_in_season }}</td>
-                        <td>{{ statistic.lost_tacklings_in_season }}</td>
-                        <td>{{ statistic.won_friendly_tacklings_in_season }}</td>
-                        <td>{{ statistic.lost_friendly_tacklings_in_season }}</td>
-                        <td>{{ statistic.yellow_cards_in_season }}</td>
-                        <td>{{ statistic.red_cards_in_season }}</td>
-                        <td>{{ statistic.equity }}</td>
-                    </tr>
-                {% endfor %}
-            {% endfor %}
-        </tbody>
     </table>
 
-    <script src="{% static 'core/js/fill_player_data_table.js' %}"></script>
+    <script>
+        var $table = $('#player_data_table'),
+            $button = $('#button');
+        $(function () {
+            $button.click(function () {
+                var data = $table.bootstrapTable('getData')
+                alert(data[0]);
+            });
+        });
+    </script>
 
 {% endblock %}
