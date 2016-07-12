@@ -42,7 +42,7 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         statistic_diff = dict()
         statistic_diff['position'] = st1.player.position
         statistic_diff['strength'] = st1.strength
-        statistic_diff['name'] = '<a href="%s">%s</a><br>' % (st1.player.get_absolute_url(), st1.player.name)
+        statistic_diff['name'] = '<a href="%s">%s</a>' % (st1.player.get_absolute_url(), st1.player.name)
         statistic_diff['ep'] = "%s (%s)" % (st1.ep, st1.ep - st2.ep if st2 else '')
         statistic_diff['tp'] = "%s (%s)" % (st1.tp, st1.tp - st2.tp if st2 else '')
         statistic_diff['awp'] = "%s (%s)" % (st1.awp, st1.awp - st2.awp if st2 else '')
