@@ -17,7 +17,7 @@ class Constants:
     class Team:
         pass
     TEAM = Team()
-    TEAM.PLAYERS = 'http://v7.www.onlinefussballmanager.de/team/players.php'
+    TEAM.PLAYERS = 'http://www.onlinefussballmanager.de/team/players.php'
     TEAM.LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung2d.php?game=liga'
     TEAM.FRIENDLY_LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung2d.php?game=friendly'
     TEAM.CUP_LINEUP = 'http://v7.www.onlinefussballmanager.de/team/aufstellung2d.php?game=pokal'
