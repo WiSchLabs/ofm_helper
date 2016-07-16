@@ -14,19 +14,20 @@ class ParsePlayersCronJob(CronJobBase):
 
     def do(self):
         matchday_parses = CronJobLog.objects.filter(code='core.cron.parse_matchday')
-        last_matchday_cronjob_run = matchday_parses[len(matchday_parses)-1]
+        if matchday_parses:
+            last_matchday_cronjob_run = matchday_parses.order_by('-end_time')[0]
 
-        if last_matchday_cronjob_run.is_success:
-            for user in OFMUser.objects.all():
-                if user.ofm_username and user.ofm_password:
-                    site_manager = SiteManager(user)
-                    site_manager.login()
-                    site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
+            if last_matchday_cronjob_run.is_success:
+                for user in OFMUser.objects.all():
+                    if user.ofm_username and user.ofm_password:
+                        site_manager = SiteManager(user)
+                        site_manager.login()
+                        site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
 
-                    players_parser = PlayersParser(site_manager.browser.page_source, user)
-                    players = players_parser.parse()
+                        players_parser = PlayersParser(site_manager.browser.page_source, user)
+                        players = players_parser.parse()
 
-                    site_manager.browser.quit()
+                        site_manager.browser.quit()
 
-                    print("parsed Player count: %s" % len(players))
-                    print("first parsed Player is: %s" % players[0])
+                        print("parsed Player count: %s" % len(players))
+                        print("first parsed Player is: %s" % players[0])
