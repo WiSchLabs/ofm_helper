@@ -1,6 +1,9 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
+from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
@@ -85,3 +88,39 @@ class PlayerDetailView(DetailView):
         player = super(PlayerDetailView, self).get_object()
         contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None
+
+
+def test_chart_view(request):
+    # Step 1: Create a DataPool with the data we want to retrieve.
+    statistics_data = \
+        DataPool(
+                series=
+                [{'options': {
+                    'source': PlayerStatistics.objects.all()},
+                    'terms': [
+                        'player__name',
+                        'ep',
+                        'tp',
+                        'awp']}
+                ])
+
+    # Step 2: Create the Chart object
+    chart = Chart(
+            datasource=statistics_data,
+            series_options=
+            [{'options': {
+                'type': 'column',
+                'stacking': False},
+                'terms': {'player__name': ['ep', 'tp', 'awp', ]}
+            }],
+            chart_options=
+            {
+                'title': {
+                    'text': 'Player statistics'},
+            })
+
+    # Step 3: Send the chart object to the template.
+    context = RequestContext(request)
+    context['chart'] = chart
+
+    return render_to_response('core/ofm/single_chart.html', context)

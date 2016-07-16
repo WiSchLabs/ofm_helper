@@ -1,13 +1,6 @@
-from chartit import DataPool, Chart
-from core.models import PlayerStatistics
-from core.parsers.player_statistics_parser import PlayerStatisticsParser
-from core.parsers.players_parser import PlayersParser
-from core.web.ofm_page_constants import Constants
-from core.web.site_manager import SiteManager
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render, render_to_response
-from django.template import RequestContext
+from django.shortcuts import redirect, render
 from users.models import OFMUser
 
 
@@ -102,39 +95,3 @@ def account_view(request):
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')
-
-
-def test_chart_view(request):
-    # Step 1: Create a DataPool with the data we want to retrieve.
-    statistics_data = \
-        DataPool(
-                series=
-                [{'options': {
-                    'source': PlayerStatistics.objects.all()},
-                    'terms': [
-                        'player__name',
-                        'ep',
-                        'tp',
-                        'awp']}
-                ])
-
-    # Step 2: Create the Chart object
-    chart = Chart(
-            datasource=statistics_data,
-            series_options=
-            [{'options': {
-                'type': 'column',
-                'stacking': False},
-                'terms': {'player__name': ['ep', 'tp', 'awp', ]}
-            }],
-            chart_options=
-            {
-                'title': {
-                    'text': 'Player statistics'},
-            })
-
-    # Step 3: Send the chart object to the template.
-    context = RequestContext(request)
-    context['chart'] = chart
-
-    return render_to_response('core/ofm/single_chart.html', context)
