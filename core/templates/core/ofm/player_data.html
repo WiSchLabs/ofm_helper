@@ -53,11 +53,10 @@
 
         $(function () {
             $diff_toggle.click(function () {
-                $.get('{% url 'core:ofm:player_data_json' %}', {diff: "true"},
+                $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: diff_toggle.checked},
                     function(returnedData){
                         console.log(returnedData);
                         $table.bootstrapTable('load', returnedData)
-                        // $table.bootstrapTable('refresh');
                 });
             });
         });
