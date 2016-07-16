@@ -91,13 +91,18 @@ class PlayerDetailView(DetailView):
 
 
 def test_chart_view(request):
+
+    contracts = Contract.objects.filter(user=request.user, sold_on_matchday=None)
+
     # Step 1: Create a DataPool with the data we want to retrieve.
     statistics_data = \
         DataPool(
                 series=
                 [{'options': {
-                    'source': PlayerStatistics.objects.all()},
+                    'source': PlayerStatistics.objects.filter(player=contracts[0].player)},
                     'terms': [
+                        'matchday__season__number',
+                        'matchday__number',
                         'player__name',
                         'ep',
                         'tp',
@@ -109,14 +114,23 @@ def test_chart_view(request):
             datasource=statistics_data,
             series_options=
             [{'options': {
-                'type': 'column',
+                'type': 'spline',
                 'stacking': False},
-                'terms': {'player__name': ['ep', 'tp', 'awp', ]}
+                'terms': {'matchday__number': ['ep', 'tp', 'awp', ]}
             }],
             chart_options=
             {
                 'title': {
-                    'text': 'Player statistics'},
+                    'text': 'Spielerstatistik'
+                },
+                'xAxis': {
+                    'title': {
+                       'text': 'Spieltag'}
+                },
+                'yAxis': {
+                    'title': {
+                       'text': ' '}
+                },
             })
 
     # Step 3: Send the chart object to the template.
