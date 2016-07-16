@@ -4,10 +4,12 @@
 
     {% if player %}
         <h1 class="page-header">{{ player.name }}</h1>
-
         Position: {{ player.position }}<br>
         Nationalität: <span class="flag-icon flag-icon-{{ player.nationality.get_iso|lower }}"></span> {{ player.nationality }}<br>
-        Geburtssaison: {{ player.birth_season.number }}<br>
+        Geburtssaison: {{ player.birth_season.number }}
+        <br>
+        <br>
+        <div id='chart_container'> Chart will be rendered here </div>
     {% else %}
         <h1 class="page-header">Spieler nicht gefunden</h1>
         <p>

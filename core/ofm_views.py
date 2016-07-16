@@ -2,7 +2,8 @@ from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
@@ -84,33 +85,26 @@ class PlayerDetailView(DetailView):
     template_name = 'core/ofm/player_detail.html'
     queryset = Player.objects.all()
 
-    def get_object(self):
-        player = super(PlayerDetailView, self).get_object()
-        contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
-        return player if contracts.count() > 0 else None
+    def get_context_data(self, **kwargs):
+        context = super(PlayerDetailView, self).get_context_data(**kwargs)
 
+        player = self.get_object()
 
-def test_chart_view(request):
-
-    contracts = Contract.objects.filter(user=request.user, sold_on_matchday=None)
-
-    # Step 1: Create a DataPool with the data we want to retrieve.
-    statistics_data = \
-        DataPool(
-                series=
-                [{'options': {
-                    'source': PlayerStatistics.objects.filter(player=contracts[0].player)},
+        statistics_data = DataPool(
+            series=[
+                {'options':
+                    {'source': PlayerStatistics.objects.filter(player=player)},
                     'terms': [
-                        'matchday__season__number',
                         'matchday__number',
-                        'player__name',
                         'ep',
                         'tp',
-                        'awp']}
-                ])
+                        'awp'
+                    ]
+                }
+            ]
+        )
 
-    # Step 2: Create the Chart object
-    chart = Chart(
+        chart = Chart(
             datasource=statistics_data,
             series_options=
             [{'options': {
@@ -131,10 +125,14 @@ def test_chart_view(request):
                     'title': {
                        'text': ' '}
                 },
-            })
+            }
+        )
 
-    # Step 3: Send the chart object to the template.
-    context = RequestContext(request)
-    context['chart'] = chart
+        context['chart'] = chart
 
-    return render_to_response('core/ofm/single_chart.html', context)
+        return context
+
+    def get_object(self):
+        player = super(PlayerDetailView, self).get_object()
+        contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
+        return player if contracts.count() > 0 else None
