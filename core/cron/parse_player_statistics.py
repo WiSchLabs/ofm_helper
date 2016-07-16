@@ -16,8 +16,13 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
         players_parses = CronJobLog.objects.filter(code='core.cron.parse_players')
         last_players_cronjob_run = players_parses[len(players_parses)-1]
 
+        print('1')
+
         if last_players_cronjob_run.is_success:
+            print('2')
             for user in OFMUser.objects.all():
+                print('3')
+                print(user.username)
                 if user.ofm_username and user.ofm_password:
                     site_manager = SiteManager(user)
                     site_manager.login()
@@ -30,3 +35,4 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
 
                     print("parsed statistics count: %s" % len(statistics))
                     print("first parsed Statistic is: %s" % statistics[0])
+        print('4')
