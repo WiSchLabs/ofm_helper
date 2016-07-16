@@ -15,7 +15,7 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
     def do(self):
         players_parses = CronJobLog.objects.filter(code='core.cron.parse_players')
         if players_parses:
-            last_players_cronjob_run = players_parses.sort_by('-end_time')[0]
+            last_players_cronjob_run = players_parses.order_by('-end_time')[0]
 
             print('1')
             print(last_players_cronjob_run.start_time)
