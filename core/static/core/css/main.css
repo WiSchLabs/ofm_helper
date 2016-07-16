@@ -49,7 +49,7 @@ a {
     color: #239123;
 }
 
-    a:hover {
+    a:focus, a:hover, a:active {
         color: #1b6f1b;
     }
 
@@ -70,6 +70,10 @@ ul.nav li span {
 
 ul.nav-sub {
     padding-left: 10%;
+}
+
+#player_data_table {
+    background-color: white;
 }
 
 footer.footer {
