@@ -17,6 +17,10 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
         last_players_cronjob_run = players_parses[len(players_parses)-1]
 
         print('1')
+        print(last_players_cronjob_run.start_time)
+        print(last_players_cronjob_run.end_time)
+        print(last_players_cronjob_run.message)
+        print(last_players_cronjob_run.is_success)
 
         if last_players_cronjob_run.is_success:
             print('2')
