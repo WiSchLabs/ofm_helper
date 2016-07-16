@@ -9,10 +9,9 @@
     <div id="table-toolbar">
             <div class="form-inline" role="form">
                 <div class="form-group">
-                    <span>Label: </span>
-                    <input name="offset" class="form-control w70" type="number" value="0">
+                    <span>diff or no diff: </span>
+                    <input id="diff_toggle" name="diff_toggle" class="form-control w70" type="checkbox">
                 </div>
-                <button id="button" type="submit" class="btn btn-default">OK</button>
             </div>
     </div>
 
@@ -25,7 +24,7 @@
            data-sort-name="awp"
            data-sort-order="desc"
            data-query-params="queryParams"
-           data-url="/ofm/player_data_json">
+           data-url="{% url 'core:ofm:player_data_json' %}">
         <thead id="player_data_table_head">
             <tr>
                 <th data-field="position">Position</th>
@@ -50,13 +49,16 @@
 
     <script>
         var $table = $('#player_data_table'),
-            $button = $('#button');
+            $diff_toggle = $('#diff_toggle');
 
         $(function () {
-            $button.click(function () {
-                $table.bootstrapTable('refresh');
-                var data = $table.bootstrapTable('getData')
-                alert(data);
+            $diff_toggle.click(function () {
+                $.get('{% url 'core:ofm:player_data_json' %}', {diff: "true"},
+                    function(returnedData){
+                        console.log(returnedData);
+                        $table.bootstrapTable('load', returnedData)
+                        // $table.bootstrapTable('refresh');
+                });
             });
         });
 
