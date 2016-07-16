@@ -76,6 +76,32 @@ ul.nav-sub {
     background-color: white;
 }
 
+    #player_data_table thead th .both,
+    #player_data_table thead th .asc,
+    #player_data_table thead th .desc {
+        background-image: none;
+        padding: 8px;
+    }
+        #player_data_table thead th .both::after,
+        #player_data_table thead th .asc::after,
+        #player_data_table thead th .desc::after {
+            font-family: 'Glyphicons Halflings';
+            color: #239123;
+            font-size: 0.8em;
+            padding: 8px;
+            left: 10px;
+            position: relative;
+        }
+        #player_data_table thead th .both::after {
+            content: '\e150';
+        }
+        #player_data_table thead th .asc::after {
+            content: '\e113';
+        }
+        #player_data_table thead th .desc::after {
+            content: '\e114';
+        }
+
 footer.footer {
     width: 100%;
     padding-top: 10px;
