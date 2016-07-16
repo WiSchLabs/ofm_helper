@@ -55,7 +55,7 @@ class PlayerStatisticsFactory(factory.django.DjangoModelFactory):
     tp = 5
     awp = 3
     strength = 1
-    freshness = 0
+    freshness = 4
     games_in_season = 0
     goals_in_season = 0
     won_tacklings_in_season = 0

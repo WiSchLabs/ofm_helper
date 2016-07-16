@@ -32,7 +32,7 @@ class OFMViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:player_data'))
         self.assertEqual(response.status_code, 200)
 
-    def test_user_can_see_player_statistics(self):
+    def test_user_can_see_player_statistics_total(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
 
         response = self.client.get(reverse('core:ofm:player_data_json'))
@@ -42,27 +42,29 @@ class OFMViewTestCase(TestCase):
         self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], 'TW')
         self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
-        self.assertEquals(returned_json_data[0]['ep'], '2 ()')
-        self.assertEquals(returned_json_data[0]['tp'], '5 ()')
-        self.assertEquals(returned_json_data[0]['awp'], '3 ()')
+        self.assertEquals(returned_json_data[0]['ep'], 2)
+        self.assertEquals(returned_json_data[0]['tp'], 5)
+        self.assertEquals(returned_json_data[0]['awp'], 3)
         self.assertEquals(returned_json_data[0]['strength'], 1)
+        self.assertEquals(returned_json_data[0]['freshness'], 4)
 
     def test_user_can_see_player_statistics_diff(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
-        PlayerStatisticsFactory.create(player=self.player, matchday=next_matchday, ep=3, tp=6, awp=4)
+        PlayerStatisticsFactory.create(player=self.player, matchday=next_matchday, ep=3, tp=6, awp=4, freshness=5)
 
-        response = self.client.get(reverse('core:ofm:player_data_json'))
+        response = self.client.get(reverse('core:ofm:player_data_json'), {'show_diff': 'true'})
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], 'TW')
         self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
-        self.assertEquals(returned_json_data[0]['ep'], '3 (1)')
-        self.assertEquals(returned_json_data[0]['tp'], '6 (1)')
-        self.assertEquals(returned_json_data[0]['awp'], '4 (1)')
+        self.assertEquals(returned_json_data[0]['ep'], 1)
+        self.assertEquals(returned_json_data[0]['tp'], 1)
+        self.assertEquals(returned_json_data[0]['awp'], 1)
         self.assertEquals(returned_json_data[0]['strength'], 1)
+        self.assertEquals(returned_json_data[0]['freshness'], 1)
 
     def test_user_can_only_see_his_player_statistic(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
@@ -75,10 +77,3 @@ class OFMViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['position'], 'TW')
-        self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
-        self.assertEquals(returned_json_data[0]['ep'], '2 ()')
-        self.assertEquals(returned_json_data[0]['tp'], '5 ()')
-        self.assertEquals(returned_json_data[0]['awp'], '3 ()')
-        self.assertEquals(returned_json_data[0]['strength'], 1)
-

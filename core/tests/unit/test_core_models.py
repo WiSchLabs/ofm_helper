@@ -40,7 +40,7 @@ class CreateCoreModelsTest(TestCase):
         self.assertEquals(st.tp, 5)
         self.assertEquals(st.awp, 3)
         self.assertEquals(st.strength, 1)
-        self.assertEquals(st.freshness, 0)
+        self.assertEquals(st.freshness, 4)
         self.assertEquals(st.games_in_season, 0)
         self.assertEquals(st.goals_in_season, 0)
         self.assertEquals(st.won_tacklings_in_season, 0)

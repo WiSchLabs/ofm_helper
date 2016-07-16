@@ -58,10 +58,10 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         statistic_diff['position'] = st1.player.position
         statistic_diff['strength'] = st1.strength
         statistic_diff['name'] = '<a href="%s">%s</a>' % (st1.player.get_absolute_url(), st1.player.name)
-        statistic_diff['ep'] = "%s" % ep
-        statistic_diff['tp'] = "%s" % tp
-        statistic_diff['awp'] = "%s" % awp
-        statistic_diff['freshness'] = "%s" % freshness
+        statistic_diff['ep'] = ep
+        statistic_diff['tp'] = tp
+        statistic_diff['awp'] = awp
+        statistic_diff['freshness'] = freshness
         statistic_diff['games_in_season'] = st1.games_in_season
         statistic_diff['goals_in_season'] = st1.goals_in_season
         statistic_diff['won_tacklings_in_season'] = st1.won_tacklings_in_season
