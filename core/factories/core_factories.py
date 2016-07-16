@@ -31,7 +31,7 @@ class CountryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Country
 
-    country = 1
+    country = 'DE'
 
 
 class PlayerFactory(factory.django.DjangoModelFactory):
