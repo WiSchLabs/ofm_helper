@@ -301,6 +301,9 @@ class Player(models.Model):
     nationality = models.ForeignKey(Country, blank=True, null=True)
     birth_season = models.ForeignKey(Season)
 
+    def get_position(self):
+        return dict(self.POSITIONS).get(self.position)
+
     def get_absolute_url(self):
         return reverse('core:ofm:player_detail', args=[str(self.id)])
 
