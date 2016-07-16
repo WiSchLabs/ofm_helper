@@ -14,29 +14,30 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
 
     def do(self):
         players_parses = CronJobLog.objects.filter(code='core.cron.parse_players')
-        last_players_cronjob_run = players_parses[len(players_parses)-1]
+        if players_parses:
+            last_players_cronjob_run = players_parses.reverse()[0]
 
-        print('1')
-        print(last_players_cronjob_run.start_time)
-        print(last_players_cronjob_run.end_time)
-        print(last_players_cronjob_run.message)
-        print(last_players_cronjob_run.is_success)
+            print('1')
+            print(last_players_cronjob_run.start_time)
+            print(last_players_cronjob_run.end_time)
+            print(last_players_cronjob_run.message)
+            print(last_players_cronjob_run.is_success)
 
-        if last_players_cronjob_run.is_success:
-            print('2')
-            for user in OFMUser.objects.all():
-                print('3')
-                print(user.username)
-                if user.ofm_username and user.ofm_password:
-                    site_manager = SiteManager(user)
-                    site_manager.login()
-                    site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
+            if last_players_cronjob_run.is_success:
+                print('2')
+                for user in OFMUser.objects.all():
+                    print('3')
+                    print(user.username)
+                    if user.ofm_username and user.ofm_password:
+                        site_manager = SiteManager(user)
+                        site_manager.login()
+                        site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
 
-                    player_statistics_parser = PlayerStatisticsParser(site_manager.browser.page_source, user)
-                    statistics = player_statistics_parser.parse()
+                        player_statistics_parser = PlayerStatisticsParser(site_manager.browser.page_source, user)
+                        statistics = player_statistics_parser.parse()
 
-                    site_manager.browser.quit()
+                        site_manager.browser.quit()
 
-                    print("parsed statistics count: %s" % len(statistics))
-                    print("first parsed Statistic is: %s" % statistics[0])
-        print('4')
+                        print("parsed statistics count: %s" % len(statistics))
+                        print("first parsed Statistic is: %s" % statistics[0])
+            print('4')
