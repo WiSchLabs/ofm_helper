@@ -9,8 +9,8 @@
     <div id="table-toolbar">
         <div class="form-inline" role="form">
             <div class="form-group">
-                <span>diff or no diff: </span>
-                <input id="diff_toggle" name="diff_toggle" class="form-control w70" type="checkbox">
+                <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
+                <label for="diff_toggle">Zeige nur die Veränderung zum Vortag</label>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                 <th data-field="won_friendly_tacklings_in_season" data-sortable="true" data-visible="false">Gewonnene Friendly Zweikämpfe</th>
                 <th data-field="lost_friendly_tacklings_in_season" data-sortable="true" data-visible="false">Verlorene Friendly Zweikämpfe</th>
                 <th data-field="yellow_cards_in_season" data-sortable="true" data-visible="false">Gelbe Karten</th>
-                <th data-field="red_cards_in_season" data-sortable="true" data-visible="false">Rote karten</th>
+                <th data-field="red_cards_in_season" data-sortable="true" data-visible="false">Rote Karten</th>
                 <th data-field="equity" data-sortable="true">Marktwert</th>
             </tr>
         </thead>
@@ -50,6 +50,8 @@
     <script>
         var $table = $('#player_data_table'),
             $diff_toggle = $('#diff_toggle');
+
+        $diff_toggle.bootstrapSwitch();
 
         $(function () {
             $diff_toggle.click(function () {
