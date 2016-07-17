@@ -32,6 +32,11 @@ class SiteManager:
     def jump_to_frame(self, frame):
         self.browser.get(frame)
 
+    def kill(self):
+        self.browser.stop_client()
+        self.browser.close()
+        self.browser.quit()
+
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
             from pyvirtualdisplay import Display

@@ -27,7 +27,7 @@ class ParsePlayerStatisticsCronJob(CronJobBase):
                         player_statistics_parser = PlayerStatisticsParser(site_manager.browser.page_source, user)
                         statistics = player_statistics_parser.parse()
 
-                        site_manager.browser.quit()
+                        site_manager.kill()
 
                         print("parsed statistics count: %s" % len(statistics))
                         print("first parsed Statistic is: %s" % statistics[0])

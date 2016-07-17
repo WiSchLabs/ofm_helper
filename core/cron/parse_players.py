@@ -27,7 +27,7 @@ class ParsePlayersCronJob(CronJobBase):
                         players_parser = PlayersParser(site_manager.browser.page_source, user)
                         players = players_parser.parse()
 
-                        site_manager.browser.quit()
+                        site_manager.kill()
 
                         print("parsed Player count: %s" % len(players))
                         print("first parsed Player is: %s" % players[0])
