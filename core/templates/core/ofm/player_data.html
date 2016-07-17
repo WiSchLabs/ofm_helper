@@ -48,16 +48,13 @@
     </table>
 
     <script>
-        var $table = $('#player_data_table'),
-                toggle = false;
+        var $table = $('#player_data_table');
 
         $('#diff_toggle').bootstrapSwitch('state', false);
 
-        $('#diff_toggle').on('switchChange.bootstrapSwitch', function () {
-            toggle = !toggle;
-            $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: toggle},
+        $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
+            $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: data},
                 function(returnedData){
-                    console.log(returnedData);
                     $table.bootstrapTable('load', returnedData)
             });
         });
