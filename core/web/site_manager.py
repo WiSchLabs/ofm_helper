@@ -1,5 +1,7 @@
 import time
 
+import subprocess
+
 from django.conf import settings
 from selenium import webdriver
 
@@ -36,6 +38,8 @@ class SiteManager:
         self.browser.stop_client()
         self.browser.close()
         self.browser.quit()
+
+        subprocess.call("ps -ef | grep phantomjs | grep -v grep | awk '{print $2}' | xargs kill")
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
