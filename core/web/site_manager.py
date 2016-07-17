@@ -39,7 +39,18 @@ class SiteManager:
         self.browser.close()
         self.browser.quit()
 
-        subprocess.call("ps -ef | grep phantomjs | grep -v grep | awk '{print $2}' | xargs kill")
+        #ps = subprocess.Popen(('ps', '-A'), stdout=subprocess.PIPE)
+        #ps.communicate()
+        #grep_phantomjs = subprocess.Popen(('grep', 'phantomjs'), stdin=ps.stdout, stdout=subprocess.PIPE)
+        #grep_phantomjs.communicate()
+        #grep_v_grep = subprocess.Popen(('grep', '-v', 'grep'), stdin=grep_phantomjs.stdout, stdout=subprocess.PIPE)
+        #grep_v_grep.communicate()
+        #awk = subprocess.Popen(('awk', "\'{print $2}\'"), stdin=grep_v_grep.stdout, stdout=subprocess.PIPE)
+        #awk.communicate()
+        #xargs = subprocess.Popen(('xargs', "kill"), stdin=awk.stdout)
+        #xargs.communicate()
+        kill_cmd = "ps -ef | grep phantomjs | grep -v grep | awk '{print $2}' | xargs kill"
+        subprocess.run(kill_cmd, shell=True)
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
