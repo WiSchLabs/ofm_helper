@@ -28,6 +28,6 @@ class ParseFinancesCronJob(CronJobBase):
                         finances_parser = FinancesParser(site_manager.browser.page_source, user)
                         finances = finances_parser.parse()
 
-                        site_manager.browser.quit()
+                        site_manager.kill()
 
                         print("parsed Finances is: %s" % finances)
