@@ -358,6 +358,7 @@ class Contract(models.Model):
 class Finance(models.Model):
     class Meta:
         ordering = ['user', '-matchday']
+        unique_together = (('user', 'matchday'),)
 
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday)
