@@ -53,9 +53,11 @@
         $('#diff_toggle').bootstrapSwitch('state', false);
 
         $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
-            $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: data},
+            $.get("{% url 'core:ofm:player_data_json' %}", {show_diff: data},
                 function(returnedData){
-                    $table.bootstrapTable('load', returnedData)
+                    $table.bootstrapTable('load', returnedData);
+                    $("td:contains('-')").addClass('danger');
+                    $("td:contains('+')").addClass('success');
             });
         });
 
@@ -66,8 +68,6 @@
             });
             return params;
         }
-
-        $('td:contains("-")').addClass('danger')
     </script>
 
 {% endblock %}
