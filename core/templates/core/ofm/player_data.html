@@ -56,8 +56,6 @@
             $.get("{% url 'core:ofm:player_data_json' %}", {show_diff: data},
                 function(returnedData){
                     $table.bootstrapTable('load', returnedData);
-                    $("td:contains('-')").addClass('danger');
-                    $("td:contains('+')").addClass('success');
             });
         });
 
