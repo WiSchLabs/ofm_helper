@@ -1,0 +1,814 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//DE"><html><head>
+    <title>OFM - Finanzen</title>
+    	<meta http-equiv="content-Type" content="text/html; charset=utf-8">
+	<meta name="title" content="OFM - Kostenloses Browsergame Online Fussball Manager">
+	<meta name="description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!">
+	<meta name="keywords" content="Fussball, Manager, Fußballmanager, Browsergame, Onlinemanager, Browserspiel, Internetspiel, Managerspiel, Game, Footballmanager">
+	<meta name="author" content="OnlineFussballManager GmbH, Maik Dokter">
+	<meta name="publisher" content="OnlineFussballManager GmbH">
+	<meta name="copyright" content="OnlineFussballManager GmbH">
+	<meta name="audience" content="Alle">
+	<meta name="page-topic" content="Fussball/Internet">
+	<meta name="robots" content="index,follow">
+	<meta name="revisit-after" content="1 days">
+	<meta name="expires" content="never">
+	<meta name="abstract" content="Online Fussball Manager ist ein kostenloses Fußballmanager Browsergame. übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!">
+	<meta name="language" content="Deutsch,DE,AT,CH">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<link rel="schema.DC" href="http://www.purl.org/dc/elements/1.1/">
+	<meta name="DC.type" scheme="DCMIType" content="Text">
+	<meta name="DC.format" scheme="IMT" content="text/html">
+	<meta name="DC.language" content="de">
+	<meta name="DC.title" content="OFM - Kostenloses Browsergame Online Fussball Manager">
+	<meta name="DC.description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!">
+	<meta name="DC.creator" content="OnlineFussballManager GmbH, Deutschland">
+	<meta name="DC.publisher" content="OnlineFussballManager GmbH, Deutschland">
+	<meta name="DC.copyright" content="OnlineFussballManager GmbH, Deutschland">
+    <link href="/ofm_style.css492.css" rel="stylesheet" type="text/css" media="all">
+            <link href="/style/core/base.css492.css" rel="stylesheet" type="text/css" media="all">
+        <link href="/style/core/base-int.css492.css" rel="stylesheet" type="text/css" media="all">
+        <link href="/style/core/layout.css492.css" rel="stylesheet" type="text/css" media="all">
+    			
+ <script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript" src="/java/jquery/jquery-1.6.min.js"></script>
+	<script type="text/javascript" src="/java/jquery/js/jquery-ui-1.8.7.custom.min.js"></script>
+ <script type="text/javascript" src="/java/ofm_biblio.js357.js"></script>
+	<script type="text/javascript" src="/java/ofm_javascript.js357.js"></script>
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/java/finanzen_graph/excanvas.min.js"></script><![endif]-->
+
+    <script language="javascript" type="text/javascript" src="/java/finanzen_graph/jquery.flot.js357.js"></script>
+    <script language="javascript" type="text/javascript" src="/java/finanzen_graph/jquery.flot.threshold.js357.js"></script>
+
+  </head><body onload="preloadImages()" text="#000000" leftmargin="0" marginheight="0" marginwidth="0" topmargin="0"><div id="WzTtDiV" style="visibility: hidden; position: absolute; overflow: hidden; padding: 0px; width: 1919px; left: -1920px; top: 0px; display: block;"></div><csscriptdict>
+    <script type="text/javascript">
+      /* <![CDATA[ */
+
+      function newImage(arg) {
+        if (document.images) {
+          rslt = new Image();
+          rslt.src = arg;
+          return rslt;
+        }
+      }
+
+      function changeImagesArray(array) {
+        if (preloadFlag == true) {
+          var d = document; var img;
+          for (var i=0; i<array.length; i+=2) {
+            img = null; var n = array[i];
+            if (d.images) {img = d.images[n];}
+            if (!img && d.getElementById) {img = d.getElementById(n);}
+            if (img) {img.src = array[i+1];}
+          }
+        }
+      }
+
+      function changeImages() {
+        changeImagesArray(changeImages.arguments);
+      }
+
+      /* ]]> */
+    </script>
+  </csscriptdict>
+  <csactiondict>
+    <script type="text/javascript">
+      /* <![CDATA[ */
+
+      var preloadFlag = false;
+      function preloadImages() {
+        if (document.images) {
+          pre_icon_arrow_gray2 = newImage('../bilder/icons/icon_arrow_gray2.png');
+          preloadFlag = true;
+        }
+      }
+
+      /* ]]> */
+    </script>
+  </csactiondict>
+  <script type="text/javascript">
+    if ((top.frames.length > 0) && (top.frames.content1.frames.length > 0))
+    {
+      if (top.frames.content1.frames.menu)
+      {
+        if (top.frames.content1.frames.menu.location.href == 'http://www.onlinefussballmanager.de/010_finanzen/_menu_finanzen.php')
+        {
+          top.frames.content1.frames.menu.menuepunkt_auswaehlen(1);
+        }
+      }
+    }
+  </script>
+
+ 	<style>
+	.tickLabel{
+	font-size:9px;
+	white-space:nowrap;
+	width:55px;
+	}
+	</style>
+
+
+<script type="text/javascript" src="/java/wz_tooltip.js357.js"></script>
+ <div align="center" id="einaus">
+
+ 
+
+    <table width="960" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:10px;margin-top:25px;" class="shadow">
+      <tbody><tr height="47">
+        <td valign="bottom" height="47" background="../bilder/back/back_head_cyan4_1000.png">
+          <table width="100%" border="0" cellspacing="0" cellpadding="4">
+            <tbody><tr height="22">
+              <td align="center" valign="middle" width="56" height="22"><img src="../bilder/icons/icon_finanzen.png" alt="" height="37" width="52" align="absmiddle" border="0"></td>
+              <td valign="middle" height="22"><span class="headline_white">Einnahmen und Ausgaben deines Vereins</span><span class="minitext"><br>
+                  <font color="#cddfdf">Übersicht der Vereinsfinanzen des heutigen Spieltags und der aktuellen Saison!</font></span></td>
+              <td align="right" valign="middle" height="22"><img src="../bilder/icons/coins.png" alt="" height="16" width="25" align="absmiddle" border="0"> <font color="white">Kontostand: 1.633.872 €&nbsp;</font></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+      <tr>
+        <td sytle="border:1px solid red;" valign="bottom" height="1" background="../bilder/back/line_1px_lightgreen.png"></td>
+      </tr>
+    </tbody></table>
+
+    <table width="961" border="0" cellspacing="0" cellpadding="2">
+      <tbody><tr height="5">
+        <td colspan="15" valign="bottom" width="957" height="5"></td>
+      </tr>
+      <tr height="22">
+        <td colspan="7" valign="bottom" bgcolor="#95c995" width="469" height="22" background="../bilder/back/back_head_green_500px.png">
+
+          <table cellspacing="0" cellpadding="0">
+            <tbody><tr>
+              <td valign="bottom" width="27"></td>
+              <td valign="bottom" width="249"><span class="headline14_gerade"><font color="white">Einnahmen</font></span></td>
+              <td valign="bottom" width="50"><strong><font color="white">Saison</font></strong></td>
+              <td align="right" valign="bottom" width="118"><strong><font color="white">heute</font></strong></td>
+            </tr>
+          </tbody></table>
+
+        </td>
+        <td valign="top" width="15" height="22"></td>
+        <td colspan="7" valign="bottom" bgcolor="#95c995" width="469" height="22" background="../bilder/back/back_head_red_500px.png">
+
+          <table cellspacing="0" cellpadding="0">
+            <tbody><tr>
+              <td valign="bottom" width="27"></td>
+              <td valign="bottom" width="249"><span class="headline14_gerade"><font color="white">Ausgaben</font></span></td>
+              <td valign="bottom" width="50"><strong><font color="white">Saison</font></strong></td>
+              <td align="right" valign="bottom" width="118"><strong><font color="white">heute</font></strong></td>
+            </tr>
+          </tbody></table>
+
+        </td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="white" width="19" height="24"><a onmouseover="changeImages('icon_arrow_gray','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray','../bilder/icons/icon_arrow_gray.png');return true" href="../010_stadion/zuschauer.php"><img id="icon_arrow_gray" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray" border="0" alt="">
+          </a>
+        </td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Zuschauer Ligaspiele</td>
+        <td bgcolor="#e8eef1" width="109" height="24">
+          <div align="right">54.450 €</div>
+        </td>
+        <td bgcolor="#e8eef1" width="10" height="24"></td>
+        <td bgcolor="#d0e7e5" width="109" height="24">
+          <div align="right">
+          <a href="../premium/_frame_plus.php" target="content1" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr zu den Finanzen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Aktuelle Tagesstatistiken mit den täglichen Ein- und Ausgaben gibt es im OFM Erweiterungspaket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)"><img src="../bilder/plus_icon.png" alt="Mehr Funktionen auf dieser Seite!" height="25" width="40" border="0"></a>          </div>
+        </td>
+        <td bgcolor="#d0e7e5" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray11','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray11','../bilder/icons/icon_arrow_gray.png');return true" href="../010_mannschaft/spieler.php">
+             <img id="icon_arrow_gray11" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray11" border="0" alt="">
+          </a>
+        </td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Spielergehälter</td>
+        <td bgcolor="#f2efec" width="109" height="24">
+          <div align="right">167.945 €</div>
+        </td>
+        <td bgcolor="#f2efec" width="10" height="24"></td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+          <a href="../premium/_frame_plus.php" target="content1" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr zu den Finanzen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Aktuelle Tagesstatistiken mit den täglichen Ein- und Ausgaben gibt es im OFM Erweiterungspaket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)"><img src="../bilder/plus_icon.png" alt="Mehr Funktionen auf dieser Seite!" height="25" width="40" border="0"></a>          </div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="#dee7d9" width="19" height="24"><a onmouseover="changeImages('icon_arrow_gray2','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray2','../bilder/icons/icon_arrow_gray.png');return true" href="spon_waehlen.php"><img id="icon_arrow_gray2" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray2" border="0"></a></td>
+        <td bgcolor="#dee7d9" width="4" height="24"></td>
+        <td bgcolor="#dee7d9" width="196" height="24">Sponsoren</td>
+        <td bgcolor="#dae8cf" width="109" height="24">
+          <div align="right">
+            0 €          </div>
+        </td>
+        <td bgcolor="#dae8cf" width="10" height="24"></td>
+        <td bgcolor="#b8dcc1" width="109" height="24">
+          <div align="right">
+            <font color="gray">--</font>          </div>
+        </td>
+        <td bgcolor="#b8dcc1" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="#eeebe7" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray12','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray12','../bilder/icons/icon_arrow_gray.png');return true" href="../010_stadion/stadion.php">
+             <img id="icon_arrow_gray12" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray12" border="0" alt="">
+          </a>
+        </td>
+        <td bgcolor="#eeebe7" width="4" height="24"></td>
+        <td bgcolor="#eeebe7" width="196" height="24">Stadionausbau / Stadionumfeld</td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+            432.000 €</div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+        <td bgcolor="#d8cfc6" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d8cfc6" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray3','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray3','../bilder/icons/icon_arrow_gray.png');return true" href="../010_pokal/pokal.php">
+             <img id="icon_arrow_gray3" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray3" border="0" alt="">
+          </a>
+        </td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Pokal</td>
+        <td bgcolor="#e8eef1" width="109" height="24">
+          <div align="right">
+          0 €</div>
+        </td>
+        <td bgcolor="#e8eef1" width="10" height="24"></td>
+        <td bgcolor="#d0e7e5" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d0e7e5" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray13','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray13','../bilder/icons/icon_arrow_gray.png');return true" href="../010_mannschaft/jugendfoerderung.php"><img id="icon_arrow_gray13" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray13" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Jugendförderung</td>
+        <td bgcolor="#f2efec" width="109" height="24">
+          <div align="right">
+          8.280 €</div>
+        </td>
+        <td bgcolor="#f2efec" width="10" height="24"></td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="#dee7d9" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray4','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray4','../bilder/icons/icon_arrow_gray.png');return true" href="bank.php"><img id="icon_arrow_gray4" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray4" border="0"></a></td>
+        <td bgcolor="#dee7d9" width="4" height="24"></td>
+        <td bgcolor="#dee7d9" width="196" height="24">Zinsen</td>
+        <td bgcolor="#dae8cf" width="109" height="24">
+          <div align="right">
+          20.749 €</div>
+        </td>
+        <td bgcolor="#dae8cf" width="10" height="24"></td>
+        <td bgcolor="#b8dcc1" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#b8dcc1" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="#eeebe7" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray14','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray14','../bilder/icons/icon_arrow_gray.png');return true" href="bank.php"><img id="icon_arrow_gray14" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray14" border="0"></a></td>
+        <td bgcolor="#eeebe7" width="4" height="24"></td>
+        <td bgcolor="#eeebe7" width="196" height="24">Zinsen</td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+          0 € </div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+        <td bgcolor="#d8cfc6" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d8cfc6" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray5','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray5','../bilder/icons/icon_arrow_gray.png');return true" href="bank.php"><img id="icon_arrow_gray5" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray5" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Kredit</td>
+        <td bgcolor="#e8eef1" width="109" height="24">
+          <div align="right">
+          0 € </div>
+        </td>
+        <td bgcolor="#e8eef1" width="10" height="24"></td>
+        <td bgcolor="#d0e7e5" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d0e7e5" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray15','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray15','../bilder/icons/icon_arrow_gray.png');return true" href="../010_mannschaft/training_2011.php"><img id="icon_arrow_gray15" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray15" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Trainingslager&nbsp;/&nbsp;Turnier</td>
+        <td bgcolor="#f2efec" width="109" height="24">
+          <div align="right">
+          0 € </div>
+        </td>
+        <td bgcolor="#f2efec" width="10" height="24"></td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="#dee7d9" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray6','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray6','../bilder/icons/icon_arrow_gray.png');return true" href="../010_transfer/angebote.php"><img id="icon_arrow_gray6" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray6" border="0"></a></td>
+        <td bgcolor="#dee7d9" width="4" height="24"></td>
+        <td bgcolor="#dee7d9" width="196" height="24">Transfereinnahmen</td>
+        <td bgcolor="#dae8cf" width="109" height="24">
+          <div align="right">
+            0 €</div>
+        </td>
+        <td bgcolor="#dae8cf" width="10" height="24"></td>
+        <td bgcolor="#b8dcc1" width="109" height="24">
+          <div align="right">
+          <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#b8dcc1" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="#eeebe7" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray16','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray16','../bilder/icons/icon_arrow_gray.png');return true" href="../010_transfer/transfer_gebote.php"><img id="icon_arrow_gray16" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray16" border="0"></a></td>
+        <td bgcolor="#eeebe7" width="4" height="24"></td>
+        <td bgcolor="#eeebe7" width="196" height="24">Transferausgaben</td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+        <td bgcolor="#d8cfc6" width="109" height="24">
+          <div align="right">
+<font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d8cfc6" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray7','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray7','../bilder/icons/icon_arrow_gray.png');return true" href="../010_stadion/zuschauer.php"><img id="icon_arrow_gray7" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray7" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Zuschauer Freundschaftsspiele</td>
+        <td bgcolor="#e8eef1" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#e8eef1" width="10" height="24"></td>
+        <td bgcolor="#d0e7e5" width="109" height="24">
+          <div align="right">
+<font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d0e7e5" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray17','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray17','../bilder/icons/icon_arrow_gray.png');return true" href="../010_mannschaft/spieler.php"><img id="icon_arrow_gray17" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray17" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Abfindungen</td>
+        <td bgcolor="#f2efec" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#f2efec" width="10" height="24"></td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+<font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+      </tr>
+      <tr height="24">
+        <td align="right" bgcolor="#dee7d9" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray8','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray8','../bilder/icons/icon_arrow_gray.png');return true" href="../010_freund/anbieten_fr.php"><img id="icon_arrow_gray8" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray8" border="0"></a></td>
+        <td bgcolor="#dee7d9" width="4" height="24"></td>
+        <td bgcolor="#dee7d9" width="196" height="24">Antrittsgelder Freundschaftsspiele</td>
+              <td bgcolor="#dae8cf" width="109" height="24">
+                <div align="right">
+30.000 €</div>
+              </td>
+              <td bgcolor="#dae8cf" width="10" height="24"></td>
+              <td bgcolor="#b8dcc1" width="109" height="24">
+                <div align="right">
+<font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#b8dcc1" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="#eeebe7" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray18','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray18','../bilder/icons/icon_arrow_gray.png');return true" href="../010_freund/anbieten_fr.php"><img id="icon_arrow_gray18" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray18" border="0"></a></td>
+        <td bgcolor="#eeebe7" width="4" height="24"></td>
+        <td bgcolor="#eeebe7" width="196" height="24">Antrittsgelder Freundschaftsspiele</td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+        <td bgcolor="#d8cfc6" width="109" height="24">
+          <div align="right">
+<font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d8cfc6" width="10" height="24"></td>
+      </tr>
+            <tr height="24">
+              <td align="right" bgcolor="white" width="19" height="24">
+                <a onmouseover="changeImages('icon_arrow_gray9','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray9','../bilder/icons/icon_arrow_gray.png');return true" href="../010_funcup/funcup_meine.php"><img id="icon_arrow_gray9" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray9" border="0"></a></td>
+              <td bgcolor="white" width="4" height="24"></td>
+              <td bgcolor="white" width="196" height="24">Prämien FunCups</td>
+              <td bgcolor="#e8eef1" width="109" height="24">
+                <div align="right">
+            0 €</div>
+        </td>
+        <td bgcolor="#e8eef1" width="10" height="24"></td>
+        <td bgcolor="#d0e7e5" width="109" height="24">
+          <div align="right">
+            <font color="gray">--</font></div>
+        </td>
+        <td bgcolor="#d0e7e5" width="10" height="24"></td>
+        <td width="15" height="24"></td>
+        <td align="right" bgcolor="white" width="19" height="24">
+          <a onmouseover="changeImages('icon_arrow_gray19','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray19','../bilder/icons/icon_arrow_gray.png');return true" href="../010_funcup/funcup_meine.php"><img id="icon_arrow_gray19" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray19" border="0"></a></td>
+        <td bgcolor="white" width="4" height="24"></td>
+        <td bgcolor="white" width="196" height="24">Antrittsgelder FunCups</td>
+        <td bgcolor="#f2efec" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#f2efec" width="10" height="24"></td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+<font color="gray">--</font></div>
+              </td>
+              <td bgcolor="#e4ded8" width="10" height="24"></td>
+            </tr>
+                  <tr height="24">
+              <td align="right" bgcolor="#dee7d9" width="19" height="24">
+                <a onmouseover="changeImages('icon_arrow_gray10','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray10','../bilder/icons/icon_arrow_gray.png');return true" href="../010_buero/wetten.php"><img id="icon_arrow_gray10" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray10" border="0"></a></td>
+              <td bgcolor="#dee7d9" width="4" height="24"></td>
+              <td bgcolor="#dee7d9" width="196" height="24">
+                Gewinne im Wettbüro + Aktionen                              </td>
+              <td bgcolor="#dae8cf" width="109" height="24">
+                <div align="right">
+0 €</div>
+              </td>
+              <td bgcolor="#dae8cf" width="10" height="24"></td>
+              <td bgcolor="#b8dcc1" width="109" height="24">
+                <div align="right">
+<font color="gray">--</font></div>
+              </td>
+              <td bgcolor="#b8dcc1" width="10" height="24"></td>
+              <td width="15" height="24"></td>
+              <td align="right" bgcolor="#eeebe7" width="19" height="24">
+                <a onmouseover="changeImages('icon_arrow_gray20','../bilder/icons/icon_arrow_gray2.png');return true" onmouseout="changeImages('icon_arrow_gray20','../bilder/icons/icon_arrow_gray.png');return true" href="../010_buero/wetten.php"><img id="icon_arrow_gray20" src="../bilder/icons/icon_arrow_gray.png" name="icon_arrow_gray20" border="0"></a></td>
+              <td bgcolor="#eeebe7" width="4" height="24"></td>
+              <td bgcolor="#eeebe7" width="196" height="24">Einsätze im Wettbüro</td>
+        <td bgcolor="#e4ded8" width="109" height="24">
+          <div align="right">
+0 €</div>
+        </td>
+        <td bgcolor="#e4ded8" width="10" height="24"></td>
+        <td bgcolor="#d8cfc6" width="109" height="24">
+          <div align="right">
+      <font color="gray">--</font></div>
+              </td>
+              <td bgcolor="#d8cfc6" width="10" height="24"></td>
+            </tr>
+            <tr height="24">
+              <td align="right" bgcolor="#cdf4cd" width="19" height="24"></td>
+              <td bgcolor="#cdf4cd" width="4" height="24"></td>
+              <td bgcolor="#cdf4cd" width="196" height="24"><font color="#003366"><b>Summe Einnahmen</b></font></td>
+              <td bgcolor="#adeaa8" width="109" height="24">
+                <div align="right">
+                  <font color="#003366"><b>105.199 €</b></font></div>
+              </td><td bgcolor="#adeaa8" width="10" height="24"></td>
+              <td bgcolor="#8ad683" width="109" height="24">
+                <div align="right">
+                  <b><a href="../premium/_frame_plus.php" target="content1" style="text-decoration:none;" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr zu den Finanzen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Aktuelle Tagesstatistiken mit den täglichen Ein- und Ausgaben gibt es im OFM Erweiterungspaket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)"><font color="gray">? €</font></a></b></div>
+              </td>
+              <td bgcolor="#8ad683" width="10" height="24"></td>
+              <td width="15" height="24"></td>
+              <td align="right" bgcolor="#e1ccb7" width="19" height="24"></td>
+              <td bgcolor="#e1ccb7" width="4" height="24"></td>
+              <td bgcolor="#e1ccb7" width="196" height="24"><font color="#602300"><b>Summe Ausgaben</b></font></td>
+            <td bgcolor="#cfb097" width="109" height="24">
+              <div align="right">
+                <font color="#602300"><b>608.225 €</b></font></div>
+            </td>
+            <td bgcolor="#cfb097" width="10" height="24"></td>
+            <td bgcolor="#c59d88" width="109" height="24">
+              <div align="right">
+                <b><a href="../premium/_frame_plus.php" target="content1" style="text-decoration:none;" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr zu den Finanzen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Aktuelle Tagesstatistiken mit den täglichen Ein- und Ausgaben gibt es im OFM Erweiterungspaket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)"><font color="gray">? €</font></a></b></div>
+            </td>
+            <td bgcolor="#c59d88" width="10" height="24"></td>
+          </tr>
+          <tr>
+            <td colspan="7" valign="top" width="469">
+              <table width="100%" cellspacing="0" cellpadding="0" class="pos-rel" style="margin-top:-4px;">
+                <tbody><tr height="10">
+                  <td width="10" height="10"><img src="../bilder/schatten/s5_10px.png" alt="" height="10" width="10" border="0"></td>
+                  <td height="10"><img class="img_100percent" src="../bilder/schatten/s4_10px.png" alt="" height="10" width="100%" border="0"></td>
+                  <td width="10" height="10"><img src="../bilder/schatten/s3_10px.png" alt="" height="10" width="10" border="0"></td>
+                </tr>
+              </tbody></table>
+              <br>
+            </td>
+            <td valign="top" width="15"></td>
+            <td colspan="7" valign="top" width="469">
+              <table width="100%" cellspacing="0" cellpadding="0" class="pos-rel" style="margin-top:-4px;">
+                <tbody><tr height="10">
+                  <td width="10" height="10"><img src="../bilder/schatten/s5_10px.png" alt="" height="10" width="10" border="0"></td>
+                  <td height="10"><img class="img_100percent" src="../bilder/schatten/s4_10px.png" alt="" height="10" width="100%" border="0"></td>
+                  <td width="10" height="10"><img src="../bilder/schatten/s3_10px.png" alt="" height="10" width="10" border="0"></td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+          <tr height="22">
+            <td colspan="7" width="469" height="22" background="../bilder/back/back_head_grey_500px.png">
+              <table cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                  <td valign="bottom" width="33"></td>
+                  <td valign="bottom" width="249"><span class="headline14_gerade"><font color="white">Bilanz</font></span></td>
+                </tr>
+              </tbody></table>
+            </td>
+            <td valign="top" width="15" height="22"></td>
+                       <td colspan="7" width="469" height="22" background="../bilder/back/back_head_grey_500px.png">
+              <table cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                  <td valign="middle" width="33"></td>
+                  <td valign="middle" width="358"><span class="headline14_gerade"><font color="white">Entwicklung</font></span></td>
+                    <td valign="middle" width="13"><img src="../bilder/icons/arrow_big_green_minimini.png" alt="" height="11" width="11" align="absmiddle" border="0"></td>
+                    <td valign="middle"><a class="white" href="graphen.php" onclick="NewWindow(this.href,'finanzen_entwicklung','750','630','yes','yes');return false" onfocus="if(this.blur)this.blur()">Details</a></td>
+                </tr>
+              </tbody></table>
+            </td>
+			        </tr>
+        <tr height="28">
+          <td bgcolor="#d5ecf0" width="19" height="28"></td>
+          <td bgcolor="#d5ecf0" width="4" height="28"></td>
+          <td bgcolor="#d5ecf0" width="196" height="28"><b>Bilanz diese Saison</b></td>
+          <td bgcolor="#d5ecf0" width="109" height="28">
+            <div align="right">
+              <b><font color="#003366">-503.026 €</font></b></div>
+          </td>
+          <td bgcolor="#d5ecf0" width="10" height="28"></td>
+          <td bgcolor="#d5ecf0" width="109" height="28">
+            <div align="right"></div>
+          </td>
+          <td bgcolor="#d5ecf0" width="10" height="28"></td>
+          <td valign="top" width="15" height="28"></td>
+			<td rowspan="4" colspan="7" valign="top" bgcolor="white" width="471" height="118"><table>
+    <tbody><tr>
+        <td style="padding-top: 7px;"><div id="placeholder" style="width: 460px; height: 100px; padding: 0px; position: relative;"><canvas class="base" width="460" height="100"></canvas><canvas class="overlay" width="460" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas><div class="tickLabels" style="font-size:smaller"><div class="xAxis x1Axis" style="color:#545454"></div><div class="yAxis y1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:right;top:87px;right:405px;width:55px">1 Mio</div><div class="tickLabel" style="position:absolute;text-align:right;top:57px;right:405px;width:55px">1.5 Mio</div><div class="tickLabel" style="position:absolute;text-align:right;top:26px;right:405px;width:55px">2 Mio</div><div class="tickLabel" style="position:absolute;text-align:right;top:-4px;right:405px;width:55px">2.5 Mio</div></div></div></div></td>
+    </tr>
+</tbody></table>
+<script id="source" language="javascript" type="text/javascript">
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+
+	while (rgx.test(x1))
+	{
+		x1 = x1.replace(rgx, '$1' + '.' + '$2');
+	}
+
+
+	return x1 + x2;
+}
+
+
+$(function () {
+	var d1=[[35,1633872],[34,2041640],[33,2040594],[32,2046359],[31,2045236],[30,2050998],[29,2054652],[28,2065189],[27,2068790],[26,2079319],[25,2082881],[24,2093401],[23,2103915],[22,2107418],[21,2117924],[20,2121389],[19,2131887],[18,2136438],[17,2136898],[16,2034217],[15,2010814],[14,1984666],[13,1961292],[12,1931767],[11,1905590],[10,1886658],[9,1860508],[8,1837207],[7,1813920],[6,1790646],[5,1765317],[4,1746468],[3,1620414],[2,1501709],[1,1376324]];
+
+	$.plot($("#placeholder"),
+	[
+     {data: d1}
+	],
+	{
+     series:
+	 {
+       lines: { show: true},
+       points: { show: true, radius: 1 },
+	   color: "rgb(30, 180, 20)",
+       threshold: {below: 0, color: "rgb(200, 20, 30)" }
+	    },
+	 xaxis:
+		{
+		ticks: "",
+	    max:35
+
+        },
+
+      yaxis:
+		{
+			autoscaleMargin: 0.2,
+			tickDecimals: 0,
+     		tickFormatter:
+     		
+					function suffixFormatter(val, axis)
+					{
+				    	if(val == 0)
+						{
+						  return val;
+						}
+
+
+						if(d1.length==1)
+						{
+
+						 return  (val/1000000).toFixed(1) +" Mio";
+						}
+
+
+
+						else
+						{
+							return (val/1000000) +" Mio";
+						}
+
+
+						}
+							},
+
+        grid:
+		{
+           hoverable:true,
+           clickable:true
+		}
+    });
+
+function showTooltip(x, y, contents)
+	{
+	    $('<div id="tooltip">' + contents + '</div>').css( {
+	            position: 'absolute',
+	            display: 'none',
+	            top: y + 20,
+	            left: x - 60,
+	            color:'#FFFFFF',
+	            fontSize: '11px',
+	            border: '1px solid #000000',
+	            padding: '0 3px 3px  3px',
+	            fontWeight: 'bold',
+	            backgroundColor:'#4A85BD',
+	            backgroundImage:'url(/bilder/tipback_finanzgraph.jpg)',
+	            opacity: 0.80
+	        }).appendTo("body").fadeIn(0);
+    }
+
+
+    var previousPoint = null;
+    $("#placeholder").bind("plothover", function (event, pos, item) {
+        $("#x").text(pos.x),
+        $("#y").text(pos.y);
+
+        if ($("#hover").length > 0) {
+
+
+			if (item) {
+				if (previousPoint != item.datapoint) {
+					previousPoint = item.datapoint;
+
+					$("#tooltip").remove();
+					var x = item.datapoint[0], y = item.datapoint[1];
+
+				}
+				if (x == parseInt(x)) {
+				
+									}
+				else {
+									}
+			}
+
+			else {
+				$("#tooltip").remove();
+				previousPoint = null;
+			}
+		}
+
+    });
+
+		function saisonverlauf(zeitleiste)
+	{
+		spieltag= 17;
+		saison=140;
+
+		for(i=d1.length;i>=0;i--)
+		{
+
+			if(spieltag<0)
+			{
+				spieltag=34;
+				spieltag_ordinal= '34.';
+				saison--;
+			}
+
+			if(i<=zeitleiste)
+			{
+				return "Spieltag <nobr>"+spieltag+" (Saison "+ saison + ")";
+			}
+
+			spieltag--;
+
+		}
+
+	}
+
+});
+</script>
+<div id="hover"></div></td>        </tr>
+        <tr height="28">
+          <td bgcolor="#adcfd7" width="19" height="28"></td>
+          <td bgcolor="#adcfd7" width="4" height="28"></td>
+          <td bgcolor="#adcfd7" width="196" height="28"><b>Bilanz heute</b></td>
+          <td bgcolor="#adcfd7" width="109" height="28">
+            <div align="right">
+              <b><a href="../premium/_frame_plus.php" target="content1" style="text-decoration:none;" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr zu den Finanzen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Aktuelle Tagesstatistiken mit den täglichen Ein- und Ausgaben gibt es im OFM Erweiterungspaket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)"><font color="gray">? €</font></a></b></div>
+          </td>
+          <td bgcolor="#adcfd7" width="10" height="28"></td>
+          <td bgcolor="#adcfd7" width="109" height="28"></td>
+          <td bgcolor="#adcfd7" width="10" height="28"></td>
+          <td valign="top" width="15" height="28"></td>
+        </tr>
+        <tr height="28">
+          <td bgcolor="#d5ecf0" width="19" height="28"></td>
+          <td bgcolor="#d5ecf0" width="4" height="28"></td>
+          <td bgcolor="#d5ecf0" width="196" height="28">Übernahme aus letzter Saison:</td>
+          <td bgcolor="#d5ecf0" width="109" height="28">
+            <div align="right"></div>
+          </td>
+          <td bgcolor="#d5ecf0" width="10" height="28"></td>
+          <td bgcolor="#d5ecf0" width="109" height="28">
+            <div align="right">
+              <b><font color="#602300"><nobr>2.136.898 €</nobr></font></b></div>
+          </td>
+          <td bgcolor="#d5ecf0" width="10" height="28"></td>
+          <td valign="top" width="15" height="28">
+            <div align="right"></div>
+          </td>
+        </tr>
+        <tr height="28">
+          <td bgcolor="white" width="19" height="28"></td>
+          <td bgcolor="white" width="4" height="28"></td>
+          <td bgcolor="white" width="196" height="28"><b>aktueller Kontostand</b></td>
+                  <td bgcolor="white" width="109" height="28">
+                    <div align="right"></div>
+                  </td>
+                  <td bgcolor="white" width="10" height="28"></td>
+                  <td bgcolor="white" width="109" height="28">
+                    <div align="right">
+                      <b><font color="#003366">1.633.872 €</font></b></div>
+                  </td>
+                  <td bgcolor="white" width="10" height="28"></td>
+                  <td width="15" height="28">
+                    <div align="right"></div>
+                  </td>
+                </tr>
+                <tr height="21">
+                  <td colspan="7" valign="top" width="469" height="21">
+                    <table width="100%" cellspacing="0" cellpadding="0" class="pos-rel" style="margin-top:-4px;">
+                      <tbody><tr height="10">
+                        <td width="10" height="10"><img src="../bilder/schatten/s5_10px.png" alt="" height="10" width="10" border="0"></td>
+                        <td height="10"><img class="img_100percent" src="../bilder/schatten/s4_10px.png" alt="" height="10" width="100%" border="0"></td>
+                        <td width="10" height="10"><img src="../bilder/schatten/s3_10px.png" alt="" height="10" width="10" border="0"></td>
+                      </tr>
+                    </tbody></table>
+                  </td>
+                  <td width="15" height="21"></td>
+                  <td colspan="7" valign="top" width="469" height="21">
+                      <table width="100%" cellspacing="0" cellpadding="0" class="pos-rel" style="margin-top:-4px;">
+                        <tbody><tr height="10">
+                          <td width="10" height="10"><img src="../bilder/schatten/s5_10px.png" alt="" height="10" width="10" border="0"></td>
+                          <td height="10"><img class="img_100percent" src="../bilder/schatten/s4_10px.png" alt="" height="10" width="100%" border="0"></td>
+                          <td width="10" height="10"><img src="../bilder/schatten/s3_10px.png" alt="" height="10" width="10" border="0"></td>
+                        </tr>
+                      </tbody></table>
+                  </td>
+                </tr>
+              </tbody></table>
+
+	              </div>
+			<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1460754-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		
+
+
+</body></html>

@@ -1,10 +1,7 @@
-from urllib import request
-
 from bs4 import BeautifulSoup
 
 from core.models import Matchday, Season
 from core.parsers.base_parser import BaseParser
-from core.web.ofm_page_constants import Constants
 
 
 class MatchdayParser(BaseParser):

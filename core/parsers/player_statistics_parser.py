@@ -13,9 +13,9 @@ class PlayerStatisticsParser(BaseParser):
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
-        return self.parse_player_statistics_html(soup)
+        return self.parse_html(soup)
 
-    def parse_player_statistics_html(self, soup):
+    def parse_html(self, soup):
         """
         :param soup: BeautifulSoup of player statistics page
         :return: list of parsed player statistics
@@ -24,9 +24,9 @@ class PlayerStatisticsParser(BaseParser):
         players_stat_table = soup.find(id="playersStatisticsTable").tbody
         player_list = players_stat_table.find_all('tr')  # 1 row per player
 
-        return [self.parse_player_stat_row(player_row) for player_row in player_list]
+        return [self.parse_row(player_row) for player_row in player_list]
 
-    def parse_player_stat_row(self, player_row):
+    def parse_row(self, player_row):
         # we assume to have parsed the matchday beforehand
         matchday = Matchday.objects.all()[0]
         player_stat_values = self._filter_invalid_cells(player_row.find_all('td'))
