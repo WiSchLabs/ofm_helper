@@ -352,4 +352,39 @@ class Contract(models.Model):
     sold_on_matchday = models.ForeignKey(Matchday, blank=True, null=True, related_name='sold_players')
 
     def __str__(self):
-        return "%s: %s " % (self.user.username, self.player.name)
+        return "%s: %s" % (self.user.username, self.player.name)
+
+
+class Finance(models.Model):
+    class Meta:
+        ordering = ['user', '-matchday']
+
+    user = models.ForeignKey(OFMUser)
+    matchday = models.ForeignKey(Matchday)
+
+    balance = models.IntegerField(default=0)
+
+    income_visitors_league = models.IntegerField(default=0)
+    income_sponsoring = models.IntegerField(default=0)
+    income_cup = models.IntegerField(default=0)
+    income_interests = models.IntegerField(default=0)
+    income_loan = models.IntegerField(default=0)
+    income_transfer = models.IntegerField(default=0)
+    income_visitors_friendlies = models.IntegerField(default=0)
+    income_friendlies = models.IntegerField(default=0)
+    income_funcup = models.IntegerField(default=0)
+    income_betting = models.IntegerField(default=0)
+
+    expenses_player_salaries = models.IntegerField(default=0)
+    expenses_stadium = models.IntegerField(default=0)
+    expenses_youth = models.IntegerField(default=0)
+    expenses_interests = models.IntegerField(default=0)
+    expenses_trainings = models.IntegerField(default=0)
+    expenses_transfer = models.IntegerField(default=0)
+    expenses_compensation = models.IntegerField(default=0)
+    expenses_friendlies = models.IntegerField(default=0)
+    expenses_funcup = models.IntegerField(default=0)
+    expenses_betting = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "%s (%s): %s" % (self.user.username, self.matchday, self.balance)
