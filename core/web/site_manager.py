@@ -50,7 +50,8 @@ class SiteManager:
         #xargs = subprocess.Popen(('xargs', "kill"), stdin=awk.stdout)
         #xargs.communicate()
         kill_cmd = "ps -ef | grep phantomjs | grep -v grep | awk '{print $2}' | xargs kill"
-        subprocess.run(kill_cmd, shell=True)
+        subprocess.Popen(kill_cmd, shell=True).communicate()
+        #subprocess.run(kill_cmd, shell=True)
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
