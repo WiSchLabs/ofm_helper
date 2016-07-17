@@ -49,6 +49,7 @@ class FinancesParser(BaseParser):
 
 
         finances, success = Finance.objects.get_or_create(
+            user=self.user,
             matchday=matchday,
             balance=balance,
             income_visitors_league=income_visitors_league,
