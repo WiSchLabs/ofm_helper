@@ -49,17 +49,16 @@
 
     <script>
         var $table = $('#player_data_table'),
-            $diff_toggle = $('#diff_toggle');
+                toggle = false;
 
-        $diff_toggle.bootstrapSwitch();
+        $('#diff_toggle').bootstrapSwitch('state', false);
 
-        $(function () {
-            $diff_toggle.click(function () {
-                $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: diff_toggle.checked},
-                    function(returnedData){
-                        console.log(returnedData);
-                        $table.bootstrapTable('load', returnedData)
-                });
+        $('#diff_toggle').on('switchChange.bootstrapSwitch', function () {
+            toggle = !toggle;
+            $.get('{% url 'core:ofm:player_data_json' %}', {show_diff: toggle},
+                function(returnedData){
+                    console.log(returnedData);
+                    $table.bootstrapTable('load', returnedData)
             });
         });
 
