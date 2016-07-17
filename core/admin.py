@@ -1,4 +1,4 @@
-from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract
+from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance
 from django.contrib import admin
 from django.contrib.admin import register
 
@@ -49,5 +49,12 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
 class ContractAdmin(admin.ModelAdmin):
     list_filter = ['player', 'user']
     search_fields = ['player', 'user']
+
+
+@admin.register(Finance)
+class FinanceAdmin(admin.ModelAdmin):
+    list_filter = ['user', 'matchday']
+    list_display = ['user', 'matchday']
+    search_fields = ['user', 'matchday']
 
 
