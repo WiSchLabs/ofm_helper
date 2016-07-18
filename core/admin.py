@@ -48,13 +48,13 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
     list_filter = ['player', 'user']
-    search_fields = ['player', 'user']
+    search_fields = ['player', 'user__username']
 
 
 @admin.register(Finance)
 class FinanceAdmin(admin.ModelAdmin):
     list_filter = ['user', 'matchday']
     list_display = ['user', 'matchday']
-    search_fields = ['user', 'matchday']
+    search_fields = ['user__username', 'matchday__number']
 
 
