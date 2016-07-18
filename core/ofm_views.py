@@ -60,6 +60,7 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         statistic_diff = dict()
         statistic_diff['position'] = st1.player.position
+        statistic_diff['age'] = st1.age
         statistic_diff['strength'] = st1.strength
         statistic_diff['name'] = '<a href="%s">%s</a>' % (st1.player.get_absolute_url(), st1.player.name)
         statistic_diff['ep'] = ep
