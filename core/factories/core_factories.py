@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country
+from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance
 from users.factories.users_factories import OFMUserFactory
 
 
@@ -75,3 +75,35 @@ class ContractFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(OFMUserFactory)
     bought_on_matchday = factory.SubFactory(MatchdayFactory)
     sold_on_matchday = None
+
+
+class FinanceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Finance
+
+    user = factory.SubFactory(OFMUserFactory)
+    matchday = factory.SubFactory(MatchdayFactory)
+
+    balance = 1000
+
+    income_visitors_league = 100
+    income_sponsoring = 0
+    income_cup = 0
+    income_interests = 0
+    income_loan = 0
+    income_transfer = 0
+    income_visitors_friendlies = 0
+    income_friendlies = 0
+    income_funcup = 0
+    income_betting = 0
+
+    expenses_player_salaries = 100
+    expenses_stadium = 0
+    expenses_youth = 0
+    expenses_interests = 0
+    expenses_trainings = 0
+    expenses_transfer = 0
+    expenses_compensation = 0
+    expenses_friendlies = 0
+    expenses_funcup = 0
+    expenses_betting = 0

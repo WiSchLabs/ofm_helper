@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+    {% load staticfiles %}
+
+    {% if finance %}
+        <h1 class="page-header">Deine Finanzen</h1>
+
+        Kontostand: {{ finance.balance }}
+    {% else %}
+        <h1 class="page-header">Zugriff verweigert</h1>
+    {% endif %}
+
+
+{% endblock %}
