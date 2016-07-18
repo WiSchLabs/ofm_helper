@@ -56,22 +56,25 @@ class PlayerStatisticsParser(BaseParser):
 
         parsed_player_stat, success = PlayerStatistics.objects.get_or_create(
             matchday=matchday,
-            strength=strength,
-            freshness=freshness,
-            games_in_season=games_in_season,
-            goals_in_season=goals_in_season,
-            won_tacklings_in_season=won_tacklings_in_season,
-            lost_tacklings_in_season=lost_tacklings_in_season,
-            won_friendly_tacklings_in_season=won_friendly_tacklings_in_season,
-            lost_friendly_tacklings_in_season=lost_friendly_tacklings_in_season,
-            yellow_cards_in_season=yellow_cards_in_season,
-            red_cards_in_season=red_cards_in_season,
-            ep=ep,
-            tp=tp,
-            awp=awp,
-            equity=equity,
-            player=player,
+            player=player
         )
+
+        parsed_player_stat.strength = strength
+        parsed_player_stat.games_in_season = games_in_season
+        parsed_player_stat.freshness = freshness
+        parsed_player_stat.goals_in_season = goals_in_season
+        parsed_player_stat.won_tacklings_in_season = won_tacklings_in_season
+        parsed_player_stat.lost_tacklings_in_season = lost_tacklings_in_season
+        parsed_player_stat.won_friendly_tacklings_in_season = won_friendly_tacklings_in_season
+        parsed_player_stat.lost_friendly_tacklings_in_season = lost_friendly_tacklings_in_season
+        parsed_player_stat.yellow_cards_in_season = yellow_cards_in_season
+        parsed_player_stat.red_cards_in_season = red_cards_in_season
+        parsed_player_stat.ep = ep
+        parsed_player_stat.tp = tp
+        parsed_player_stat.awp = awp
+        parsed_player_stat.equity = equity
+
+        parsed_player_stat.save()
 
         return parsed_player_stat
 

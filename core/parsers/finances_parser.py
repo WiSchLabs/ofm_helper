@@ -47,32 +47,34 @@ class FinancesParser(BaseParser):
         expenses_funcup = self._int_from_money(finance_values[12].find_all('td')[11].div.get_text())
         expenses_betting = self._int_from_money(finance_values[13].find_all('td')[11].div.get_text())
 
-
         finances, success = Finance.objects.get_or_create(
             user=self.user,
             matchday=matchday,
-            balance=balance,
-            income_visitors_league=income_visitors_league,
-            income_sponsoring=income_sponsoring,
-            income_cup=income_cup,
-            income_interests=income_interests,
-            income_loan=income_loan,
-            income_transfer=income_transfer,
-            income_visitors_friendlies=income_visitors_friendlies,
-            income_friendlies=income_friendlies,
-            income_funcup=income_funcup,
-            income_betting=income_betting,
-            expenses_player_salaries=expenses_player_salaries,
-            expenses_stadium=expenses_stadium,
-            expenses_youth=expenses_youth,
-            expenses_interests=expenses_interests,
-            expenses_trainings=expenses_trainings,
-            expenses_transfer=expenses_transfer,
-            expenses_compensation=expenses_compensation,
-            expenses_friendlies=expenses_friendlies,
-            expenses_funcup=expenses_funcup,
-            expenses_betting=expenses_betting,
         )
+
+        finances.balance = balance
+        finances.income_visitors_league = income_visitors_league
+        finances.income_sponsoring = income_sponsoring
+        finances.income_cup = income_cup
+        finances.income_interests = income_interests
+        finances.income_loan = income_loan
+        finances.income_transfer = income_transfer
+        finances.income_visitors_friendlies = income_visitors_friendlies
+        finances.income_friendlies = income_friendlies
+        finances.income_funcup = income_funcup
+        finances.income_betting = income_betting
+        finances.expenses_player_salaries = expenses_player_salaries
+        finances.expenses_stadium = expenses_stadium
+        finances.expenses_youth = expenses_youth
+        finances.expenses_interests = expenses_interests
+        finances.expenses_trainings = expenses_trainings
+        finances.expenses_transfer = expenses_transfer
+        finances.expenses_compensation = expenses_compensation
+        finances.expenses_friendlies = expenses_friendlies
+        finances.expenses_funcup = expenses_funcup
+        finances.expenses_betting = expenses_betting
+
+        finances.save()
 
         return finances
 
