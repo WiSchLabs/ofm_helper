@@ -4,13 +4,8 @@
 
     {% load staticfiles %}
 
-    {% if finance %}
-        <h1 class="page-header">Deine Finanzen</h1>
+    <h1 class="page-header">Deine Finanzen</h1>
 
-        Kontostand: {{ finance.balance }}
-    {% else %}
-        <h1 class="page-header">Zugriff verweigert</h1>
-    {% endif %}
-
+    <div id='chart_container'> Chart will be rendered here </div>
 
 {% endblock %}

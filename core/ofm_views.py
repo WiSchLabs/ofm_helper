@@ -1,12 +1,12 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, render
-from django.template import RequestContext
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, TemplateView, View
+from django.views.generic import DetailView, TemplateView, View, ListView
+
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 
 
 @method_decorator(login_required, name='dispatch')
@@ -137,3 +137,51 @@ class PlayerDetailView(DetailView):
         player = super(PlayerDetailView, self).get_object()
         contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None
+
+
+@method_decorator(login_required, name='dispatch')
+class FinanceDataView(TemplateView):
+    template_name = 'core/ofm/finances.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FinanceDataView, self).get_context_data(**kwargs)
+
+        finance_data = DataPool(
+            series=[
+                {'options':
+                    {'source': Finance.objects.filter(user=self.request.user)},
+                    'terms': [
+                        'matchday__number',
+                        'balance',
+                    ]
+                }
+            ]
+        )
+
+        chart = Chart(
+            datasource=finance_data,
+            series_options=
+            [{'options': {
+                'type': 'spline',
+                'stacking': False},
+                'terms': {'matchday__number': ['balance', ]}
+            }],
+            chart_options=
+            {
+                'title': {
+                    'text': 'Finanzstatistik'
+                },
+                'xAxis': {
+                    'title': {
+                       'text': 'Spieltag'}
+                },
+                'yAxis': {
+                    'title': {
+                       'text': ' '}
+                },
+            }
+        )
+
+        context['chart'] = chart
+
+        return context

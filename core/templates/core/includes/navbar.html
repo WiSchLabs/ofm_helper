@@ -1,6 +1,7 @@
 {% load staticfiles %}
 
 {% block content %}
+
     <a href="{% url 'core:home' %}"><img src="{% static 'core/img/OFM_Helper.png' %}" id="logo" alt="OFM Helper" /></a>
     <div class="well bs-sidebar" id="sidebar">
         <ul class="nav nav-pills nav-stacked">
@@ -41,6 +42,11 @@
                             <span class="flaticon-football-player-setting-ball"></span> Meine Spieler
                         </a>
                     </li>
+                    <li>
+                        <a href="{% url 'core:ofm:finance_data' %}">
+                            <span class="glyphicon glyphicon-euro"></span> Meine Finanzen
+                        </a>
+                    </li>
                 </ul>
 
             </li>
@@ -61,4 +67,5 @@
     {% if 'ofm' in request.path %}
         <script src="{% static 'core/js/toggle_ofm_menu.js' %}"></script>
     {% endif %}
+
 {% endblock %}
