@@ -131,10 +131,10 @@ ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'
 AUTH_USER_MODEL = 'users.OFMUser'
 
 CRON_CLASSES = [
-    "core.cron.parse_matchday.ParseMatchdayCronJob",
-    "core.cron.parse_players.ParsePlayersCronJob",
-    "core.cron.parse_player_statistics.ParsePlayerStatisticsCronJob",
-    "core.cron.parse_finances.ParseFinancesCronJob",
+    #"core.cron.parse_matchday.ParseMatchdayCronJob",
+    #"core.cron.parse_players.ParsePlayersCronJob",
+    #"core.cron.parse_player_statistics.ParsePlayerStatisticsCronJob",
+    #"core.cron.parse_finances.ParseFinancesCronJob",
 ]
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 14  # Days
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cron Jobs]: "  # EMail Prefix for Cron Jobs (send to admins)
