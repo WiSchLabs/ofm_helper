@@ -8,3 +8,23 @@
 [![Stories in review](https://badge.waffle.io/WiSchLabs/ofm_helper.png?label=in%20review&title=In%20review)](http://waffle.io/WiSchLabs/ofm_helper)
 
 [![Throughput Graph](https://graphs.waffle.io/WiSchLabs/ofm_helper/throughput.svg)](https://waffle.io/WiSchLabs/ofm_helper/metrics/throughput)
+
+
+
+# Usage in Windows
+
+0. boot into BIOS / EFI and enable Virtualization
+1. Install Kitematic (https://kitematic.com/)
+2. Download ofm_helper docker image (wischlabs/ofm_helper)
+3. overwrite environment variables (OFM_USERNAME and OFM_PASSWORD)
+4. run the container
+5. look in Kitematic for the external ip address of the container and open your browser with this ip on port 8000.
+
+# Usage in Linux
+
+0. boot into BIOS / EFI and enable Virtualization
+1. install docker
+2. docker pull wischlabs/ofm_helper
+3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" wischlabs/ofm_helper
+4. docker inspect ofm_helper | grep IPAddress
+5. open your browser with this ip on port 8000
