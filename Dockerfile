@@ -18,7 +18,6 @@ ADD . /code/
 RUN mkdir database
 VOLUME /code/database
 
-RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic --no-input
 RUN cp /code/core/config/test.cfg /code/core/config/prod.cfg
 
