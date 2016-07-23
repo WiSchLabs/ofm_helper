@@ -14,6 +14,7 @@ COPY requirements.txt /code
 RUN pip3 install -r requirements.txt
 #RUN pip3 install -r prod_requirements.txt
 
+RUN mkdir database
 VOLUME /code/database
 
 ADD . /code/
