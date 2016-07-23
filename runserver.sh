@@ -25,6 +25,6 @@ while getopts ":u:p:m:" opt; do
 done
 
 python3 manage.py migrate
-echo "from users.models import OFMUser; OFMUser.objects.create_user(username='admin', password='admin', ofm_username='$USERNAME', email='$EMAIL', ofm_password='$PASSWORD')" \
+echo "from users.models import OFMUser; OFMUser.objects.create_user(username='admin', password='admin', ofm_username='$USERNAME', email='$EMAIL', ofm_password='$PASSWORD', is_staff=True, is_superuser=True)" \
     | python manage.py shell
 python3 manage.py runserver 0.0.0.0:8000
