@@ -24,6 +24,6 @@ while getopts ":u:p:m:" opt; do
   esac
 done
 
-echo "from users.models import OFMUser; OFMUser.objects.create(username='admin', password='admin', ofm_username='$USERNAME', email='$EMAIL', ofm_password='$PASSWORD')" \
+echo "from users.models import OFMUser; OFMUser.objects.create_user(username='admin', password='admin', ofm_username='$USERNAME', email='$EMAIL', ofm_password='$PASSWORD')" \
     | python manage.py shell
 python3 manage.py runserver 0.0.0.0:8000
