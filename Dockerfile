@@ -14,6 +14,8 @@ COPY requirements.txt /code
 RUN pip3 install -r requirements.txt
 #RUN pip3 install -r prod_requirements.txt
 
+VOLUME /code/database
+
 ADD . /code/
 RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic --no-input
