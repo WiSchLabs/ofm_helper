@@ -1,5 +1,5 @@
 env_ofm/
-db.sqlite3
+database/db.sqlite3
 .idea
 !/.idea/runConfigurations/
 
