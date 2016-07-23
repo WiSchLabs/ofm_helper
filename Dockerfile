@@ -14,13 +14,12 @@ COPY requirements.txt /code
 RUN pip3 install -r requirements.txt
 #RUN pip3 install -r prod_requirements.txt
 
+ADD . /code/
 RUN mkdir database
 VOLUME /code/database
 
-ADD . /code/
 RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic --no-input
-
 RUN cp /code/core/config/test.cfg /code/core/config/prod.cfg
 
 expose 8000
