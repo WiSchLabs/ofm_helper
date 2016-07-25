@@ -9,7 +9,7 @@ RUN mkdir /code
 WORKDIR /code
 
 # Install Phantomjs
-RUN apt-get -qq update && apt-get install xvfb build-essential chrpath libssl-dev libxft-dev libfreetype6 \
+RUN apt-get -qq update && apt-get install -y xvfb build-essential chrpath libssl-dev libxft-dev libfreetype6 \
         libfreetype6-dev libfontconfig1 libfontconfig1-dev
 RUN wget https://bitbucket.org/ariya/phantomjs/get/$PHANTOM_VERSION.zip -O $PHANTOM_JS.zip
 RUN unzip $PHANTOM_JS.zip
