@@ -2,6 +2,7 @@ from core.parsers.matchday_parser import MatchdayParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django_cron import CronJobBase, Schedule
+from users.models import OFMUser
 
 
 class ParseMatchdayCronJob(CronJobBase):
@@ -11,7 +12,9 @@ class ParseMatchdayCronJob(CronJobBase):
     code = 'core.cron.parse_matchday'
 
     def do(self):
-        site_manager = SiteManager()
+        ofm_users = OFMUser.objects.exclude(ofm_username__isnull=True)
+
+        site_manager = SiteManager(ofm_users[0] if ofm_users else None)
         site_manager.login()
         site_manager.jump_to_frame(Constants.HEAD)
 
