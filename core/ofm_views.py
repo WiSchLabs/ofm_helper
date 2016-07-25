@@ -1,12 +1,9 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
+from core.models import Player, Contract, PlayerStatistics, Finance
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, TemplateView, View, ListView
-
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
+from django.views.generic import DetailView, TemplateView, View
 
 
 @method_decorator(login_required, name='dispatch')

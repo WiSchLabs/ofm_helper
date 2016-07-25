@@ -6,4 +6,8 @@
         Willkommen in deinem persönlichen Bereich.
     </p>
     <br>
+    <form action="{% url 'core:trigger_player_statistics_parsing' %}" method="get">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Parse</button>
+    </form>
 {% endblock %}
