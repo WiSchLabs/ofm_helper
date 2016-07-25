@@ -16,7 +16,6 @@ RUN mkdir database
 VOLUME /code/database
 
 RUN python3 manage.py collectstatic --no-input
-RUN cp /code/core/config/test.cfg /code/core/config/prod.cfg
 
 expose 8000
 CMD /code/scripts/runserver.sh

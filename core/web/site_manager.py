@@ -1,3 +1,4 @@
+import os
 import time
 
 import subprocess
@@ -5,14 +6,11 @@ import subprocess
 from django.conf import settings
 from selenium import webdriver
 
-from core.configuration_provider import ConfigurationProvider
 from core.web.ofm_page_constants import Constants
 
 
 class SiteManager:
     def __init__(self, user=None):
-        cfg = ConfigurationProvider()
-
         self.browser = webdriver.PhantomJS()
 
         self._handle_aws_display_bug()
@@ -21,8 +19,8 @@ class SiteManager:
             self._login_user = user.ofm_username
             self._login_password = user.ofm_password
         else:
-            self._login_user = cfg.get('credentials', 'OFM_USERNAME')
-            self._login_password = cfg.get('credentials', 'OFM_PASSWORD')
+            self._login_user = os.environ('OFM_USERNAME')
+            self._login_password = os.environ('OFM_PASSWORD')
 
     def login(self):
         self.browser.get(Constants.LOGIN)
