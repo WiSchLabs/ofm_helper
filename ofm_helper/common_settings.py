@@ -138,3 +138,5 @@ CRON_CLASSES = [
 ]
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 14  # Days
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Cron Jobs]: "  # EMail Prefix for Cron Jobs (send to admins)
+
+USE_DISPLAY_FOR_AWS = False
