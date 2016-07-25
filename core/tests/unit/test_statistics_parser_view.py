@@ -17,16 +17,8 @@ class StatisticsParserViewTest(TestCase):
         self.matchday = MatchdayFactory.create(season__number=100)
         self.user = OFMUser.objects.create_user('name', 'mail@pro.com', 'pass', ofm_username='name', ofm_password='pass')
 
-        country_choices = dict(Country._meta.get_field('country').choices)
-        country_no_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
-        nationality_greece, success = Country.objects.get_or_create(country=country_no_greece)
-
-        self.player = Player.objects.create(id='159883060', position='TW', name='Chrístos Tsigas',
-                                            birth_season=self.matchday.season, nationality=nationality_greece)
-        self.player = Player.objects.create(id='160195494', position='LV', name='Irwin O\'Canny',
-                                            birth_season=self.matchday.season, nationality=nationality_greece)
-        self.player = Player.objects.create(id='159341445', position='LMD', name='Jan Stemmler',
-                                            birth_season=self.matchday.season, nationality=nationality_greece)
+        self.player = Player.objects.create(id='159883060', name='Chrístos Tsigas', birth_season=self.matchday.season)
+        self.player = Player.objects.create(id='160195494', name='Irwin O\'Canny', birth_season=self.matchday.season)
 
         self.client.login(username='name', password='pass')
 
