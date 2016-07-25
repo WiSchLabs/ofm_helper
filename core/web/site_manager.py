@@ -33,13 +33,9 @@ class SiteManager:
         self.browser.get(frame)
 
     def kill(self):
-        KILL_CMD = "ps -ef | grep phantomjs | grep -v grep | awk '{print $2}' | xargs kill"
-
         self.browser.stop_client()
         self.browser.close()
         self.browser.quit()
-        
-        subprocess.Popen(KILL_CMD, shell=True).communicate()
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
