@@ -13,18 +13,19 @@
 
 # Usage in Windows
 
-0. boot into BIOS / EFI and enable Virtualization
+0. Boot into BIOS / EFI and enable Virtualization
 1. Install Kitematic (https://kitematic.com/)
-2. Download ofm_helper docker image (wischlabs/ofm_helper)
-3. overwrite environment variables (OFM_USERNAME and OFM_PASSWORD)
-4. run the container
-5. look in Kitematic for the external ip address of the container and open your browser with this ip on port 8000.
+2. Download ofm_helper docker image "wischlabs/ofm_helper" (It will automatically start a new container)
+3. Click on the preview picture to access the webapp in your browser.
+4. Create a new account with your ofm credentials
+5. Profit!
 
 # Usage in Linux
 
-0. boot into BIOS / EFI and enable Virtualization
-1. install docker
+0. Boot into BIOS / EFI and enable Virtualization
+1. Install docker
 2. docker pull wischlabs/ofm_helper
-3. docker run -d --name ofm_helper -e "OFM_USERNAME=<your ofm username>" -e "OFM_PASSWORD=<your ofm password>" wischlabs/ofm_helper
-4. docker inspect ofm_helper | grep IPAddress
-5. open your browser with this ip on port 8000
+3. docker run -d --name ofm_helper wischlabs/ofm_helper
+4. Open 127.0.0.1:8000 in your default browser
+5. Create a new account with your ofm credentials
+6. Profit!
