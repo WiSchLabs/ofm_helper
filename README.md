@@ -19,7 +19,7 @@
 3. Stoppe den laufenden Container
 4. Erstelle auf deinem System einen Ordner für die Datenbank
 5. Innerhalb von Kitematic gehe zu Settings -> Volumes
-6. Ändere das Volume zu deinem neu erstellen Datenbankordner
+6. Ändere das Volume zu deinem neu erstellten Datenbankordner
 7. Starte den Container erneut
 8. Klicke auf das Voschaufenster um OFMHelper in deinem Standardbrowser zu öffnen
 9. Erstelle einen neuen Account mit deinen OFM Logindaten
