@@ -27,9 +27,9 @@
 ## Linux / OS X
 
 1. Installiere Docker
-2. docker pull wischlabs/ofm_helper
-3. docker create -v /code/database --name dbstore noumia/data /bin/true
-4. docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper
+2. `docker pull wischlabs/ofm_helper`
+3. `docker create -v /code/database --name dbstore noumia/data /bin/true`
+4. `docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper`
 5. Finde die IP-Addresse des Containers heraus: 
 
     `OFM_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ofm_helper)`
