@@ -1,4 +1,6 @@
+from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
+from core.parsers.players_parser import PlayersParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django.contrib import messages
@@ -100,12 +102,20 @@ def account_view(request):
         return redirect('core:login')
 
 
-def trigger_player_statistics_parsing(request):
+def trigger_parsing(request):
     if request.user.is_authenticated():
         site_manager = SiteManager(request.user)
         site_manager.login()
-        site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
 
+        site_manager.jump_to_frame(Constants.HEAD)
+        matchday_parser = MatchdayParser(site_manager.browser.page_source)
+        matchday_parser.parse()
+
+        site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
+        players_parser = PlayersParser(site_manager.browser.page_source, request.user)
+        players_parser.parse()
+
+        site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
         player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
         player_stat_parser.parse()
 
