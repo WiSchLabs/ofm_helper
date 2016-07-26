@@ -9,23 +9,54 @@
 
 [![Throughput Graph](https://graphs.waffle.io/WiSchLabs/ofm_helper/throughput.svg)](https://waffle.io/WiSchLabs/ofm_helper/metrics/throughput)
 
+# Install
 
+## Deutsch
 
-# Usage in Windows
+0. Boote ins BIOS / EFI und aktiviere "Virtualization"
+
+### Windows / OS X 
+
+1. Installiere Kitematic (https://kitematic.com/)
+2. Downloade das ofm_helper Docker image "wischlabs/ofm_helper" (Es startet automatisch einen neuen Container)
+3. Stoppe den laufenden Container
+4. Erstelle auf deinem System einen Ordner für die Datenbank
+5. Innerhalb von Kitematic gehe zu Settings -> Volumes
+6. Ändere das Volume zu deinem neu erstellen Datenbankordner
+7. Starte den Container erneut
+8. Klicke auf das Voschaufenster um OFMHelper in deinem Standardbrowser zu öffnen
+9. Erstelle einen neuen Account mit deinen OFM Logindaten
+
+### Linux / OS X
+
+1. Installiere Docker
+2. docker pull wischlabs/ofm_helper
+3. docker create -v /code/database --name dbstore noumia/data /bin/true
+4. docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper
+5. Finde die IP-Addresse des Containers heraus: `docker inspect ofm_helper| grep -i IPAddress | awk '{print $2}'`
+6. Erstelle einen neuen Account mit deinen OFM Logindaten
+
+## English
 
 0. Boot into BIOS / EFI and enable Virtualization
+
+### Usage in Windows
+
 1. Install Kitematic (https://kitematic.com/)
 2. Download ofm_helper docker image "wischlabs/ofm_helper" (It will automatically start a new container)
-3. Click on the preview picture to access the webapp in your browser.
-4. Create a new account with your ofm credentials
-5. Profit!
+3. Stop the running container
+4. Create a new directory on your local system, which will be holding the database
+5. In Kitematic goto Settings -> Volumes
+6. Change the Volume to your newly created directory
+7. Restart the container
+8. Click on the preview picture to access the webapp in your browser.
+9. Create a new account with your ofm credentials
 
-# Usage in Linux
+### Usage in Linux
 
-0. Boot into BIOS / EFI and enable Virtualization
 1. Install docker
 2. docker pull wischlabs/ofm_helper
-3. docker run -d --name ofm_helper wischlabs/ofm_helper
-4. Open 127.0.0.1:8000 in your default browser
-5. Create a new account with your ofm credentials
-6. Profit!
+3. docker create -v /code/database --name dbstore noumia/data /bin/true
+4. docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper
+5. Finde die IP-Addresse des Containers heraus: `docker inspect ofm_helper| grep -i IPAddress | awk '{print $2}'`
+6. Create a new account with your ofm credentials
