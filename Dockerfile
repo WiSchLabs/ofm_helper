@@ -29,8 +29,8 @@ VOLUME /code/database
 RUN python3 manage.py collectstatic --no-input
 
 # Add cronjobs for parsing
-RUN line="*/5 * * * * /code/scripts/run_cron_jobs.sh"
-RUN (crontab -u root -l; echo "$line" ) | crontab -u root -
+#RUN line="*/5 * * * * /code/scripts/run_cron_jobs.sh"
+#RUN (crontab -u root -l; echo "$line" ) | crontab -u root -
 
 #expose 8000
 #CMD /code/scripts/runserver.sh
