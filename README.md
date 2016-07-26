@@ -30,5 +30,6 @@
 2. docker pull wischlabs/ofm_helper
 3. docker create -v /code/database --name dbstore noumia/data /bin/true
 4. docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper
-5. Finde die IP-Addresse des Containers heraus: `docker inspect ofm_helper| grep -i IPAddress | awk '{print $2}'`
-6. Erstelle einen neuen Account mit deinen OFM Logindaten
+5. Finde die IP-Addresse des Containers heraus: `OFM_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ofm_helper)`
+6. Öffne die IP auf dem Port 8000 (`$OFM_IP:8000`) in deinem Browser
+7. Erstelle einen neuen Account mit deinen OFM Logindaten
