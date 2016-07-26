@@ -17,7 +17,7 @@
 1. Installiere Kitematic (https://kitematic.com/)
 2. Downloade das ofm_helper Docker image "wischlabs/ofm_helper" (Es startet automatisch einen neuen Container)
 3. Stoppe den laufenden Container
-4. Erstelle auf deinem System einen Ordner für die Datenbank
+4. Erstelle auf deinem System innerhalb deines Benutzerordners einen Ordner für die Datenbank (z.B. C:\Users\DeinNutzername\OFM_Helper_Datenbank)
 5. Innerhalb von Kitematic gehe zu Settings -> Volumes
 6. Ändere das Volume zu deinem neu erstellten Datenbankordner
 7. Starte den Container erneut
