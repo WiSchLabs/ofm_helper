@@ -126,7 +126,7 @@ def trigger_parsing(request):
 
         site_manager.kill()
 
-        return redirect('core:ofm:player_data')
+        return redirect('core:ofm:player_statistics')
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')

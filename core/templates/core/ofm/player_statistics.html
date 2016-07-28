@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <table id='player_data_table' class="table table-bordered table-striped table-hover"
+    <table id='player_statistics_table' class="table table-bordered table-striped table-hover"
            data-toolbar="#table-toolbar"
            data-toggle="table"
            data-search="true"
@@ -24,8 +24,8 @@
            data-sort-name="awp"
            data-sort-order="desc"
            data-query-params="queryParams"
-           data-url="{% url 'core:ofm:player_data_json' %}">
-        <thead id="player_data_table_head">
+           data-url="{% url 'core:ofm:player_statistics_json' %}">
+        <thead id="player_statistics_table_head">
             <tr>
                 <th data-field="position">Position</th>
                 <th data-field="age" data-sortable="true">Alter</th>
@@ -49,12 +49,12 @@
     </table>
 
     <script>
-        var $table = $('#player_data_table');
+        var $table = $('#player_statistics_table');
 
         $('#diff_toggle').bootstrapSwitch('state', false);
 
         $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
-            $.get("{% url 'core:ofm:player_data_json' %}", {show_diff: data},
+            $.get("{% url 'core:ofm:player_statistics_json' %}", {show_diff: data},
                 function(returnedData){
                     $table.bootstrapTable('load', returnedData);
             });

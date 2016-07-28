@@ -72,19 +72,19 @@ ul.nav-sub {
     padding-left: 10%;
 }
 
-#player_data_table {
+#player_statistics_table {
     background-color: white;
 }
 
-    #player_data_table thead th .both,
-    #player_data_table thead th .asc,
-    #player_data_table thead th .desc {
+    #player_statistics_table thead th .both,
+    #player_statistics_table thead th .asc,
+    #player_statistics_table thead th .desc {
         background-image: none;
         padding: 8px;
     }
-        #player_data_table thead th .both::after,
-        #player_data_table thead th .asc::after,
-        #player_data_table thead th .desc::after {
+        #player_statistics_table thead th .both::after,
+        #player_statistics_table thead th .asc::after,
+        #player_statistics_table thead th .desc::after {
             font-family: 'Glyphicons Halflings';
             color: #239123;
             font-size: 0.8em;
@@ -92,13 +92,13 @@ ul.nav-sub {
             left: 10px;
             position: relative;
         }
-        #player_data_table thead th .both::after {
+        #player_statistics_table thead th .both::after {
             content: '\e150';
         }
-        #player_data_table thead th .asc::after {
+        #player_statistics_table thead th .asc::after {
             content: '\e113';
         }
-        #player_data_table thead th .desc::after {
+        #player_statistics_table thead th .desc::after {
             content: '\e114';
         }
 

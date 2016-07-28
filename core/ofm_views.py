@@ -8,7 +8,7 @@ from django.views.generic import DetailView, TemplateView, View
 
 @method_decorator(login_required, name='dispatch')
 class PlayerDataView(TemplateView):
-    template_name = 'core/ofm/player_data.html'
+    template_name = 'core/ofm/player_statistics.html'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -20,9 +20,9 @@ class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         show_diff = self.request.GET.get('show_diff', default='false').lower() == 'true'
 
-        player_data_json = [self._get_last_two_statistics_diff(player, show_diff) for player in players]
+        player_statistics_json = [self._get_last_two_statistics_diff(player, show_diff) for player in players]
 
-        return self.render_json_response(player_data_json)
+        return self.render_json_response(player_statistics_json)
 
     def _get_last_two_statistics_diff(self, player, show_diff=True):
         size = player.statistics.all().count()
