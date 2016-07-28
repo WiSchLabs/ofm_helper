@@ -7,12 +7,27 @@ from django.views.generic import DetailView, TemplateView, View
 
 
 @method_decorator(login_required, name='dispatch')
-class PlayerDataView(TemplateView):
+class PlayerStatisticsView(TemplateView):
     template_name = 'core/ofm/player_statistics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
+
+        contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
+        players = [contract.player for contract in contracts]
+
+        player_statistics = [PlayerStatistics.objects.filter(player=player) for player in players]
+        player_statistics = [item for sublist in player_statistics for item in sublist]
+
+        matchdays = list(set([player_statistic.matchday for player_statistic in player_statistics]))
+
+        context['matchdays'] = matchdays
+
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
-class PlayerDataAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)

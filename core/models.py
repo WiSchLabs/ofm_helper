@@ -317,7 +317,7 @@ class PlayerStatistics(models.Model):
         ordering = ['player', '-matchday']
 
     player = models.ForeignKey(Player, related_name='statistics')
-    matchday = models.ForeignKey(Matchday, related_name='matchdays')
+    matchday = models.ForeignKey(Matchday, related_name='player_statistics')
 
     ep = models.IntegerField(default=0)
     tp = models.IntegerField(default=0)

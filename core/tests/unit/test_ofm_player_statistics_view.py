@@ -14,14 +14,13 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.user1 = OFMUser.objects.create_user('alice', 'alice@ofmhelper.com', 'alice', ofm_username='alice', ofm_password='alice')
         Contract.objects.create(user=self.user1, player=self.player, bought_on_matchday=self.matchday, sold_on_matchday=None)
         self.client.login(username='alice', password='alice')
+        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
 
     def test_user_can_see_table(self):
-        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         response = self.client.get(reverse('core:ofm:player_statistics'))
         self.assertEqual(response.status_code, 200)
 
     def test_user_can_see_player_statistics_total(self):
-        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
 
         response = self.client.get(reverse('core:ofm:player_statistics_json'))
 
@@ -37,7 +36,6 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['freshness'], 4)
 
     def test_user_can_see_player_statistics_diff(self):
-        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
         PlayerStatisticsFactory.create(player=self.player, matchday=next_matchday, ep=3, tp=6, awp=4, freshness=5)
 
@@ -55,7 +53,6 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['freshness'], 1)
 
     def test_user_can_only_see_his_player_statistic(self):
-        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
         next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
         player2 = PlayerFactory.create()
         PlayerStatisticsFactory.create(player=player2, matchday=next_matchday, ep=3, tp=6, awp=4)
@@ -65,3 +62,13 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
+
+    def test_user_can_choose_between_matchdays(self):
+        next_matchday = MatchdayFactory.create(number=1)
+        PlayerStatisticsFactory.create(player=self.player, matchday=next_matchday, ep=3, tp=6, awp=4)
+
+        response = self.client.get(reverse('core:ofm:player_statistics'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(self.matchday, response.context_data['matchdays'][0])
+        self.assertEquals(next_matchday, response.context_data['matchdays'][1])
