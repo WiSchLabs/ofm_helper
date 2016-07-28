@@ -70,5 +70,5 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:player_statistics'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(self.matchday, response.context_data['matchdays'][0])
-        self.assertEquals(next_matchday, response.context_data['matchdays'][1])
+        self.assertEquals(next_matchday, response.context_data['matchdays'][0])
+        self.assertEquals(self.matchday, response.context_data['matchdays'][1])

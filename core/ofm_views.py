@@ -1,6 +1,6 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
@@ -13,13 +13,15 @@ class PlayerStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
 
-        contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
-        players = [contract.player for contract in contracts]
+        #contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
+        #players = [contract.player for contract in contracts]
 
-        player_statistics = [PlayerStatistics.objects.filter(player=player) for player in players]
-        player_statistics = [item for sublist in player_statistics for item in sublist]
+        #player_statistics = [PlayerStatistics.objects.filter(player=player) for player in players]
+        #player_statistics = [item for sublist in player_statistics for item in sublist]
 
-        matchdays = list(set([player_statistic.matchday for player_statistic in player_statistics]))
+        #matchdays = list(set([player_statistic.matchday for player_statistic in player_statistics]))
+
+        matchdays = Matchday.objects.filter(player_statistics__isnull=False).distinct()
 
         context['matchdays'] = matchdays
 
