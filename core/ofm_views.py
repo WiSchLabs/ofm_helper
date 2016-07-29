@@ -1,7 +1,10 @@
+import django
+
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
@@ -12,14 +15,6 @@ class PlayerStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
-
-        #contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
-        #players = [contract.player for contract in contracts]
-
-        #player_statistics = [PlayerStatistics.objects.filter(player=player) for player in players]
-        #player_statistics = [item for sublist in player_statistics for item in sublist]
-
-        #matchdays = list(set([player_statistic.matchday for player_statistic in player_statistics]))
 
         matchdays = Matchday.objects.filter(player_statistics__isnull=False).distinct()
 
@@ -35,63 +30,87 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
         players = [contract.player for contract in contracts]
 
+        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=Matchday.objects.all()[0].season.number)
+        newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
+        older_matchday_season = self.request.GET.get('older_matchday_season', default=Matchday.objects.all()[1].season.number if Matchday.objects.all().count() > 1 else None)
+        older_matchday = self.request.GET.get('older_matchday', default=Matchday.objects.all()[1].number if Matchday.objects.all().count() > 1 else None)
+
         show_diff = self.request.GET.get('show_diff', default='false').lower() == 'true'
 
-        player_statistics_json = [self._get_last_two_statistics_diff(player, show_diff) for player in players]
+        player_statistics_tuples = [self._get_statistics_from_player_and_matchday(player,
+                                                                            newer_matchday_season, newer_matchday,
+                                                                            older_matchday_season, older_matchday)
+                             for player in players]
+
+        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistic,
+                                                                           older_player_statistic, show_diff)
+                                  for (newer_player_statistic, older_player_statistic) in player_statistics_tuples]
 
         return self.render_json_response(player_statistics_json)
 
-    def _get_last_two_statistics_diff(self, player, show_diff=True):
-        size = player.statistics.all().count()
-        st1 = player.statistics.all()[size - 1]
-        if size > 1:
-            st2 = player.statistics.all()[size - 2]
-            return self._player_statistics_diff(st1, st2, show_diff)
-        else:
-            return self._player_statistics_diff(st1, None, show_diff)
+    def _get_statistics_from_player_and_matchday(self, player,
+                                                 newer_matchday_season, newer_matchday,
+                                                 older_matchday_season, older_matchday):
 
-    def _player_statistics_diff(self, st1: PlayerStatistics, st2: PlayerStatistics, show_diff=True):
+        ps1 = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
+        ps2 = PlayerStatistics.objects.filter(player=player, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
+
+        ps1 = self._validate_filtered_player_statistics(ps1)
+        ps2 = self._validate_filtered_player_statistics(ps2)
+
+        return ps1, ps2
+
+    def _validate_filtered_player_statistics(self, player_statistics):
+        if len(player_statistics) > 1:
+            raise MultipleObjectsReturned
+        elif player_statistics:
+            player_statistics = player_statistics[0]
+        return player_statistics
+
+    def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics, show_diff=True):
         """
         Args:
-            st1: later statistic
-            st2: former statistic
+            newer_player_statistics: newer statistic
+            older_player_statistics: older statistic
 
         Returns:
             A dictionary of player statistics data. If st2 is None st1 is returned
         """
-        ep = st1.ep
-        if show_diff and st2:
-            ep = st1.ep - st2.ep
-        tp = st1.tp
-        if show_diff and st2:
-            tp = st1.tp - st2.tp
-        awp = st1.awp
-        if show_diff and st2:
-            awp = st1.awp - st2.awp
-        freshness = st1.freshness
-        if show_diff and st2:
-            freshness = st1.freshness - st2.freshness
+
+        if not newer_player_statistics:
+            newer_player_statistics = PlayerStatistics.objects.all()[0]
+
+        ep = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
+        tp = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
+        awp = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
+        freshness = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
 
         statistic_diff = dict()
-        statistic_diff['position'] = st1.player.position
-        statistic_diff['age'] = st1.age
-        statistic_diff['strength'] = st1.strength
-        statistic_diff['name'] = '<a href="%s">%s</a>' % (st1.player.get_absolute_url(), st1.player.name)
+        statistic_diff['position'] = newer_player_statistics.player.position
+        statistic_diff['age'] = newer_player_statistics.age
+        statistic_diff['strength'] = newer_player_statistics.strength
+        statistic_diff['name'] = '<a href="%s">%s</a>' % (newer_player_statistics.player.get_absolute_url(), newer_player_statistics.player.name)
         statistic_diff['ep'] = ep
         statistic_diff['tp'] = tp
         statistic_diff['awp'] = awp
         statistic_diff['freshness'] = freshness
-        statistic_diff['games_in_season'] = st1.games_in_season
-        statistic_diff['goals_in_season'] = st1.goals_in_season
-        statistic_diff['won_tacklings_in_season'] = st1.won_tacklings_in_season
-        statistic_diff['lost_tacklings_in_season'] = st1.lost_tacklings_in_season
-        statistic_diff['won_friendly_tacklings_in_season'] = st1.won_friendly_tacklings_in_season
-        statistic_diff['lost_friendly_tacklings_in_season'] = st1.lost_friendly_tacklings_in_season
-        statistic_diff['yellow_cards_in_season'] = st1.yellow_cards_in_season
-        statistic_diff['red_cards_in_season'] = st1.red_cards_in_season
-        statistic_diff['equity'] = st1.equity
+        statistic_diff['games_in_season'] = newer_player_statistics.games_in_season
+        statistic_diff['goals_in_season'] = newer_player_statistics.goals_in_season
+        statistic_diff['won_tacklings_in_season'] = newer_player_statistics.won_tacklings_in_season
+        statistic_diff['lost_tacklings_in_season'] = newer_player_statistics.lost_tacklings_in_season
+        statistic_diff['won_friendly_tacklings_in_season'] = newer_player_statistics.won_friendly_tacklings_in_season
+        statistic_diff['lost_friendly_tacklings_in_season'] = newer_player_statistics.lost_friendly_tacklings_in_season
+        statistic_diff['yellow_cards_in_season'] = newer_player_statistics.yellow_cards_in_season
+        statistic_diff['red_cards_in_season'] = newer_player_statistics.red_cards_in_season
+        statistic_diff['equity'] = newer_player_statistics.equity
 
         return statistic_diff
+
+    def compute_stat_diff_if_older_is_not_none(self, newer_player_statistics, older_player_statistics, show_diff):
+        ep = newer_player_statistics.ep
+        if show_diff and older_player_statistics:
+            ep = newer_player_statistics.ep - older_player_statistics.ep
+        return ep
 
 
 @method_decorator(login_required, name='dispatch')
