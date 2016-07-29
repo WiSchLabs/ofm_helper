@@ -112,6 +112,7 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         return statistic_diff
 
+
 @method_decorator(login_required, name='dispatch')
 class PlayerDetailView(DetailView):
     context_object_name = 'player'
@@ -194,10 +195,111 @@ class FinanceDataView(TemplateView):
             datasource=finance_data,
             series_options=
             [{'options': {
-                'type': 'spline',
-                'stacking': False},
+                    'type': 'spline',
+                    'stacking': False,
+                    'allowPointSelect': True,
+                },
                 'terms': {'matchday__number': ['balance', ]}
             }],
+            chart_options=
+            {
+                'title': {
+                    'text': 'Finanzstatistik'
+                },
+                'xAxis': {
+                    'title': {
+                       'text': 'Spieltag'}
+                },
+                'yAxis': {
+                    'title': {
+                       'text': ' '}
+                },
+            }
+        )
+
+        context['chart'] = chart
+
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class FinanceDataColumnChartView(TemplateView):
+    template_name = 'core/ofm/finances.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FinanceDataColumnChartView, self).get_context_data(**kwargs)
+
+        finance_data = DataPool(
+            series=[
+                {'options':
+                    {'source': Finance.objects.filter(user=self.request.user)},
+                    'terms': [
+                        'matchday__number',
+                        'balance',
+                        'income_visitors_league',
+                        'income_sponsoring',
+                        'income_cup',
+                        'income_interests',
+                        'income_loan',
+                        'income_transfer',
+                        'income_visitors_friendlies',
+                        'income_friendlies',
+                        'income_funcup',
+                        'income_betting',
+                        'expenses_player_salaries',
+                        'expenses_stadium',
+                        'expenses_youth',
+                        'expenses_interests',
+                        'expenses_trainings',
+                        'expenses_transfer',
+                        'expenses_compensation',
+                        'expenses_friendlies',
+                        'expenses_funcup',
+                        'expenses_betting',
+                    ]
+                }
+            ]
+        )
+
+        chart = Chart(
+            datasource=finance_data,
+            series_options=
+            [
+                {'options': {
+                        'type': 'column',
+                        'stacking': True,
+                        'stack': 0,
+                    },
+                    'terms': {'matchday__number': [
+                                'income_visitors_league',
+                                'income_sponsoring',
+                                'income_cup',
+                                'income_interests',
+                                'income_loan',
+                                'income_transfer',
+                                'income_visitors_friendlies',
+                                'income_friendlies',
+                                'income_funcup',
+                                'income_betting']}
+                },
+                {'options': {
+                        'type': 'column',
+                        'stacking': True,
+                        'stack': 1,
+                    },
+                    'terms': {'matchday__number': [
+                                'expenses_player_salaries',
+                                'expenses_stadium',
+                                'expenses_youth',
+                                'expenses_interests',
+                                'expenses_trainings',
+                                'expenses_transfer',
+                                'expenses_compensation',
+                                'expenses_friendlies',
+                                'expenses_funcup',
+                                'expenses_betting']}
+                }
+            ],
             chart_options=
             {
                 'title': {
