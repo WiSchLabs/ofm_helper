@@ -78,10 +78,18 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         if not newer_player_statistics:
             newer_player_statistics = PlayerStatistics.objects.all()[0]
 
-        ep = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
-        tp = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
-        awp = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
-        freshness = self.compute_stat_diff_if_older_is_not_none(newer_player_statistics, older_player_statistics, show_diff)
+        ep = newer_player_statistics.ep
+        if show_diff and older_player_statistics:
+            ep = newer_player_statistics.ep - older_player_statistics.ep
+        tp = newer_player_statistics.tp
+        if show_diff and older_player_statistics:
+            tp = newer_player_statistics.tp - older_player_statistics.tp
+        awp = newer_player_statistics.awp
+        if show_diff and older_player_statistics:
+            awp = newer_player_statistics.awp - older_player_statistics.awp
+        freshness = newer_player_statistics.freshness
+        if show_diff and older_player_statistics:
+            freshness = newer_player_statistics.freshness - older_player_statistics.freshness
 
         statistic_diff = dict()
         statistic_diff['position'] = newer_player_statistics.player.position
@@ -103,13 +111,6 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         statistic_diff['equity'] = newer_player_statistics.equity
 
         return statistic_diff
-
-    def compute_stat_diff_if_older_is_not_none(self, newer_player_statistics, older_player_statistics, show_diff):
-        ep = newer_player_statistics.ep
-        if show_diff and older_player_statistics:
-            ep = newer_player_statistics.ep - older_player_statistics.ep
-        return ep
-
 
 @method_decorator(login_required, name='dispatch')
 class PlayerDetailView(DetailView):
