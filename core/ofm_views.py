@@ -1,10 +1,8 @@
-import django
-
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
