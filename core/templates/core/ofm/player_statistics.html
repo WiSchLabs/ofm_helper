@@ -6,37 +6,20 @@
 
     <h1 class="page-header">Deine Spielerliste</h1>
 
-    <div id="table-toolbar">
-        <div class="form-inline" role="form">
-            <div class="form-group">
-                <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
-                <label for="diff_toggle">Zeige mit die Daten vom </label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Spieltag <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% with matchdays|length|add:-1 as len %}
-                            {% with len|stringformat:"s" as len_str %}
-                                {% with "0:"|add:len_str as slicinator %}
-                                    {% for m in matchdays|slice:slicinator %}
-                                        <li><a href="#">Saison {{ m.season.number }} - Spieltag {{ m.number }}</a></li>
-                                    {% endfor %}
-                                {% endwith %}
-                            {% endwith %}
-                        {% endwith %}
-                    </ul>
-                </div>
-                <span id="matchday_compare" class="hide">
-                    im Vergleich zu
+    {% if matchdays|length > 1 %}
+        <div id="table-toolbar">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
+                    <label for="diff_toggle">Zeige mit die Daten vom </label>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Spieltag <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            {% with matchdays|length as len %}
+                            {% with matchdays|length|add:-1 as len %}
                                 {% with len|stringformat:"s" as len_str %}
-                                    {% with "1:"|add:len_str as slicinator %}
+                                    {% with "0:"|add:len_str as slicinator %}
                                         {% for m in matchdays|slice:slicinator %}
                                             <li><a href="#">Saison {{ m.season.number }} - Spieltag {{ m.number }}</a></li>
                                         {% endfor %}
@@ -45,10 +28,29 @@
                             {% endwith %}
                         </ul>
                     </div>
-                </span>
+                    <span id="matchday_compare" class="hide">
+                        im Vergleich zu
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Spieltag <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% with matchdays|length as len %}
+                                    {% with len|stringformat:"s" as len_str %}
+                                        {% with "1:"|add:len_str as slicinator %}
+                                            {% for m in matchdays|slice:slicinator %}
+                                                <li><a href="#">Saison {{ m.season.number }} - Spieltag {{ m.number }}</a></li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            </ul>
+                        </div>
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
     <table id='player_statistics_table' class="table table-bordered table-striped table-hover"
            data-toolbar="#table-toolbar"
