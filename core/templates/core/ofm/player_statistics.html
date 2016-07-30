@@ -12,40 +12,33 @@
                 <div class="form-group">
                     <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
                     <label for="diff_toggle">Zeige mit die Daten vom </label>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Spieltag <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% with matchdays|length|add:-1 as len %}
+
+                    <input type="hidden" name="newer_matchday_season" value="140">
+                    <input type="hidden" name="older_matchday_season" value="140">
+                    <select class="form-control" id="newer_matchday">
+                        {% with matchdays|length|add:-1 as len %}
+                            {% with len|stringformat:"s" as len_str %}
+                                {% with "0:"|add:len_str as slicinator %}
+                                    {% for m in matchdays|slice:slicinator %}
+                                        <option value="{{ m.number }}">Saison {{ m.season.number }} - Spieltag {{ m.number }}</option>
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    </select>
+                    <span id="matchday_compare" class="hide">
+                        im Vergleich zu
+                        <select class="form-control" id="older_matchday">
+                            {% with matchdays|length as len %}
                                 {% with len|stringformat:"s" as len_str %}
-                                    {% with "0:"|add:len_str as slicinator %}
+                                    {% with "1:"|add:len_str as slicinator %}
                                         {% for m in matchdays|slice:slicinator %}
-                                            <li><a href="#">Saison {{ m.season.number }} - Spieltag {{ m.number }}</a></li>
+                                            <option value="{{ m.number }}">Saison {{ m.season.number }} - Spieltag {{ m.number }}</option>
                                         {% endfor %}
                                     {% endwith %}
                                 {% endwith %}
                             {% endwith %}
-                        </ul>
-                    </div>
-                    <span id="matchday_compare" class="hide">
-                        im Vergleich zu
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Spieltag <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                {% with matchdays|length as len %}
-                                    {% with len|stringformat:"s" as len_str %}
-                                        {% with "1:"|add:len_str as slicinator %}
-                                            {% for m in matchdays|slice:slicinator %}
-                                                <li><a href="#">Saison {{ m.season.number }} - Spieltag {{ m.number }}</a></li>
-                                            {% endfor %}
-                                        {% endwith %}
-                                    {% endwith %}
-                                {% endwith %}
-                            </ul>
-                        </div>
+                        </select>
                     </span>
                 </div>
             </div>
