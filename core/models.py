@@ -128,7 +128,7 @@ class Country(models.Model):
         ('CO', "Kolumbien"),
         ('KM', "Komoren"),
         ('CG', "Republik Kongo"),
-        ('CD', "Demokratische Republik Kongo"),
+        ('CD', "Demokr. Republik Kongo"),
         ('KP', "Nordkorea"),
         ('KR', "Südkorea"),
         ('HR', "Kroatien"),
