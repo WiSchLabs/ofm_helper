@@ -1,3 +1,5 @@
+import logging
+
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
@@ -178,6 +180,14 @@ class FinanceDataView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(FinanceDataView, self).get_context_data(**kwargs)
+
+        logger = logging.getLogger(__name__)
+
+        logger.debug('debug')
+        logger.info('info')
+        logger.warning('warning')
+        logger.error('error')
+        logger.critical('critical')
 
         finance_data = DataPool(
             series=[
