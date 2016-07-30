@@ -8,8 +8,9 @@
     <br>
 
     <div class="overlay">
-        <span>Die Daten werden geladen. Bitte Geduld.</span>
-        <div id="loading-img"></div>
+        <div id="loading-img">
+            <span>Die Daten werden geladen. Bitte Geduld.</span>
+        </div>
     </div>
 
     <form action="{% url 'core:trigger_parsing' %}" method="get">

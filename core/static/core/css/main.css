@@ -34,7 +34,7 @@ body {
 .overlay {
     background-color: rgba(255,255,255,0.6);
     bottom: 0;
-    display: none;
+    /*display: none;*/
     height: 100%;
     left: 0;
     position: fixed;
@@ -49,15 +49,16 @@ body {
         height: 100%;
         justify-content: center; /* align horizontal */
         padding-bottom: 150px;
+        z-index:5;
     }
     .overlay #loading-img {
-        background: url("../img/loading.gif") no-repeat center;
-        background-size: 100px;
-        height: 100%;
-        left: 0;
+        background: url("../img/loading.gif") white no-repeat center;
+        background-size: 300px;
+        border: 2px solid #239123;
+        left: 40%;
+        padding: 10px;
         position: absolute;
-        top: 0;
-        width: 100%;
+        top: 40%;
     }
 
 #logo {
