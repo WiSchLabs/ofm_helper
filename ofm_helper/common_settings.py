@@ -126,6 +126,22 @@ STATIC_URL = '/static/'
 
 CONFIGURATION_BASE_PATH = 'core/config'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
 ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'
 
 AUTH_USER_MODEL = 'users.OFMUser'
