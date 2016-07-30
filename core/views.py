@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from users.models import OFMUser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def register_view(request):
@@ -104,27 +107,35 @@ def account_view(request):
 
 
 def trigger_parsing(request):
+    logger.debug('===== START parsing ==============================')
     if request.user.is_authenticated():
+        logger.debug('===== got user: %s' % request.user.username)
+        logger.debug('===== SiteManager login ...')
         site_manager = SiteManager(request.user)
         site_manager.login()
 
+        logger.debug('===== parse Matchday ...')
         site_manager.jump_to_frame(Constants.HEAD)
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
         matchday_parser.parse()
 
+        logger.debug('===== parse Players ...')
         site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
         players_parser = PlayersParser(site_manager.browser.page_source, request.user)
         players_parser.parse()
 
+        logger.debug('===== parse PlayerStatistics ...')
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
         player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
         player_stat_parser.parse()
 
+        logger.debug('===== parse Finances ...')
         site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
         finances_parser.parse()
 
         site_manager.kill()
+        logger.debug('===== END parsing ==============================')
 
         return redirect('core:ofm:player_statistics')
     else:

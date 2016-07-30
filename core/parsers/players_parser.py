@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 
 from core.models import Player, Matchday, Season, Country, Contract
 from core.parsers.base_parser import BaseParser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PlayersParser(BaseParser):
@@ -45,8 +48,10 @@ class PlayersParser(BaseParser):
             birth_season=birth_season,
             nationality=nationality
         )
+        logger.debug('===== Player parsed: %s' % player.name)
 
         self._create_contract(player, matchday)
+        logger.debug('===== Contract created.')
 
         return player
 

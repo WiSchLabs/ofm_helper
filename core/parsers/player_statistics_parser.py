@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 
 from core.models import Player, PlayerStatistics, Matchday, Contract
 from core.parsers.base_parser import BaseParser
+import logging
+
+logger = logging.getLogger(__name__)
 
 MULTIVALUE_SEPARATOR = '/'
 
@@ -58,6 +61,7 @@ class PlayerStatisticsParser(BaseParser):
             matchday=matchday,
             player=player
         )
+        logger.debug('===== PlayerStatistics parsed: %s' % parsed_player_stat)
 
         parsed_player_stat.strength = strength
         parsed_player_stat.games_in_season = games_in_season

@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 
 from core.models import Matchday, Finance
 from core.parsers.base_parser import BaseParser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class FinancesParser(BaseParser):
@@ -51,6 +54,7 @@ class FinancesParser(BaseParser):
             user=self.user,
             matchday=matchday,
         )
+        logger.debug('===== Finance parsed: %s' % finances)
 
         finances.balance = balance
         finances.income_visitors_league = income_visitors_league
