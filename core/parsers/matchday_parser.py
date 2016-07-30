@@ -27,6 +27,6 @@ class MatchdayParser(BaseParser):
 
         matchday.season.save()
         matchday.save()
-        logger.debug('===== Matchday parsed: %s / %s' % matchday.season.number, matchday.number)
+        logger.debug('===== Matchday parsed: %s ' % matchday)
 
         return matchday
