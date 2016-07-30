@@ -1,12 +1,11 @@
-import logging
-
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
+
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,18 +31,21 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         newer_matchday_season = self.request.GET.get('newer_matchday_season', default=Matchday.objects.all()[0].season.number)
         newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
-        older_matchday_season = self.request.GET.get('older_matchday_season', default=Matchday.objects.all()[1].season.number if Matchday.objects.all().count() > 1 else None)
-        older_matchday = self.request.GET.get('older_matchday', default=Matchday.objects.all()[1].number if Matchday.objects.all().count() > 1 else None)
+        older_matchday_season = self.request.GET.get('older_matchday_season')
+        older_matchday = self.request.GET.get('older_matchday')
 
-        show_diff = self.request.GET.get('show_diff', default='false').lower() == 'true'
-
-        player_statistics_tuples = [self._get_statistics_from_player_and_matchday(player,
+        player_statistics_tuples = []
+        for player in players:
+            newer_player_statistic, older_player_statistic = self._get_statistics_from_player_and_matchday(player,
                                                                             newer_matchday_season, newer_matchday,
                                                                             older_matchday_season, older_matchday)
-                             for player in players]
+            if not (not older_player_statistic and (older_matchday and older_matchday_season)) \
+                    and not (not newer_player_statistic and (newer_matchday and newer_matchday_season)):
+                player_statistics_tuples.append((newer_player_statistic, older_player_statistic))
+            else:
+                pass
 
-        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistic,
-                                                                           older_player_statistic, show_diff)
+        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistic, older_player_statistic)
                                   for (newer_player_statistic, older_player_statistic) in player_statistics_tuples]
 
         return self.render_json_response(player_statistics_json)
@@ -67,7 +69,7 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
             player_statistics = player_statistics[0]
         return player_statistics
 
-    def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics, show_diff=True):
+    def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics):
         """
         Args:
             newer_player_statistics: newer statistic
@@ -81,16 +83,16 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
             newer_player_statistics = PlayerStatistics.objects.all()[0]
 
         ep = newer_player_statistics.ep
-        if show_diff and older_player_statistics:
+        if older_player_statistics:
             ep = newer_player_statistics.ep - older_player_statistics.ep
         tp = newer_player_statistics.tp
-        if show_diff and older_player_statistics:
+        if older_player_statistics:
             tp = newer_player_statistics.tp - older_player_statistics.tp
         awp = newer_player_statistics.awp
-        if show_diff and older_player_statistics:
+        if older_player_statistics:
             awp = newer_player_statistics.awp - older_player_statistics.awp
         freshness = newer_player_statistics.freshness
-        if show_diff and older_player_statistics:
+        if older_player_statistics:
             freshness = newer_player_statistics.freshness - older_player_statistics.freshness
 
         statistic_diff = dict()
@@ -180,14 +182,6 @@ class FinanceDataView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(FinanceDataView, self).get_context_data(**kwargs)
-
-        logger = logging.getLogger(__name__)
-
-        logger.debug('debug')
-        logger.info('info')
-        logger.warning('warning')
-        logger.error('error')
-        logger.critical('critical')
 
         finance_data = DataPool(
             series=[

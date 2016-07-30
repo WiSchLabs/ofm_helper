@@ -13,14 +13,12 @@
                     <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
                     <label for="diff_toggle">Zeige mit die Daten vom </label>
 
-                    <input type="hidden" name="newer_matchday_season" value="140">
-                    <input type="hidden" name="older_matchday_season" value="140">
                     <select class="form-control" id="newer_matchday">
                         {% with matchdays|length|add:-1 as len %}
                             {% with len|stringformat:"s" as len_str %}
                                 {% with "0:"|add:len_str as slicinator %}
                                     {% for m in matchdays|slice:slicinator %}
-                                        <option value="{{ m.number }}">Saison {{ m.season.number }} - Spieltag {{ m.number }}</option>
+                                        <option value="{{ m.season.number }}/{{ m.number }}">{{ m.season.number }} / {{ m.number }}</option>
                                     {% endfor %}
                                 {% endwith %}
                             {% endwith %}
@@ -33,7 +31,7 @@
                                 {% with len|stringformat:"s" as len_str %}
                                     {% with "1:"|add:len_str as slicinator %}
                                         {% for m in matchdays|slice:slicinator %}
-                                            <option value="{{ m.number }}">Saison {{ m.season.number }} - Spieltag {{ m.number }}</option>
+                                            <option value="{{ m.season.number }}/{{ m.number }}">{{ m.season.number }} / {{ m.number }}</option>
                                         {% endfor %}
                                     {% endwith %}
                                 {% endwith %}
@@ -79,13 +77,25 @@
     </table>
 
     <script>
-        var $table = $('#player_statistics_table');
+        var $table = $('#player_statistics_table'),
+                newer_matchday, newer_matchday_season,
+                older_matchday, older_matchday_season;
 
-        $('#diff_toggle').bootstrapSwitch('state', false);
+        function updateData(event, data) {
+            var params = {};
 
-        $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
-            $.get("{% url 'core:ofm:player_statistics_json' %}", {show_diff: data},
+            if (data) {
+                params = {
+                    newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday,
+                    older_matchday_season: older_matchday_season, older_matchday: older_matchday
+                };
+            } else {
+                params = { newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday };
+            }
+
+            $.get("{% url 'core:ofm:player_statistics_json' %}", params,
                 function(returnedData){
+                    $table.bootstrapTable('removeAll');
                     $table.bootstrapTable('load', returnedData);
 
                     if (data){
@@ -93,7 +103,54 @@
                     } else {
                         $('#matchday_compare').addClass('hide')
                     }
-            });
+                }
+            );
+        }
+
+        $('#newer_matchday').on('change', function() {
+            newer_matchday_season = $( "#newer_matchday" ).val().split("/")[0];
+            newer_matchday = $( "#newer_matchday" ).val().split("/")[1];
+            updateData(event, $('#diff_toggle').prop('checked'));
+        });
+        $('#older_matchday').on('change', function() {
+            newer_matchday_season = $( "#newer_matchday" ).val().split("/")[0];
+            newer_matchday = $( "#newer_matchday" ).val().split("/")[1];
+            older_matchday_season = $( "#older_matchday" ).val().split("/")[0];
+            older_matchday = $( "#older_matchday" ).val().split("/")[1];
+            updateData(event, $('#diff_toggle').prop('checked'));
+        });
+
+
+        $('#diff_toggle').bootstrapSwitch('state', false);
+
+        $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
+            newer_matchday_season = $( "#newer_matchday" ).val().split("/")[0];
+            newer_matchday = $( "#newer_matchday" ).val().split("/")[1];
+            older_matchday_season = $( "#older_matchday" ).val().split("/")[0];
+            older_matchday = $( "#older_matchday" ).val().split("/")[1];
+            var params = {};
+
+            if (data) {
+                params = {
+                    newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday,
+                    older_matchday_season: older_matchday_season, older_matchday: older_matchday
+                };
+            } else {
+                params = { newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday };
+            }
+
+            $.get("{% url 'core:ofm:player_statistics_json' %}", params,
+                function(returnedData){
+                    $table.bootstrapTable('removeAll');
+                    $table.bootstrapTable('load', returnedData);
+
+                    if (data){
+                        $('#matchday_compare').removeClass('hide')
+                    } else {
+                        $('#matchday_compare').addClass('hide')
+                    }
+                }
+            );
         });
 
         function queryParams() {

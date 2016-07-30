@@ -45,17 +45,6 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['strength'], 1)
         self.assertEquals(returned_json_data[0]['freshness'], 4)
 
-    def test_user_can_ONLY_SEE_HIS_latest_player_statistic_when_given_no_matchday(self):
-        next_matchday = MatchdayFactory.create(number=self.matchday.number+1)
-        player2 = PlayerFactory.create()
-        PlayerStatisticsFactory.create(player=player2, matchday=next_matchday, ep=3, tp=6, awp=4)
-
-        response = self.client.get(reverse('core:ofm:player_statistics_json'))
-
-        self.assertEqual(response.status_code, 200)
-        returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
-
     def test_user_can_see_his_player_statistics_diff_when_given_both_matchdays(self):
         second_matchday = MatchdayFactory.create(number=self.matchday.number+1)
         PlayerStatisticsFactory.create(player=self.player, matchday=second_matchday, ep=3, tp=6, awp=4, freshness=5)
@@ -67,8 +56,8 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
                                    {'newer_matchday_season': third_matchday.season.number,
                                     'newer_matchday': third_matchday.number,
                                     'older_matchday_season': self.matchday.season.number,
-                                    'older_matchday': self.matchday.number,
-                                    'show_diff': 'true'})
+                                    'older_matchday': self.matchday.number
+                                    })
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
@@ -80,5 +69,78 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['awp'], 10)
         self.assertEquals(returned_json_data[0]['strength'], 1)
         self.assertEquals(returned_json_data[0]['freshness'], 10)
+
+    def test_user_can_see_his_player_statistics_diff_when_given_only_newer_matchday(self):
+        second_matchday = MatchdayFactory.create(number=self.matchday.number+1)
+        PlayerStatisticsFactory.create(player=self.player, matchday=second_matchday, ep=3, tp=6, awp=4, freshness=5)
+
+        third_matchday = MatchdayFactory.create(number=self.matchday.number+2)
+        PlayerStatisticsFactory.create(player=self.player, matchday=third_matchday, ep=12, tp=15, awp=13, freshness=14)
+
+        response = self.client.get(reverse('core:ofm:player_statistics_json'),
+                                   {'newer_matchday_season': third_matchday.season.number,
+                                    'newer_matchday': third_matchday.number
+                                   })
+
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], 'TW')
+        self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
+        self.assertEquals(returned_json_data[0]['ep'], 12)
+        self.assertEquals(returned_json_data[0]['tp'], 15)
+        self.assertEquals(returned_json_data[0]['awp'], 13)
+        self.assertEquals(returned_json_data[0]['strength'], 1)
+        self.assertEquals(returned_json_data[0]['freshness'], 14)
+
+    def test_player_leaves_team_shows_only_older_player_data(self):
+        second_matchday = MatchdayFactory.create(number=self.matchday.number+1)
+        player2 = PlayerFactory.create(name="Tricia McMillan")
+        Contract.objects.create(user=self.user1, player=player2, bought_on_matchday=self.matchday, sold_on_matchday=None)
+
+        PlayerStatisticsFactory.create(player=player2, matchday=self.matchday, ep=3, tp=6, awp=4, freshness=5)
+        PlayerStatisticsFactory.create(player=self.player, matchday=second_matchday, ep=3, tp=6, awp=4, freshness=5)
+
+        response = self.client.get(reverse('core:ofm:player_statistics_json'),
+                                   {'newer_matchday_season': second_matchday.season.number,
+                                    'newer_matchday': second_matchday.number,
+                                    'older_matchday_season': self.matchday.season.number,
+                                    'older_matchday': self.matchday.number
+                                   })
+
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], self.player.position)
+        self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
+        self.assertEquals(returned_json_data[0]['ep'], 1)
+        self.assertEquals(returned_json_data[0]['tp'], 1)
+        self.assertEquals(returned_json_data[0]['awp'], 1)
+        self.assertEquals(returned_json_data[0]['freshness'], 1)
+
+    def test_player_joins_team_shows_only_older_player_data(self):
+        second_matchday = MatchdayFactory.create(number=self.matchday.number+1)
+        player2 = PlayerFactory.create(name="Tricia McMillan")
+        Contract.objects.create(user=self.user1, player=player2, bought_on_matchday=self.matchday, sold_on_matchday=None)
+
+        PlayerStatisticsFactory.create(player=player2, matchday=second_matchday, ep=3, tp=6, awp=4, freshness=5)
+        PlayerStatisticsFactory.create(player=self.player, matchday=second_matchday, ep=3, tp=6, awp=4, freshness=5)
+
+        response = self.client.get(reverse('core:ofm:player_statistics_json'),
+                                   {'newer_matchday_season': second_matchday.season.number,
+                                    'newer_matchday': second_matchday.number,
+                                    'older_matchday_season': self.matchday.season.number,
+                                    'older_matchday': self.matchday.number
+                                   })
+
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(len(returned_json_data), 1)
+        self.assertEquals(returned_json_data[0]['position'], self.player.position)
+        self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
+        self.assertEquals(returned_json_data[0]['ep'], 1)
+        self.assertEquals(returned_json_data[0]['tp'], 1)
+        self.assertEquals(returned_json_data[0]['awp'], 1)
+        self.assertEquals(returned_json_data[0]['freshness'], 1)
 
 
