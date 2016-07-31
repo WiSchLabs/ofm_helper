@@ -1,11 +1,19 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
-from chartit import DataPool, Chart
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
+from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
+
+
+def _validate_filtered_field(field):
+        if len(field) > 1:
+            raise MultipleObjectsReturned
+        elif field:
+            field = field[0]
+        return field
 
 
 @method_decorator(login_required, name='dispatch')
@@ -57,17 +65,10 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         ps1 = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
         ps2 = PlayerStatistics.objects.filter(player=player, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
 
-        ps1 = self._validate_filtered_player_statistics(ps1)
-        ps2 = self._validate_filtered_player_statistics(ps2)
+        ps1 = _validate_filtered_field(ps1)
+        ps2 = _validate_filtered_field(ps2)
 
         return ps1, ps2
-
-    def _validate_filtered_player_statistics(self, player_statistics):
-        if len(player_statistics) > 1:
-            raise MultipleObjectsReturned
-        elif player_statistics:
-            player_statistics = player_statistics[0]
-        return player_statistics
 
     def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics):
         """
@@ -221,9 +222,156 @@ class FinanceDataView(TemplateView):
             }
         )
 
+        matchdays = Matchday.objects.filter(finance__isnull=False).distinct()
+
+        context['matchdays'] = matchdays
         context['chart'] = chart
 
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=Matchday.objects.all()[0].season.number)
+        newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
+        older_matchday_season = self.request.GET.get('older_matchday_season')
+        older_matchday = self.request.GET.get('older_matchday')
+
+        newer_finances = Finance.objects.filter(user=request.user, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
+        older_finances = Finance.objects.filter(user=request.user, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
+
+        newer_finances = _validate_filtered_field(newer_finances)
+        older_finances = _validate_filtered_field(older_finances)
+
+        finances_json = self._get_finances_diff_in_json(newer_finances, older_finances)
+
+        return self.render_json_response(finances_json)
+
+    def _get_finances_diff_in_json(self, newer_finances, older_finances):
+        """
+        Args:
+            newer_finances: newer finances
+            older_finances: older finances
+
+        Returns:
+            A dictionary of finance data. If older_finances is None newer_finances is returned
+        """
+
+        if not newer_finances:
+            newer_finances = Finance.objects.all()[0]
+
+        balance = newer_finances.balance
+        if older_finances:
+            balance = newer_finances.balance - older_finances.balance
+
+        income_visitors_league = newer_finances.income_visitors_league
+        if older_finances:
+            income_visitors_league = newer_finances.income_visitors_league - older_finances.income_visitors_league
+
+        income_sponsoring = newer_finances.income_sponsoring
+        if older_finances:
+            income_sponsoring = newer_finances.income_sponsoring - older_finances.income_sponsoring
+            
+        income_cup = newer_finances.income_cup
+        if older_finances:
+            income_cup = newer_finances.income_cup - older_finances.income_cup
+
+        income_interests = newer_finances.income_interests
+        if older_finances:
+            income_interests = newer_finances.income_interests - older_finances.income_interests
+            
+        income_loan = newer_finances.income_loan
+        if older_finances:
+            income_loan = newer_finances.income_loan - older_finances.income_loan
+            
+        income_transfer = newer_finances.income_transfer
+        if older_finances:
+            income_transfer = newer_finances.income_transfer - older_finances.income_transfer
+            
+        income_visitors_friendlies = newer_finances.income_visitors_friendlies
+        if older_finances:
+            income_visitors_friendlies = newer_finances.income_visitors_friendlies - older_finances.income_visitors_friendlies
+            
+        income_friendlies = newer_finances.income_friendlies
+        if older_finances:
+            income_friendlies = newer_finances.income_friendlies - older_finances.income_friendlies
+            
+        income_funcup = newer_finances.income_funcup
+        if older_finances:
+            income_funcup = newer_finances.income_funcup - older_finances.income_funcup
+            
+        income_betting = newer_finances.income_betting
+        if older_finances:
+            income_betting = newer_finances.income_betting - older_finances.income_betting
+            
+        expenses_player_salaries = newer_finances.expenses_player_salaries
+        if older_finances:
+            expenses_player_salaries = newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries
+            
+        expenses_stadium = newer_finances.expenses_stadium
+        if older_finances:
+            expenses_stadium = newer_finances.expenses_stadium - older_finances.expenses_stadium
+            
+        expenses_youth = newer_finances.expenses_youth
+        if older_finances:
+            expenses_youth = newer_finances.expenses_youth - older_finances.expenses_youth
+            
+        expenses_interests = newer_finances.expenses_interests
+        if older_finances:
+            expenses_interests = newer_finances.expenses_interests - older_finances.expenses_interests
+            
+        expenses_trainings = newer_finances.expenses_trainings
+        if older_finances:
+            expenses_trainings = newer_finances.expenses_trainings - older_finances.expenses_trainings
+            
+        expenses_transfer = newer_finances.expenses_transfer
+        if older_finances:
+            expenses_transfer = newer_finances.expenses_transfer - older_finances.expenses_transfer
+            
+        expenses_compensation = newer_finances.expenses_compensation
+        if older_finances:
+            expenses_compensation = newer_finances.expenses_compensation - older_finances.expenses_compensation
+            
+        expenses_friendlies = newer_finances.expenses_friendlies
+        if older_finances:
+            expenses_friendlies = newer_finances.expenses_friendlies - older_finances.expenses_friendlies
+            
+        expenses_funcup = newer_finances.expenses_funcup
+        if older_finances:
+            expenses_funcup = newer_finances.expenses_funcup - older_finances.expenses_funcup
+            
+        expenses_betting = newer_finances.expenses_betting
+        if older_finances:
+            expenses_betting = newer_finances.expenses_betting - older_finances.expenses_betting
+
+        finances_diff = dict()
+        finances_diff['balance'] = balance
+
+        finances_diff['income_visitors_league'] = income_visitors_league
+        finances_diff['income_sponsoring'] = income_sponsoring
+        finances_diff['income_cup'] = income_cup
+        finances_diff['income_interests'] = income_interests
+        finances_diff['income_loan'] = income_loan
+        finances_diff['income_transfer'] = income_transfer
+        finances_diff['income_visitors_friendlies'] = income_visitors_friendlies
+        finances_diff['income_friendlies'] = income_friendlies
+        finances_diff['income_funcup'] = income_funcup
+        finances_diff['income_betting'] = income_betting
+
+        finances_diff['expenses_player_salaries'] = expenses_player_salaries
+        finances_diff['expenses_stadium'] = expenses_stadium
+        finances_diff['expenses_youth'] = expenses_youth
+        finances_diff['expenses_interests'] = expenses_interests
+        finances_diff['expenses_trainings'] = expenses_trainings
+        finances_diff['expenses_transfer'] = expenses_transfer
+        finances_diff['expenses_compensation'] = expenses_compensation
+        finances_diff['expenses_friendlies'] = expenses_friendlies
+        finances_diff['expenses_funcup'] = expenses_funcup
+        finances_diff['expenses_betting'] = expenses_betting
+
+        return [finances_diff]
 
 
 @method_decorator(login_required, name='dispatch')
