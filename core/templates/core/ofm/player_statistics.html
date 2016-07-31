@@ -103,6 +103,8 @@
                     } else {
                         $('#matchday_compare').addClass('hide')
                     }
+
+                    markSpecialValues();
                 }
             );
         }
@@ -149,8 +151,28 @@
                     } else {
                         $('#matchday_compare').addClass('hide')
                     }
+
+                    markSpecialValues();
                 }
             );
+        });
+
+        function markSpecialValues() {
+            $('#player_statistics_table tr').each(function(){
+                $(this).find('td').each(function(){
+                    var entry_value = $(this).html();
+
+                    if (entry_value > 0){
+                        $(this).addClass("bg-success");
+                    } else if (entry_value < 0) {
+                        $(this).addClass("bg-danger");
+                    }
+                })
+            })
+        }
+
+        jQuery(document).ready(function () {
+            markSpecialValues();
         });
 
         function queryParams() {
