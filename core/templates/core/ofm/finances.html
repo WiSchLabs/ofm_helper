@@ -43,7 +43,7 @@
         </div>
     {% endif %}
 
-    <h2>Bilanz:</h2>
+    <h2>Bilanz</h2>
 
     <table id='finances_balance_table' class="table table-bordered table-striped table-hover finances_table"
        data-toggle="table"
@@ -51,14 +51,14 @@
        data-sort-order="desc"
        data-query-params="queryParams"
        data-url="{% url 'core:ofm:finances_json' %}">
-        <thead id="finances_balance_table_head">
+        <thead id="finances_balance_table_head" class="hide">
             <tr>
                 <th data-field="balance" data-sortable="true">Bilanz</th>
             </tr>
         </thead>
     </table>
 
-    <h2>Einnahmen:</h2>
+    <h2>Einnahmen</h2>
 
     <table id='finances_income_table' class="table table-bordered table-striped table-hover finances_table"
        data-toggle="table"
@@ -82,7 +82,7 @@
         </thead>
     </table>
 
-    <h2>Ausgaben:</h2>
+    <h2>Ausgaben</h2>
 
     <table id='finances_expenses_table' class="table table-bordered table-striped table-hover finances_table"
        data-toggle="table"
@@ -193,7 +193,7 @@
         }
     </script>
 
-    <h1>Saison:</h1>
+    <h1>Saisonverlauf</h1>
 
     <div id='chart_container'> Chart will be rendered here </div>
 
