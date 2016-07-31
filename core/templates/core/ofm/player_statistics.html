@@ -104,7 +104,7 @@
                         $('#matchday_compare').addClass('hide')
                     }
 
-                    markSpecialValues();
+                    markSpecialValues(data);
                 }
             );
         }
@@ -152,28 +152,29 @@
                         $('#matchday_compare').addClass('hide')
                     }
 
-                    markSpecialValues();
+                    markSpecialValues(data);
                 }
             );
         });
 
-        function markSpecialValues() {
+        function markSpecialValues(showing_diff) {
             $('#player_statistics_table tr').each(function(){
                 $(this).find('td').each(function(){
                     var entry_value = $(this).html();
 
-                    if (entry_value > 0){
-                        $(this).addClass("bg-success");
-                    } else if (entry_value < 0) {
-                        $(this).addClass("bg-danger");
+                    if (showing_diff) {
+                        if (entry_value > 0){
+                            $(this).addClass("bg-success");
+                        } else if (entry_value < 0) {
+                            $(this).addClass("bg-danger");
+                        }
+                    } else {
+                        $(this).removeClass("bg-success");
+                        $(this).removeClass("bg-danger");
                     }
                 })
             })
         }
-
-        jQuery(document).ready(function () {
-            markSpecialValues();
-        });
 
         function queryParams() {
             var params = {};
