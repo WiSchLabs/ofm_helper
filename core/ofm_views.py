@@ -306,45 +306,45 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         if older_finances:
             income_betting = newer_finances.income_betting - older_finances.income_betting
             
-        expenses_player_salaries = newer_finances.expenses_player_salaries
+        expenses_player_salaries = -newer_finances.expenses_player_salaries
         if older_finances:
-            expenses_player_salaries = newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries
+            expenses_player_salaries = -(newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries)
             
-        expenses_stadium = newer_finances.expenses_stadium
+        expenses_stadium = -newer_finances.expenses_stadium
         if older_finances:
-            expenses_stadium = newer_finances.expenses_stadium - older_finances.expenses_stadium
+            expenses_stadium = -(newer_finances.expenses_stadium - older_finances.expenses_stadium)
             
-        expenses_youth = newer_finances.expenses_youth
+        expenses_youth = -newer_finances.expenses_youth
         if older_finances:
-            expenses_youth = newer_finances.expenses_youth - older_finances.expenses_youth
+            expenses_youth = -(newer_finances.expenses_youth - older_finances.expenses_youth)
             
-        expenses_interests = newer_finances.expenses_interests
+        expenses_interests = -newer_finances.expenses_interests
         if older_finances:
-            expenses_interests = newer_finances.expenses_interests - older_finances.expenses_interests
+            expenses_interests = -(newer_finances.expenses_interests - older_finances.expenses_interests)
             
-        expenses_trainings = newer_finances.expenses_trainings
+        expenses_trainings = -newer_finances.expenses_trainings
         if older_finances:
-            expenses_trainings = newer_finances.expenses_trainings - older_finances.expenses_trainings
+            expenses_trainings = -(newer_finances.expenses_trainings - older_finances.expenses_trainings)
             
-        expenses_transfer = newer_finances.expenses_transfer
+        expenses_transfer = -newer_finances.expenses_transfer
         if older_finances:
-            expenses_transfer = newer_finances.expenses_transfer - older_finances.expenses_transfer
+            expenses_transfer = -(newer_finances.expenses_transfer - older_finances.expenses_transfer)
             
-        expenses_compensation = newer_finances.expenses_compensation
+        expenses_compensation = -newer_finances.expenses_compensation
         if older_finances:
-            expenses_compensation = newer_finances.expenses_compensation - older_finances.expenses_compensation
+            expenses_compensation = -(newer_finances.expenses_compensation - older_finances.expenses_compensation)
             
-        expenses_friendlies = newer_finances.expenses_friendlies
+        expenses_friendlies = -newer_finances.expenses_friendlies
         if older_finances:
-            expenses_friendlies = newer_finances.expenses_friendlies - older_finances.expenses_friendlies
+            expenses_friendlies = -(newer_finances.expenses_friendlies - older_finances.expenses_friendlies)
             
-        expenses_funcup = newer_finances.expenses_funcup
+        expenses_funcup = -newer_finances.expenses_funcup
         if older_finances:
-            expenses_funcup = newer_finances.expenses_funcup - older_finances.expenses_funcup
+            expenses_funcup = -(newer_finances.expenses_funcup - older_finances.expenses_funcup)
             
-        expenses_betting = newer_finances.expenses_betting
+        expenses_betting = -newer_finances.expenses_betting
         if older_finances:
-            expenses_betting = newer_finances.expenses_betting - older_finances.expenses_betting
+            expenses_betting = -(newer_finances.expenses_betting - older_finances.expenses_betting)
 
         finances_diff = dict()
         finances_diff['balance'] = balance
