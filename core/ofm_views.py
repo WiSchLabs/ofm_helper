@@ -128,11 +128,12 @@ class PlayerDetailView(DetailView):
         context = super(PlayerDetailView, self).get_context_data(**kwargs)
 
         player = self.get_object()
+        current_season = Matchday.objects.all()[0].season
 
         statistics_data = DataPool(
             series=[
                 {'options':
-                    {'source': PlayerStatistics.objects.filter(player=player)},
+                    {'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)},
                     'terms': [
                         'matchday__number',
                         'ep',
@@ -183,11 +184,12 @@ class FinanceDataView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(FinanceDataView, self).get_context_data(**kwargs)
+        current_season = Matchday.objects.all()[0].season
 
         finance_data = DataPool(
             series=[
                 {'options':
-                    {'source': Finance.objects.filter(user=self.request.user)},
+                    {'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)},
                     'terms': [
                         'matchday__number',
                         'balance',
