@@ -394,6 +394,7 @@ class Finance(models.Model):
 class Match(models.Model):
     class Meta:
         ordering = ['user', '-matchday']
+        verbose_name_plural = "Matches"
 
     MATCHTYPE = (
         ("L", "Liga"),
@@ -403,7 +404,7 @@ class Match(models.Model):
     )
 
     user = models.ForeignKey(OFMUser)
-    matchday = models.ForeignKey(Matchday)
+    matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
     venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
     home_team = models.CharField(max_length=200)
@@ -419,6 +420,7 @@ class Match(models.Model):
 class MatchStadiumStatistics(models.Model):
     class Meta:
         ordering = ['match']
+        verbose_name_plural = "Match stadium statistics"
 
     match = models.OneToOneField(Match, related_name='stadium_statistics')
 
@@ -438,6 +440,9 @@ class MatchStadiumStatistics(models.Model):
 
 # always avoid alliterations.
 class StadiumStandStatistics(models.Model):
+    class Meta:
+        verbose_name_plural = "Stadium stand statistics"
+
     SECTOR = (
         ("N", "Nord"),
         ("S", "Süd"),

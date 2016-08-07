@@ -1,6 +1,6 @@
-from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance
+from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, Match, \
+    MatchStadiumStatistics, StadiumStandStatistics
 from django.contrib import admin
-from django.contrib.admin import register
 
 
 @admin.register(Season)
@@ -56,5 +56,26 @@ class FinanceAdmin(admin.ModelAdmin):
     list_filter = ['user', 'matchday']
     list_display = ['user', 'matchday']
     search_fields = ['user__username', 'matchday__number']
+
+
+@admin.register(Match)
+class MatchAdmin(admin.ModelAdmin):
+    list_filter = ['user', 'matchday']
+    list_display = ['user', 'matchday']
+    search_fields = ['user__username', 'matchday__number']
+
+
+@admin.register(MatchStadiumStatistics)
+class MatchStadiumStatisticsAdmin(admin.ModelAdmin):
+    list_filter = ['match__user', 'match__matchday']
+    list_display = ['match']
+    search_fields = ['match__user__username', 'match__matchday__number']
+
+
+@admin.register(StadiumStandStatistics)
+class StadiumStandStatisticsAdmin(admin.ModelAdmin):
+    list_filter = ['stadium_statistics__match__user', 'stadium_statistics__match__matchday']
+    list_display = ['stadium_statistics']
+    search_fields = ['stadium_statistics__match__user__username', 'stadium_statistics__match__matchday__number']
 
 
