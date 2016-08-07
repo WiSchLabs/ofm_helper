@@ -1,5 +1,5 @@
 class Constants:
-    LOGIN = 'http://www.onlinefussballmanager.de'
+    BASE = 'http://www.onlinefussballmanager.de'
     HEAD = 'http://www.onlinefussballmanager.de/head-int.php'
 
     class Office:

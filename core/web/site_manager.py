@@ -23,7 +23,7 @@ class SiteManager:
             self._login_password = os.environ('OFM_PASSWORD')
 
     def login(self):
-        self.browser.get(Constants.LOGIN)
+        self.browser.get(Constants.BASE)
         self._switch_to_login_div()
 
         self._insert_login_credentials()

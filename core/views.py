@@ -1,4 +1,7 @@
+from bs4 import BeautifulSoup
+
 from core.parsers.finances_parser import FinancesParser
+from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
@@ -133,6 +136,15 @@ def trigger_parsing(request):
         site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
         finances_parser.parse()
+
+        logger.debug('===== parse Latest Match ...')
+        site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
+        soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
+        row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
+        link_to_match = row.find_all('img')[0].find_parent('a')['href']
+        site_manager.jump_to_frame(Constants.BASE + link_to_match)
+        match_parser = MatchParser(site_manager.browser.page_source, request.user)
+        match_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')

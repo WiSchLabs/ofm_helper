@@ -1,10 +1,13 @@
 from unittest.mock import Mock, patch
 
+from bs4 import BeautifulSoup
+
 import core
 import os
 from core.factories.core_factories import MatchdayFactory
 from core.models import PlayerStatistics, Player, Finance
 from core.parsers.finances_parser import FinancesParser
+from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
@@ -26,30 +29,36 @@ class ParserViewTest(TestCase):
         self.client.login(username='name', password='pass')
 
     @patch('core.views.SiteManager')
-    def test_parser_view(self, site_manager_mock):
+    @patch('core.views.BeautifulSoup')
+    def test_parser_view(self, site_manager_mock, beatiful_soup_mock):
         with open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8') as matchday_html:
             with open(os.path.join(TESTDATA_PATH, 'player.html'), encoding='utf8') as player_html:
                 with open(os.path.join(TESTDATA_PATH, 'frame_player_statistics.html'), encoding='utf8') as player_statistics_html:
                     with open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8') as finances_html:
-                        mp = MatchdayParser(matchday_html.read())
-                        pp = PlayersParser(player_html.read(), self.user)
-                        psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
-                        fp = FinancesParser(finances_html.read(), self.user)
+                        with open(os.path.join(TESTDATA_PATH, 'home_match.html'), encoding='utf8') as match_html:
+                            mdp = MatchdayParser(matchday_html.read())
+                            pp = PlayersParser(player_html.read(), self.user)
+                            psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
+                            fp = FinancesParser(finances_html.read(), self.user)
+                            mp = MatchParser(match_html.read(), self.user)
 
-                        core.views.MatchdayParser = Mock(spec=mp)
-                        core.views.MatchdayParser.return_value.parse = mp.parse
+                            core.views.MatchdayParser = Mock(spec=mdp)
+                            core.views.MatchdayParser.return_value.parse = mdp.parse
 
-                        core.views.PlayersParser = Mock(spec=pp)
-                        core.views.PlayersParser.return_value.parse = pp.parse
+                            core.views.PlayersParser = Mock(spec=pp)
+                            core.views.PlayersParser.return_value.parse = pp.parse
 
-                        core.views.PlayerStatisticsParser = Mock(spec=psp)
-                        core.views.PlayerStatisticsParser.return_value.parse = psp.parse
+                            core.views.PlayerStatisticsParser = Mock(spec=psp)
+                            core.views.PlayerStatisticsParser.return_value.parse = psp.parse
 
-                        core.views.FinancesParser = Mock(spec=fp)
-                        core.views.FinancesParser.return_value.parse = fp.parse
+                            core.views.FinancesParser = Mock(spec=fp)
+                            core.views.FinancesParser.return_value.parse = fp.parse
 
-                        response = self.client.get(reverse('core:trigger_parsing'))
-                        self.assertEqual(response.status_code, 302)
+                            core.views.MatchParser = Mock(spec=mp)
+                            core.views.MatchParser.return_value.parse = mp.parse
+
+                            response = self.client.get(reverse('core:trigger_parsing'))
+                            self.assertEqual(response.status_code, 302)
 
         # test player statistics parsing
         player_statistics = PlayerStatistics.objects.all()

@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match
 
 
 def _validate_filtered_field(field):
@@ -473,3 +473,48 @@ class FinanceDataColumnChartView(TemplateView):
         context['chart'] = chart
 
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class MatchesView(TemplateView):
+    template_name = 'core/ofm/matches.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MatchesView, self).get_context_data(**kwargs)
+
+        matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
+
+        context['matchdays'] = matchdays
+
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        season = self.request.GET.get('season', default=Matchday.objects.all()[0].season.number)
+        matches = Match.objects.filter(user=self.request.user, matchday__season__number=season)
+
+        match_json = [self._get_match_in_json(match) for match in matches]
+
+        return self.render_json_response(match_json)
+
+    def _get_match_in_json(self, match):
+        """
+        Args:
+            match: Match
+
+        Returns:
+            A dictionary of match data.
+        """
+
+        match_stat = dict()
+        match_stat['home_team'] = match.home_team
+        match_stat['guest_team'] = match.guest_team
+        match_stat['home_goals'] = match.home_goals
+        match_stat['guest_goals'] = match.guest_goals
+        match_stat['venue'] = match.venue
+        #match_stat['matchday'] = match.matchday
+
+        return match_stat
