@@ -111,6 +111,7 @@ class CreateCoreModelsTest(TestCase):
     def test_create_match_stadium_statistics(self):
         mss = MatchStadiumStatisticsFactory.create()
         self.assertTrue(mss.match is not None)
+        self.assertTrue(mss.stand_statistics is not None)
 
     def test_create_stadium_stand_statistics(self):
         sss = StadiumStandStatisticsFactory.create()

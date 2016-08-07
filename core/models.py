@@ -404,7 +404,7 @@ class Match(models.Model):
 
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday)
-    match_type = models.CharField(max_length=1, choices=MATCHTYPE)
+    match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
     venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
     home_team = models.CharField(max_length=200)
     guest_team = models.CharField(max_length=200)
