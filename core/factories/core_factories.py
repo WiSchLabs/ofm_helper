@@ -1,6 +1,7 @@
 import factory
 
-from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance
+from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance, Match, \
+    MatchStadiumStatistics, StadiumStandStatistics
 from users.factories.users_factories import OFMUserFactory
 
 
@@ -107,3 +108,36 @@ class FinanceFactory(factory.django.DjangoModelFactory):
     expenses_friendlies = 0
     expenses_funcup = 0
     expenses_betting = 0
+
+
+class MatchFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Match
+
+    user = factory.SubFactory(OFMUserFactory)
+    matchday = factory.SubFactory(MatchdayFactory)
+    match_type = 'L'
+    venue = 'Olympiastadion Berlin'
+    home_team = '1. SC Wedding'
+    guest_team = 'BSC Wittenau'
+    home_goals = 42
+    guest_goals = 0
+
+
+class MatchStadiumStatisticsFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = MatchStadiumStatistics
+
+    match = factory.SubFactory(MatchFactory)
+
+
+class StadiumStandStatisticsFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = StadiumStandStatistics
+
+    stadium_statistics = factory.SubFactory(MatchStadiumStatisticsFactory)
+    sector = 'N'
+    capacity = 100
+    visitors = 42
+    ticket_price = 55
+    condition = 99.42

@@ -1,9 +1,9 @@
 from django.test import TestCase
 
 from core.factories.core_factories import SeasonFactory, QuarterFactory, MatchdayFactory, PlayerStatisticsFactory, \
-    ContractFactory, PlayerFactory, CountryFactory, FinanceFactory
+    ContractFactory, PlayerFactory, CountryFactory, FinanceFactory, MatchFactory, MatchStadiumStatisticsFactory, \
+    StadiumStandStatisticsFactory
 from core.models import Matchday
-from users.factories.users_factories import OFMUserFactory
 
 
 class CreateCoreModelsTest(TestCase):
@@ -98,5 +98,27 @@ class CreateCoreModelsTest(TestCase):
         self.assertEqual(f.expenses_friendlies, 0)
         self.assertEqual(f.expenses_funcup, 0)
         self.assertEqual(f.expenses_betting, 0)
+
+    def test_create_match(self):
+        m = MatchFactory.create()
+        self.assertEqual(m.home_team, '1. SC Wedding')
+        self.assertEqual(m.guest_team, 'BSC Wittenau')
+        self.assertEqual(m.home_goals, 42)
+        self.assertEqual(m.guest_goals, 0)
+        self.assertEqual(m.match_type, 'L')
+        self.assertEqual(m.venue, 'Olympiastadion Berlin')
+
+    def test_create_match_stadium_statistics(self):
+        mss = MatchStadiumStatisticsFactory.create()
+        self.assertTrue(mss.match is not None)
+
+    def test_create_stadium_stand_statistics(self):
+        sss = StadiumStandStatisticsFactory.create()
+        self.assertTrue(sss.stadium_statistics is not None)
+        self.assertEqual(sss.sector, 'N')
+        self.assertEqual(sss.capacity, 100)
+        self.assertEqual(sss.visitors, 42)
+        self.assertEqual(sss.ticket_price, 55)
+        self.assertEqual(sss.condition, 99.42)
 
 

@@ -389,3 +389,68 @@ class Finance(models.Model):
 
     def __str__(self):
         return "%s (%s): %s" % (self.user.username, self.matchday, self.balance)
+
+
+class Match(models.Model):
+    class Meta:
+        ordering = ['user', '-matchday']
+
+    MATCHTYPE = (
+        ("L", "Liga"),
+        ("F", "Friendly"),
+        ("P", "Pokal"),
+        ("F", "Fun-Cup"),
+    )
+
+    user = models.ForeignKey(OFMUser)
+    matchday = models.ForeignKey(Matchday)
+    match_type = models.CharField(max_length=1, choices=MATCHTYPE)
+    venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
+    home_team = models.CharField(max_length=200)
+    guest_team = models.CharField(max_length=200)
+    home_goals = models.IntegerField(default=0)
+    guest_goals = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "(%s) %s:%s - %s:%s" % (self.matchday, self.home_team, self.guest_team, self.home_goals, self.guest_goals)
+
+
+# will only be created, if home match
+class MatchStadiumStatistics(models.Model):
+    class Meta:
+        ordering = ['match']
+
+    match = models.OneToOneField(Match, related_name='stadium_statistics')
+
+    @property
+    def visitors(self):
+        visitors = sum([stat.visitors for stat in self.stand_statistics])
+        return visitors
+
+    @property
+    def capacity(self):
+        capacity = sum([stat.capacity for stat in self.stand_statistics])
+        return capacity
+
+    def __str__(self):
+        return "%s (%s): %s / %s" % (self.match.venue, self.match.matchday, self.visitors, self.capacity)
+
+
+# always avoid alliterations.
+class StadiumStandStatistics(models.Model):
+    SECTOR = (
+        ("N", "Nord"),
+        ("S", "Süd"),
+        ("W", "West"),
+        ("O", "Ost"),
+    )
+
+    stadium_statistics = models.ForeignKey(MatchStadiumStatistics, related_name="stand_statistics")
+    sector = models.CharField(max_length=1, choices=SECTOR)
+    capacity = models.IntegerField(default=0)
+    visitors = models.IntegerField(default=0)
+    ticket_price = models.IntegerField(default=0)
+    condition = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return "%s / %s - %s - %s" % (self.visitors, self.capacity, self.ticket_price, self.condition)
