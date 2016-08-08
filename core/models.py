@@ -391,6 +391,19 @@ class Finance(models.Model):
         return "%s (%s): %s" % (self.user.username, self.matchday, self.balance)
 
 
+class MatchTeamStatistics(models.Model):
+    class Meta:
+        verbose_name_plural = "MatchTeamStatistics"
+
+    team_name = models.CharField(max_length=200)
+    score = models.IntegerField(default=0)
+    strength = models.IntegerField(default=0)
+    ball_possession = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    chances = models.IntegerField(default=0)
+    yellow_cards = models.IntegerField(default=0)
+    red_cards = models.IntegerField(default=0)
+
+
 class Match(models.Model):
     class Meta:
         ordering = ['user', '-matchday']
@@ -407,13 +420,32 @@ class Match(models.Model):
     matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
     venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
-    home_team = models.CharField(max_length=200)
-    guest_team = models.CharField(max_length=200)
-    home_goals = models.IntegerField(default=0)
-    guest_goals = models.IntegerField(default=0)
+    home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
+    guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
 
     def __str__(self):
         return "(%s) %s:%s - %s:%s" % (self.matchday, self.home_team, self.guest_team, self.home_goals, self.guest_goals)
+
+
+class StadiumLevelItem(models.Model):
+    class Meta:
+        ordering = ['-current_level', '-value', '-daily_costs']
+    current_level = models.IntegerField(default=0)
+    value = models.IntegerField(default=0)
+    daily_costs = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "%s - %s - %s" % (self.current_level, self.value, self.daily_costs)
+
+
+class StadiumLevel(models.Model):
+    light = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_light")
+    screen = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_screen")
+    security = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_security")
+    parking = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_parking")
+
+    def __str__(self):
+        return "%s - %s - %s - %s" % (self.light, self.screen, self.security, self.parking)
 
 
 # will only be created, if home match
@@ -423,6 +455,7 @@ class MatchStadiumStatistics(models.Model):
         verbose_name_plural = "Match stadium statistics"
 
     match = models.OneToOneField(Match, related_name='stadium_statistics')
+    level = models.ForeignKey(StadiumLevel, related_name="stadium_statistics")
 
     @property
     def visitors(self):
@@ -436,6 +469,15 @@ class MatchStadiumStatistics(models.Model):
 
     def __str__(self):
         return "%s (%s): %s / %s" % (self.match.venue, self.match.matchday, self.visitors, self.capacity)
+
+
+class StandLevel(models.Model):
+    capacity = models.IntegerField(default=0)
+    has_roof = models.BooleanField(default=False)
+    has_seats = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "%s - %s - %s" % (self.capacity, self.has_roof, self.has_seats)
 
 
 # always avoid alliterations.
@@ -452,10 +494,10 @@ class StadiumStandStatistics(models.Model):
 
     stadium_statistics = models.ForeignKey(MatchStadiumStatistics, related_name="stand_statistics")
     sector = models.CharField(max_length=1, choices=SECTOR)
-    capacity = models.IntegerField(default=0)
     visitors = models.IntegerField(default=0)
     ticket_price = models.IntegerField(default=0)
     condition = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    level = models.ForeignKey(StandLevel, related_name="stand_statistics")
 
     def __str__(self):
-        return "%s / %s - %s - %s" % (self.visitors, self.capacity, self.ticket_price, self.condition)
+        return "%s - %s - %s" % (self.visitors, self.ticket_price, self.condition)

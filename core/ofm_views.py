@@ -510,10 +510,20 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         """
 
         match_stat = dict()
-        match_stat['home_team'] = match.home_team
-        match_stat['guest_team'] = match.guest_team
-        match_stat['home_goals'] = match.home_goals
-        match_stat['guest_goals'] = match.guest_goals
+        #match_stat['home_team'] = match.home_team.team_name
+        #match_stat['guest_team'] = match.guest_team.team_name
+        #match_stat['home_goals'] = match.home_team.score
+        #match_stat['guest_goals'] = match.guest_team.score
+        #match_stat['home_strength'] = match.home_team.strength
+        #match_stat['guest_strength'] = match.guest_team.strength
+        #match_stat['home_ball_possession'] = match.home_team.ball_possession
+        #match_stat['guest_ball_possession'] = match.guest_team.ball_possession
+        #match_stat['home_chances'] = match.home_team.chances
+        #match_stat['guest_chances'] = match.guest_team.chances
+        #match_stat['home_yellow_cards'] = match.home_team.yellow_cards
+        #match_stat['guest_yellow_cards'] = match.guest_team.yellow_cards
+        #match_stat['home_red_cards'] = match.home_team.red_cards
+        #match_stat['guest_red_cards'] = match.guest_team.red_cards
         match_stat['venue'] = match.venue
         #match_stat['matchday'] = match.matchday
 

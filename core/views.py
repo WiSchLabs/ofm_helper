@@ -137,7 +137,7 @@ def trigger_parsing(request):
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
         finances_parser.parse()
 
-        logger.debug('===== parse Latest Match ...')
+        logger.debug('===== parse latest Match ...')
         site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
@@ -145,6 +145,16 @@ def trigger_parsing(request):
         site_manager.jump_to_frame(Constants.BASE + link_to_match)
         match_parser = MatchParser(site_manager.browser.page_source, request.user)
         match_parser.parse()
+
+        # TODO
+        # if is_home_match:
+        # logger.debug('===== parse latest Stadium statistics ...')
+        # site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
+        # match_stadium_stat_parser = MatchStadiumStatisticsParser(site_manager.browser.page_source, request.user)
+        # match_stadium_stat_parser.parse()
+        # site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
+        # stadium_level_parser = StadiumLevelParser(site_manager.browser.page_source, request.user)
+        # stadium_level_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')

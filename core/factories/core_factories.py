@@ -1,7 +1,7 @@
 import factory
 
 from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics
+    MatchStadiumStatistics, StadiumStandStatistics, MatchTeamStatistics, StandLevel, StadiumLevel, StadiumLevelItem
 from users.factories.users_factories import OFMUserFactory
 
 
@@ -110,6 +110,19 @@ class FinanceFactory(factory.django.DjangoModelFactory):
     expenses_betting = 0
 
 
+class MatchTeamStatisticsFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = MatchTeamStatistics
+
+    team_name = 'Springfield Isotopes'
+    score = 0
+    strength = 50
+    ball_possession = 50
+    chances = 3
+    yellow_cards = 2
+    red_cards = 0
+
+
 class MatchFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Match
@@ -118,10 +131,27 @@ class MatchFactory(factory.django.DjangoModelFactory):
     matchday = factory.SubFactory(MatchdayFactory)
     match_type = 'L'
     venue = 'Olympiastadion Berlin'
-    home_team = '1. SC Wedding'
-    guest_team = 'BSC Wittenau'
-    home_goals = 42
-    guest_goals = 0
+    home_team_statistics = factory.SubFactory(MatchTeamStatisticsFactory)
+    guest_team_statistics = factory.SubFactory(MatchTeamStatisticsFactory)
+
+
+class StadiumLevelItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = StadiumLevelItem
+
+    current_level = 0
+    value = 0
+    daily_costs = 0
+
+
+class StadiumLevelFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = StadiumLevel
+
+    light = factory.SubFactory(StadiumLevelItemFactory)
+    screen = factory.SubFactory(StadiumLevelItemFactory)
+    security = factory.SubFactory(StadiumLevelItemFactory)
+    parking = factory.SubFactory(StadiumLevelItemFactory)
 
 
 class MatchStadiumStatisticsFactory(factory.django.DjangoModelFactory):
@@ -129,6 +159,16 @@ class MatchStadiumStatisticsFactory(factory.django.DjangoModelFactory):
         model = MatchStadiumStatistics
 
     match = factory.SubFactory(MatchFactory)
+    level = factory.SubFactory(StadiumLevelFactory)
+
+
+class StandLevelFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = StandLevel
+
+    capacity = 100
+    has_roof = False
+    has_seats = False
 
 
 class StadiumStandStatisticsFactory(factory.django.DjangoModelFactory):
@@ -136,8 +176,8 @@ class StadiumStandStatisticsFactory(factory.django.DjangoModelFactory):
         model = StadiumStandStatistics
 
     stadium_statistics = factory.SubFactory(MatchStadiumStatisticsFactory)
+    level = factory.SubFactory(StandLevelFactory)
     sector = 'N'
-    capacity = 100
     visitors = 42
     ticket_price = 55
     condition = 99.42
