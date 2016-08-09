@@ -1,5 +1,5 @@
 from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics
+    MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, StadiumLevelItem
 from django.contrib import admin
 
 
@@ -79,3 +79,25 @@ class StadiumStandStatisticsAdmin(admin.ModelAdmin):
     search_fields = ['stadium_statistics__match__user__username', 'stadium_statistics__match__matchday__number']
 
 
+@admin.register(MatchTeamStatistics)
+class MatchTeamStatisticsAdmin(admin.ModelAdmin):
+    list_filter = ['team_name']
+    list_display = ['team_name']
+    search_fields = ['team_name']
+
+
+@admin.register(StandLevel)
+class StandLevelAdmin(admin.ModelAdmin):
+    list_display = ['capacity', 'has_roof', 'has_seats']
+    search_fields = ['capacity', 'has_roof', 'has_seats']
+
+
+@admin.register(StadiumLevel)
+class StadiumLevelAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(StadiumLevelItem)
+class StadiumLevelItemAdmin(admin.ModelAdmin):
+    list_display = ['current_level', 'value', 'daily_costs']
+    search_fields = ['current_level', 'value', 'daily_costs']
