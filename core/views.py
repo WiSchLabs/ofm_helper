@@ -141,6 +141,7 @@ def trigger_parsing(request):
         site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
+        is_home_match = "<b>" in str(row.find_all('td')[2].a)
         link_to_match = row.find_all('img')[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
             # only parse match if statistics are available
@@ -149,15 +150,16 @@ def trigger_parsing(request):
             match_parser = MatchParser(site_manager.browser.page_source, request.user)
             match_parser.parse()
 
-        # TODO parse stadium statistics iff home match
-        # if is_home_match:
-        # logger.debug('===== parse latest Stadium statistics ...')
-        # site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-        # match_stadium_stat_parser = MatchStadiumStatisticsParser(site_manager.browser.page_source, request.user)
-        # match_stadium_stat_parser.parse()
-        # site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-        # stadium_level_parser = StadiumLevelParser(site_manager.browser.page_source, request.user)
-        # stadium_level_parser.parse()
+        if is_home_match:
+            pass
+            # TODO parse stadium statistics iff home match
+            # logger.debug('===== parse latest Stadium statistics ...')
+            # site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
+            # match_stadium_stat_parser = MatchStadiumStatisticsParser(site_manager.browser.page_source, request.user)
+            # match_stadium_stat_parser.parse()
+            # site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
+            # stadium_level_parser = StadiumLevelParser(site_manager.browser.page_source, request.user)
+            # stadium_level_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
