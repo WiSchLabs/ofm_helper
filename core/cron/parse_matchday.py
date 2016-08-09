@@ -1,7 +1,8 @@
+from django_cron import CronJobBase, Schedule
+
 from core.parsers.matchday_parser import MatchdayParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
-from django_cron import CronJobBase, Schedule
 from users.models import OFMUser
 
 
