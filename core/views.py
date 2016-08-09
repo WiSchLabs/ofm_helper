@@ -142,10 +142,12 @@ def trigger_parsing(request):
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
         link_to_match = row.find_all('img')[0].find_parent('a')['href']
-        # TODO check if statistics are available before parsing
-        site_manager.jump_to_frame(Constants.BASE + link_to_match)
-        match_parser = MatchParser(site_manager.browser.page_source, request.user)
-        match_parser.parse()
+        if "spielbericht" in link_to_match:
+            # only parse match if statistics are available
+            # as match don't take place if one team did not have a valid team setup
+            site_manager.jump_to_frame(Constants.BASE + link_to_match)
+            match_parser = MatchParser(site_manager.browser.page_source, request.user)
+            match_parser.parse()
 
         # TODO parse stadium statistics iff home match
         # if is_home_match:
