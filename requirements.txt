@@ -6,5 +6,4 @@ selenium
 configparser
 django-encrypted-fields-python3
 django-chartit2
-django-cron
 django-braces

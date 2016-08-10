@@ -192,6 +192,7 @@
             $('.finances_table tr').each(function(){
                 $(this).find('td').each(function(){
                     var entry_value = $(this).html();
+                    $(this).html(Number(entry_value).toLocaleString('de'));
 
                     if (showing_diff) {
                         if (entry_value > 0){
