@@ -5,6 +5,8 @@ from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
+from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
+from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
 from django.contrib import messages
@@ -144,22 +146,22 @@ def trigger_parsing(request):
         is_home_match = "<b>" in str(row.find_all('td')[2].a)
         link_to_match = row.find_all('img')[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
+            logger.debug('      match took place')
             # only parse match if statistics are available
-            # as match don't take place if one team did not have a valid team setup
+            # as matches don't take place if one team did not have a valid team setup
             site_manager.jump_to_frame(Constants.BASE + link_to_match)
             match_parser = MatchParser(site_manager.browser.page_source, request.user)
             match_parser.parse()
 
-        if is_home_match:
-            pass
-            # TODO parse stadium statistics iff home match
-            # logger.debug('===== parse latest Stadium statistics ...')
-            # site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-            # match_stadium_stat_parser = MatchStadiumStatisticsParser(site_manager.browser.page_source, request.user)
-            # match_stadium_stat_parser.parse()
-            # site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-            # stadium_level_parser = StadiumLevelParser(site_manager.browser.page_source, request.user)
-            # stadium_level_parser.parse()
+            if is_home_match:
+                # parse stadium statistics iff home match
+                logger.debug('===== parse latest Stadium statistics ...')
+                site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
+                stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
+                stadium_statistics_parser.parse()
+                site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
+                stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
+                stadium_stand_stat_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')

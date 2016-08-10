@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OFM - Stadion</title>
+    	<meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+	<meta name="title" content="OFM - Kostenloses Browsergame Online Fussball Manager" />
+	<meta name="description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="keywords" content="Fussball, Manager, Fußballmanager, Browsergame, Onlinemanager, Browserspiel, Internetspiel, Managerspiel, Game, Footballmanager" />
+	<meta name="author" content="OnlineFussballManager GmbH, Maik Dokter" />
+	<meta name="publisher" content="OnlineFussballManager GmbH" />
+	<meta name="copyright" content="OnlineFussballManager GmbH" />
+	<meta name="audience" content="Alle" />
+	<meta name="page-topic" content="Fussball/Internet" />
+	<meta name="robots" content="index,follow" />
+	<meta name="revisit-after" content="1 days" />
+	<meta name="expires" content="never" />
+	<meta name="abstract" content="Online Fussball Manager ist ein kostenloses Fußballmanager Browsergame. übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="language" content="Deutsch,DE,AT,CH" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<link rel="schema.DC" href="http://www.purl.org/dc/elements/1.1/" />
+	<meta name="DC.type" scheme="DCMIType" content="Text" />
+	<meta name="DC.format" scheme="IMT" content="text/html" />
+	<meta name="DC.language" content="de" />
+	<meta name="DC.title" content="OFM - Kostenloses Browsergame Online Fussball Manager" />
+	<meta name="DC.description" content="Der Online Fussball Manager ist ein kostenloses Fussballmanager Browsergame. Übernehme die Aufgaben des Trainer und Manager, führe deinen Verein zum Erfolg!" />
+	<meta name="DC.creator" content="OnlineFussballManager GmbH, Deutschland" />
+	<meta name="DC.publisher" content="OnlineFussballManager GmbH, Deutschland" />
+	<meta name="DC.copyright" content="OnlineFussballManager GmbH, Deutschland" />
+    <link href="/ofm_style.css492.css" rel="stylesheet" type="text/css" media="all">
+		        <link href="/style/core/base.css492.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/base-int.css492.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/layout.css492.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/tutorial/core/layout.css492.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="/java/jquery/jquery-1.8.3.min.js"></script>
+    <script src="/java/jquery/js/jquery-ui-1.8.7.custom.min.js"></script>
+	<script type="text/javascript" src="/java/ofm_biblio.js357.js"></script>
+	<script type="text/javascript" src="/java/jquery/jquery.extend.js357.js"></script>
+	<script type="text/javascript" src="/java/stadium/stadium.js357.js"></script>
+	<script type="text/javascript" src="/java/stadium/stadium.environment.js357.js"></script>
+    <style type="text/css" media="all">
+    /* <![CDATA[ */
+      .dsR14 /*agl rulekind: base;*/ {height:24px;}
+      .dsR30 /*agl rulekind: base;*/ {background-image:url(../bilder/back/bluelight1.png);width:100%;height:auto;}
+      .dsR33 /*agl rulekind: base;*/ {width:10px;height:10px;}
+      .dsR35 /*agl rulekind: base;*/ {width:1px;}
+      .dsR42 /*agl rulekind: base;*/ {height:95px;vertical-align:middle;}
+      .dsR44 /*agl rulekind: base;*/ {background-color:#fff;height:95px;}
+      .dsR45 /*agl rulekind: base;*/ {width:1px;height:95px;vertical-align:middle;}
+      .dsR46 /*agl rulekind: base;*/ {background-color:#fff;background-image:url(../bilder/back/grey.png);height:95px;}
+      .dsR48 /*agl rulekind: base;*/ {width:1px;height:95px;}
+      .dsR31 /*agl rulekind: base;*/ {background-image:url(../bilder/back/green.png);height:auto;}
+      .dsR49 /*agl rulekind: base;*/ {width:50%;}
+      .dsR50 /*agl rulekind: base;*/ {width:50%;vertical-align:top;}
+      .dsR51 /*agl rulekind: base;*/ {background-image:url(../bilder/back/green.png);width:50%;}
+      .dsR55 /*agl rulekind: base;*/ {width:auto;height:24px;}
+      .dsR56 /*agl rulekind: base;*/ {width:auto;}
+      .img-pos{
+      vertical-align:top;
+			padding-top:15px;
+	  }
+    /* ]]> */
+    </style>
+    <script type="text/javascript" src="/java/ofm_javascript.js357.js"></script>
+
+	<!-- Tutorial -->
+	
+	<script type="text/javascript">
+
+		function validateStadiumName(event)
+		{
+			var codes = [35, 36, 37, 39, 47, 60, 62];
+
+			if($.inArray(event.keyCode, codes))
+				event.keyCode=0;
+		}
+	</script>
+
+	<script type="text/javascript" src="/java/wz_tooltip.js357.js"></script>
+      
+	<script>
+	$(document).ready(function(){
+		$('img.mouseOverImg').mouseover(function(){
+			$(this).next('div').show();
+		});
+		$('img.mouseOverImg').mouseleave(function(){
+			$(this).next('div').hide();
+		});
+	});
+	</script>
+  <body>
+    <div align="center">
+	  <div class="textLeft pos-rel" style="width:752px;margin:0 auto;">
+      <img src="../bilder/dummy.gif" alt="" height="13" width="33" border="0" />
+
+	    <!-- Tutorial Start -->
+		<div class="pos-rel" id="tutorial_include" style="width:750px;margin:0 auto;z-index:99999;"></div>
+		<!-- Tutorial Ende -->
+
+		<!-- Submit button -->
+		
+		
+		<div align="center" class="messageError shadow nonvisible stadiumNameError" style="margin-bottom:20px;"><p class="white bold small textCenter">Unerlaubte Zeichen!</p></div>
+
+		<form action="" method="post" style="display:inline;">
+
+		<input type="hidden" name="userKixx" value="600">
+
+		<!-- Stadium header, name, capacity -->
+		<div class="standardHeader">
+			<p class="white bold standardHeadline textLeft pos-rel stadiumNameValue">Stadion: "Club-Mate-Arena"</p>
+			<p class="floatR white bold small textRight pos-rel" style="margin:-17px 10px 0 0;padding:0;z-index:100;">
+				<span class="cursor" onclick="$('#changeStadiumNamePop').toggle(); $('.successChange').hide();">Stadionname ändern</span>
+			</p>
+			<br class="clear" />
+		</div>
+		<div id="changeStadiumNamePop" class="requestBox pos-abs shadow" style="right:0;top:30px;display:none;">
+			<div onclick="$('#changeStadiumNamePop').hide();" class="floatR officeMap pos-rel cursor closeIcon">&nbsp;</div>
+			<h1>Stadionname ändern</h1><br />
+			<input type="text" value="Club-Mate-Arena" size="25" maxlength="25" name="stadionname" style="border:1px solid #003366;background:#f8ffb7;border-radius:2px;height:22px;" class="small bold intText rename-stadium" /><br /><br />
+			<input type="button" class="buttonGreen cursor changeStadiumNameButton float" name="aendern" value="Speichern"/><br />
+			<img src="/bilder/jugend/ofm_hacker.png" class="float successChange nonvisible pos-rel" style="top:-13px;left:5px;" alt="save" />
+			<br class="clear" />
+		</div>
+		<!-- End stadium name -->
+
+		<!-- Tribunes start --->
+		<table cellspacing="0" cellpadding="0" class="tableFrame shadow" style="border:1px solid #a1a1a1;border-top:0;">
+		<tr>
+			<td style="height:20px;background:#c7ccd0;">
+				<p class="small" style="margin:-1px 0 0 20px;padding:0;">
+			Gesamtkapazität: <b>500 Plätze </b>			</p>
+			</td>
+		</tr>
+		<tr height="10">
+       <td height="10">
+
+			 <table width="750" border="0" cellspacing="0" cellpadding="4">
+
+				 				 <tr>				 <td class="dsR50">
+                    <div align="center">
+						<br />
+						
+
+								<div class="ticket-mode " rel="1">
+								<table cellspacing="0" cellpadding="0" style="border:1px solid #666;">
+								<tr height="10">
+								<td width="336" height="10" background="../bilder/back/bluelight1.png">
+									<table class="dsR1" border="0" cellspacing="0" cellpadding="2">
+
+										  <!-- Block name -->
+										  <tr>
+											<td class="dsR14" colspan="4" nowrap="nowrap" background="../bilder/back/back_head_green_380_flat.png" bgcolor="#3ba37a">
+											  <div align="center"><span class="white bold">Nord-Tribüne</span></div>
+											</td>
+										  </tr>
+										  <!-- end Block name -->
+
+										  <!-- Tribune state -->
+										  <tr>
+											<td class="minitext dsR44 img-pos" rowspan="6" background="../bilder/back/grey.png">
+
+											  <div align="center" class="pos-rel" style="top:-5px;">
+												<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Sitzplätze, ohne Dach</h1>
+
+
+																									<div class="pos-rel" style="width:155px;height:75px;">
+														<img src="/bilder/stadium/extension/small/stand1_su.png" class="mouseOverImg" />
+														<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
+															<img src="/bilder/stadium/extension/big/stand1_su.jpg" alt="" />
+														</div>
+													</div>
+													<span>Stadionzustand:</span><br />
+
+													<span style='font-weight:bold;'>92,38%</span>														<!-- Tutorial -->
+																												<!-- End tutorial --->
+														<br class="clear" />
+														<input type="button" value="ausbauen" class="cursor buttonGreen" onclick="developStadiumBlock(1)" style="margin-top:10px;" />
+																									<!-- Stadium Extension End -->
+											  </div>
+											</td>
+											<td class="minitext" width="2">&nbsp;</td>
+											<td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
+											<td class="minitext" style="white-space:nowrap;" width="65"><div style="margin-top:8px;" class="bold">200</div></td>
+										  </tr>
+										  <!-- End tribune state --->
+
+										  <!-- Stadion visitors -->
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">81</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Fr.-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">26</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Pokal-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">-</span></td>
+										  </tr>
+										  <!-- End stadion visitors -->
+
+										  <!-- Weltpokal Start -->
+										  										 <!-- Weltpokal Ende -->
+
+										 <!-- Entry fees  -->
+										  <tr>
+											<td class="minitext dsR48"></td>
+											<td class="minitext dsR42" colspan="2" valign=top>
+											<br /><span class="bold">Eintrittspreise<br /></span>
+
+											<table class="dsR1" cellspacing=0 cellpadding=1>
+												<tr>
+												  <td class=minitext>Liga:</td>
+												  <td>
+
+													 <!-- Tutorial -->
+													 													 <!-- End tutorial -->
+
+													  <select class="forminput_60px" style="width:75px;" name="block_price[1][epreis]" >
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option selected value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class=minitext>Friendly:</td>
+												  <td>
+													 <select class="forminput_60px" style="width:75px;" name="block_price[1][epreisfr]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option selected value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class="minitext">OFM-Pokal:</td>
+												  <td>
+												     <select class="forminput_60px" style="width:75px;" name="block_price[1][epreispok]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option selected value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+												<!-- Weltpokal Start -->
+																								<!-- Weltpokal Ende -->
+											</table>
+											<br />
+										</td>
+										</tr>
+								</table>
+						</table>
+					</div>
+				 </td>
+				 				 				 				 <td class="dsR50">
+                    <div align="center">
+						<br />
+						
+
+								<div class="ticket-mode " rel="2">
+								<table cellspacing="0" cellpadding="0" style="border:1px solid #666;">
+								<tr height="10">
+								<td width="336" height="10" background="../bilder/back/bluelight1.png">
+									<table class="dsR1" border="0" cellspacing="0" cellpadding="2">
+
+										  <!-- Block name -->
+										  <tr>
+											<td class="dsR14" colspan="4" nowrap="nowrap" background="../bilder/back/back_head_green_380_flat.png" bgcolor="#3ba37a">
+											  <div align="center"><span class="white bold">Ost-Tribüne</span></div>
+											</td>
+										  </tr>
+										  <!-- end Block name -->
+
+										  <!-- Tribune state -->
+										  <tr>
+											<td class="minitext dsR44 img-pos" rowspan="6" background="../bilder/back/grey.png">
+
+											  <div align="center" class="pos-rel" style="top:-5px;">
+												<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Stehplätze, ohne Dach</h1>
+
+
+																									<div class="pos-rel" style="width:155px;height:75px;">
+														<img src="/bilder/stadium/extension/small/stand1_tu.png" class="mouseOverImg" />
+														<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
+															<img src="/bilder/stadium/extension/big/stand1_tu.jpg" alt="" />
+														</div>
+													</div>
+													<span>Stadionzustand:</span><br />
+
+													<span style='font-weight:bold;'>96,00%</span>														<!-- Tutorial -->
+																												<!-- End tutorial --->
+														<br class="clear" />
+														<input type="button" value="ausbauen" class="cursor buttonGreen" onclick="developStadiumBlock(2)" style="margin-top:10px;" />
+																									<!-- Stadium Extension End -->
+											  </div>
+											</td>
+											<td class="minitext" width="2">&nbsp;</td>
+											<td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
+											<td class="minitext" style="white-space:nowrap;" width="65"><div style="margin-top:8px;" class="bold">100</div></td>
+										  </tr>
+										  <!-- End tribune state --->
+
+										  <!-- Stadion visitors -->
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">100</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Fr.-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">26</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Pokal-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">-</span></td>
+										  </tr>
+										  <!-- End stadion visitors -->
+
+										  <!-- Weltpokal Start -->
+										  										 <!-- Weltpokal Ende -->
+
+										 <!-- Entry fees  -->
+										  <tr>
+											<td class="minitext dsR48"></td>
+											<td class="minitext dsR42" colspan="2" valign=top>
+											<br /><span class="bold">Eintrittspreise<br /></span>
+
+											<table class="dsR1" cellspacing=0 cellpadding=1>
+												<tr>
+												  <td class=minitext>Liga:</td>
+												  <td>
+
+													 <!-- Tutorial -->
+													 													 <!-- End tutorial -->
+
+													  <select class="forminput_60px" style="width:75px;" name="block_price[2][epreis]" >
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option selected value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class=minitext>Friendly:</td>
+												  <td>
+													 <select class="forminput_60px" style="width:75px;" name="block_price[2][epreisfr]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option selected value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class="minitext">OFM-Pokal:</td>
+												  <td>
+												     <select class="forminput_60px" style="width:75px;" name="block_price[2][epreispok]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option selected value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+												<!-- Weltpokal Start -->
+																								<!-- Weltpokal Ende -->
+											</table>
+											<br />
+										</td>
+										</tr>
+								</table>
+						</table>
+					</div>
+				 </td>
+				 </tr>				 				 <tr>				 <td class="dsR50">
+                    <div align="center">
+						<br />
+						
+
+								<div class="ticket-mode " rel="3">
+								<table cellspacing="0" cellpadding="0" style="border:1px solid #666;">
+								<tr height="10">
+								<td width="336" height="10" background="../bilder/back/bluelight1.png">
+									<table class="dsR1" border="0" cellspacing="0" cellpadding="2">
+
+										  <!-- Block name -->
+										  <tr>
+											<td class="dsR14" colspan="4" nowrap="nowrap" background="../bilder/back/back_head_green_380_flat.png" bgcolor="#3ba37a">
+											  <div align="center"><span class="white bold">Süd-Tribüne</span></div>
+											</td>
+										  </tr>
+										  <!-- end Block name -->
+
+										  <!-- Tribune state -->
+										  <tr>
+											<td class="minitext dsR44 img-pos" rowspan="6" background="../bilder/back/grey.png">
+
+											  <div align="center" class="pos-rel" style="top:-5px;">
+												<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Stehplätze, überdacht</h1>
+
+
+																									<div class="pos-rel" style="width:155px;height:75px;">
+														<img src="/bilder/stadium/extension/small/stand1_tc.png" class="mouseOverImg" />
+														<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
+															<img src="/bilder/stadium/extension/big/stand1_tc.jpg" alt="" />
+														</div>
+													</div>
+													<span>Stadionzustand:</span><br />
+
+													<span style='font-weight:bold;'>52,62%</span>														<!-- Tutorial -->
+																												<!-- End tutorial --->
+														<br class="clear" />
+														<input type="button" value="ausbauen" class="cursor buttonGreen" onclick="developStadiumBlock(3)" style="margin-top:10px;" />
+																									<!-- Stadium Extension End -->
+											  </div>
+											</td>
+											<td class="minitext" width="2">&nbsp;</td>
+											<td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
+											<td class="minitext" style="white-space:nowrap;" width="65"><div style="margin-top:8px;" class="bold">100</div></td>
+										  </tr>
+										  <!-- End tribune state --->
+
+										  <!-- Stadion visitors -->
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">83</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Fr.-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">18</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Pokal-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">-</span></td>
+										  </tr>
+										  <!-- End stadion visitors -->
+
+										  <!-- Weltpokal Start -->
+										  										 <!-- Weltpokal Ende -->
+
+										 <!-- Entry fees  -->
+										  <tr>
+											<td class="minitext dsR48"></td>
+											<td class="minitext dsR42" colspan="2" valign=top>
+											<br /><span class="bold">Eintrittspreise<br /></span>
+
+											<table class="dsR1" cellspacing=0 cellpadding=1>
+												<tr>
+												  <td class=minitext>Liga:</td>
+												  <td>
+
+													 <!-- Tutorial -->
+													 													 <!-- End tutorial -->
+
+													  <select class="forminput_60px" style="width:75px;" name="block_price[3][epreis]" >
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option selected value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class=minitext>Friendly:</td>
+												  <td>
+													 <select class="forminput_60px" style="width:75px;" name="block_price[3][epreisfr]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option selected value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class="minitext">OFM-Pokal:</td>
+												  <td>
+												     <select class="forminput_60px" style="width:75px;" name="block_price[3][epreispok]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option selected value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+												<!-- Weltpokal Start -->
+																								<!-- Weltpokal Ende -->
+											</table>
+											<br />
+										</td>
+										</tr>
+								</table>
+						</table>
+					</div>
+				 </td>
+				 				 				 				 <td class="dsR50">
+                    <div align="center">
+						<br />
+						
+
+								<div class="ticket-mode " rel="4">
+								<table cellspacing="0" cellpadding="0" style="border:1px solid #666;">
+								<tr height="10">
+								<td width="336" height="10" background="../bilder/back/bluelight1.png">
+									<table class="dsR1" border="0" cellspacing="0" cellpadding="2">
+
+										  <!-- Block name -->
+										  <tr>
+											<td class="dsR14" colspan="4" nowrap="nowrap" background="../bilder/back/back_head_green_380_flat.png" bgcolor="#3ba37a">
+											  <div align="center"><span class="white bold">West-Tribüne</span></div>
+											</td>
+										  </tr>
+										  <!-- end Block name -->
+
+										  <!-- Tribune state -->
+										  <tr>
+											<td class="minitext dsR44 img-pos" rowspan="6" background="../bilder/back/grey.png">
+
+											  <div align="center" class="pos-rel" style="top:-5px;">
+												<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Sitzplätze, überdacht</h1>
+
+
+																									<div class="pos-rel" style="width:155px;height:75px;">
+														<img src="/bilder/stadium/extension/small/stand1_sc.png" class="mouseOverImg" />
+														<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
+															<img src="/bilder/stadium/extension/big/stand1_sc.jpg" alt="" />
+														</div>
+													</div>
+													<span>Stadionzustand:</span><br />
+
+													<span style='font-weight:bold;'>96,00%</span>														<!-- Tutorial -->
+																												<!-- End tutorial --->
+														<br class="clear" />
+														<input type="button" value="ausbauen" class="cursor buttonGreen" onclick="developStadiumBlock(4)" style="margin-top:10px;" />
+																									<!-- Stadium Extension End -->
+											  </div>
+											</td>
+											<td class="minitext" width="2">&nbsp;</td>
+											<td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
+											<td class="minitext" style="white-space:nowrap;" width="65"><div style="margin-top:8px;" class="bold">100</div></td>
+										  </tr>
+										  <!-- End tribune state --->
+
+										  <!-- Stadion visitors -->
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">100</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Fr.-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">26</span></td>
+										  </tr>
+										  <tr>
+											<td class=minitext width=2></td>
+											<td class="minitext" style="white-space:nowrap;">letztes Pokal-Spiel:</td>
+											<td class="minitext" width="65" style="white-space:nowrap;"><span class="bold">-</span></td>
+										  </tr>
+										  <!-- End stadion visitors -->
+
+										  <!-- Weltpokal Start -->
+										  										 <!-- Weltpokal Ende -->
+
+										 <!-- Entry fees  -->
+										  <tr>
+											<td class="minitext dsR48"></td>
+											<td class="minitext dsR42" colspan="2" valign=top>
+											<br /><span class="bold">Eintrittspreise<br /></span>
+
+											<table class="dsR1" cellspacing=0 cellpadding=1>
+												<tr>
+												  <td class=minitext>Liga:</td>
+												  <td>
+
+													 <!-- Tutorial -->
+													 													 <!-- End tutorial -->
+
+													  <select class="forminput_60px" style="width:75px;" name="block_price[4][epreis]" >
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option  value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option selected value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nnbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class=minitext>Friendly:</td>
+												  <td>
+													 <select class="forminput_60px" style="width:75px;" name="block_price[4][epreisfr]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option selected value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+
+												<tr>
+												  <td class="minitext">OFM-Pokal:</td>
+												  <td>
+												     <select class="forminput_60px" style="width:75px;" name="block_price[4][epreispok]">
+													 <option  value=1>1 €&nbsp;</option><option  value=2>2 €&nbsp;</option><option  value=3>3 €&nbsp;</option><option  value=4>4 €&nbsp;</option><option  value=5>5 €&nbsp;</option><option  value=6>6 €&nbsp;</option><option  value=7>7 €&nbsp;</option><option  value=8>8 €&nbsp;</option><option  value=9>9 €&nbsp;</option><option  value=10>10 €&nbsp;</option><option  value=11>11 €&nbsp;</option><option  value=12>12 €&nbsp;</option><option  value=13>13 €&nbsp;</option><option  value=14>14 €&nbsp;</option><option selected value=15>15 €&nbsp;</option><option  value=16>16 €&nbsp;</option><option  value=17>17 €&nbsp;</option><option  value=18>18 €&nbsp;</option><option  value=19>19 €&nbsp;</option><option  value=20>20 €&nbsp;</option><option  value=21>21 €&nbsp;</option><option  value=22>22 €&nbsp;</option><option  value=23>23 €&nbsp;</option><option  value=24>24 €&nbsp;</option><option  value=25>25 €&nbsp;</option><option  value=26>26 €&nbsp;</option><option  value=27>27 €&nbsp;</option><option  value=28>28 €&nbsp;</option><option  value=29>29 €&nbsp;</option><option  value=30>30 €&nbsp;</option><option  value=31>31 €&nbsp;</option><option  value=32>32 €&nbsp;</option><option  value=33>33 €&nbsp;</option><option  value=34>34 €&nbsp;</option><option  value=35>35 €&nbsp;</option><option  value=36>36 €&nbsp;</option><option  value=37>37 €&nbsp;</option><option  value=38>38 €&nbsp;</option><option  value=39>39 €&nbsp;</option><option  value=40>40 €&nbsp;</option><option  value=41>41 €&nbsp;</option><option  value=42>42 €&nbsp;</option><option  value=43>43 €&nbsp;</option><option  value=44>44 €&nbsp;</option><option  value=45>45 €&nbsp;</option><option  value=46>46 €&nbsp;</option><option  value=47>47 €&nbsp;</option><option  value=48>48 €&nbsp;</option><option  value=49>49 €&nbsp;</option><option  value=50>50 €&nbsp;</option><option  value=51>51 €&nbsp;</option><option  value=52>52 €&nbsp;</option><option  value=53>53 €&nbsp;</option><option  value=54>54 €&nbsp;</option><option  value=55>55 €&nbsp;</option><option  value=56>56 €&nbsp;</option><option  value=57>57 €&nbsp;</option><option  value=58>58 €&nbsp;</option><option  value=59>59 €&nbsp;</option><option  value=60>60 €&nbsp;</option><option  value=61>61 €&nbsp;</option><option  value=62>62 €&nbsp;</option><option  value=63>63 €&nbsp;</option><option  value=64>64 €&nbsp;</option><option  value=65>65 €&nbsp;</option><option  value=66>66 €&nbsp;</option><option  value=67>67 €&nbsp;</option><option  value=68>68 €&nbsp;</option><option  value=69>69 €&nbsp;</option>													 </select>
+												  </td>
+												  <td></td>
+												</tr>
+												<!-- Weltpokal Start -->
+																								<!-- Weltpokal Ende -->
+											</table>
+											<br />
+										</td>
+										</tr>
+								</table>
+						</table>
+					</div>
+				 </td>
+				 </tr>				 		     </table>
+		</td>
+		</tr>
+		<!-- Tribunes end -->
+		<!-- Entry fees submit -->
+		<tr height="34">
+        <td colspan="2" height="34">
+
+                			<div class="textCenter" style="margin-top:5px;">
+				<input class="buttonGreen cursor save-button" type="Submit" value="neue Eintrittspreise übernehmen" name="saveEntryFees"/>
+			</div>
+			<br />
+        </td>
+        </tr>
+		</table>
+		<!-- End entry fees submit -->
+
+		</form>
+	  </div>
+  </div>
+
+  <script type="text/javascript">
+
+	  $(function() {
+		  var User	 = {};
+
+		  User.kixx  = 600;
+		  User.money = 3905553;
+		  User.rapidRepairPrice = 0;
+		  User.reloadPage = 1;
+
+		  stadiumEnvironmentWrapper(User);
+	  });
+  </script>
+
+  <!-- Tutorial Close -->
+  <div id="tutorial-small"><a href="#" class="image pos-abs cursor" onclick="ofm.tutorial.show();"></a></div>
+  <!-- Tutorial Close -->
+  		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1460754-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		
+</body>
+</html>
+
