@@ -40,7 +40,7 @@ class StadiumStatisticsParserTest(TestCase):
 
     def test_stadium_environment_parser_contains_correct_security_data(self):
         self.assertEquals(self.stadium_stat.level.security.current_level, '2')
-        self.assertEquals(self.stadium_stat.level.security.value, '200')
+        self.assertEquals(self.stadium_stat.level.security.value, '2000')
         self.assertEquals(self.stadium_stat.level.security.daily_costs, '150')
 
     def test_stadium_environment_parser_contains_correct_parking_data(self):

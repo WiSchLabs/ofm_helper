@@ -55,8 +55,8 @@ class StadiumStatisticsParser(BaseParser):
 
     def _create_stadium_level_item_from_row(self, row):
         level = row.find_all('td')[2].span.get_text()
-        value = row.find_all('td')[4].span.get_text().replace('€', '').strip()
-        daily_costs = row.find_all('td')[5].span.get_text().replace('€', '').strip()
+        value = row.find_all('td')[4].span.get_text().replace('€', '').replace('.', '').strip()
+        daily_costs = row.find_all('td')[5].span.get_text().replace('€', '').replace('.', '').strip()
 
         stadium_level_item, success = StadiumLevelItem.objects.get_or_create(
             current_level=level,
