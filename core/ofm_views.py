@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, Season
 
 
 def _validate_filtered_field(field):
@@ -483,8 +483,9 @@ class MatchesView(TemplateView):
         context = super(MatchesView, self).get_context_data(**kwargs)
 
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
+        seasons = set(m.season for m in matchdays)
 
-        context['matchdays'] = matchdays
+        context['seasons'] = seasons
 
         return context
 
@@ -510,21 +511,21 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         """
 
         match_stat = dict()
-        #match_stat['home_team'] = match.home_team.team_name
-        #match_stat['guest_team'] = match.guest_team.team_name
-        #match_stat['home_goals'] = match.home_team.score
-        #match_stat['guest_goals'] = match.guest_team.score
-        #match_stat['home_strength'] = match.home_team.strength
-        #match_stat['guest_strength'] = match.guest_team.strength
-        #match_stat['home_ball_possession'] = match.home_team.ball_possession
-        #match_stat['guest_ball_possession'] = match.guest_team.ball_possession
-        #match_stat['home_chances'] = match.home_team.chances
-        #match_stat['guest_chances'] = match.guest_team.chances
-        #match_stat['home_yellow_cards'] = match.home_team.yellow_cards
-        #match_stat['guest_yellow_cards'] = match.guest_team.yellow_cards
-        #match_stat['home_red_cards'] = match.home_team.red_cards
-        #match_stat['guest_red_cards'] = match.guest_team.red_cards
+        match_stat['home_team'] = match.home_team_statistics.team_name
+        match_stat['guest_team'] = match.guest_team_statistics.team_name
+        match_stat['home_goals'] = match.home_team_statistics.score
+        match_stat['guest_goals'] = match.guest_team_statistics.score
+        match_stat['home_strength'] = match.home_team_statistics.strength
+        match_stat['guest_strength'] = match.guest_team_statistics.strength
+        match_stat['home_ball_possession'] = match.home_team_statistics.ball_possession
+        match_stat['guest_ball_possession'] = match.guest_team_statistics.ball_possession
+        match_stat['home_chances'] = match.home_team_statistics.chances
+        match_stat['guest_chances'] = match.guest_team_statistics.chances
+        match_stat['home_yellow_cards'] = match.home_team_statistics.yellow_cards
+        match_stat['guest_yellow_cards'] = match.guest_team_statistics.yellow_cards
+        match_stat['home_red_cards'] = match.home_team_statistics.red_cards
+        match_stat['guest_red_cards'] = match.guest_team_statistics.red_cards
         match_stat['venue'] = match.venue
-        #match_stat['matchday'] = match.matchday
+        match_stat['matchday'] = match.matchday.number
 
         return match_stat

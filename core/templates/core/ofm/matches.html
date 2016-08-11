@@ -14,7 +14,7 @@
                     <label for="diff_toggle">Zeige die Daten vom </label>
 
                     <select class="form-control" id="season">
-                        {% for s in seasons|slice:slicinator %}
+                        {% for s in seasons %}
                             <option value="{{ s.number }}">{{ s.number }}</option>
                         {% endfor %}
                     </select>
@@ -33,29 +33,29 @@
            data-url="{% url 'core:ofm:matches_overview_json' %}">
         <thead id="matches_table_head">
             <tr>
-                <!--th data-field="matchday" data-sortable="true">Spieltag</th-->
-                <th data-field="home_team" data-sortable="true">Heimmannschaft</th>
-                <th data-field="guest_team" data-sortable="true">Gastmannschaft</th>
-                <th data-field="home_goals" data-sortable="true">Heim</th>
-                <th data-field="guest_goals" data-sortable="true">Gäste</th>
-                <th data-field="home_strength" data-sortable="true">Stärke Heim</th>
-                <th data-field="guest_strength" data-sortable="true">Stärke Gäste</th>
-                <th data-field="home_ball_possession" data-sortable="true" data-visible="false">Ballbesitz Heim</th>
-                <th data-field="guest_ball_possession" data-sortable="true" data-visible="false">Ballbesitz Gäste</th>
-                <th data-field="home_chances" data-sortable="true" data-visible="false">Chancen Heim</th>
-                <th data-field="guest_chances" data-sortable="true" data-visible="false">Chancen Gäste</th>
-                <th data-field="home_yellow_cards" data-sortable="true" data-visible="false">Gelbe Karten Heim</th>
-                <th data-field="guest_yellow_cards" data-sortable="true" data-visible="false">Gelbe Karten Gäste</th>
-                <th data-field="home_red_cards" data-sortable="true" data-visible="false">Rote Karten Heim</th>
-                <th data-field="guest_red_cards" data-sortable="true" data-visible="false">Rote Karten Gäste</th>
-                <th data-field="venue" data-sortable="true">Stadion</th>
+                <th data-field="matchday" data-sortable="true">Spieltag</th>
+                <th data-field="home_team" data-sortable="true"><span class="table-icon glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_team" data-sortable="true"><span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_goals" data-sortable="true"><span class="flaticon-goal"></span> <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_goals" data-sortable="true"><span class="flaticon-goal"></span> <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_strength" data-sortable="true">Stärke <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_strength" data-sortable="true">Stärke <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_ball_possession" data-sortable="true" data-visible="false">Ballbesitz <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_ball_possession" data-sortable="true" data-visible="false">Ballbesitz <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_chances" data-sortable="true" data-visible="false">Chancen <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_chances" data-sortable="true" data-visible="false">Chancen <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_yellow_cards" data-sortable="true" data-visible="false"><span class="flaticon-football-yellow-warning-card"></span> <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_yellow_cards" data-sortable="true" data-visible="false"><span class="flaticon-football-yellow-warning-card"></span> <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="home_red_cards" data-sortable="true" data-visible="false"><span class="flaticon-football-card-with-cross-mark"></span> <span class="glyphicon glyphicon-home"></span></th>
+                <th data-field="guest_red_cards" data-sortable="true" data-visible="false"><span class="flaticon-football-card-with-cross-mark"></span> <span class="glyphicon glyphicon-user"></span></th>
+                <th data-field="venue" data-sortable="true"><span class="glyphicon glyphicon-map-marker"></span></th>
             </tr>
         </thead>
     </table>
 
     <script>
         var $table = $('#matches_table'),
-                matchday, matchday_season;
+                season;
 
         function updateData(event, data) {
             var params = {};
@@ -72,11 +72,12 @@
                 function(returnedData){
                     $table.bootstrapTable('removeAll');
                     $table.bootstrapTable('load', returnedData);
+                    handlePercentageValues();
                 }
             );
         }
 
-        $('#matchday').on('change', function() {
+        $('#season').on('change', function() {
             season = $( "#season" ).val();
             updateData(event, $('#diff_toggle').prop('checked'));
         });
@@ -100,9 +101,19 @@
                 function(returnedData){
                     $table.bootstrapTable('removeAll');
                     $table.bootstrapTable('load', returnedData);
+                    handlePercentageValues();
                 }
             );
         });
+
+        function handlePercentageValues() {
+            $('#matches_table').find('td').each(function(){
+                var entry_value = $(this).html();
+                if (entry_value.indexOf('.') > -1){
+                    $(this).append(" %");
+                }
+            })
+        }
 
         function queryParams() {
             var params = {};

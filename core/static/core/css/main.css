@@ -136,6 +136,13 @@ ul.nav-sub {
         .table thead th .desc::after {
             content: '\e114';
         }
+        .flaticon-football-yellow-warning-card {
+            color: orange;
+        }
+        .flaticon-football-card-with-cross-mark {
+            color: red;
+        }
+        #matches_table_head th span { font-size:1.2em;}
 
 footer.footer {
     width: 100%;
