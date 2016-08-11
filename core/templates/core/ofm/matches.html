@@ -33,7 +33,7 @@
            data-url="{% url 'core:ofm:matches_overview_json' %}">
         <thead id="matches_table_head">
             <tr>
-                <th data-field="matchday" data-sortable="true">Spieltag</th>
+                <th data-field="matchday" data-sortable="true"><span class="glyphicon glyphicon-calendar"></span></th>
                 <th data-field="home_team" data-sortable="true"><span class="table-icon glyphicon glyphicon-home"></span></th>
                 <th data-field="guest_team" data-sortable="true"><span class="glyphicon glyphicon-user"></span></th>
                 <th data-field="result" data-sortable="false"><span class="flaticon-goal"></span></th>
@@ -71,7 +71,6 @@
                 function(returnedData){
                     $table.bootstrapTable('removeAll');
                     $table.bootstrapTable('load', returnedData);
-                    handlePercentageValues();
                 }
             );
         }
@@ -100,19 +99,9 @@
                 function(returnedData){
                     $table.bootstrapTable('removeAll');
                     $table.bootstrapTable('load', returnedData);
-                    handlePercentageValues();
                 }
             );
         });
-
-        function handlePercentageValues() {
-            $('#matches_table').find('td').each(function(){
-                var entry_value = $(this).html();
-                if (entry_value.indexOf('.') > -1){
-                    $(this).append(" %");
-                }
-            })
-        }
 
         function queryParams() {
             var params = {};
