@@ -4,9 +4,9 @@
 
     {% if player %}
         <h1 class="page-header">{{ player.name }}</h1>
-        Position: {{ player.get_position }} ({{ player.position }})<br>
-        Nationalität: <span class="flag-icon flag-icon-{{ player.nationality.get_iso|lower }}"></span> {{ player.nationality }}<br>
-        Geburtssaison: {{ player.birth_season.number }}
+        {{ player.get_position }} ({{ player.position }})<br>
+        <span class="flag-icon flag-icon-{{ player.nationality.get_iso|lower }}"></span> {{ player.nationality }}<br>
+        Alter: {{ player_age }}
         <br>
         <br>
         <div id='chart_container'> Chart will be rendered here </div>
