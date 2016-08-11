@@ -1,3 +1,5 @@
+import logging
+
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
@@ -21,10 +23,9 @@ class PlayerStatisticsView(TemplateView):
     template_name = 'core/ofm/player_statistics.html'
 
     def get_context_data(self, **kwargs):
-        context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
-
         matchdays = Matchday.objects.filter(player_statistics__isnull=False).distinct()
 
+        context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
         context['matchdays'] = matchdays
 
         return context
