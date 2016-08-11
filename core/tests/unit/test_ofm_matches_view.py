@@ -19,7 +19,7 @@ class OFMMatchesViewTestCase(TestCase):
     def test_user_can_see_table(self):
         response = self.client.get(reverse('core:ofm:matches_overview'))
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('matchdays' in response.context_data)
+        self.assertTrue('seasons' in response.context_data)
 
     def test_user_can_see_his_latest_matches_when_given_no_season(self):
         response = self.client.get(reverse('core:ofm:matches_overview_json'))
@@ -28,10 +28,10 @@ class OFMMatchesViewTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
 
-        #self.assertEquals(returned_json_data[0]['home_team'], '1. SC Wedding')
-        #self.assertEquals(returned_json_data[0]['guest_team'], 'BSC Wittenau')
-        #self.assertEquals(returned_json_data[0]['home_goals'], 42)
-        #self.assertEquals(returned_json_data[0]['guest_goals'], 0)
+        self.assertEquals(returned_json_data[0]['home_team'], 'Springfield Isotopes')
+        self.assertEquals(returned_json_data[0]['guest_team'], 'Springfield Isotopes')
+        self.assertEquals(returned_json_data[0]['home_goals'], 0)
+        self.assertEquals(returned_json_data[0]['guest_goals'], 0)
         self.assertEquals(returned_json_data[0]['venue'], 'Olympiastadion Berlin')
 
 

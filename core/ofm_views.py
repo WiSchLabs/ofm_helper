@@ -169,7 +169,8 @@ class PlayerDetailView(DetailView):
         )
 
         context['chart'] = chart
-        context['player_age'] = current_season.number - player.birth_season.number
+        if player:
+            context['player_age'] = current_season.number - player.birth_season.number
 
         return context
 
