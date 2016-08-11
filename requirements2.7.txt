@@ -7,3 +7,5 @@ configparser
 django-encrypted-fields
 django-chartit2
 django-braces
+django-extensions
+werkzeug

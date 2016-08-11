@@ -8,3 +8,4 @@ django-encrypted-fields-python3
 django-chartit2
 django-braces
 django-extensions
+werkzeug
