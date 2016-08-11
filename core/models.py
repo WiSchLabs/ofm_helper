@@ -424,7 +424,10 @@ class Match(models.Model):
     guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
 
     def __str__(self):
-        return "(%s) %s:%s - %s:%s" % (self.matchday, self.home_team, self.guest_team, self.home_goals, self.guest_goals)
+        return "(%s) %s:%s - %s:%s" % (self.matchday,
+                                       self.home_team_statistics.team_name, self.guest_team_statistics.team_name,
+                                       self.home_team_statistics.score, self.guest_team_statistics.score
+                                       )
 
 
 class StadiumLevelItem(models.Model):
@@ -445,7 +448,7 @@ class StadiumLevel(models.Model):
     parking = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_parking")
 
     def __str__(self):
-        return "%s - %s - %s - %s" % (self.light, self.screen, self.security, self.parking)
+        return "light: %s / screen: %s / security: %s / parking: %s" % (self.light, self.screen, self.security, self.parking)
 
 
 # will only be created, if home match
@@ -457,18 +460,8 @@ class MatchStadiumStatistics(models.Model):
     match = models.OneToOneField(Match, related_name='stadium_statistics')
     level = models.ForeignKey(StadiumLevel, related_name="stadium_statistics")
 
-    @property
-    def visitors(self):
-        visitors = sum([stat.visitors for stat in self.stand_statistics])
-        return visitors
-
-    @property
-    def capacity(self):
-        capacity = sum([stat.capacity for stat in self.stand_statistics])
-        return capacity
-
     def __str__(self):
-        return "%s (%s): %s / %s" % (self.match.venue, self.match.matchday, self.visitors, self.capacity)
+        return "%s (%s)" % (self.match.venue, self.match.matchday)
 
 
 class StandLevel(models.Model):
