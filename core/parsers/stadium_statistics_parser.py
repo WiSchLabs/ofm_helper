@@ -25,7 +25,7 @@ class StadiumStatisticsParser(BaseParser):
         """
 
         # we assume to have parsed the match beforehand
-        match = Match.objects.filter(user=self.user)[0]
+        match = Match.objects.filter(user=self.user).order_by('matchday')[0]
         
         stadium_items = soup.find('table', id='stadiumExtra').tbody.find_all('tr')
         

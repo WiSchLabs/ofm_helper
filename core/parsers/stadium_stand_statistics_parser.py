@@ -14,7 +14,7 @@ class StadiumStandStatisticsParser(BaseParser):
         self.user = user
 
         # we assume to have parsed the match beforehand
-        match = Match.objects.filter(user=self.user)[0]
+        match = Match.objects.filter(user=self.user).order_by('matchday')[0]
         self.match_stadium_stat = MatchStadiumStatistics.objects.filter(match=match)[0]
 
     def parse(self):
