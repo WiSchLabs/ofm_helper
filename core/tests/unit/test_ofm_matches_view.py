@@ -30,7 +30,7 @@ class OFMMatchesViewTestCase(TestCase):
 
         self.assertTrue('Springfield Isotopes' in returned_json_data[0]['home_team'])
         self.assertTrue('Springfield Isotopes' in returned_json_data[0]['guest_team'])
-        self.assertEquals(returned_json_data[0]['result'], "0:0")
-        self.assertEquals(returned_json_data[0]['venue'], 'Olympiastadion Berlin')
+        self.assertTrue('0:0' in returned_json_data[0]['result'])
+        self.assertTrue('Olympiastadion Berlin' in returned_json_data[0]['venue'])
 
 
