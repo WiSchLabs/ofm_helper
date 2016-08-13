@@ -4,7 +4,7 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">{{stadium_stat.match.matchday.number}} &nbsp;
+    <h1 class="page-header">{{stadium_stat.match.matchday.season.number}}/{{stadium_stat.match.matchday.number}} &nbsp;
         {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
         ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})</h1>
     <p>
@@ -12,6 +12,7 @@
         Zuschauer: {{stadium_stat.visitors}} / {{stadium_stat.capacity}}<br>
         Stärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
         Ticket-Einnahmen: {{stadium_stat.earnings}} €<br>
+        Tägliche Kosten: {{stadium_stat.daily_costs}} €
     </p>
     <h3>
         Nord

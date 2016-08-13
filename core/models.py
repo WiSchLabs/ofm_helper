@@ -483,6 +483,10 @@ class MatchStadiumStatistics(models.Model):
             result += stand.earnings
         return result
 
+    @property
+    def daily_costs(self):
+        return self.level.light.daily_costs + self.level.screen.daily_costs + self.level.security.daily_costs + self.level.parking.daily_costs
+
     def __str__(self):
         return "%s (%s)" % (self.match.venue, self.match.matchday)
 
