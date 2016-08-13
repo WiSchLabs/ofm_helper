@@ -1,0 +1,107 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+    {% load staticfiles %}
+
+    <h1 class="page-header">Deine Stadionstatistik</h1>
+
+    {% if seasons|length > 1 %}
+        <div id="table-toolbar">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
+                    <label for="diff_toggle">Zeige die Daten vom </label>
+
+                    <select class="form-control" id="season">
+                        {% for s in seasons %}
+                            <option value="{{ s.number }}">{{ s.number }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <table id='stadium_statistics_table' class="table table-bordered table-striped table-hover"
+           data-toolbar="#table-toolbar"
+           data-toggle="table"
+           data-search="true"
+           data-show-refresh="true"
+           data-show-columns="true"
+           data-query-params="queryParams"
+           data-url="{% url 'core:ofm:stadium_statistics_overview_json' %}">
+        <thead id="stadium_statistics_table_head">
+            <tr>
+                <th data-field="matchday" data-sortable="true"><span class="glyphicon glyphicon-calendar"></span></th>
+                <th data-field="visitors" data-sortable="true"><span class="flaticon-football-fan-with-facepaint"></span> Zuschauer</th>
+                <th data-field="capacity" data-sortable="true"><span class="flaticon-football-fan-with-facepaint"></span> Kapazität</th>
+                <th data-field="light_level" data-sortable="true"><span class="flaticon-football-court-illumination-lamps"></span> Flutlicht</th>
+                <th data-field="security_level" data-sortable="true"><span class="flaticon-football-badge"></span> Sicherheit</th>
+                <th data-field="screen_level" data-sortable="true"><span class="flaticon-football-game-on-tv"></span> Anzeigetafel</th>
+                <th data-field="parking_level" data-sortable="true"><span>P</span> Parkplätze</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        var $table = $('#stadium_statistics_table'),
+                season;
+
+        function updateData(event, data) {
+            var params = {};
+
+            if (data) {
+                params = {
+                    season: season
+                };
+            } else {
+                params = { season: season };
+            }
+
+            $.get("{% url 'core:ofm:stadium_statistics_overview_json' %}", params,
+                function(returnedData){
+                    $table.bootstrapTable('removeAll');
+                    $table.bootstrapTable('load', returnedData);
+                }
+            );
+        }
+
+        $('#season').on('change', function() {
+            season = $( "#season" ).val();
+            updateData(event, $('#diff_toggle').prop('checked'));
+        });
+
+
+        $('#diff_toggle').bootstrapSwitch('state', false);
+
+        $('#diff_toggle').on('switchChange.bootstrapSwitch', function (event, data) {
+            season = $( "#season" ).val();
+            var params = {};
+
+            if (data) {
+                params = {
+                    season: season
+                };
+            } else {
+                params = { season: season };
+            }
+
+            $.get("{% url 'core:ofm:stadium_statistics_overview_json' %}", params,
+                function(returnedData){
+                    $table.bootstrapTable('removeAll');
+                    $table.bootstrapTable('load', returnedData);
+                }
+            );
+        });
+
+        function queryParams() {
+            var params = {};
+            $('#toolbar').find('input[name]').each(function () {
+                params[$(this).attr('name')] = $(this).val();
+            });
+            return params;
+        }
+    </script>
+
+{% endblock %}
