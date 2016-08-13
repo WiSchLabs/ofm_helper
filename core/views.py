@@ -144,7 +144,7 @@ def trigger_parsing(request):
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
         is_home_match = "<b>" in str(row.find_all('td')[2].a)
-        link_to_match = row.find_all('img')[0].find_parent('a')['href']
+        link_to_match = row.find_all('img', class_='changeMatchReportImg')[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
             logger.debug('      match took place')
             # only parse match if statistics are available
