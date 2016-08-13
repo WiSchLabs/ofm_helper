@@ -421,6 +421,17 @@ class Match(models.Model):
     def is_home_match(self):
         return MatchStadiumStatistics.objects.filter(match=self).count() > 0
 
+    @property
+    def is_won(self):
+        if self.is_home_match:
+            return self.home_team_statistics.score > self.guest_team_statistics.score
+        else:
+            return self.home_team_statistics.score < self.guest_team_statistics.score
+
+    @property
+    def is_draw(self):
+        return self.home_team_statistics.score == self.guest_team_statistics.score
+
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')

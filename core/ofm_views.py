@@ -523,10 +523,18 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
             venue = match.venue
 
+        result_score = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
+        if match.is_won:
+            result = "<span class='match_won alert-success'>" + result_score + "</span>"
+        elif match.is_draw:
+            result = "<span class='match_draw alert-warning'>" + result_score + "</span>"
+        else:
+            result = "<span class='match_lost alert-danger'>" + result_score + "</span>"
+
         match_stat = dict()
         match_stat['home_team'] = home_team_name
         match_stat['guest_team'] = guest_team_name
-        match_stat['result'] = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
+        match_stat['result'] = result
         match_stat['home_strength'] = match.home_team_statistics.strength
         match_stat['guest_strength'] = match.guest_team_statistics.strength
         match_stat['home_ball_possession'] = str(match.home_team_statistics.ball_possession) + " %"
