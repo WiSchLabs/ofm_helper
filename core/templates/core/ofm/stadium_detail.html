@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+    {% load staticfiles %}
+
+    <h1 class="page-header">{{stadium_stat.match.matchday.number}} &nbsp;
+        {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
+        ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})</h1>
+    <p>
+    <h2>Allgemein</h2>
+        Zuschauer: {{stadium_stat.visitors}} / {{stadium_stat.capacity}}<br>
+        Stärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
+        Ticket-Einnahmen: {{stadium_stat.earnings}} €<br>
+    </p>
+    <h3>
+        Nord
+        <small>{% if north_stand.level.has_seats %} Sitzplätze {% else %} Stehplätze {% endif %}</small>
+        {% if north_stand.level.has_roof %} <small>überdacht</small> {% endif %}
+    </h3>
+    <p>
+        Zuschauer: {{north_stand.visitors}} / {{north_stand.level.capacity}}<br>
+        Ticket-Preis: {{north_stand.ticket_price}} €<br>
+        Ticket-Einnahmen: {{north_stand.earnings}} €<br>
+        Zustand: {{north_stand.condition}} %<br>
+    </p>
+    <h3>
+        Süd
+        <small>{% if south_stand.level.has_seats %} Sitzplätze {% else %} Stehplätze {% endif %}</small>
+        {% if south_stand.level.has_roof %} <small>überdacht</small> {% endif %}
+    </h3>
+    <p>
+        Zuschauer: {{south_stand.visitors}} / {{south_stand.level.capacity}}<br>
+        Ticket-Preis: {{south_stand.ticket_price}} €<br>
+        Ticket-Einnahmen: {{south_stand.earnings}} €<br>
+        Zustand: {{south_stand.condition}} %<br>
+    </p>
+    <h3>
+        West
+        <small>{% if west_stand.level.has_seats %} Sitzplätze {% else %} Stehplätze {% endif %}</small>
+        {% if west_stand.level.has_roof %} <small>überdacht</small> {% endif %}
+    </h3>
+    <p>
+        Zuschauer: {{west_stand.visitors}} / {{west_stand.level.capacity}}<br>
+        Ticket-Preis: {{west_stand.ticket_price}} €<br>
+        Ticket-Einnahmen: {{west_stand.earnings}} €<br>
+        Zustand: {{west_stand.condition}} %<br>
+    </p>
+    <h3>
+        Ost
+        <small>{% if east_stand.level.has_seats %} Sitzplätze {% else %} Stehplätze {% endif %}</small>
+        {% if east_stand.level.has_roof %} <small>überdacht</small> {% endif %}
+    </h3>
+    <p>
+        Zuschauer: {{east_stand.visitors}} / {{east_stand.level.capacity}}<br>
+        Ticket-Preis: {{east_stand.ticket_price}} €<br>
+        Ticket-Einnahmen: {{east_stand.earnings}} €<br>
+        Zustand: {{east_stand.condition}} %<br>
+    </p>
+
+{% endblock %}

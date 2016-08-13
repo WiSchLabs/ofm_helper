@@ -465,6 +465,9 @@ class MatchStadiumStatistics(models.Model):
     match = models.OneToOneField(Match, related_name='stadium_statistics')
     level = models.ForeignKey(StadiumLevel, related_name="stadium_statistics")
 
+    def get_absolute_url(self):
+        return reverse('core:ofm:stadium_detail', args=[str(self.id)])
+
     @property
     def visitors(self):
         return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))['visitors__sum']
@@ -472,6 +475,13 @@ class MatchStadiumStatistics(models.Model):
     @property
     def capacity(self):
         return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))['level__capacity__sum']
+
+    @property
+    def earnings(self):
+        result = 0
+        for stand in StadiumStandStatistics.objects.filter(stadium_statistics=self):
+            result += stand.earnings
+        return result
 
     def __str__(self):
         return "%s (%s)" % (self.match.venue, self.match.matchday)
@@ -497,6 +507,10 @@ class StadiumStandStatistics(models.Model):
         ("W", "West"),
         ("O", "Ost"),
     )
+
+    @property
+    def earnings(self):
+        return self.visitors * self.ticket_price
 
     stadium_statistics = models.ForeignKey(MatchStadiumStatistics, related_name="stand_statistics")
     sector = models.CharField(max_length=1, choices=SECTOR)

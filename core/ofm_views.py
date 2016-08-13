@@ -176,7 +176,7 @@ class PlayerDetailView(DetailView):
 
         return context
 
-    def get_object(self):
+    def get_object(self, **kwargs):
         player = super(PlayerDetailView, self).get_object()
         contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None
@@ -517,9 +517,11 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         if match.is_home_match:
             home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
             guest_team_name = match.guest_team_statistics.team_name
+            venue = "<a href='" + match.stadium_statistics.get_absolute_url() + "'>" + match.venue + "</a>"
         else:
             home_team_name = match.home_team_statistics.team_name
             guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
+            venue = match.venue
 
         match_stat = dict()
         match_stat['home_team'] = home_team_name
@@ -535,7 +537,7 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         match_stat['guest_yellow_cards'] = match.guest_team_statistics.yellow_cards
         match_stat['home_red_cards'] = match.home_team_statistics.red_cards
         match_stat['guest_red_cards'] = match.guest_team_statistics.red_cards
-        match_stat['venue'] = match.venue
+        match_stat['venue'] = venue
         match_stat['matchday'] = match.matchday.number
 
         return match_stat
@@ -583,12 +585,41 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         """
 
         match_stadium_stat = dict()
-        match_stadium_stat['matchday'] = stadium_stat.match.matchday.number
+        match_stadium_stat['matchday'] = "<a href='" + stadium_stat.get_absolute_url() + "'>" + str(stadium_stat.match.matchday.number) + "</a>"
         match_stadium_stat['visitors'] = stadium_stat.visitors
         match_stadium_stat['capacity'] = stadium_stat.capacity
+        match_stadium_stat['earnings'] = stadium_stat.earnings
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " €)   " + str(stadium_stat.level.light.daily_costs) + " €"
         match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " €)   " + str(stadium_stat.level.screen.daily_costs) + " €"
         match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " €)   " + str(stadium_stat.level.security.daily_costs) + " €"
         match_stadium_stat['parking_level'] = str(stadium_stat.level.parking.current_level) + " (" + str(stadium_stat.level.parking.value) + " €)   " + str(stadium_stat.level.parking.daily_costs) + " €"
 
         return match_stadium_stat
+
+
+@method_decorator(login_required, name='dispatch')
+class StadiumDetailView(DetailView):
+    context_object_name = 'stadium_stat'
+    template_name = 'core/ofm/stadium_detail.html'
+    queryset = MatchStadiumStatistics.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(StadiumDetailView, self).get_context_data(**kwargs)
+
+        if self.get_object():
+            north_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='N')
+            south_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='S')
+            west_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='W')
+            east_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='O')
+
+            context['north_stand'] = north_stand
+            context['south_stand'] = south_stand
+            context['west_stand'] = west_stand
+            context['east_stand'] = east_stand
+
+        return context
+
+    def get_object(self, **kwargs):
+        stadium_stat = super(StadiumDetailView, self).get_object()
+        matches = Match.objects.filter(user=self.request.user, stadium_statistics=stadium_stat)
+        return stadium_stat if matches.count() > 0 else None
