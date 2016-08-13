@@ -417,6 +417,10 @@ class Match(models.Model):
         ("F", "Fun-Cup"),
     )
 
+    @property
+    def is_home_match(self):
+        return MatchStadiumStatistics.objects.filter(match=self).count() > 0
+
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')

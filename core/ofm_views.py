@@ -514,9 +514,16 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             A dictionary of match data.
         """
 
+        if match.is_home_match:
+            home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
+            guest_team_name = match.guest_team_statistics.team_name
+        else:
+            home_team_name = match.home_team_statistics.team_name
+            guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
+
         match_stat = dict()
-        match_stat['home_team'] = match.home_team_statistics.team_name
-        match_stat['guest_team'] = match.guest_team_statistics.team_name
+        match_stat['home_team'] = home_team_name
+        match_stat['guest_team'] = guest_team_name
         match_stat['result'] = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
         match_stat['home_strength'] = match.home_team_statistics.strength
         match_stat['guest_strength'] = match.guest_team_statistics.strength

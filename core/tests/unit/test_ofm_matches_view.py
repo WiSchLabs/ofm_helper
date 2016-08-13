@@ -28,8 +28,8 @@ class OFMMatchesViewTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
 
-        self.assertEquals(returned_json_data[0]['home_team'], 'Springfield Isotopes')
-        self.assertEquals(returned_json_data[0]['guest_team'], 'Springfield Isotopes')
+        self.assertTrue('Springfield Isotopes' in returned_json_data[0]['home_team'])
+        self.assertTrue('Springfield Isotopes' in returned_json_data[0]['guest_team'])
         self.assertEquals(returned_json_data[0]['result'], "0:0")
         self.assertEquals(returned_json_data[0]['venue'], 'Olympiastadion Berlin')
 
