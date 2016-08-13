@@ -575,17 +575,10 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             A dictionary of stadium statistics data.
         """
 
-        north_stand_stat = StadiumStandStatistics.objects.filter(stadium_statistics=stadium_stat, sector='N')[0]
-        south_stand_stat = StadiumStandStatistics.objects.filter(stadium_statistics=stadium_stat, sector='S')[0]
-        west_stand_stat = StadiumStandStatistics.objects.filter(stadium_statistics=stadium_stat, sector='W')[0]
-        east_stand_stat = StadiumStandStatistics.objects.filter(stadium_statistics=stadium_stat, sector='O')[0]
-
         match_stadium_stat = dict()
         match_stadium_stat['matchday'] = stadium_stat.match.matchday.number
-        match_stadium_stat['visitors'] = north_stand_stat.visitors + south_stand_stat.visitors + \
-                                         west_stand_stat.visitors + east_stand_stat.visitors
-        match_stadium_stat['capacity'] = north_stand_stat.level.capacity + south_stand_stat.level.capacity + \
-                                         west_stand_stat.level.capacity + east_stand_stat.level.capacity
+        match_stadium_stat['visitors'] = stadium_stat.visitors
+        match_stadium_stat['capacity'] = stadium_stat.capacity
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " €)   " + str(stadium_stat.level.light.daily_costs) + " €"
         match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " €)   " + str(stadium_stat.level.screen.daily_costs) + " €"
         match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " €)   " + str(stadium_stat.level.security.daily_costs) + " €"

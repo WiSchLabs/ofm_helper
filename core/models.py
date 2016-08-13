@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Sum
 
 from users.models import OFMUser
 
@@ -459,6 +460,14 @@ class MatchStadiumStatistics(models.Model):
 
     match = models.OneToOneField(Match, related_name='stadium_statistics')
     level = models.ForeignKey(StadiumLevel, related_name="stadium_statistics")
+
+    @property
+    def visitors(self):
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))['visitors__sum']
+
+    @property
+    def capacity(self):
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))['level__capacity__sum']
 
     def __str__(self):
         return "%s (%s)" % (self.match.venue, self.match.matchday)
