@@ -597,6 +597,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         match_stadium_stat['visitors'] = stadium_stat.visitors
         match_stadium_stat['capacity'] = stadium_stat.capacity
         match_stadium_stat['earnings'] = stadium_stat.earnings
+        match_stadium_stat['workload'] = '{:.2%}'.format(stadium_stat.visitors / stadium_stat.capacity)
         match_stadium_stat['home_strength'] = stadium_stat.match.home_team_statistics.strength
         match_stadium_stat['guest_strength'] = stadium_stat.match.guest_team_statistics.strength
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " €)   " + str(stadium_stat.level.light.daily_costs) + " €"
