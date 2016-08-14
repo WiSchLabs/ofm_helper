@@ -523,6 +523,9 @@ class StadiumStandStatistics(models.Model):
         ("O", "Ost"),
     )
 
+    def get_sector(self):
+        return dict(self.SECTOR).get(self.sector)
+
     @property
     def earnings(self):
         return self.visitors * self.ticket_price

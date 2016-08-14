@@ -3,9 +3,8 @@ import os
 from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
-from core.models import Player, Contract, Finance
+from core.models import Finance
 from core.parsers.finances_parser import FinancesParser
-from core.parsers.players_parser import PlayersParser
 from users.factories.users_factories import OFMUserFactory
 
 TESTDATA_PATH = 'core/tests/assets'

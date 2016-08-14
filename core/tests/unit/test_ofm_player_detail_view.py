@@ -17,6 +17,7 @@ class OFMPlayerDetailViewTestCase(TestCase):
         response = self.client.get('/ofm/players/'+str(self.player.id))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('player' in response.context_data)
+        self.assertTrue('chart' in response.context_data)
 
     def test_user_cannot_see_other_users_players(self):
         self.client.login(username='bob', password='bob')

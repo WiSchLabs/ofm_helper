@@ -634,3 +634,64 @@ class StadiumDetailView(DetailView):
         stadium_stat = super(StadiumDetailView, self).get_object()
         matches = Match.objects.filter(user=self.request.user, stadium_statistics=stadium_stat)
         return stadium_stat if matches.count() > 0 else None
+
+
+@method_decorator(login_required, name='dispatch')
+class StadiumStandStatisticsView(TemplateView):
+    template_name = 'core/ofm/stadium_stand_statistics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StadiumStandStatisticsView, self).get_context_data(**kwargs)
+
+        sector = self.request.GET.get('sector', 'N')
+        season = Matchday.objects.all()[0].season
+        queryset = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
+                                                         stadium_statistics__match__matchday__season__number=season.number,
+                                                         sector=sector)
+
+        context['season'] = season
+        if queryset.count() > 0:
+            context['sector_name'] = queryset[0].get_sector()
+
+        statistics_data = DataPool(
+            series=[
+                {'options':
+                     {'source': queryset},
+                 'terms': [
+                     'stadium_statistics__match__matchday__number',
+                     'level__capacity',
+                     'visitors',
+                     'ticket_price',
+                     'condition'
+                 ]
+                 }
+            ]
+        )
+
+        chart = Chart(
+            datasource=statistics_data,
+            series_options=
+            [{'options': {
+                'type': 'spline',
+                'stacking': False},
+                'terms': {'stadium_statistics__match__matchday__number': ['level__capacity', 'visitors', 'ticket_price', 'condition', ]}
+            }],
+            chart_options=
+            {
+                'title': {
+                    'text': 'Spielerstatistik'
+                },
+                'xAxis': {
+                    'title': {
+                        'text': 'Spieltag'}
+                },
+                'yAxis': {
+                    'title': {
+                        'text': ' '}
+                },
+            }
+        )
+
+        context['chart'] = chart
+
+        return context
