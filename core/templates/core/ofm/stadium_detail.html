@@ -9,7 +9,7 @@
         ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})</h1>
     <p>
     <h2>Allgemein</h2>
-        Zuschauer: {{stadium_stat.visitors}} / {{stadium_stat.capacity}}<br>
+        Zuschauer: {{stadium_stat.visitors}} / {{stadium_stat.capacity}} ({% widthratio stadium_stat.visitors stadium_stat.capacity 100 %} %)<br>
         Stärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
         Ticket-Einnahmen: {{stadium_stat.earnings}} €<br>
         Tägliche Kosten: {{stadium_stat.daily_costs}} €
@@ -20,7 +20,7 @@
         {% if north_stand.level.has_roof %} <small>überdacht</small> {% endif %}
     </h3>
     <p>
-        Zuschauer: {{north_stand.visitors}} / {{north_stand.level.capacity}}<br>
+        Zuschauer: {{north_stand.visitors}} / {{north_stand.level.capacity}} ({% widthratio north_stand.visitors north_stand.level.capacity 100 %} %)<br>
         Ticket-Preis: {{north_stand.ticket_price}} €<br>
         Ticket-Einnahmen: {{north_stand.earnings}} €<br>
         Zustand: {{north_stand.condition}} %<br>
@@ -31,7 +31,7 @@
         {% if south_stand.level.has_roof %} <small>überdacht</small> {% endif %}
     </h3>
     <p>
-        Zuschauer: {{south_stand.visitors}} / {{south_stand.level.capacity}}<br>
+        Zuschauer: {{south_stand.visitors}} / {{south_stand.level.capacity}} ({% widthratio south_stand.visitors south_stand.level.capacity 100 %} %)<br>
         Ticket-Preis: {{south_stand.ticket_price}} €<br>
         Ticket-Einnahmen: {{south_stand.earnings}} €<br>
         Zustand: {{south_stand.condition}} %<br>
@@ -42,7 +42,7 @@
         {% if west_stand.level.has_roof %} <small>überdacht</small> {% endif %}
     </h3>
     <p>
-        Zuschauer: {{west_stand.visitors}} / {{west_stand.level.capacity}}<br>
+        Zuschauer: {{west_stand.visitors}} / {{west_stand.level.capacity}} ({% widthratio west_stand.visitors west_stand.level.capacity 100 %} %)<br>
         Ticket-Preis: {{west_stand.ticket_price}} €<br>
         Ticket-Einnahmen: {{west_stand.earnings}} €<br>
         Zustand: {{west_stand.condition}} %<br>
@@ -53,7 +53,7 @@
         {% if east_stand.level.has_roof %} <small>überdacht</small> {% endif %}
     </h3>
     <p>
-        Zuschauer: {{east_stand.visitors}} / {{east_stand.level.capacity}}<br>
+        Zuschauer: {{east_stand.visitors}} / {{east_stand.level.capacity}} ({% widthratio east_stand.visitors east_stand.level.capacity 100 %} %)<br>
         Ticket-Preis: {{east_stand.ticket_price}} €<br>
         Ticket-Einnahmen: {{east_stand.earnings}} €<br>
         Zustand: {{east_stand.condition}} %<br>
