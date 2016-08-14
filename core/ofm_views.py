@@ -653,7 +653,7 @@ class StadiumStandStatisticsView(TemplateView):
         if queryset.count() > 0:
             context['sector_name'] = queryset[0].get_sector()
 
-            chart_data = DataPool(
+        chart_data = DataPool(
             series=[
                 {'options':
                      {'source': queryset},
