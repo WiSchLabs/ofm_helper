@@ -26,18 +26,42 @@ class StadiumStatisticsParser(BaseParser):
 
         # we assume to have parsed the match beforehand
         match = Match.objects.filter(user=self.user).order_by('matchday')[0]
-        
-        stadium_items = soup.find('table', id='stadiumExtra').tbody.find_all('tr')
+        last_home_matches = Match.objects.filter(user=self.user, stadium_statistics__isnull=False).order_by('matchday')
+        last_stadium_level = None
+        if last_home_matches.count() > 0:
+            last_home_match = last_home_matches[0]
+            last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
 
+        stadium_items = soup.find('table', id='stadiumExtra').tbody.find_all('tr')
         light_row = stadium_items[0]
         screen_row = stadium_items[1]
         security_row = stadium_items[2]
         parking_row = stadium_items[3]
 
-        light = self._create_stadium_level_item_from_row(light_row)
-        screen = self._create_stadium_level_item_from_row(screen_row)
-        security = self._create_stadium_level_item_from_row(security_row)
-        parking = self._create_stadium_level_item_from_row(parking_row)
+        is_light_under_construction = light_row.find_all('td')[1].img is not None and 'underconst' in light_row.find_all('td')[1].img['src']
+        is_screen_under_construction = screen_row.find_all('td')[1].img is not None and 'underconst' in screen_row.find_all('td')[1].img['src']
+        is_security_under_construction = security_row.find_all('td')[1].img is not None and 'underconst' in security_row.find_all('td')[1].img['src']
+        is_parking_under_construction = parking_row.find_all('td')[1].img is not None and 'underconst' in parking_row.find_all('td')[1].img['src']
+
+        if is_light_under_construction and last_stadium_level:
+            light = last_stadium_level.light
+        else:
+            light = self._create_stadium_level_item_from_row(light_row)
+
+        if is_screen_under_construction and last_stadium_level:
+            screen = last_stadium_level.screen
+        else:
+            screen = self._create_stadium_level_item_from_row(screen_row)
+
+        if is_security_under_construction and last_stadium_level:
+            security = last_stadium_level.security
+        else:
+            security = self._create_stadium_level_item_from_row(security_row)
+
+        if is_parking_under_construction and last_stadium_level:
+            parking = last_stadium_level.parking
+        else:
+            parking = self._create_stadium_level_item_from_row(parking_row)
 
         stadium_level, success = StadiumLevel.objects.get_or_create(
             light=light,
