@@ -1,5 +1,3 @@
-import logging
-
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
@@ -7,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, Season, MatchStadiumStatistics, \
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
     StadiumStandStatistics
 
 

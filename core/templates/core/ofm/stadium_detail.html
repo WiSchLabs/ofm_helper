@@ -3,6 +3,7 @@
 {% block content %}
 
     {% load staticfiles %}
+    {% load humanize %}
 
     <h1 class="page-header">{{stadium_stat.match.matchday.season.number}}/{{stadium_stat.match.matchday.number}} &nbsp;
         {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
@@ -10,7 +11,7 @@
     <p>
     <h2>Allgemein</h2>
         Mannschaftsstärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
-        Tägliche Kosten: {{stadium_stat.daily_costs}} €
+        Tägliche Kosten: {{stadium_stat.daily_costs|intcomma}} €
     </p>
 
     <table id="stadium-stand-table" class="table table-hover table-bordered table-striped">
@@ -33,11 +34,14 @@
                         {% if north_stand.level.has_roof %} <br><small>überdacht</small> {% endif %}
                     </td>
                     <td>
-                        {{north_stand.visitors}} / {{north_stand.level.capacity}} ({% widthratio north_stand.visitors north_stand.level.capacity 100 %} %)
-                        <div class="pie" style="animation-delay: -{% widthratio north_stand.visitors north_stand.level.capacity 100 %}s">&nbsp;</div>
+                        {{north_stand.visitors}} / {{north_stand.level.capacity}}
+                        <div class="pie" title="{% widthratio north_stand.visitors north_stand.level.capacity 100 %} %"
+                         style="animation-delay: -{% widthratio north_stand.visitors north_stand.level.capacity 99.99 %}s">&nbsp;</div>
+                        <span class="glyphicon glyphicon-triangle-left"></span>
+                        {% widthratio north_stand.visitors north_stand.level.capacity 100 %} %
                     </td>
                     <td>{{north_stand.ticket_price}} €</td>
-                    <td>{{north_stand.earnings}} €</td>
+                    <td>{{north_stand.earnings|intcomma}} €</td>
                     <td class="{% if north_stand.condition < 50 %}danger
                         {% elif north_stand.condition < 70 %}warning
                         {% elif north_stand.condition < 90 %}info
@@ -54,11 +58,14 @@
                         {% if south_stand.level.has_roof %} <br><small>überdacht</small> {% endif %}
                     </td>
                     <td>
-                        {{south_stand.visitors}} / {{south_stand.level.capacity}} ({% widthratio south_stand.visitors south_stand.level.capacity 100 %} %)
-                        <div class="pie" style="animation-delay: -{% widthratio south_stand.visitors south_stand.level.capacity 100 %}s">&nbsp;</div>
+                        {{south_stand.visitors}} / {{south_stand.level.capacity}}
+                        <div class="pie" title="{% widthratio south_stand.visitors south_stand.level.capacity 100 %} %"
+                         style="animation-delay: -{% widthratio south_stand.visitors south_stand.level.capacity 99.99 %}s">&nbsp;</div>
+                        <span class="glyphicon glyphicon-triangle-left"></span>
+                        {% widthratio south_stand.visitors south_stand.level.capacity 100 %} %
                     </td>
                     <td>{{south_stand.ticket_price}} €</td>
-                    <td>{{south_stand.earnings}} €</td>
+                    <td>{{south_stand.earnings|intcomma}} €</td>
                     <td class="{% if south_stand.condition < 50 %}danger
                         {% elif south_stand.condition < 70 %}warning
                         {% elif south_stand.condition < 90 %}info
@@ -75,11 +82,14 @@
                         {% if west_stand.level.has_roof %} <br><small>überdacht</small> {% endif %}
                     </td>
                     <td>
-                        {{west_stand.visitors}} / {{west_stand.level.capacity}} ({% widthratio west_stand.visitors west_stand.level.capacity 100 %} %)
-                        <div class="pie" style="animation-delay: -{% widthratio west_stand.visitors west_stand.level.capacity 100 %}s">&nbsp;</div>
+                        {{west_stand.visitors}} / {{west_stand.level.capacity}}
+                        <div class="pie" title="{% widthratio west_stand.visitors west_stand.level.capacity 100 %} %"
+                         style="animation-delay: -{% widthratio west_stand.visitors west_stand.level.capacity 99.99 %}s">&nbsp;</div>
+                        <span class="glyphicon glyphicon-triangle-left"></span>
+                        {% widthratio west_stand.visitors west_stand.level.capacity 100 %} %
                     </td>
                     <td>{{west_stand.ticket_price}} €</td>
-                    <td>{{west_stand.earnings}} €</td>
+                    <td>{{west_stand.earnings|intcomma}} €</td>
                     <td class="{% if west_stand.condition < 50 %}danger
                         {% elif west_stand.condition < 70 %}warning
                         {% elif west_stand.condition < 90 %}info
@@ -96,11 +106,14 @@
                         {% if east_stand.level.has_roof %} <br><small>überdacht</small> {% endif %}
                     </td>
                     <td>
-                        {{east_stand.visitors}} / {{east_stand.level.capacity}} ({% widthratio east_stand.visitors east_stand.level.capacity 100 %} %)
-                        <div class="pie" style="animation-delay: -{% widthratio east_stand.visitors east_stand.level.capacity 100 %}s">&nbsp;</div>
+                        {{east_stand.visitors}} / {{east_stand.level.capacity}}
+                        <div class="pie" title="{% widthratio east_stand.visitors east_stand.level.capacity 100 %} %"
+                         style="animation-delay: -{% widthratio east_stand.visitors east_stand.level.capacity 99.99 %}s">&nbsp;</div>
+                        <span class="glyphicon glyphicon-triangle-left"></span>
+                        {% widthratio east_stand.visitors east_stand.level.capacity 100 %} %
                     </td>
                     <td>{{east_stand.ticket_price}} €</td>
-                    <td>{{east_stand.earnings}} €</td>
+                    <td>{{east_stand.earnings|intcomma}} €</td>
                     <td class="{% if east_stand.condition < 50 %}danger
                         {% elif east_stand.condition < 70 %}warning
                         {% elif east_stand.condition < 90 %}info
@@ -113,20 +126,18 @@
                 <td><b>Gesamt</b></td>
                 <td></td>
                 <td>
-                    {{stadium_stat.visitors}} / {{stadium_stat.capacity}} ({% widthratio stadium_stat.visitors stadium_stat.capacity 100 %} %)
-                    <div class="pie" style="animation-delay: -{% widthratio stadium_stat.visitors stadium_stat.capacity 100 %}s">&nbsp;</div>
+                    {{stadium_stat.visitors}} / {{stadium_stat.capacity}}
+                    <div class="pie" title="{% widthratio stadium_stat.visitors stadium_stat.capacity 100 %} %"
+                         style="animation-delay: -{% widthratio stadium_stat.visitors stadium_stat.capacity 99.99 %}s">&nbsp;</div>
+                    <span class="glyphicon glyphicon-triangle-left"></span>
+                    {% widthratio stadium_stat.visitors stadium_stat.capacity 100 %} %
                 </td>
                 <td></td>
-                <td>{{stadium_stat.earnings}} €</td>
+                <td>{{stadium_stat.earnings|intcomma}} €</td>
                 <td></td>
             </tr>
         </tbody>
 
     </table>
-
-
-
-<script>
-</script>
 
 {% endblock %}
