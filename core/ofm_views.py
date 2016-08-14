@@ -132,7 +132,7 @@ class PlayerDetailView(DetailView):
         player = self.get_object()
         current_season = Matchday.objects.all()[0].season
 
-        statistics_data = DataPool(
+        chart_data = DataPool(
             series=[
                 {'options':
                     {'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)},
@@ -147,7 +147,7 @@ class PlayerDetailView(DetailView):
         )
 
         chart = Chart(
-            datasource=statistics_data,
+            datasource=chart_data,
             series_options=
             [{'options': {
                 'type': 'spline',
@@ -190,7 +190,7 @@ class FinanceDataView(TemplateView):
         context = super(FinanceDataView, self).get_context_data(**kwargs)
         current_season = Matchday.objects.all()[0].season
 
-        finance_data = DataPool(
+        chart_data = DataPool(
             series=[
                 {'options':
                     {'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)},
@@ -203,7 +203,7 @@ class FinanceDataView(TemplateView):
         )
 
         chart = Chart(
-            datasource=finance_data,
+            datasource=chart_data,
             series_options=
             [{'options': {
                     'type': 'spline',
@@ -387,7 +387,7 @@ class FinanceDataColumnChartView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(FinanceDataColumnChartView, self).get_context_data(**kwargs)
 
-        finance_data = DataPool(
+        chart_data = DataPool(
             series=[
                 {'options':
                     {'source': Finance.objects.filter(user=self.request.user)},
@@ -420,7 +420,7 @@ class FinanceDataColumnChartView(TemplateView):
         )
 
         chart = Chart(
-            datasource=finance_data,
+            datasource=chart_data,
             series_options=
             [
                 {'options': {
@@ -653,7 +653,7 @@ class StadiumStandStatisticsView(TemplateView):
         if queryset.count() > 0:
             context['sector_name'] = queryset[0].get_sector()
 
-        statistics_data = DataPool(
+            chart_data = DataPool(
             series=[
                 {'options':
                      {'source': queryset},
@@ -669,7 +669,7 @@ class StadiumStandStatisticsView(TemplateView):
         )
 
         chart = Chart(
-            datasource=statistics_data,
+            datasource=chart_data,
             series_options=
             [{'options': {
                 'type': 'spline',
@@ -679,7 +679,7 @@ class StadiumStandStatisticsView(TemplateView):
             chart_options=
             {
                 'title': {
-                    'text': 'Spielerstatistik'
+                    'text': 'Tribünenstatistik'
                 },
                 'xAxis': {
                     'title': {

@@ -153,6 +153,37 @@ ul.nav-sub {
         border-top-width: 5px;
     }
 
+.pie {
+    display: inline-block;
+    position: relative;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 50%;
+    background: #AAA linear-gradient(to right, transparent 50%, #239123 0);
+    color: transparent;
+    text-align: center;
+}
+
+@keyframes spin {
+  to { transform: rotate(.5turn); }
+}
+@keyframes bg {
+  50% { background: #239123; }
+}
+
+.pie::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 50%; height: 100%;
+    border-radius: 0 100% 100% 0 / 50%;
+    background-color: inherit;
+    transform-origin: left;
+    animation: spin 50s linear infinite, bg 100s step-end infinite;
+    animation-play-state: paused;
+    animation-delay: inherit;
+}
+
 footer.footer {
     width: 100%;
     padding-top: 10px;
