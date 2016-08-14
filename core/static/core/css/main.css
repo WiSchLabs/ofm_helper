@@ -148,6 +148,11 @@ ul.nav-sub {
         .table td span.match_lost,
         .table td span.match_draw { background-color: transparent; }
 
+    #stadium-stand-table>tbody>tr:last-child {
+        border-top-style: double;
+        border-top-width: 5px;
+    }
+
 footer.footer {
     width: 100%;
     padding-top: 10px;
