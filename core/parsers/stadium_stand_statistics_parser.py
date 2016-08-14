@@ -33,6 +33,8 @@ class StadiumStandStatisticsParser(BaseParser):
         return [self._parse_stand_statistics(stand_data) for stand_data in stadium_stands]
 
     def _parse_stand_statistics(self, stand_data):
+        if 'nonvisible' in stand_data['class']:
+            return
         has_roof = 'überdacht' in stand_data.find('h1').get_text()
         has_seats = 'Sitzplätze' in stand_data.find('h1').get_text()
         capacity = stand_data.find_all('tr')[2].find_all('td')[3].div.get_text().replace('.', '')
