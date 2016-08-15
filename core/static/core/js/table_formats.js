@@ -17,10 +17,8 @@ function table_loader() {
 
         $.get(JSON_URL, params,
             function (returnedData) {
-                for (var table in $tables) {
-                    table.bootstrapTable('removeAll');
-                    table.bootstrapTable('load', returnedData);
-                }
+                $tables.bootstrapTable('removeAll');
+                $tables.bootstrapTable('load', returnedData);
 
                 if (data) {
                     $('#matchday_compare').removeClass('hide')
@@ -94,7 +92,7 @@ function balanceFormatter(value) {
         color = COLOR_DANGER;
     }
 
-    return '<div  style="color: ' + color + '">' + numberFormatter(value) + '</div>';
+    return '<div style="color: ' + color + '">' + numberFormatter(value) + '</div>';
 }
 
 function numberFormatter(value) {
