@@ -53,7 +53,7 @@
        data-url="{% url 'core:ofm:finances_json' %}">
         <thead id="finances_balance_table_head" class="hide">
             <tr>
-                <th data-field="balance">Bilanz</th>
+                <th data-field="balance" data-formatter="balanceFormatter">Bilanz</th>
             </tr>
         </thead>
     </table>
@@ -68,16 +68,16 @@
        data-url="{% url 'core:ofm:finances_json' %}">
         <thead id="finances_income_table_head">
             <tr>
-                <th data-field="income_visitors_league">Zuschauer Ligaspiele</th>
-                <th data-field="income_sponsoring">Sponsoren</th>
-                <th data-field="income_cup">Pokal</th>
-                <th data-field="income_interests">Zinsen</th>
-                <th data-field="income_loan">Kredit</th>
-                <th data-field="income_transfer">Transfer</th>
-                <th data-field="income_visitors_friendlies">Zuschauer Friendlies</th>
-                <th data-field="income_friendlies">Friendlies</th>
-                <th data-field="income_funcup">Prämien FunCups</th>
-                <th data-field="income_betting">Wetten</th>
+                <th data-field="income_visitors_league" data-formatter="balanceFormatter">Zuschauer Ligaspiele</th>
+                <th data-field="income_sponsoring" data-formatter="balanceFormatter">Sponsoren</th>
+                <th data-field="income_cup" data-formatter="balanceFormatter">Pokal</th>
+                <th data-field="income_interests" data-formatter="balanceFormatter">Zinsen</th>
+                <th data-field="income_loan" data-formatter="balanceFormatter">Kredit</th>
+                <th data-field="income_transfer" data-formatter="balanceFormatter">Transfer</th>
+                <th data-field="income_visitors_friendlies" data-formatter="balanceFormatter">Zuschauer Friendlies</th>
+                <th data-field="income_friendlies" data-formatter="balanceFormatter">Friendlies</th>
+                <th data-field="income_funcup" data-formatter="balanceFormatter">Prämien FunCups</th>
+                <th data-field="income_betting" data-formatter="balanceFormatter">Wetten</th>
             </tr>
         </thead>
     </table>
@@ -93,16 +93,16 @@
 
         <thead id="finances_expenses_table_head">
             <tr>
-                <th data-field="expenses_player_salaries">Spielergehälter</th>
-                <th data-field="expenses_stadium">Stadionausbau</th>
-                <th data-field="expenses_youth">Jugendförderung</th>
-                <th data-field="expenses_interests">Zinsen</th>
-                <th data-field="expenses_trainings">Trainingslager</th>
-                <th data-field="expenses_transfer">Transfer</th>
-                <th data-field="expenses_compensation">Abfindungen</th>
-                <th data-field="expenses_friendlies">Friendlies</th>
-                <th data-field="expenses_funcup">FunCups</th>
-                <th data-field="expenses_betting">Wetten</th>
+                <th data-field="expenses_player_salaries" data-formatter="balanceFormatter">Spielergehälter</th>
+                <th data-field="expenses_stadium" data-formatter="balanceFormatter">Stadionausbau</th>
+                <th data-field="expenses_youth" data-formatter="balanceFormatter">Jugendförderung</th>
+                <th data-field="expenses_interests" data-formatter="balanceFormatter">Zinsen</th>
+                <th data-field="expenses_trainings" data-formatter="balanceFormatter">Trainingslager</th>
+                <th data-field="expenses_transfer" data-formatter="balanceFormatter">Transfer</th>
+                <th data-field="expenses_compensation" data-formatter="balanceFormatter">Abfindungen</th>
+                <th data-field="expenses_friendlies" data-formatter="balanceFormatter">Friendlies</th>
+                <th data-field="expenses_funcup" data-formatter="balanceFormatter">FunCups</th>
+                <th data-field="expenses_betting" data-formatter="balanceFormatter">Wetten</th>
             </tr>
         </thead>
     </table>
@@ -111,7 +111,7 @@
         var FINANCES_JSON_URL = '{% url 'core:ofm:finances_json' %}';
     </script>
 
-    <script src="{% static 'core/js/finances_table.js' %}"></script>
+    <script src="{% static 'core/js/table_formats.js' %}"></script>
 
     <h1>Saisonverlauf</h1>
 

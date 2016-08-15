@@ -25,8 +25,6 @@ function finances_table_loader() {
                 } else {
                     $('#matchday_compare').addClass('hide')
                 }
-
-                markSpecialValues(data);
             }
         );
     }
@@ -73,31 +71,9 @@ function finances_table_loader() {
                 } else {
                     $('#matchday_compare').addClass('hide')
                 }
-
-                markSpecialValues(data);
             }
         );
     });
-
-    function markSpecialValues(showing_diff) {
-        $('.finances_table tr').each(function () {
-            $(this).find('td').each(function () {
-                var entry_value = $(this).html();
-                $(this).html(Number(entry_value).toLocaleString('de'));
-
-                if (showing_diff) {
-                    if (entry_value > 0) {
-                        $(this).addClass("bg-success");
-                    } else if (entry_value < 0) {
-                        $(this).addClass("bg-danger");
-                    }
-                } else {
-                    $(this).removeClass("bg-success");
-                    $(this).removeClass("bg-danger");
-                }
-            })
-        })
-    }
 
     function queryParams() {
         var params = {};
@@ -106,6 +82,21 @@ function finances_table_loader() {
         });
         return params;
     }
+}
+
+function balanceFormatter(value) {
+    var color = '';
+    if (value > 0) {
+        color = COLOR_SUCCESS;
+    } else if(value < 0) {
+        color = COLOR_DANGER;
+    }
+
+    return '<div  style="color: ' + color + '">' + numberFormatter(value) + '</div>';
+}
+
+function numberFormatter(value) {
+    return value.toLocaleString('de');
 }
 
 window.onload=finances_table_loader;
