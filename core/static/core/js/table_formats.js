@@ -85,11 +85,15 @@ function table_loader() {
 }
 
 function balanceFormatter(value) {
+    var is_diff = $('#diff_toggle').bootstrapSwitch('state');
+
     var color = '';
-    if (value > 0) {
-        color = COLOR_SUCCESS;
-    } else if(value < 0) {
-        color = COLOR_DANGER;
+    if (is_diff) {
+        if (value > 0) {
+            color = COLOR_SUCCESS;
+        } else if (value < 0) {
+            color = COLOR_DANGER;
+        }
     }
 
     return '<div style="color: ' + color + '">' + numberFormatter(value) + '</div>';
