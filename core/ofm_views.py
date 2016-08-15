@@ -136,8 +136,6 @@ class PlayerDetailView(DetailView):
                     {'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)},
                     'terms': [
                         'matchday__number',
-                        'ep',
-                        'tp',
                         'awp'
                     ]
                 }
@@ -150,7 +148,7 @@ class PlayerDetailView(DetailView):
             [{'options': {
                 'type': 'spline',
                 'stacking': False},
-                'terms': {'matchday__number': ['ep', 'tp', 'awp', ]}
+                'terms': {'matchday__number': ['awp', ]}
             }],
             chart_options=
             {
