@@ -25,6 +25,8 @@ function table_loader() {
                 } else {
                     $('#matchday_compare').addClass('hide')
                 }
+
+                markSpecialValues();
             }
         );
     }
@@ -71,9 +73,24 @@ function table_loader() {
                 } else {
                     $('#matchday_compare').addClass('hide')
                 }
+
+                markSpecialValues();
             }
         );
     });
+
+    function markSpecialValues() {
+        $('.statistics_table .statistic_mark').each(function () {
+            if ($(this).hasClass('statistic_mark_gain')) {
+                $(this).parent().addClass("bg-success");
+            } else if ($(this).hasClass('statistic_mark_lost')) {
+                $(this).parent().addClass("bg-danger");
+            } else {
+                $(this).parent().removeClass("bg-success");
+                $(this).parent().removeClass("bg-danger");
+            }
+        })
+    }
 
     function queryParams() {
         var params = {};
@@ -87,16 +104,16 @@ function table_loader() {
 function balanceFormatter(value) {
     var is_diff = $('#diff_toggle').bootstrapSwitch('state');
 
-    var color = '';
+    var color = 'statistic_mark ';
     if (is_diff) {
         if (value > 0) {
-            color = COLOR_SUCCESS;
+            color += "statistic_mark_gain";
         } else if (value < 0) {
-            color = COLOR_DANGER;
+            color += "statistic_mark_lost";
         }
     }
 
-    return '<div style="color: ' + color + '">' + numberFormatter(value) + '</div>';
+    return '<span class="' + color + '">' + numberFormatter(value) + '</span>';
 }
 
 function numberFormatter(value) {
