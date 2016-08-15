@@ -15,7 +15,7 @@ function finances_table_loader() {
             params = {newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday};
         }
 
-        $.get(FINANCES_JSON_URL, params,
+        $.get(JSON_URL, params,
             function (returnedData) {
                 $tables.bootstrapTable('removeAll');
                 $tables.bootstrapTable('load', returnedData);
@@ -61,7 +61,7 @@ function finances_table_loader() {
             params = {newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday};
         }
 
-        $.get(FINANCES_JSON_URL, params,
+        $.get(JSON_URL, params,
             function (returnedData) {
                 $tables.bootstrapTable('removeAll');
                 $tables.bootstrapTable('load', returnedData);
