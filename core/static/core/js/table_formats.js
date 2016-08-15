@@ -1,5 +1,5 @@
-function finances_table_loader() {
-    var $tables = $('.finances_table'),
+function table_loader() {
+    var $tables = $('.statistics_table'),
         newer_matchday, newer_matchday_season,
         older_matchday, older_matchday_season;
 
@@ -17,8 +17,10 @@ function finances_table_loader() {
 
         $.get(JSON_URL, params,
             function (returnedData) {
-                $tables.bootstrapTable('removeAll');
-                $tables.bootstrapTable('load', returnedData);
+                for (var table in $tables) {
+                    table.bootstrapTable('removeAll');
+                    table.bootstrapTable('load', returnedData);
+                }
 
                 if (data) {
                     $('#matchday_compare').removeClass('hide')
@@ -99,4 +101,4 @@ function numberFormatter(value) {
     return value.toLocaleString('de');
 }
 
-window.onload=finances_table_loader;
+window.onload=table_loader;
