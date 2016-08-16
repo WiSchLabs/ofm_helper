@@ -131,37 +131,39 @@ class PlayerDetailView(DetailView):
         current_season = Matchday.objects.all()[0].season
 
         chart_data = DataPool(
-            series=[
-                {'options':
-                    {'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)},
-                    'terms': [
-                        'matchday__number',
-                        'awp'
-                    ]
-                }
-            ]
+            series=[{
+                'options': {
+                    'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)
+                },
+                'terms': [
+                    'matchday__number',
+                    'awp'
+                ]
+            }]
         )
 
         chart = Chart(
             datasource=chart_data,
-            series_options=
-            [{'options': {
-                'type': 'spline',
-                'stacking': False},
+            series_options=[{
+                'options': {
+                    'type': 'spline',
+                    'stacking': False
+                },
                 'terms': {'matchday__number': ['awp', ]}
             }],
-            chart_options=
-            {
+            chart_options={
                 'title': {
                     'text': 'Spielerstatistik'
                 },
                 'xAxis': {
                     'title': {
-                       'text': 'Spieltag'}
+                       'text': 'Spieltag'
+                    }
                 },
                 'yAxis': {
                     'title': {
-                       'text': ' '}
+                       'text': ' '
+                    }
                 },
             }
         )
@@ -187,39 +189,40 @@ class FinanceDataView(TemplateView):
         current_season = Matchday.objects.all()[0].season
 
         chart_data = DataPool(
-            series=[
-                {'options':
-                    {'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)},
-                    'terms': [
-                        'matchday__number',
-                        'balance',
-                    ]
-                }
-            ]
+            series=[{
+                'options': {
+                    'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)
+                },
+                'terms': [
+                    'matchday__number',
+                    'balance',
+                ]
+            }]
         )
 
         chart = Chart(
             datasource=chart_data,
-            series_options=
-            [{'options': {
+            series_options=[{
+                'options': {
                     'type': 'spline',
                     'stacking': False,
                     'allowPointSelect': True,
                 },
                 'terms': {'matchday__number': ['balance', ]}
             }],
-            chart_options=
-            {
+            chart_options={
                 'title': {
                     'text': 'Finanzstatistik'
                 },
                 'xAxis': {
                     'title': {
-                       'text': 'Spieltag'}
+                       'text': 'Spieltag'
+                    }
                 },
                 'yAxis': {
                     'title': {
-                       'text': ' '}
+                       'text': ' '
+                    }
                 },
             }
         )
@@ -384,12 +387,47 @@ class FinanceDataColumnChartView(TemplateView):
         context = super(FinanceDataColumnChartView, self).get_context_data(**kwargs)
 
         chart_data = DataPool(
-            series=[
-                {'options':
-                    {'source': Finance.objects.filter(user=self.request.user)},
-                    'terms': [
-                        'matchday__number',
-                        'balance',
+            series=[{
+                'options': {
+                    'source': Finance.objects.filter(user=self.request.user)
+                },
+                'terms': [
+                    'matchday__number',
+                    'balance',
+                    'income_visitors_league',
+                    'income_sponsoring',
+                    'income_cup',
+                    'income_interests',
+                    'income_loan',
+                    'income_transfer',
+                    'income_visitors_friendlies',
+                    'income_friendlies',
+                    'income_funcup',
+                    'income_betting',
+                    'expenses_player_salaries',
+                    'expenses_stadium',
+                    'expenses_youth',
+                    'expenses_interests',
+                    'expenses_trainings',
+                    'expenses_transfer',
+                    'expenses_compensation',
+                    'expenses_friendlies',
+                    'expenses_funcup',
+                    'expenses_betting',
+                ]
+            }]
+        )
+
+        chart = Chart(
+            datasource=chart_data,
+            series_options=[{
+                'options': {
+                        'type': 'column',
+                        'stacking': True,
+                        'stack': 0,
+                },
+                'terms': {
+                    'matchday__number': [
                         'income_visitors_league',
                         'income_sponsoring',
                         'income_cup',
@@ -399,7 +437,17 @@ class FinanceDataColumnChartView(TemplateView):
                         'income_visitors_friendlies',
                         'income_friendlies',
                         'income_funcup',
-                        'income_betting',
+                        'income_betting'
+                    ]
+                }
+            }, {
+                'options': {
+                    'type': 'column',
+                    'stacking': True,
+                    'stack': 1,
+                },
+                'terms': {
+                    'matchday__number': [
                         'expenses_player_salaries',
                         'expenses_stadium',
                         'expenses_youth',
@@ -409,63 +457,23 @@ class FinanceDataColumnChartView(TemplateView):
                         'expenses_compensation',
                         'expenses_friendlies',
                         'expenses_funcup',
-                        'expenses_betting',
+                        'expenses_betting'
                     ]
                 }
-            ]
-        )
-
-        chart = Chart(
-            datasource=chart_data,
-            series_options=
-            [
-                {'options': {
-                        'type': 'column',
-                        'stacking': True,
-                        'stack': 0,
-                    },
-                    'terms': {'matchday__number': [
-                                'income_visitors_league',
-                                'income_sponsoring',
-                                'income_cup',
-                                'income_interests',
-                                'income_loan',
-                                'income_transfer',
-                                'income_visitors_friendlies',
-                                'income_friendlies',
-                                'income_funcup',
-                                'income_betting']}
-                },
-                {'options': {
-                        'type': 'column',
-                        'stacking': True,
-                        'stack': 1,
-                    },
-                    'terms': {'matchday__number': [
-                                'expenses_player_salaries',
-                                'expenses_stadium',
-                                'expenses_youth',
-                                'expenses_interests',
-                                'expenses_trainings',
-                                'expenses_transfer',
-                                'expenses_compensation',
-                                'expenses_friendlies',
-                                'expenses_funcup',
-                                'expenses_betting']}
-                }
-            ],
-            chart_options=
-            {
+            }],
+            chart_options={
                 'title': {
                     'text': 'Finanzstatistik'
                 },
                 'xAxis': {
                     'title': {
-                       'text': 'Spieltag'}
+                       'text': 'Spieltag'
+                    }
                 },
                 'yAxis': {
                     'title': {
-                       'text': ' '}
+                       'text': ' '
+                    }
                 },
             }
         )
@@ -651,42 +659,55 @@ class StadiumStandStatisticsView(TemplateView):
             context['sector_name'] = queryset[0].get_sector()
 
         chart_data = DataPool(
-            series=[
-                {'options':
-                     {'source': queryset},
-                 'terms': [
-                     'stadium_statistics__match__matchday__number',
-                     'level__capacity',
-                     'visitors',
-                     'ticket_price',
-                     'condition'
-                 ]
-                 }
-            ]
+            series=[{
+                'options': {
+                    'source': queryset
+                },
+                'terms': [
+                    'stadium_statistics__match__matchday__number',
+                    'level__capacity',
+                    'visitors',
+                    'ticket_price',
+                    'condition'
+                ]
+            }]
         )
 
         chart = Chart(
             datasource=chart_data,
-            series_options=
-            [{'options': {
-                'type': 'spline',
-                'stacking': False},
-                'terms': {'stadium_statistics__match__matchday__number': ['level__capacity', 'visitors', 'ticket_price', 'condition', ]}
+            series_options=[{
+                'options': {
+                    'type': 'spline',
+                    'xAxis': 0,
+                    'yAxis': 0,
+                    'zIndex': 1,
+                    'stacking': False
+                },
+                'terms': {'stadium_statistics__match__matchday__number': ['level__capacity', 'visitors', ]}
+            }, {
+                'options': {
+                    'type': 'line',
+                    'xAxis': 1,
+                    'yAxis': 1,
+                    'stacking': False
+                },
+                'terms': {'stadium_statistics__match__matchday__number': ['ticket_price', 'condition', ]}
             }],
-            chart_options=
-            {
+            chart_options={
                 'title': {
                     'text': 'Tribünenstatistik'
                 },
                 'xAxis': {
                     'title': {
-                        'text': 'Spieltag'}
+                        'text': 'Spieltag'
+                    }
                 },
                 'yAxis': {
                     'title': {
-                        'text': ' '}
+                        'text': 'Besucher und Kapazität'
+                    }
                 },
-            }
+            },
         )
 
         context['chart'] = chart
