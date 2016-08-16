@@ -615,15 +615,15 @@ class StadiumDetailView(DetailView):
         context = super(StadiumDetailView, self).get_context_data(**kwargs)
 
         if self.get_object():
-            north_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='N')
-            south_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='S')
-            west_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='W')
-            east_stand = StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector='O')
+            north_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='N')
+            south_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='S')
+            west_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='W')
+            east_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='O')
 
-            context['north_stand'] = north_stand
-            context['south_stand'] = south_stand
-            context['west_stand'] = west_stand
-            context['east_stand'] = east_stand
+            context['north_stand'] = north_stand[0] if north_stand.count() > 0 else None
+            context['south_stand'] = south_stand[0] if south_stand.count() > 0 else None
+            context['west_stand'] = west_stand[0] if west_stand.count() > 0 else None
+            context['east_stand'] = east_stand[0] if east_stand.count() > 0 else None
 
         return context
 
