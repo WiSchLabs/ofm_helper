@@ -135,10 +135,10 @@ class PlayerDetailView(DetailView):
                 'options': {
                     'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)
                 },
-                'terms': [
-                    'matchday__number',
-                    'awp'
-                ]
+                'terms': {
+                    'Spieltag': 'matchday__number',
+                    'AWP': 'awp',
+                }
             }]
         )
 
@@ -149,16 +149,11 @@ class PlayerDetailView(DetailView):
                     'type': 'spline',
                     'stacking': False
                 },
-                'terms': {'matchday__number': ['awp', ]}
+                'terms': {'Spieltag': ['AWP', ]}
             }],
             chart_options={
                 'title': {
                     'text': 'Spielerstatistik'
-                },
-                'xAxis': {
-                    'title': {
-                       'text': 'Spieltag'
-                    }
                 },
                 'yAxis': {
                     'title': {
@@ -193,10 +188,10 @@ class FinanceDataView(TemplateView):
                 'options': {
                     'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)
                 },
-                'terms': [
-                    'matchday__number',
-                    'balance',
-                ]
+                'terms': {
+                    'Spieltag': 'matchday__number',
+                    'Kontostand': 'balance',
+                }
             }]
         )
 
@@ -208,16 +203,11 @@ class FinanceDataView(TemplateView):
                     'stacking': False,
                     'allowPointSelect': True,
                 },
-                'terms': {'matchday__number': ['balance', ]}
+                'terms': {'Spieltag': ['Kontostand', ]}
             }],
             chart_options={
                 'title': {
                     'text': 'Finanzstatistik'
-                },
-                'xAxis': {
-                    'title': {
-                       'text': 'Spieltag'
-                    }
                 },
                 'yAxis': {
                     'title': {
@@ -465,11 +455,6 @@ class FinanceDataColumnChartView(TemplateView):
                 'title': {
                     'text': 'Finanzstatistik'
                 },
-                'xAxis': {
-                    'title': {
-                       'text': 'Spieltag'
-                    }
-                },
                 'yAxis': {
                     'title': {
                        'text': ' '
@@ -663,13 +648,13 @@ class StadiumStandStatisticsView(TemplateView):
                 'options': {
                     'source': queryset
                 },
-                'terms': [
-                    'stadium_statistics__match__matchday__number',
-                    'level__capacity',
-                    'visitors',
-                    'ticket_price',
-                    'condition'
-                ]
+                'terms': {
+                    'Spieltag': 'stadium_statistics__match__matchday__number',
+                    'Kapazität': 'level__capacity',
+                    'Besucher': 'visitors',
+                    'Ticketpreis': 'ticket_price',
+                    'Zustand': 'condition'
+                }
             }]
         )
 
@@ -683,7 +668,7 @@ class StadiumStandStatisticsView(TemplateView):
                     'zIndex': 1,
                     'stacking': False
                 },
-                'terms': {'stadium_statistics__match__matchday__number': ['level__capacity', 'visitors', ]}
+                'terms': {'Spieltag': ['Kapazität', 'Besucher', ]}
             }, {
                 'options': {
                     'type': 'line',
@@ -691,30 +676,12 @@ class StadiumStandStatisticsView(TemplateView):
                     'yAxis': 1,
                     'stacking': False
                 },
-                'terms': {'stadium_statistics__match__matchday__number': ['ticket_price', 'condition', ]}
+                'terms': {'Spieltag': ['Ticketpreis', 'Zustand', ]}
             }],
             chart_options={
                 'title': {
                     'text': 'Tribünenstatistik'
                 },
-                'xAxis': [{
-                    'title': {
-                        'text': 'Spieltag'
-                    }
-                }, {
-                    'title': {
-                        'text': 'Spieltag'
-                    }
-                }],
-                'yAxis': [{
-                    'title': {
-                        'text': 'Besucher und Kapazität'
-                    }
-                }, {
-                    'title': {
-                        'text': 'Zustand / Ticketpreis'
-                    }
-                }],
             },
         )
 
