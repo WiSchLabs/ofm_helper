@@ -697,16 +697,24 @@ class StadiumStandStatisticsView(TemplateView):
                 'title': {
                     'text': 'Tribünenstatistik'
                 },
-                'xAxis': {
+                'xAxis': [{
                     'title': {
                         'text': 'Spieltag'
                     }
-                },
-                'yAxis': {
+                }, {
+                    'title': {
+                        'text': 'Spieltag'
+                    }
+                }],
+                'yAxis': [{
                     'title': {
                         'text': 'Besucher und Kapazität'
                     }
-                },
+                }, {
+                    'title': {
+                        'text': 'Zustand / Ticketpreis'
+                    }
+                }],
             },
         )
 
