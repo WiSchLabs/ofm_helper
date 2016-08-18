@@ -370,6 +370,15 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
+class FinancesAsJsonView2(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        finances_json = [1, 0, 4]
+
+        return self.render_json_response(finances_json)
+
+
+@method_decorator(login_required, name='dispatch')
 class FinanceDataColumnChartView(TemplateView):
     template_name = 'core/ofm/finances.html'
 
