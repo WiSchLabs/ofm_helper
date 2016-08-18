@@ -1,4 +1,5 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
+from django.conf.locale import da
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
@@ -333,15 +334,69 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class FinancesBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class FinanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
         data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
+        income_visitors_league = []
+        income_sponsoring = []
+        income_cup = []
+        income_interests = []
+        income_loan = []
+        income_transfer = []
+        income_visitors_friendlies = []
+        income_friendlies = []
+        income_funcup = []
+        income_betting = []
+        matchdays = []
+        for idx, entry in enumerate(data_source):
+            if idx+1 < data_source.count():
+                income_visitors_league.append(data_source[idx+1].income_visitors_league - data_source[idx].income_visitors_league)
+                income_sponsoring.append(data_source[idx+1].income_sponsoring - data_source[idx].income_sponsoring)
+                income_cup.append(data_source[idx+1].income_cup - data_source[idx].income_cup)
+                income_interests.append(data_source[idx+1].income_interests - data_source[idx].income_interests)
+                income_loan.append(data_source[idx+1].income_loan - data_source[idx].income_loan)
+                income_transfer.append(data_source[idx+1].income_transfer - data_source[idx].income_transfer)
+                income_visitors_friendlies.append(data_source[idx+1].income_visitors_friendlies - data_source[idx].income_visitors_friendlies)
+                income_friendlies.append(data_source[idx+1].income_friendlies - data_source[idx].income_friendlies)
+                income_funcup.append(data_source[idx+1].income_funcup - data_source[idx].income_funcup)
+                income_betting.append(data_source[idx+1].income_betting - data_source[idx].income_betting)
+                matchdays.append(data_source[idx+1].matchday.number)
         chart_json = {
-            "data": [f.balance for f in data_source],
-            "categories": [f.matchday.number for f in data_source]
+            "series": [{
+                "name": 'Ticketeinnahmen Liga',
+                "data": income_visitors_league
+            }, {
+                "name": 'Sponsor',
+                "data": income_sponsoring
+            }, {
+                "name": 'Pokal',
+                "data": income_cup
+            }, {
+                "name": 'Zinsen',
+                "data": income_interests
+            }, {
+                "name": 'Kredite',
+                "data": income_loan
+            }, {
+                "name": 'Spielertransfers',
+                "data": income_transfer
+            }, {
+                "name": 'Ticketeinnahmen Freundschaftsspiele',
+                "data": income_visitors_friendlies
+            }, {
+                "name": 'Freundschaftsspiele',
+                "data": income_friendlies
+            }, {
+                "name": 'Fun-Cup',
+                "data": income_funcup
+            }, {
+                "name": 'Wetten',
+                "data": income_betting
+            }],
+            "categories": matchdays
         }
 
         return self.render_json_response(chart_json)

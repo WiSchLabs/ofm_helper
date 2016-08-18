@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from core.ofm_views import PlayerDetailView, PlayerStatisticsView, PlayerStatisticsAsJsonView, FinanceDataView, \
     FinancesAsJsonView, MatchesView, MatchesAsJsonView, StadiumStatisticsView, StadiumStatisticsAsJsonView, \
-    StadiumDetailView, StadiumStandStatisticsView, FinancesBalanceChartView
+    StadiumDetailView, StadiumStandStatisticsView, FinanceChartView
 
 app_name = 'ofm'
 urlpatterns = [
@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^players/(?P<pk>[0-9]+)/?$', PlayerDetailView.as_view(), name='player_detail'),
     url(r'^finances/?$', FinanceDataView.as_view(), name='finance_overview'),
     url(r'^finances_json/?$', FinancesAsJsonView.as_view(), name='finances_json'),
-    url(r'^finances_balance_chart_json/?$', FinancesBalanceChartView.as_view(), name='finances_balance_chart_json'),
+    url(r'^finances_chart_json/?$', FinanceChartView.as_view(), name='finances_chart_json'),
     url(r'^matches/?$', MatchesView.as_view(), name='matches_overview'),
     url(r'^matches_json/?$', MatchesAsJsonView.as_view(), name='matches_overview_json'),
     url(r'^stadium_statistics/?$', StadiumStatisticsView.as_view(), name='stadium_statistics_overview'),

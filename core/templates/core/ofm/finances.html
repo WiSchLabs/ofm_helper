@@ -116,7 +116,7 @@
         var season = $("#newer_matchday").val().split("/")[0];
         var options = {
             chart: {
-                type: 'spline'
+                type: 'column'
             },
             title: {
                 text: 'Finanzstatistik der Saison ' + season
@@ -132,10 +132,12 @@
                     text: ' '
                 }
             },
-            series: [{
-                name: 'Kontostand',
-                data: []
-            }]
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+            series: []
         };
 
         $(function () {
@@ -144,11 +146,11 @@
 
         $.ajax({
             type: "GET",
-            url: "{% url 'core:ofm:finances_balance_chart_json' %}",
+            url: "{% url 'core:ofm:finances_chart_json' %}",
             data: {season_number: $("#newer_matchday").val().split("/")[0]},
             dataType: 'json',
             success: function(data){
-                options.series[0].data = data['data'];
+                options.series = data['series'];
                 options.xAxis.categories = data['categories'];
                 chart = $('#chart-container').highcharts(options);
             }
