@@ -181,46 +181,9 @@ class FinanceDataView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(FinanceDataView, self).get_context_data(**kwargs)
-        current_season = Matchday.objects.all()[0].season
-
-        chart_data = DataPool(
-            series=[{
-                'options': {
-                    'source': Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)
-                },
-                'terms': {
-                    'Spieltag': 'matchday__number',
-                    'Kontostand': 'balance',
-                }
-            }]
-        )
-
-        chart = Chart(
-            datasource=chart_data,
-            series_options=[{
-                'options': {
-                    'type': 'spline',
-                    'stacking': False,
-                    'allowPointSelect': True,
-                },
-                'terms': {'Spieltag': ['Kontostand', ]}
-            }],
-            chart_options={
-                'title': {
-                    'text': 'Finanzstatistik'
-                },
-                'yAxis': {
-                    'title': {
-                       'text': ' '
-                    }
-                },
-            }
-        )
 
         matchdays = Matchday.objects.filter(finance__isnull=False).distinct()
-
         context['matchdays'] = matchdays
-        context['chart'] = chart
 
         return context
 
@@ -370,16 +333,15 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class FinancesAsJsonView2(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class FinancesBalanceAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-        current_season = Matchday.objects.all()[0].season
-        finances = Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)
-        finances_json = {"data": [{
-            "name": 'Kontostand',
-            "data": [f.balance for f in finances]
-        }],
-        "categories": [f.matchday.number for f in finances]
+        current_season_number = Matchday.objects.all()[0].season.number
+        season_number = self.request.GET.get('season_number', default=current_season_number)
+        finances = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
+        finances_json = {
+            "data": [f.balance for f in finances],
+            "categories": [f.matchday.number for f in finances]
         }
 
         return self.render_json_response(finances_json)

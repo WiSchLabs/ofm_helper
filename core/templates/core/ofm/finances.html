@@ -110,16 +110,16 @@
     <script>
         var JSON_URL = "{% url 'core:ofm:finances_json' %}";
     </script>
-
     <script src="{% static 'core/js/table_formats.js' %}"></script>
 
     <script>
+        var season = $("#newer_matchday").val().split("/")[0];
         var options = {
             chart: {
                 type: 'spline'
             },
             title: {
-                text: 'Finanzstatistik'
+                text: 'Finanzstatistik der Saison ' + season
             },
             xAxis: {
                 title: {
@@ -137,33 +137,30 @@
                     stacking: 'normal'
                 }
             },
-            series: []
+            series: [{
+                name: 'Kontostand',
+                data: []
+            }]
         };
 
         $(function () {
-            var chart = $('#container').highcharts(options);
+            var chart = $('#chart-container').highcharts(options);
         });
 
         $.ajax({
             type: "GET",
-            url: "{% url 'core:ofm:finances_json2' %}",
-            // data: {matchday__season__number: 140},
+            url: "{% url 'core:ofm:finances_balance_json' %}",
+            data: {season_number: $("#newer_matchday").val().split("/")[0]},
             dataType: 'json',
             success: function(data){
-                console.log(data);
-                options.series = data['data'];
+                options.series[0].data = data['data'];
                 options.xAxis.categories = data['categories'];
-                chart = $('#container').highcharts(options);
+                chart = $('#chart-container').highcharts(options);
             }
         });
     </script>
 
     <h1>Saisonverlauf</h1>
-
-    <div id='chart_container'> Chart will be rendered here </div>
-
-    <br>
-
-    <div id="container"></div>
+    <div id="chart-container"></div>
 
 {% endblock %}
