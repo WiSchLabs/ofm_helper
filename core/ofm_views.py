@@ -371,12 +371,13 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class FinanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
         data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
+
         income_visitors_league = []
         income_sponsoring = []
         income_cup = []
@@ -388,6 +389,7 @@ class FinanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         income_funcup = []
         income_betting = []
         matchdays = []
+
         for idx, entry in enumerate(data_source):
             if idx+1 < data_source.count():
                 income_visitors_league.append(data_source[idx+1].income_visitors_league - data_source[idx].income_visitors_league)
@@ -401,6 +403,7 @@ class FinanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 income_funcup.append(data_source[idx+1].income_funcup - data_source[idx].income_funcup)
                 income_betting.append(data_source[idx+1].income_betting - data_source[idx].income_betting)
                 matchdays.append(data_source[idx+1].matchday.number)
+
         chart_json = {
             "series": [{
                 "name": 'Ticketeinnahmen Liga',
@@ -440,102 +443,75 @@ class FinanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class FinanceDataColumnChartView(TemplateView):
-    template_name = 'core/ofm/finances.html'
+class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
-    def get_context_data(self, **kwargs):
-        context = super(FinanceDataColumnChartView, self).get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        current_season_number = Matchday.objects.all()[0].season.number
+        season_number = self.request.GET.get('season_number', default=current_season_number)
+        data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
 
-        chart_data = DataPool(
-            series=[{
-                'options': {
-                    'source': Finance.objects.filter(user=self.request.user)
-                },
-                'terms': [
-                    'matchday__number',
-                    'balance',
-                    'income_visitors_league',
-                    'income_sponsoring',
-                    'income_cup',
-                    'income_interests',
-                    'income_loan',
-                    'income_transfer',
-                    'income_visitors_friendlies',
-                    'income_friendlies',
-                    'income_funcup',
-                    'income_betting',
-                    'expenses_player_salaries',
-                    'expenses_stadium',
-                    'expenses_youth',
-                    'expenses_interests',
-                    'expenses_trainings',
-                    'expenses_transfer',
-                    'expenses_compensation',
-                    'expenses_friendlies',
-                    'expenses_funcup',
-                    'expenses_betting',
-                ]
-            }]
-        )
+        expenses_player_salaries = []
+        expenses_stadium = []
+        expenses_youth = []
+        expenses_interests = []
+        expenses_trainings = []
+        expenses_transfer = []
+        expenses_compensation = []
+        expenses_friendlies = []
+        expenses_funcup = []
+        expenses_betting = []
+        matchdays = []
 
-        chart = Chart(
-            datasource=chart_data,
-            series_options=[{
-                'options': {
-                        'type': 'column',
-                        'stacking': True,
-                        'stack': 0,
-                },
-                'terms': {
-                    'matchday__number': [
-                        'income_visitors_league',
-                        'income_sponsoring',
-                        'income_cup',
-                        'income_interests',
-                        'income_loan',
-                        'income_transfer',
-                        'income_visitors_friendlies',
-                        'income_friendlies',
-                        'income_funcup',
-                        'income_betting'
-                    ]
-                }
+        for idx, entry in enumerate(data_source):
+            if idx+1 < data_source.count():
+                expenses_player_salaries.append(data_source[idx+1].expenses_player_salaries - data_source[idx].expenses_player_salaries)
+                expenses_stadium.append(data_source[idx+1].expenses_stadium - data_source[idx].expenses_stadium)
+                expenses_youth.append(data_source[idx+1].expenses_youth - data_source[idx].expenses_youth)
+                expenses_interests.append(data_source[idx+1].expenses_interests - data_source[idx].expenses_interests)
+                expenses_trainings.append(data_source[idx+1].expenses_trainings - data_source[idx].expenses_trainings)
+                expenses_transfer.append(data_source[idx+1].expenses_transfer - data_source[idx].expenses_transfer)
+                expenses_compensation.append(data_source[idx+1].expenses_compensation - data_source[idx].expenses_compensation)
+                expenses_friendlies.append(data_source[idx+1].expenses_friendlies - data_source[idx].expenses_friendlies)
+                expenses_funcup.append(data_source[idx+1].expenses_funcup - data_source[idx].expenses_funcup)
+                expenses_betting.append(data_source[idx+1].expenses_betting - data_source[idx].expenses_betting)
+                matchdays.append(data_source[idx+1].matchday.number)
+
+        chart_json = {
+            "series": [{
+                "name": 'Spielergehälter',
+                "data": expenses_player_salaries
             }, {
-                'options': {
-                    'type': 'column',
-                    'stacking': True,
-                    'stack': 1,
-                },
-                'terms': {
-                    'matchday__number': [
-                        'expenses_player_salaries',
-                        'expenses_stadium',
-                        'expenses_youth',
-                        'expenses_interests',
-                        'expenses_trainings',
-                        'expenses_transfer',
-                        'expenses_compensation',
-                        'expenses_friendlies',
-                        'expenses_funcup',
-                        'expenses_betting'
-                    ]
-                }
+                "name": 'Stadion',
+                "data": expenses_stadium
+            }, {
+                "name": 'Jugendförderung',
+                "data": expenses_youth
+            }, {
+                "name": 'Zinsen',
+                "data": expenses_interests
+            }, {
+                "name": 'Training',
+                "data": expenses_trainings
+            }, {
+                "name": 'Spielertransfers',
+                "data": expenses_transfer
+            }, {
+                "name": 'Abfindungen',
+                "data": expenses_compensation
+            }, {
+                "name": 'Freundschaftsspiele',
+                "data": expenses_friendlies
+            }, {
+                "name": 'Fun-Cup',
+                "data": expenses_funcup
+            }, {
+                "name": 'Wetten',
+                "data": expenses_betting
             }],
-            chart_options={
-                'title': {
-                    'text': 'Finanzstatistik'
-                },
-                'yAxis': {
-                    'title': {
-                       'text': ' '
-                    }
-                },
-            }
-        )
+            "categories": matchdays
+        }
 
-        context['chart'] = chart
-
-        return context
+        return self.render_json_response(chart_json)
 
 
 @method_decorator(login_required, name='dispatch')
