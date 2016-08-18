@@ -132,11 +132,6 @@
                     text: ' '
                 }
             },
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                }
-            },
             series: [{
                 name: 'Kontostand',
                 data: []
@@ -149,7 +144,7 @@
 
         $.ajax({
             type: "GET",
-            url: "{% url 'core:ofm:finances_balance_json' %}",
+            url: "{% url 'core:ofm:finances_balance_chart_json' %}",
             data: {season_number: $("#newer_matchday").val().split("/")[0]},
             dataType: 'json',
             success: function(data){

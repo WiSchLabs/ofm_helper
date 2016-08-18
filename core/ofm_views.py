@@ -333,18 +333,18 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class FinancesBalanceAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class FinancesBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
-        finances = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
-        finances_json = {
-            "data": [f.balance for f in finances],
-            "categories": [f.matchday.number for f in finances]
+        data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
+        chart_json = {
+            "data": [f.balance for f in data_source],
+            "categories": [f.matchday.number for f in data_source]
         }
 
-        return self.render_json_response(finances_json)
+        return self.render_json_response(chart_json)
 
 
 @method_decorator(login_required, name='dispatch')
