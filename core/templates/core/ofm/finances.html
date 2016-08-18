@@ -119,7 +119,7 @@
                 type: 'column'
             },
             title: {
-                text: 'Finanzstatistik der Saison ' + season
+                text: 'Einnahmen der Saison ' + season
             },
             xAxis: {
                 title: {
@@ -141,7 +141,7 @@
         };
 
         $(function () {
-            var chart = $('#chart-container').highcharts(options);
+            var chart = $('#column_chart_container').highcharts(options);
         });
 
         $.ajax({
@@ -152,12 +152,14 @@
             success: function(data){
                 options.series = data['series'];
                 options.xAxis.categories = data['categories'];
-                chart = $('#chart-container').highcharts(options);
+                chart = $('#column_chart_container').highcharts(options);
             }
         });
     </script>
 
     <h1>Saisonverlauf</h1>
-    <div id="chart-container"></div>
+    <div id="chart_container"></div>
+    <br>
+    <div id="column_chart_container"></div>
 
 {% endblock %}

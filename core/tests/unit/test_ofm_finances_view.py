@@ -19,6 +19,7 @@ class OFMFinancesViewTestCase(TestCase):
     def test_user_can_see_his_finances(self):
         response = self.client.get(reverse('core:ofm:finance_overview'))
         self.assertEqual(response.status_code, 200)
+        self.assertTrue('chart' in response.context_data)
         self.assertTrue('matchdays' in response.context_data)
 
     def test_user_can_choose_between_matchdays(self):
