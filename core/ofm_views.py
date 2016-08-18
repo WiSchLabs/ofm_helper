@@ -373,7 +373,14 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 class FinancesAsJsonView2(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-        finances_json = [1, 0, 4]
+        current_season = Matchday.objects.all()[0].season
+        finances = Finance.objects.filter(user=self.request.user, matchday__season__number=current_season.number)
+        finances_json = {"data": [{
+            "name": 'Kontostand',
+            "data": [f.balance for f in finances]
+        }],
+        "categories": [f.matchday.number for f in finances]
+        }
 
         return self.render_json_response(finances_json)
 

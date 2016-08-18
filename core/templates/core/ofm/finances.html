@@ -108,7 +108,7 @@
     </table>
 
     <script>
-        var JSON_URL = '{% url 'core:ofm:finances_json' %}';
+        var JSON_URL = "{% url 'core:ofm:finances_json' %}";
     </script>
 
     <script src="{% static 'core/js/table_formats.js' %}"></script>
@@ -116,35 +116,29 @@
     <script>
         var options = {
             chart: {
-                backgroundColor: {
-                    linearGradient: [0, 0, 500, 500],
-                    stops: [
-                        [0, 'rgb(255, 255, 255)'],
-                        [1, 'rgb(200, 200, 255)']
-                        ]
-                },
-                borderWidth: 2,
-                plotBackgroundColor: 'rgba(255, 255, 255, .9)',
-                plotShadow: true,
-                plotBorderWidth: 1
+                type: 'spline'
             },
             title: {
-                text: 'Foo'
+                text: 'Finanzstatistik'
             },
             xAxis: {
-                // categories: ['matchday']
+                title: {
+                    text: 'Spieltag'
+                },
+                categories: []
             },
             yAxis: {
                 title: {
-                    text: 'Fruit eaten'
+                    text: ' '
                 }
             },
-            series: [{
-                type: 'pie',
-                name: 'Browser share',
-                data: []
-            }]
-        }
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+            series: []
+        };
 
         $(function () {
             var chart = $('#container').highcharts(options);
@@ -152,18 +146,13 @@
 
         $.ajax({
             type: "GET",
-            url: '{% url 'core:ofm:finances_json2' %}',
+            url: "{% url 'core:ofm:finances_json2' %}",
             // data: {matchday__season__number: 140},
             dataType: 'json',
             success: function(data){
                 console.log(data);
-                options.series[0].data = [
-                    ['Firefox',   55.0],
-                    ['IE',       16.8],
-                    ['Safari',    7.5],
-                    ['Opera',     7.2],
-                    ['Others',   0.7]
-                ]
+                options.series = data['data'];
+                options.xAxis.categories = data['categories'];
                 chart = $('#container').highcharts(options);
             }
         });
