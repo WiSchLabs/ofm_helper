@@ -3,18 +3,22 @@
 {% block content %}
 
     {% if player %}
+
         <h1 class="page-header">{{ player.name }}</h1>
         {{ player.get_position }} ({{ player.position }})<br>
         <span class="flag-icon flag-icon-{{ player.nationality.get_iso|lower }}"></span> {{ player.nationality }}<br>
         Alter: {{ player_age }}
         <br>
         <br>
-        <div id='chart_container'> Chart will be rendered here </div>
+        <div id='chart_container'></div>
+
     {% else %}
+
         <h1 class="page-header">Spieler nicht gefunden</h1>
         <p>
             Wir konnten den gesuchten Spieler leider nicht finden oder dieser gehört nicht zu deiner Spielerliste.
         </p>
+
     {% endif %}
 
 {% endblock %}

@@ -142,11 +142,12 @@ ul.nav-sub {
         .flaticon-football-card-with-cross-mark {
             color: red;
         }
-        .table th span { font-size:1.3em; }
+        .table th span { font-size: 1.3em; }
         .table td span.users-team { text-decoration: underline; }
         .table td span.match_won,
         .table td span.match_lost,
         .table td span.match_draw { background-color: transparent; }
+        .table th img { height: 1.7em; width: auto; }
 
     #stadium-stand-table>tbody>tr:last-child {
         border-top-style: double;
