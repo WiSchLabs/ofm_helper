@@ -712,6 +712,9 @@ class StadiumStandStatisticsView(TemplateView):
                 'title': {
                     'text': 'Tribünenstatistik'
                 },
+                'yAxis': {
+                    'min': 0
+                },
             },
         )
 
