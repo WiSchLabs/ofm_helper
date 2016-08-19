@@ -405,25 +405,25 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 matchdays.append(data_source[idx+1].matchday.number)
 
         series = []
-        if sum(income_visitors_league) > 0:
+        if sum(income_visitors_league) is not 0:
             series.append({"name": 'Ticketeinnahmen Liga', "data": income_visitors_league})
-        if sum(income_sponsoring) > 0:
+        if sum(income_sponsoring) is not 0:
             series.append({"name": 'Sponsor', "data": income_sponsoring})
-        if sum(income_cup) > 0:
+        if sum(income_cup) is not 0:
             series.append({"name": 'Pokal', "data": income_cup})
-        if sum(income_interests) > 0:
+        if sum(income_interests) is not 0:
             series.append({"name": 'Zinsen', "data": income_interests})
-        if sum(income_loan) > 0:
+        if sum(income_loan) is not 0:
             series.append({"name": 'Kredite', "data": income_loan})
-        if sum(income_transfer) > 0:
+        if sum(income_transfer) is not 0:
             series.append({"name": 'Spielertransfers', "data": income_transfer})
-        if sum(income_visitors_friendlies) > 0:
+        if sum(income_visitors_friendlies) is not 0:
             series.append({"name": 'Ticketeinnahmen Freundschaftsspiele', "data": income_visitors_friendlies})
-        if sum(income_friendlies) > 0:
+        if sum(income_friendlies) is not 0:
             series.append({"name": 'Freundschaftsspiele', "data": income_friendlies})
-        if sum(income_funcup) > 0:
+        if sum(income_funcup) is not 0:
             series.append({"name": 'Fun-Cup', "data": income_funcup})
-        if sum(income_betting) > 0:
+        if sum(income_betting) is not 0:
             series.append({"name": 'Wetten', "data": income_betting})
 
         chart_json = {
@@ -456,38 +456,38 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         for idx, entry in enumerate(data_source):
             if idx+1 < data_source.count():
-                expenses_player_salaries.append(data_source[idx+1].expenses_player_salaries - data_source[idx].expenses_player_salaries)
-                expenses_stadium.append(data_source[idx+1].expenses_stadium - data_source[idx].expenses_stadium)
-                expenses_youth.append(data_source[idx+1].expenses_youth - data_source[idx].expenses_youth)
-                expenses_interests.append(data_source[idx+1].expenses_interests - data_source[idx].expenses_interests)
-                expenses_trainings.append(data_source[idx+1].expenses_trainings - data_source[idx].expenses_trainings)
-                expenses_transfer.append(data_source[idx+1].expenses_transfer - data_source[idx].expenses_transfer)
-                expenses_compensation.append(data_source[idx+1].expenses_compensation - data_source[idx].expenses_compensation)
-                expenses_friendlies.append(data_source[idx+1].expenses_friendlies - data_source[idx].expenses_friendlies)
-                expenses_funcup.append(data_source[idx+1].expenses_funcup - data_source[idx].expenses_funcup)
-                expenses_betting.append(data_source[idx+1].expenses_betting - data_source[idx].expenses_betting)
+                expenses_player_salaries.append(data_source[idx].expenses_player_salaries - data_source[idx+1].expenses_player_salaries)
+                expenses_stadium.append(data_source[idx].expenses_stadium - data_source[idx+1].expenses_stadium)
+                expenses_youth.append(data_source[idx].expenses_youth - data_source[idx+1].expenses_youth)
+                expenses_interests.append(data_source[idx].expenses_interests - data_source[idx+1].expenses_interests)
+                expenses_trainings.append(data_source[idx].expenses_trainings - data_source[idx+1].expenses_trainings)
+                expenses_transfer.append(data_source[idx].expenses_transfer - data_source[idx+1].expenses_transfer)
+                expenses_compensation.append(data_source[idx].expenses_compensation - data_source[idx+1].expenses_compensation)
+                expenses_friendlies.append(data_source[idx].expenses_friendlies - data_source[idx+1].expenses_friendlies)
+                expenses_funcup.append(data_source[idx].expenses_funcup - data_source[idx+1].expenses_funcup)
+                expenses_betting.append(data_source[idx].expenses_betting - data_source[idx+1].expenses_betting)
                 matchdays.append(data_source[idx+1].matchday.number)
 
         series = []
-        if sum(expenses_player_salaries) > 0:
+        if sum(expenses_player_salaries) is not 0:
             series.append({"name": 'Spielergehälter', "data": expenses_player_salaries})
-        if sum(expenses_stadium) > 0:
+        if sum(expenses_stadium) is not 0:
             series.append({"name": 'Stadion', "data": expenses_stadium})
-        if sum(expenses_youth) > 0:
+        if sum(expenses_youth) is not 0:
             series.append({"name": 'Jugendförderung', "data": expenses_youth})
-        if sum(expenses_interests) > 0:
+        if sum(expenses_interests) is not 0:
             series.append({"name": 'Zinsen', "data": expenses_interests})
-        if sum(expenses_trainings) > 0:
+        if sum(expenses_trainings) is not 0:
             series.append({"name": 'Training', "data": expenses_trainings})
-        if sum(expenses_transfer) > 0:
+        if sum(expenses_transfer) is not 0:
             series.append({"name": 'Spielertransfers', "data": expenses_transfer})
-        if sum(expenses_compensation) > 0:
+        if sum(expenses_compensation) is not 0:
             series.append({"name": 'Abfindungen', "data": expenses_compensation})
-        if sum(expenses_friendlies) > 0:
+        if sum(expenses_friendlies) is not 0:
             series.append({"name": 'Freundschaftsspiele', "data": expenses_friendlies})
-        if sum(expenses_funcup) > 0:
+        if sum(expenses_funcup) is not 0:
             series.append({"name": 'Fun-Cup', "data": expenses_funcup})
-        if sum(expenses_betting) > 0:
+        if sum(expenses_betting) is not 0:
             series.append({"name": 'Wetten', "data": expenses_betting})
 
         chart_json = {
