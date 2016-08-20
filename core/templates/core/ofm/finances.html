@@ -113,14 +113,11 @@
     <script src="{% static 'core/js/table_formats.js' %}"></script>
 
     <script>
-        var season = $("#newer_matchday").val().split("/")[0];
         var income_chart_options = {
             chart: {
                 type: 'column'
             },
-            title: {
-                text: 'Einnahmen der Saison ' + season
-            },
+            title: {},
             xAxis: {
                 title: {
                     text: 'Spieltag'
@@ -143,9 +140,7 @@
             chart: {
                 type: 'column'
             },
-            title: {
-                text: 'Ausgaben der Saison ' + season
-            },
+            title: {},
             xAxis: {
                 title: {
                     text: 'Spieltag'
@@ -168,30 +163,41 @@
         $(function () {
             var income_chart = $('#income_chart_container').highcharts(income_chart_options);
             var expenses_chart = $('#expenses_chart_container').highcharts(expenses_chart_options);
+            newer_matchday_season = $("#newer_matchday").val().split("/")[0];
+            requestChartData(newer_matchday_season);
         });
 
-        $.ajax({
-            type: "GET",
-            url: "{% url 'core:ofm:finances_income_chart_json' %}",
-            data: {season_number: $("#newer_matchday").val().split("/")[0]},
-            dataType: 'json',
-            success: function(data){
-                income_chart_options.series = data['series'];
-                income_chart_options.xAxis.categories = data['categories'];
-                income_chart = $('#income_chart_container').highcharts(income_chart_options);
-            }
-        });
+        function requestChartData(season_number) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:finances_income_chart_json' %}",
+                data: {season_number: season_number},
+                dataType: 'json',
+                success: function (data) {
+                    income_chart_options.series = data['series'];
+                    income_chart_options.xAxis.categories = data['categories'];
+                    income_chart_options.title.text='Einnahmen der Saison ' + season_number;
+                    income_chart = $('#income_chart_container').highcharts(income_chart_options);
+                }
+            });
 
-        $.ajax({
-            type: "GET",
-            url: "{% url 'core:ofm:finances_expenses_chart_json' %}",
-            data: {season_number: $("#newer_matchday").val().split("/")[0]},
-            dataType: 'json',
-            success: function(data){
-                expenses_chart_options.series = data['series'];
-                expenses_chart_options.xAxis.categories = data['categories'];
-                expenses_chart = $('#expenses_chart_container').highcharts(expenses_chart_options);
-            }
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:finances_expenses_chart_json' %}",
+                data: {season_number: $("#newer_matchday").val().split("/")[0]},
+                dataType: 'json',
+                success: function (data) {
+                    expenses_chart_options.series = data['series'];
+                    expenses_chart_options.xAxis.categories = data['categories'];
+                    expenses_chart_options.title.text='Ausgaben der Saison ' + season_number;
+                    expenses_chart = $('#expenses_chart_container').highcharts(expenses_chart_options);
+                }
+            });
+        }
+
+        $('#newer_matchday').on('change', function () {
+            newer_matchday_season = $("#newer_matchday").val().split("/")[0];
+            requestChartData(newer_matchday_season);
         });
     </script>
 
