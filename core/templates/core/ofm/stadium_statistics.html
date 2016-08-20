@@ -51,7 +51,8 @@
 
         $('#strength-slider').slider().on('slideStop', function(event){
             console.log('now query the json backend and update the table please');
-            console.log(event);
+            console.log(event.value[0]);
+            console.log(event.value[1]);
         });
     </script>
 
