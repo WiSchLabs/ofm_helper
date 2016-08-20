@@ -113,10 +113,8 @@
     <script src="{% static 'core/js/table_formats.js' %}"></script>
 
     <script>
-        var column_chart_options = {
-            chart: {
-                type: 'column'
-            },
+        var chart_options = {
+            chart: {},
             title: {},
             xAxis: {
                 title: {
@@ -136,21 +134,37 @@
             },
             series: []
         };
-        var income_chart_options = column_chart_options;
-        var expenses_chart_options = column_chart_options;
 
         $(function () {
-            var newer_matchday_season = $("#newer_matchday").val().split("/")[0];
-            requestChartData(newer_matchday_season);
+            var season_number = $("#newer_matchday").val().split("/")[0];
+            requestChartData(season_number);
         });
+        var income_chart_options = chart_options;
+        var expenses_chart_options = chart_options;
+        var balance_chart_options = chart_options;
 
         function requestChartData(season_number) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:finances_balance_chart_json' %}",
+                data: {season_number: season_number},
+                dataType: 'json',
+                success: function (data) {
+                    balance_chart_options.chart.type = 'spline';
+                    balance_chart_options.series = data['series'];
+                    balance_chart_options.xAxis.categories = data['categories'];
+                    balance_chart_options.title.text='Kontostand der Saison ' + season_number;
+                    $('#balance_chart_container').highcharts(balance_chart_options);
+                }
+            });
+
             $.ajax({
                 type: "GET",
                 url: "{% url 'core:ofm:finances_income_chart_json' %}",
                 data: {season_number: season_number},
                 dataType: 'json',
                 success: function (data) {
+                    income_chart_options.chart.type = 'column';
                     income_chart_options.series = data['series'];
                     income_chart_options.xAxis.categories = data['categories'];
                     income_chart_options.title.text='Einnahmen der Saison ' + season_number;
@@ -164,6 +178,7 @@
                 data: {season_number: season_number},
                 dataType: 'json',
                 success: function (data) {
+                    income_chart_options.chart.type = 'column';
                     expenses_chart_options.series = data['series'];
                     expenses_chart_options.xAxis.categories = data['categories'];
                     expenses_chart_options.title.text='Ausgaben der Saison ' + season_number;
@@ -179,7 +194,7 @@
     </script>
 
     <h1>Saisonverlauf</h1>
-    <div id="chart_container"></div>
+    <div id="balance_chart_container"></div>
     <br>
     <div id="income_chart_container"></div>
     <br>
