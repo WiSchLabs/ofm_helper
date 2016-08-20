@@ -109,39 +109,15 @@
 
     <script>
         var JSON_URL = "{% url 'core:ofm:finances_json' %}";
+        var season_number = $("#newer_matchday").val().split("/")[0];
     </script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
+    <script src="{% static 'core/js/chart_options.js' %}"></script>
 
     <script>
-        var chart_options = {
-            chart: {},
-            title: {},
-            xAxis: {
-                title: {
-                    text: 'Spieltag'
-                },
-                categories: []
-            },
-            yAxis: {
-                title: {
-                    text: ' '
-                }
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                }
-            },
-            series: []
-        };
-
-        $(function () {
-            var season_number = $("#newer_matchday").val().split("/")[0];
-            requestChartData(season_number);
-        });
-        var income_chart_options = chart_options;
-        var expenses_chart_options = chart_options;
-        var balance_chart_options = chart_options;
+        var balance_chart_options = $.extend( true, {}, chart_options );
+        var income_chart_options = $.extend( true, {}, chart_options );
+        var expenses_chart_options = $.extend( true, {}, chart_options );
 
         function requestChartData(season_number) {
             $.ajax({
@@ -150,7 +126,6 @@
                 data: {season_number: season_number},
                 dataType: 'json',
                 success: function (data) {
-                    balance_chart_options.chart.type = 'spline';
                     balance_chart_options.series = data['series'];
                     balance_chart_options.xAxis.categories = data['categories'];
                     balance_chart_options.title.text='Kontostand der Saison ' + season_number;
@@ -178,7 +153,7 @@
                 data: {season_number: season_number},
                 dataType: 'json',
                 success: function (data) {
-                    income_chart_options.chart.type = 'column';
+                    expenses_chart_options.chart.type = 'column';
                     expenses_chart_options.series = data['series'];
                     expenses_chart_options.xAxis.categories = data['categories'];
                     expenses_chart_options.title.text='Ausgaben der Saison ' + season_number;
