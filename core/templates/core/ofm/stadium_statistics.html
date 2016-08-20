@@ -6,22 +6,16 @@
 
     <h1 class="page-header">Deine Stadionstatistik</h1>
 
-    {% if seasons|length > 1 %}
-        <div id="table-toolbar">
-            <div class="form-inline" role="form">
-                <div class="form-group">
-                    <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
-                    <label for="diff_toggle">Zeige die Daten vom </label>
-
-                    <select class="form-control" id="season">
-                        {% for s in seasons %}
-                            <option value="{{ s.number }}">{{ s.number }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+    <div id="table-toolbar">
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <label>Gemeinsame Stärke Filter:</label>
+                <span id="strength-slider-low" class="hidden">low value</span>
+                <span id="strength-slider-high" class="hidden">high value</span>
+                <input id="strength-slider" type="text"/><br/>
             </div>
         </div>
-    {% endif %}
+    </div>
 
     <table id='stadium_statistics_table' class="table table-bordered table-striped table-hover statistics_table"
            data-toolbar="#table-toolbar"
@@ -51,6 +45,9 @@
 
     <script>
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
+
+        $("#strength-slider").slider({  min: 0, max: 200, value: [0, 200],
+                                        labelledby: ['strength-slider-low', 'strength-slider-high']});
     </script>
 
     <script src="{% static 'core/js/table_formats.js' %}"></script>
