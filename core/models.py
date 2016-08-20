@@ -432,6 +432,11 @@ class Match(models.Model):
     def is_draw(self):
         return self.home_team_statistics.score == self.guest_team_statistics.score
 
+    @property
+    def harmonic_strength(self):
+        return 2*self.home_team_statistics.strength*self.guest_team_statistics.strength / \
+               (self.home_team_statistics.strength + self.guest_team_statistics.strength)
+
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')

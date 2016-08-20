@@ -570,11 +570,15 @@ class StadiumStatisticsView(TemplateView):
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-        season = self.request.GET.get('season', default=Matchday.objects.all()[0].season.number)
-        matches = Match.objects.filter(user=self.request.user, matchday__season__number=season)
+        strength = self.request.GET.get('strength', default=150)
+        strength_range = self.request.GET.get('strength_range', default=300)
+        matches = Match.objects.filter(user=self.request.user)
+        filtered_matches = [match for match in matches if
+                            match.harmonic_strength <= strength + strength_range/2 and
+                            match.harmonic_strength >= strength - strength_range/2]
 
         stadium_statistics = []
-        for match in matches:
+        for match in filtered_matches:
             stat = MatchStadiumStatistics.objects.filter(match=match)
             if stat.count() > 0:
                 stadium_statistics.append(stat[0])

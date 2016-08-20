@@ -9,10 +9,13 @@
     <div id="table-toolbar">
         <div class="form-inline" role="form">
             <div class="form-group">
-                <label>Gemeinsame Stärke Filter:</label>
-                <span id="strength-slider-low" class="hidden">low value</span>
-                <span id="strength-slider-high" class="hidden">high value</span>
-                <input id="strength-slider" type="text"/><br/>
+                <label>Gemeinsame Stärke: </label>
+                <span id="strength-slider-label" class="hidden"></span>
+                <input id="strength-slider" type="text"/>
+
+                <label>Umgebung: </label>
+                <span id="range-slider-label" class="hidden"></span>
+                <input id="range-slider" type="text"/>
             </div>
         </div>
     </div>
@@ -46,13 +49,18 @@
     <script>
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
 
-        $("#strength-slider").slider({  min: 0, max: 200, value: [0, 200],
-                                        labelledby: ['strength-slider-low', 'strength-slider-high']});
+        // prequery the database once to get min and max values
+        $("#strength-slider").slider({  min: 0, max: 200, value: 100, labelledby: 'strength-slider-label'});
+        $("#range-slider").slider({  min: 0, max: 100, value: 50, labelledby: 'range-slider-label'});
 
         $('#strength-slider').slider().on('slideStop', function(event){
             console.log('now query the json backend and update the table please');
-            console.log(event.value[0]);
-            console.log(event.value[1]);
+            console.log(event.value);
+        });
+
+        $('#range-slider').slider().on('slideStop', function(event){
+            console.log('now query the json backend and update the table please');
+            console.log(event.value);
         });
     </script>
 
