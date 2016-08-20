@@ -48,6 +48,11 @@
 
         $("#strength-slider").slider({  min: 0, max: 200, value: [0, 200],
                                         labelledby: ['strength-slider-low', 'strength-slider-high']});
+
+        $('#strength-slider').slider().on('slideStop', function(event){
+            console.log('now query the json backend and update the table please');
+            console.log(event);
+        });
     </script>
 
     <script src="{% static 'core/js/table_formats.js' %}"></script>
