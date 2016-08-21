@@ -1,11 +1,10 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
-from django.conf.locale import da
+from chartit import DataPool, Chart
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
 
-from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
     StadiumStandStatistics
 
@@ -130,41 +129,13 @@ class PlayerDetailView(DetailView):
 
         player = self.get_object()
         current_season = Matchday.objects.all()[0].season
+        seasons = []
+        player_stats = PlayerStatistics.objects.filter(player=player).order_by('matchday')
+        for player_stat in player_stats:
+            if player_stat.matchday.season not in seasons:
+                seasons.append(player_stat.matchday.season)
 
-        chart_data = DataPool(
-            series=[{
-                'options': {
-                    'source': PlayerStatistics.objects.filter(player=player, matchday__season__number=current_season.number)
-                },
-                'terms': {
-                    'Spieltag': 'matchday__number',
-                    'AWP': 'awp',
-                }
-            }]
-        )
-
-        chart = Chart(
-            datasource=chart_data,
-            series_options=[{
-                'options': {
-                    'type': 'spline',
-                    'stacking': False
-                },
-                'terms': {'Spieltag': ['AWP', ]}
-            }],
-            chart_options={
-                'title': {
-                    'text': 'Spielerstatistik'
-                },
-                'yAxis': {
-                    'title': {
-                       'text': ' '
-                    }
-                },
-            }
-        )
-
-        context['chart'] = chart
+        context['seasons'] = seasons
         if player:
             context['player_age'] = current_season.number - player.birth_season.number
 
@@ -174,6 +145,27 @@ class PlayerDetailView(DetailView):
         player = super(PlayerDetailView, self).get_object()
         contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None
+
+
+@method_decorator(login_required, name='dispatch')
+class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        current_season_number = Matchday.objects.all()[0].season.number
+        season_number = self.request.GET.get('season_number', default=current_season_number)
+        player_id = self.request.GET.get('player_id')
+        player = Player.objects.filter(id=player_id)
+        data_source = PlayerStatistics.objects.filter(player=player, matchday__season__number=season_number)
+
+        chart_json = {
+            "series": [{
+                "name": 'AWP',
+                "data": [player_stat.awp for player_stat in data_source]
+            }],
+            "categories": [player_stat.matchday.number for player_stat in data_source]
+        }
+
+        return self.render_json_response(chart_json)
 
 
 @method_decorator(login_required, name='dispatch')
