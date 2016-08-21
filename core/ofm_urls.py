@@ -13,9 +13,9 @@ urlpatterns = [
 
     url(r'^finances/?$', FinanceDataView.as_view(), name='finance_overview'),
     url(r'^finances_json/?$', FinancesAsJsonView.as_view(), name='finances_json'),
+    url(r'^finances_balance_chart_json/?$', FinanceBalanceChartView.as_view(), name='finances_balance_chart_json'),
     url(r'^finances_income_chart_json/?$', FinanceIncomeChartView.as_view(), name='finances_income_chart_json'),
     url(r'^finances_expenses_chart_json/?$', FinanceExpensesChartView.as_view(), name='finances_expenses_chart_json'),
-    url(r'^finances_balance_chart_json/?$', FinanceBalanceChartView.as_view(), name='finances_balance_chart_json'),
 
     url(r'^matches/?$', MatchesView.as_view(), name='matches_overview'),
     url(r'^matches_json/?$', MatchesAsJsonView.as_view(), name='matches_overview_json'),
