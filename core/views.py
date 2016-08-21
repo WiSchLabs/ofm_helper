@@ -144,24 +144,27 @@ def trigger_parsing(request):
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
         is_home_match = "<b>" in str(row.find_all('td')[2].a)
-        link_to_match = row.find_all('img', class_='changeMatchReportImg')[0].find_parent('a')['href']
-        if "spielbericht" in link_to_match:
-            logger.debug('      match took place')
-            # only parse match if statistics are available
-            # as matches don't take place if one team did not have a valid team setup
-            site_manager.jump_to_frame(Constants.BASE + link_to_match)
-            match_parser = MatchParser(site_manager.browser.page_source, request.user)
-            match_parser.parse()
 
-            if is_home_match:
-                # parse stadium statistics iff home match
-                logger.debug('===== parse latest Stadium statistics ...')
-                site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-                stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
-                stadium_statistics_parser.parse()
-                site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-                stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-                stadium_stand_stat_parser.parse()
+        has_link_to_match = row.find_all('img', class_='changeMatchReportImg')
+        if has_link_to_match:
+            link_to_match = has_link_to_match[0].find_parent('a')['href']
+            if "spielbericht" in link_to_match:
+                logger.debug('      match took place')
+                # only parse match if statistics are available
+                # as matches don't take place if one team did not have a valid team setup
+                site_manager.jump_to_frame(Constants.BASE + link_to_match)
+                match_parser = MatchParser(site_manager.browser.page_source, request.user)
+                match_parser.parse()
+
+                if is_home_match:
+                    # parse stadium statistics iff home match
+                    logger.debug('===== parse latest Stadium statistics ...')
+                    site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
+                    stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
+                    stadium_statistics_parser.parse()
+                    site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
+                    stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
+                    stadium_stand_stat_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
