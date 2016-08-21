@@ -9,10 +9,10 @@
     <div id="table-toolbar">
         <div class="form-inline" role="form">
             <div class="form-group">
-                <label id="strength-slider-label" for="strength-slider">Gemittelte Stärke: </label>
+                <label id="strength-slider-label" for="strength-slider" data-toggle="tooltip" data-placement="top" title="Harmonisches Mittel der Mannschaftsstärken">Gemittelte Stärke: </label>
                 <input id="strength-slider" type="text"/>
 
-                <label id="tolerance-slider-label" for="tolerance-slider">Toleranz: </label>
+                <label id="tolerance-slider-label" for="tolerance-slider" data-toggle="tooltip" data-placement="top" title="Toleranzwert für die Suche">Toleranz: </label>
                 <input id="tolerance-slider" type="text"/>
             </div>
         </div>
@@ -34,7 +34,7 @@
                 <th data-field="workload" data-sortable="true"><span class="flaticon-football-fan-with-facepaint"></span> Auslastung</th>
                 <th data-field="home_strength" data-sortable="true"><span class="glyphicon glyphicon-home"></span> Stärke</th>
                 <th data-field="guest_strength" data-sortable="true"><img src="{% static 'core/img/bus.svg' %}" height="16px"/> Stärke</th>
-                <th data-field="harmonic_strength" data-sortable="true" data-formatter="numberFormatter">Gemittelte Stärke</th>
+                <th data-field="harmonic_strength" data-sortable="true" data-formatter="numberFormatter" title="Harmonisches Mittel der Mannschaftsstärken">Gemittelte Stärke</th>
                 <th data-field="earnings" data-sortable="true" data-formatter="numberFormatter"><span class="glyphicon glyphicon-euro"></span> Einnahmen</th>
                 <th data-field="light_level" data-sortable="true" data-visible="false"><span class="flaticon-football-court-illumination-lamps"></span> Flutlicht</th>
                 <th data-field="security_level" data-sortable="true" data-visible="false"><span class="flaticon-football-badge"></span> Sicherheit</th>
@@ -46,6 +46,10 @@
 
     <script>
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
+
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
 
         // prequery the database once to get min and max values
         $("#strength-slider").slider({  min: 0, max: 200, value: 100, labelledby: 'strength-slider-label'});
