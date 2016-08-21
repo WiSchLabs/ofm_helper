@@ -129,6 +129,7 @@ class MatchFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(OFMUserFactory)
     matchday = factory.SubFactory(MatchdayFactory)
+    is_home_match = True
     match_type = 'L'
     venue = 'Olympiastadion Berlin'
     home_team_statistics = factory.SubFactory(MatchTeamStatisticsFactory)

@@ -417,6 +417,14 @@ class Match(models.Model):
         ("F", "Fun-Cup"),
     )
 
+    user = models.ForeignKey(OFMUser)
+    matchday = models.ForeignKey(Matchday, related_name='matches')
+    match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
+    is_home_match = models.BooleanField(default=True)
+    venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
+    home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
+    guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
+
     @property
     def is_won(self):
         if self.is_home_match:
@@ -427,14 +435,6 @@ class Match(models.Model):
     @property
     def is_draw(self):
         return self.home_team_statistics.score == self.guest_team_statistics.score
-
-    user = models.ForeignKey(OFMUser)
-    matchday = models.ForeignKey(Matchday, related_name='matches')
-    match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
-    is_home_match = models.BooleanField(default=True)
-    venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
-    home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
-    guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
 
     def __str__(self):
         return "(%s) %s:%s - %s:%s" % (self.matchday,

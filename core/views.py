@@ -174,7 +174,7 @@ def parse_match(request, site_manager):
         link_to_match = has_link_to_match[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
             site_manager.jump_to_frame(Constants.BASE + link_to_match)
-            match_parser = MatchParser(site_manager.browser.page_source, request.user)
+            match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
             match_parser.parse()
 
             if is_home_match:
