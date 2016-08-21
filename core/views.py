@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
+from core.parsers.not_taken_place_match_parser import NotTakenPlaceMatchParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
@@ -165,6 +166,9 @@ def trigger_parsing(request):
                     site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
                     stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
                     stadium_stand_stat_parser.parse()
+        else:
+            match_parser = NotTakenPlaceMatchParser(site_manager.browser.page_source, request.user)
+            match_parser.parse()
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
