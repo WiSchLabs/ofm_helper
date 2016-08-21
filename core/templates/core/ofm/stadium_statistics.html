@@ -9,13 +9,11 @@
     <div id="table-toolbar">
         <div class="form-inline" role="form">
             <div class="form-group">
-                <label>Gemeinsame Stärke: </label>
-                <span id="strength-slider-label" class="hidden"></span>
+                <label id="strength-slider-label" for="strength-slider">Gemittelte Stärke: </label>
                 <input id="strength-slider" type="text"/>
 
-                <label>Umgebung: </label>
-                <span id="range-slider-label" class="hidden"></span>
-                <input id="range-slider" type="text"/>
+                <label id="tolerance-slider-label" for="tolerance-slider">Toleranz: </label>
+                <input id="tolerance-slider" type="text"/>
             </div>
         </div>
     </div>
@@ -36,7 +34,7 @@
                 <th data-field="workload" data-sortable="true"><span class="flaticon-football-fan-with-facepaint"></span> Auslastung</th>
                 <th data-field="home_strength" data-sortable="true"><span class="glyphicon glyphicon-home"></span> Stärke</th>
                 <th data-field="guest_strength" data-sortable="true"><img src="{% static 'core/img/bus.svg' %}" height="16px"/> Stärke</th>
-                <th data-field="harmonic_strength" data-sortable="true" data-formatter="numberFormatter">Gem. Stärke</th>
+                <th data-field="harmonic_strength" data-sortable="true" data-formatter="numberFormatter">Gemittelte Stärke</th>
                 <th data-field="earnings" data-sortable="true" data-formatter="numberFormatter"><span class="glyphicon glyphicon-euro"></span> Einnahmen</th>
                 <th data-field="light_level" data-sortable="true" data-visible="false"><span class="flaticon-football-court-illumination-lamps"></span> Flutlicht</th>
                 <th data-field="security_level" data-sortable="true" data-visible="false"><span class="flaticon-football-badge"></span> Sicherheit</th>
@@ -58,7 +56,7 @@
             console.log(event.value);
         });
 
-        $('#range-slider').slider().on('slideStop', function(event){
+        $('#tolerance-slider').slider().on('slideStop', function(event){
             console.log('now query the json backend and update the table please');
             console.log(event.value);
         });
