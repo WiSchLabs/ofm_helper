@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.not_taken_place_match_parser import NotTakenPlaceMatchParser
+from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
@@ -180,7 +180,7 @@ def parse_match(request, site_manager):
             if is_home_match:
                 parse_stadium_statistics(request, site_manager)
     else:
-        match_parser = NotTakenPlaceMatchParser(site_manager.browser.page_source, request.user)
+        match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
         match_parser.parse()
 
 

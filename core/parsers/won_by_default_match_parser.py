@@ -8,7 +8,7 @@ from core.parsers.base_parser import BaseParser
 logger = logging.getLogger(__name__)
 
 
-class NotTakenPlaceMatchParser(BaseParser):
+class WonByDefaultMatchParser(BaseParser):
     def __init__(self, html_source, user):
         self.html_source = html_source
         self.user = user
