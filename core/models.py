@@ -417,9 +417,13 @@ class Match(models.Model):
         ("F", "Fun-Cup"),
     )
 
-    @property
-    def is_home_match(self):
-        return MatchStadiumStatistics.objects.filter(match=self).count() > 0
+    user = models.ForeignKey(OFMUser)
+    matchday = models.ForeignKey(Matchday, related_name='matches')
+    match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
+    is_home_match = models.BooleanField(default=True)
+    venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
+    home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
+    guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
 
     @property
     def is_won(self):
@@ -436,13 +440,6 @@ class Match(models.Model):
     def harmonic_strength(self):
         return 2*self.home_team_statistics.strength*self.guest_team_statistics.strength / \
                (self.home_team_statistics.strength + self.guest_team_statistics.strength)
-
-    user = models.ForeignKey(OFMUser)
-    matchday = models.ForeignKey(Matchday, related_name='matches')
-    match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
-    venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
-    home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
-    guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
 
     def __str__(self):
         return "(%s) %s:%s - %s:%s" % (self.matchday,

@@ -1,6 +1,10 @@
+import json
+
+from django.core.urlresolvers import reverse
+from django.test import TestCase
+
 from core.factories.core_factories import MatchdayFactory, PlayerFactory
 from core.models import Contract
-from django.test import TestCase
 from users.models import OFMUser
 
 
@@ -17,10 +21,19 @@ class OFMPlayerDetailViewTestCase(TestCase):
         response = self.client.get('/ofm/players/'+str(self.player.id))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('player' in response.context_data)
-        self.assertTrue('chart' in response.context_data)
+        self.assertTrue('seasons' in response.context_data)
 
     def test_user_cannot_see_other_users_players(self):
         self.client.login(username='bob', password='bob')
         response = self.client.get('/ofm/players/'+str(self.player.id))
         self.assertEqual(response.status_code, 200)
         self.assertFalse('player' in response.context_data)
+
+    def test_player_chart_json(self):
+        response = self.client.get(reverse('core:ofm:players_chart_json'), {'player_id': self.player.id})
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('series' in returned_json_data)
+        self.assertEquals('AWP', returned_json_data['series'][0]['name'])
+        self.assertTrue('data' in returned_json_data['series'][0])
+        self.assertTrue('categories' in returned_json_data)

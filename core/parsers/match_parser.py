@@ -9,9 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class MatchParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, is_home_match):
         self.html_source = html_source
         self.user = user
+        self.is_home_match = is_home_match
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
@@ -71,6 +72,7 @@ class MatchParser(BaseParser):
 
         match, success = Match.objects.get_or_create(
             matchday=matchday,
+            is_home_match=self.is_home_match,
             user=self.user,
             venue=venue,
             home_team_statistics=home_team_stat,

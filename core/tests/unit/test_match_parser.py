@@ -16,7 +16,7 @@ class MatchParserTest(TestCase):
         MatchdayFactory.create(number=1)
         self.user = OFMUserFactory.create()
 
-        self.parser = MatchParser(testdata, self.user)
+        self.parser = MatchParser(testdata, self.user, True)
         self.match_stat = self.parser.parse()
 
     def test_match_parser_general_informations(self):

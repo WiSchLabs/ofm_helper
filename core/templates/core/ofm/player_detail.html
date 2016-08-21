@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {% load staticfiles %}
+
     {% if player %}
 
         <h1 class="page-header">{{ player.name }}</h1>
@@ -10,7 +12,53 @@
         Alter: {{ player_age }}
         <br>
         <br>
-        <div id='chart_container'></div>
+        <br>
+
+        {% if seasons|length > 1 %}
+            <div id="table-toolbar">
+                <div class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="season">Zeige die Daten der Saison </label>
+
+                        <select class="form-control" id="season">
+                            {% for s in seasons %}
+                                <option value="{{ s.number }}">{{ s.number }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <script>
+            var season_number = $("#season").val();
+        </script>
+        <script src="{% static 'core/js/chart_options.js' %}"></script>
+
+        <script>
+            var player_chart_options = $.extend( true, {}, chart_options );
+
+            function requestChartData(season_number) {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'core:ofm:players_chart_json' %}",
+                    data: {season_number: season_number, player_id: "{{player.id}}"},
+                    dataType: 'json',
+                    success: function (data) {
+                        player_chart_options.series = data['series'];
+                        player_chart_options.xAxis.categories = data['categories'];
+                        player_chart_options.title.text='Spielerdaten der Saison ' + season_number;
+                        $('#player_chart_container').highcharts(player_chart_options);
+                    }
+                });
+            }
+
+            $('#season').on('change', function () {
+                var season_number = $("#season").val();
+                requestChartData(season_number);
+            });
+        </script>
+        <div id='player_chart_container'></div>
 
     {% else %}
 
