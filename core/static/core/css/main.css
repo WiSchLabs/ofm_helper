@@ -24,6 +24,7 @@
     src: url('../fonts/SugarcubesBold.ttf') format('truetype');
 }
 
+
 body {
     font-family: Gotham, "Helvetica Neue", Helvetica, sans-serif;
     font-weight: bold;
@@ -76,21 +77,13 @@ h2 span.glyphicon {
     font-size: 20px;
 }
 
-p {
-    text-align: justify;
-}
+p { text-align: justify; }
 
-a {
-    color: #239123;
-}
+a { color: #239123; }
 
-    a:focus, a:hover, a:active {
-        color: #1b6f1b;
-    }
+    a:focus, a:hover, a:active { color: #1b6f1b; }
 
-ul.nav li span {
-    margin-right: 2rem;
-}
+ul.nav li span { margin-right: 2rem; }
 
     ul.nav li span.glyphicon-ofm {
         margin-right: 0.5rem;
@@ -99,17 +92,12 @@ ul.nav li span {
         left: -0.75em;
     }
 
-        ul.nav li span.glyphicon-ofm img {
-            height: 2rem;
-        }
+        ul.nav li span.glyphicon-ofm img { height: 2rem; }
 
-ul.nav-sub {
-    padding-left: 10%;
-}
+ul.nav-sub {  padding-left: 10%; }
 
-.table {
-    background-color: white;
-}
+
+.table { background-color: white; }
 
     .table thead th .both,
     .table thead th .asc,
@@ -127,21 +115,11 @@ ul.nav-sub {
             left: 10px;
             position: relative;
         }
-        .table thead th .both::after {
-            content: '\e150';
-        }
-        .table thead th .asc::after {
-            content: '\e113';
-        }
-        .table thead th .desc::after {
-            content: '\e114';
-        }
-        .flaticon-football-yellow-warning-card {
-            color: orange;
-        }
-        .flaticon-football-card-with-cross-mark {
-            color: red;
-        }
+        .table thead th .both::after { content: '\e150'; }
+        .table thead th .asc::after { content: '\e113'; }
+        .table thead th .desc::after { content: '\e114'; }
+        .flaticon-football-yellow-warning-card { color: orange; }
+        .flaticon-football-card-with-cross-mark { color: red; }
         .table th span { font-size: 1.3em; }
         .table td span.users-team { text-decoration: underline; }
         .table td span.match_won,
@@ -154,6 +132,7 @@ ul.nav-sub {
         border-top-width: 5px;
     }
 
+/* little pie chart */
 .pie {
     display: inline-block;
     position: relative;
@@ -165,13 +144,8 @@ ul.nav-sub {
     text-align: center;
     margin-left: 10px;
 }
-
-@keyframes spin {
-  to { transform: rotate(.5turn); }
-}
-@keyframes bg {
-  50% { background: #239123; }
-}
+@keyframes spin { to { transform: rotate(.5turn); } }
+@keyframes bg { 50% { background: #239123; } }
 
 .pie::before {
     content: '';
@@ -186,9 +160,9 @@ ul.nav-sub {
     animation-delay: inherit;
 }
 
-.slider-handle {
-	background: green;
-}
+
+.slider-handle { background: #239123; }
+
 
 footer.footer {
     width: 100%;
@@ -197,9 +171,7 @@ footer.footer {
     background-color: white;
 }
 
-    footer.footer p {
-        text-align: center;
-    }
+    footer.footer p { text-align: center; }
 
     footer.footer #WiSch-logo {
         margin-top: -0.25rem;
