@@ -420,7 +420,7 @@ class Match(models.Model):
     user = models.ForeignKey(OFMUser)
     matchday = models.ForeignKey(Matchday, related_name='matches')
     match_type = models.CharField(max_length=1, choices=MATCHTYPE, default='L')
-    is_home_match = models.BooleanField(default=True)
+    is_home_match = models.BooleanField()
     venue = models.CharField(max_length=200)  # should this be in MatchStadiumStatistics?
     home_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_home_team')
     guest_team_statistics = models.ForeignKey(MatchTeamStatistics, related_name='matches_as_guest_team')
