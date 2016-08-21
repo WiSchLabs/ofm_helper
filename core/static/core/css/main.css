@@ -186,6 +186,10 @@ ul.nav-sub {
     animation-delay: inherit;
 }
 
+.slider-handle {
+	background: green;
+}
+
 footer.footer {
     width: 100%;
     padding-top: 10px;
