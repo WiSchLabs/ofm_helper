@@ -40,7 +40,7 @@ class ParserViewTest(TestCase):
                             pp = PlayersParser(player_html.read(), self.user)
                             psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
                             fp = FinancesParser(finances_html.read(), self.user)
-                            mp = MatchParser(match_html.read(), self.user)
+                            mp = MatchParser(match_html.read(), self.user, True)
 
                             core.views.MatchdayParser = Mock(spec=mdp)
                             core.views.MatchdayParser.return_value.parse = mdp.parse

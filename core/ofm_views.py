@@ -509,7 +509,10 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         if match.is_home_match:
             home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
             guest_team_name = match.guest_team_statistics.team_name
-            venue = "<a href='" + match.stadium_statistics.get_absolute_url() + "'>" + match.venue + "</a>"
+            if hasattr(match, 'stadium_statistics'):
+                venue = "<a href='" + match.stadium_statistics.get_absolute_url() + "'>" + match.venue + "</a>"
+            else:
+                venue = match.venue
         else:
             home_team_name = match.home_team_statistics.team_name
             guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
