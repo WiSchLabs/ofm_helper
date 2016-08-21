@@ -4,8 +4,18 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">Saison {{season}}  -  {{sector_name}}-Tribüne</h1>
+    {% if sector_name %}
 
-    <div id='chart_container'></div>
+        <h1 class="page-header">Saison {{season}}  -  {{sector_name}}-Tribüne</h1>
+        <div id='chart_container'></div>
+
+    {% else %}
+
+        <h1 class="page-header">Tribünen-Statistik nicht gefunden</h1>
+        <p>
+            Wir konnten für die Kriterien keine Daten finden.
+        </p>
+
+    {% endif %}
 
 {% endblock %}

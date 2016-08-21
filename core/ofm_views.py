@@ -636,13 +636,14 @@ class StadiumStandStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StadiumStandStatisticsView, self).get_context_data(**kwargs)
 
+        current_season = Matchday.objects.all()[0].season
         sector = self.request.GET.get('sector', 'N')
-        season = Matchday.objects.all()[0].season
+        season_number = self.request.GET.get('season', current_season.number)
         queryset = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
-                                                         stadium_statistics__match__matchday__season__number=season.number,
+                                                         stadium_statistics__match__matchday__season__number=season_number,
                                                          sector=sector)
 
-        context['season'] = season
+        context['season'] = season_number
         if queryset.count() > 0:
             context['sector_name'] = queryset[0].get_sector()
 
