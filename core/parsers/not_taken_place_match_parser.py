@@ -28,6 +28,7 @@ class NotTakenPlaceMatchParser(BaseParser):
         matchday = Matchday.objects.all()[0]
 
         row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
+        is_home_match = "<b>" in str(row.find_all('td')[2].a)
 
         match_result = row.find_all('font', class_='erganz')[0].get_text().strip()
         home_team_score = match_result.split(':')[0]
@@ -63,6 +64,7 @@ class NotTakenPlaceMatchParser(BaseParser):
 
         match, success = Match.objects.get_or_create(
             matchday=matchday,
+            is_home_match=is_home_match,
             user=self.user,
             home_team_statistics=home_team_stat,
             guest_team_statistics=guest_team_stat

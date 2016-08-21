@@ -27,6 +27,9 @@ class MatchParser(BaseParser):
         # we assume to have parsed the matchday beforehand
         matchday = Matchday.objects.all()[0]
 
+        row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
+        is_home_match = "<b>" in str(row.find_all('td')[2].a)
+
         venue = soup.find_all('em')[1].get_text()
         match_result = soup.find_all('table')[5].find_all('tr')[0].find_all('td')[3].div.font.get_text()
         home_team_score = match_result.split(':')[0]
@@ -71,6 +74,7 @@ class MatchParser(BaseParser):
 
         match, success = Match.objects.get_or_create(
             matchday=matchday,
+            is_home_match=is_home_match,
             user=self.user,
             venue=venue,
             home_team_statistics=home_team_stat,
