@@ -565,12 +565,21 @@ class StadiumStatisticsView(TemplateView):
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-        strength = self.request.GET.get('strength', default=150)
-        strength_range = self.request.GET.get('strength_range', default=300)
+        harmonic_strength = self.request.GET.get('harmonic_strength', default=150)
+        tolerance = self.request.GET.get('tolerance', default=300)
+
+        try:
+            harmonic_strength = int(harmonic_strength)
+            tolerance = int(tolerance)
+        except TypeError:
+            print(harmonic_strength)
+            print(tolerance)
+            pass
+
         matches = Match.objects.filter(user=self.request.user)
         filtered_matches = [match for match in matches if
-                            match.harmonic_strength <= strength + strength_range/2 and
-                            match.harmonic_strength >= strength - strength_range/2]
+                            match.harmonic_strength <= harmonic_strength + tolerance/2 and
+                            match.harmonic_strength >= harmonic_strength - tolerance/2]
 
         stadium_statistics = []
         for match in filtered_matches:
