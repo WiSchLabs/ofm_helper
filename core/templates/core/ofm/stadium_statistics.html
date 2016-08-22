@@ -13,10 +13,10 @@
                 <input id="expert-mode-toggle" name="expert-mode-toggle" type="checkbox" data-on-text="An" data-off-text="Aus" data-on-color="success" data-size="small">
 
                 <label id="strength-slider-label" for="strength-slider" data-toggle="tooltip" data-placement="top" title="">Stärke: </label>
-                <input id="strength-slider" type="text"/>
+                <input id="strength-slider" data-slider-step="5" type="text"/>
 
                 <label id="tolerance-slider-label" for="tolerance-slider" data-toggle="tooltip" data-placement="top" title="Toleranzwert für die Suche">Toleranz: </label>
-                <input id="tolerance-slider" type="text"/>
+                <input id="tolerance-slider" data-slider-step="5" type="text"/>
             </div>
         </div>
     </div>
@@ -51,6 +51,9 @@
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
         var $tables = $('.statistics_table')
 
+        $("#strength-slider").slider({  min: 0, max: 400, value: 100, labelledby: 'strength-slider-label'});
+        $("#tolerance-slider").slider({  min: 0, max: 400, value: 50, labelledby: 'tolerance-slider-label'});
+
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         });
@@ -61,6 +64,7 @@
             var params = {};
 
             if (data) {
+
                 $("#strength-slider-label").html('Gemittelte Stärke');
                 $("#strength-slider-label").attr('title', "Harmonisches Mittel der Mannschaftsstärken");
                 $("#strength-slider-label").attr('data-original-title', "Harmonisches Mittel der Mannschaftsstärken");
@@ -68,9 +72,9 @@
                 console.log(data);
                 console.log("hallo");
 
-                // prequery the database once to get min and max values?
-                $("#strength-slider").slider({  min: 0, max: 400, value: [50, 100], labelledby: 'strength-slider-label'});
-                $("#tolerance-slider").slider({  min: 0, max: 100, value: 50, labelledby: 'tolerance-slider-label'});
+                // TODO: prequery the database once to get min and max values?
+                $("#strength-slider").slider('destroy');
+                $("#strength-slider").slider({  min: 0, max: 400, value: [100, 150], labelledby: 'strength-slider-label'});
 
                 params = {
 
@@ -80,9 +84,9 @@
                 $("#strength-slider-label").attr('title', "");
                 $("#strength-slider-label").attr('data-original-title', "");
 
-                // prequery the database once to get min and max values?
-                $("#strength-slider").slider({  min: 0, max: 400, value: 200, labelledby: 'strength-slider-label'});
-                $("#tolerance-slider").slider({  min: 0, max: 100, value: 50, labelledby: 'tolerance-slider-label'});
+                // TODO: prequery the database once to get min and max values?
+                $("#strength-slider").slider('destroy');
+                $("#strength-slider").slider({  min: 0, max: 400, value: 150, labelledby: 'strength-slider-label'});
 
                 params = {
 
