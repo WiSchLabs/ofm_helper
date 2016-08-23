@@ -50,12 +50,13 @@ class StadiumStandStatisticsParserTest(TestCase):
         self.assertEquals(self.stadium_stand_stats[2].level.has_roof, True)
         self.assertEquals(self.stadium_stand_stats[2].level.has_seats, False)
 
-    def test_stadium_stand_stat_parser_west_stand(self):
-        self.assertEquals(type(self.stadium_stand_stats[3]), StadiumStandStatistics)
-        self.assertEquals(self.stadium_stand_stats[3].sector, 'W')
-        self.assertEquals(self.stadium_stand_stats[3].condition, '94.02')
-        self.assertEquals(self.stadium_stand_stats[3].visitors, '99')
-        self.assertEquals(self.stadium_stand_stats[3].ticket_price, '40')
-        self.assertEquals(self.stadium_stand_stats[3].level.capacity, '100')
-        self.assertEquals(self.stadium_stand_stats[3].level.has_roof, True)
-        self.assertEquals(self.stadium_stand_stats[3].level.has_seats, True)
+    def test_stadium_stand_stat_parser_does_not_parse_when_stand_was_not_used(self):
+        self.assertEquals(self.stadium_stand_stats[3], None)
+
+    def test_stadium_stand_stat_parser_does_not_parse_when_stand_is_in_repair(self):
+        # TODO
+        pass
+
+    def test_stadium_stand_stat_parser_does_not_parse_when_stand_is_underconstruction(self):
+        # TODO
+        pass
