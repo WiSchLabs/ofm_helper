@@ -33,21 +33,19 @@ class StadiumStandStatisticsParser(BaseParser):
         return [self._parse_stand_statistics(stand_data) for stand_data in stadium_stands]
 
     def _parse_stand_statistics(self, stand_data):
-        if 'nonvisible' in stand_data['class']:
-            # stand is currently under construction or in repair
-            return
-
         has_roof = 'überdacht' in stand_data.find('h1').get_text()
         has_seats = 'Sitzplätze' in stand_data.find('h1').get_text()
         capacity = stand_data.find_all('tr')[2].find_all('td')[3].div.get_text().replace('.', '')
 
         sector = stand_data.find('span', class_='white').get_text()[0]
-        condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',', '.').replace('%', '')
+        condition = 100  # if the stadium is set under construction AFTER the game, we don't know the condition
+        if 'Stadionzustand' in stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[0].get_text():
+            condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',', '.').replace('%', '')
         visitors = stand_data.find_all('tr')[3].find_all('td')[2].span.get_text().replace('.', '')
         ticket_price = stand_data.find_all('tr')[6].find_all('select')[0].find('option', selected=True).get('value')
 
         if visitors == '-':
-            # stadium was not used in the last match (e.g. due to repair in progress)
+            # stadium was not used in the last match (due to repair or construction in progress)
             return
 
         stand_level, success = StandLevel.objects.get_or_create(
