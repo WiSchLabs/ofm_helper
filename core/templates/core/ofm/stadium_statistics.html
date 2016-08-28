@@ -9,9 +9,6 @@
     <div id="table-toolbar">
         <div class="form-inline" role="form">
             <div class="form-group">
-                <label id="expert-mode-toggle-label" for="expert-mode-toggle">Expertenmodus: </label>
-                <input id="expert-mode-toggle" name="expert-mode-toggle" type="checkbox" data-on-text="An" data-off-text="Aus" data-on-color="success" data-size="small">
-
                 <label id="strength-slider-label" for="strength-slider" data-toggle="tooltip" data-placement="top" title="">Stärke: </label>
                 <input id="strength-slider" data-provide="slider" data-slider-max="400" data-slider-value="[100,150]" data-slider-step="5" type="text"/>
 
@@ -55,49 +52,21 @@
           $('[data-toggle="tooltip"]').tooltip()
         });
 
-        $('#expert-mode-toggle').bootstrapSwitch('state', false);
+        $("#strength-slider-label").html('Gemittelte Stärke');
+        $("#strength-slider-label").attr('title', "Harmonisches Mittel der Mannschaftsstärken");
+        $("#strength-slider-label").attr('data-original-title', "Harmonisches Mittel der Mannschaftsstärken");
 
-        $('#expert-mode-toggle').on('switchChange.bootstrapSwitch', function (event, data) {
-            var params = {};
-
-            if (data) {
-                $("#strength-slider-label").html('Gemittelte Stärke');
-                $("#strength-slider-label").attr('title', "Harmonisches Mittel der Mannschaftsstärken");
-                $("#strength-slider-label").attr('data-original-title', "Harmonisches Mittel der Mannschaftsstärken");
-
-                $("#strength-slider").slider('destroy');
-                $("#strength-slider").slider({  min: 0, max: 400, value: 150, labelledby: 'strength-slider-label'});
-            } else {
-                $("#strength-slider-label").html('Stärke');
-                $("#strength-slider-label").attr('title', "");
-                $("#strength-slider-label").attr('data-original-title', "");
-
-                $("#strength-slider").slider('destroy');
-                $("#strength-slider").slider({  min: 0, max: 400, value: [100, 150], labelledby: 'strength-slider-label'});
-            }
-
-            $('#strength-slider').slider().on('slideStop', function(event){
-                update_stadium_statistics()
-            });
-
-            $('#tolerance-slider').slider().on('slideStop', function(event){
-                update_stadium_statistics()
-            });
-        });
+        $("#strength-slider").slider('destroy');
+        $("#strength-slider").slider({  min: 0, max: 400, value: [100,150], labelledby: 'strength-slider-label'});
 
         function get_current_params(){
+            var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
+            var strength2 = parseInt($('#strength-slider').attr('value').split(',')[1], 10);
+
             var params = {
-                tolerance: $('#tolerance-slider').attr('value')
+                tolerance: $('#tolerance-slider').attr('value'),
+                harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0)
             };
-
-            if ($('#expert-mode-toggle').bootstrapSwitch('state')){
-                params['harmonic_strength'] = $('#strength-slider').attr('value');
-            } else {
-                var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
-                var strength2 = parseInt($('#strength-slider').attr('value').split(',')[1], 10);
-
-                params['harmonic_strength'] = Number(2*strength1*strength2/(strength1+strength2)).toFixed(0);
-            }
 
             return params;
         }
