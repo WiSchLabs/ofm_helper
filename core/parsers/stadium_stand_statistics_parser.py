@@ -58,8 +58,10 @@ class StadiumStandStatisticsParser(BaseParser):
             sector=sector,
             visitors=visitors,
             ticket_price=ticket_price,
-            condition=condition,
             level=stand_level
         )
+
+        stadium_stand_stat.condition = condition
+        stadium_stand_stat.save()
 
         return stadium_stand_stat
