@@ -576,7 +576,6 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         stadium_statistics_json = [self._get_stadium_statistics_in_json(stat) for stat in stadium_statistics]
 
-        print(self.render_json_response(stadium_statistics_json))
         return self.render_json_response(stadium_statistics_json)
 
     def _get_stadium_statistics_in_json(self, stadium_stat):
