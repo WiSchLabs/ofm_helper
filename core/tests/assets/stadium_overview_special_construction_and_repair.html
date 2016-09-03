@@ -116,7 +116,7 @@
 <tbody><tr>
 <td style="height:20px;background:#c7ccd0;">
 <p class="small" style="margin:-1px 0 0 20px;padding:0;">
-			Gesamtkapazität: <b>500 Plätze </b> </p>
+			Gesamtkapazität: <b>500 Plätze </b>(nach Ausbau: <b>800 Plätze</b>)			</p>
 </td>
 </tr>
 <tr height="10">
@@ -125,7 +125,61 @@
 <tbody><tr> <td class="dsR50">
 <div align="center">
 <br>
-<div class="ticket-mode " rel="1">
+<div class="build-mode" rel="1">
+<table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
+<tbody><tr height="10">
+<td>
+<style>
+									.repairBg{
+									background-image:linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-o-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-moz-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-webkit-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-ms-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.5, #add2d2)),color-stop(0.5, #dbdbdb));
+									background:#b5defd\9;
+									}
+
+									span.intText:hover{text-decoration:underline;}
+									</style>
+<div class="repairBg pos-rel" style="width:338px;height:197px;">
+<div class="pos-abs" style="bottom:2px;right:5px;">
+<span class="intText small cursor showTicketsView" rel="1">Eintrittspreise ändern »</span>
+</div>
+<h2 class="bold white textCenter medium" style="line-height:28px;margin:0;padding:0;height:28px;background:url(/bilder/back/back_head_green_380_flat.png) #3ba37a;">
+											Nord-Tribüne										</h2>
+<div class="float textCenter" style="width:50%;">
+<img alt="" class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand_upgrading.png" style="padding:5px;left:50%;right:50%;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:230px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand_upgrading.jpg">
+</img></div>
+</img></div>
+<div class="float textCenter" style="width:50%;margin-top:25px;">
+<input class="cursor buttonGreen pos-abs" onclick="developStadiumBlock(1);" style="bottom:30px;left:37%;" type="button" value="Details">
+</input></div>
+<br class="clear">
+<div class="pos-rel" style="height:18px;border-top:1px solid #666;border-bottom:1px solid #666;background:#fff;z-index:1;top:-5px;">
+<div class="pos-rel textCenter" style="top:-6px;width:338px;">
+<p class="small bold" style="color:#ff0000;">
+													noch 5 Spieltage Bauzeit													<img alt="" class="pos-rel" onmouseout="$('#extensionTimeInfo_1').hide();" onmouseover="$('#extensionTimeInfo_1').show();" src="/bilder/icons/icon_info_v3.png" style="top:1px;left:3px;width:10px;height:10px;">
+</img></p>
+</div>
+<!-- Extension Time Info Start -->
+<div class="pos-abs textLeft" id="extensionTimeInfo_1" style="display:none;bottom:20px;right:10px;z-index:10;">
+<div class="infoLayerBox" style="padding:0 10px;width:170px;">
+<h3 class="bold infoLayerHeadline">Info</h3>
+<p class="line bold">Sitzplätze, überdacht</p>
+<p class="medium" style="margin:10px 0 0 0;padding:0;">
+													Fertigstellung:<br>28. Spieltag, Saison 141													<br><br>
+</br></br></br></p>
+</div>
+</div>
+<!-- Extension Time Info End -->
+</div>
+</br></div></td></tr>
+</tbody></table>
+</div> <!-- end build mode layer -->
+<div class="ticket-mode nonvisible" rel="1">
 <table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
 <tbody><tr height="10">
 <td background="../bilder/back/bluelight1.png" height="10" width="336">
@@ -141,20 +195,18 @@
 <tr>
 <td background="../bilder/back/grey.png" class="minitext dsR44 img-pos" rowspan="6">
 <div align="center" class="pos-rel" style="top:-5px;">
-<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Sitzplätze, ohne Dach</h1>
-<div class="pos-rel" style="width:155px;height:75px;">
-<img class="mouseOverImg" src="/bilder/stadium/extension/small/stand1_su.png">
-<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
-<img alt="" src="/bilder/stadium/extension/big/stand1_su.jpg">
+<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Sitzplätze, überdacht</h1>
+<div style="width:155px;height:75px;">
+<img class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand_upgrading.png" style="top:12px;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:130px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand_upgrading.jpg">
 </img></div>
 </img></div>
-<span>Stadionzustand:</span><br>
-<span style="font-weight:bold;">91,41%</span> <!-- Tutorial -->
-<!-- End tutorial --->
-<br class="clear">
-<input class="cursor buttonGreen" onclick="developStadiumBlock(1)" style="margin-top:10px;" type="button" value="ausbauen">
+<br>
+<br>
+<span class="intText small cursor showBuildView" rel="1">Details zum Ausbau anzeigen</span>
 <!-- Stadium Extension End -->
-</input></br></br></div>
+</br></br></div>
 </td>
 <td class="minitext" width="2"> </td>
 <td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
@@ -165,7 +217,7 @@
 <tr>
 <td class="minitext" width="2"></td>
 <td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
-<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">97</span></td>
+<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">200</span></td>
 </tr>
 <tr>
 <td class="minitext" width="2"></td>
@@ -225,7 +277,61 @@
 <td class="dsR50">
 <div align="center">
 <br>
-<div class="ticket-mode " rel="2">
+<div class="build-mode" rel="2">
+<table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
+<tbody><tr height="10">
+<td>
+<style>
+									.repairBg{
+									background-image:linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-o-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-moz-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-webkit-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-ms-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.5, #add2d2)),color-stop(0.5, #dbdbdb));
+									background:#b5defd\9;
+									}
+
+									span.intText:hover{text-decoration:underline;}
+									</style>
+<div class="repairBg pos-rel" style="width:338px;height:197px;">
+<div class="pos-abs" style="bottom:2px;right:5px;">
+<span class="intText small cursor showTicketsView" rel="2">Eintrittspreise ändern »</span>
+</div>
+<h2 class="bold white textCenter medium" style="line-height:28px;margin:0;padding:0;height:28px;background:url(/bilder/back/back_head_green_380_flat.png) #3ba37a;">
+											Ost-Tribüne										</h2>
+<div class="float textCenter" style="width:50%;">
+<img alt="" class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand_upgrading.png" style="padding:5px;left:50%;right:50%;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:230px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand_upgrading.jpg">
+</img></div>
+</img></div>
+<div class="float textCenter" style="width:50%;margin-top:25px;">
+<input class="cursor buttonGreen pos-abs" onclick="developStadiumBlock(2);" style="bottom:30px;left:37%;" type="button" value="Details">
+</input></div>
+<br class="clear">
+<div class="pos-rel" style="height:18px;border-top:1px solid #666;border-bottom:1px solid #666;background:#fff;z-index:1;top:-5px;">
+<div class="pos-rel textCenter" style="top:-6px;width:338px;">
+<p class="small bold" style="color:#ff0000;">
+													noch 5 Spieltage Bauzeit													<img alt="" class="pos-rel" onmouseout="$('#extensionTimeInfo_2').hide();" onmouseover="$('#extensionTimeInfo_2').show();" src="/bilder/icons/icon_info_v3.png" style="top:1px;left:3px;width:10px;height:10px;">
+</img></p>
+</div>
+<!-- Extension Time Info Start -->
+<div class="pos-abs textLeft" id="extensionTimeInfo_2" style="display:none;bottom:20px;right:10px;z-index:10;">
+<div class="infoLayerBox" style="padding:0 10px;width:170px;">
+<h3 class="bold infoLayerHeadline">Info</h3>
+<p class="line bold">Sitzplätze, überdacht</p>
+<p class="medium" style="margin:10px 0 0 0;padding:0;">
+													Fertigstellung:<br>28. Spieltag, Saison 141													<br><br>
+</br></br></br></p>
+</div>
+</div>
+<!-- Extension Time Info End -->
+</div>
+</br></div></td></tr>
+</tbody></table>
+</div> <!-- end build mode layer -->
+<div class="ticket-mode nonvisible" rel="2">
 <table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
 <tbody><tr height="10">
 <td background="../bilder/back/bluelight1.png" height="10" width="336">
@@ -241,20 +347,18 @@
 <tr>
 <td background="../bilder/back/grey.png" class="minitext dsR44 img-pos" rowspan="6">
 <div align="center" class="pos-rel" style="top:-5px;">
-<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Stehplätze, ohne Dach</h1>
-<div class="pos-rel" style="width:155px;height:75px;">
-<img class="mouseOverImg" src="/bilder/stadium/extension/small/stand1_tu.png">
-<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
-<img alt="" src="/bilder/stadium/extension/big/stand1_tu.jpg">
+<h1 class="small" style="margin-bottom:0;padding-bottom:0;">Sitzplätze, überdacht</h1>
+<div style="width:155px;height:75px;">
+<img class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand_upgrading.png" style="top:12px;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:130px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand_upgrading.jpg">
 </img></div>
 </img></div>
-<span>Stadionzustand:</span><br>
-<span style="font-weight:bold;">94,02%</span> <!-- Tutorial -->
-<!-- End tutorial --->
-<br class="clear">
-<input class="cursor buttonGreen" onclick="developStadiumBlock(2)" style="margin-top:10px;" type="button" value="ausbauen">
+<br>
+<br>
+<span class="intText small cursor showBuildView" rel="2">Details zum Ausbau anzeigen</span>
 <!-- Stadium Extension End -->
-</input></br></br></div>
+</br></br></div>
 </td>
 <td class="minitext" width="2"> </td>
 <td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
@@ -265,7 +369,7 @@
 <tr>
 <td class="minitext" width="2"></td>
 <td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
-<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">99</span></td>
+<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">-</span></td>
 </tr>
 <tr>
 <td class="minitext" width="2"></td>
@@ -325,7 +429,61 @@
 </tr> <tr> <td class="dsR50">
 <div align="center">
 <br>
-<div class="ticket-mode " rel="3">
+<div class="build-mode" rel="3">
+<table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
+<tbody><tr height="10">
+<td>
+<style>
+									.repairBg{
+									background-image:linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-o-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-moz-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-webkit-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image:-ms-linear-gradient(bottom, #add2d2 0%, #d1eeed 25%, #fff 50%, #dbdbdb 75%);
+									background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.5, #add2d2)),color-stop(0.5, #dbdbdb));
+									background:#b5defd\9;
+									}
+
+									span.intText:hover{text-decoration:underline;}
+									</style>
+<div class="repairBg pos-rel" style="width:338px;height:197px;">
+<div class="pos-abs" style="bottom:2px;right:5px;">
+<span class="intText small cursor showTicketsView" rel="3">Eintrittspreise ändern »</span>
+</div>
+<h2 class="bold white textCenter medium" style="line-height:28px;margin:0;padding:0;height:28px;background:url(/bilder/back/back_head_green_380_flat.png) #3ba37a;">
+											Süd-Tribüne										</h2>
+<div class="float textCenter" style="width:50%;">
+<img alt="" class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand1_tc.png" style="padding:5px;left:50%;right:50%;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:230px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand1_tc.jpg">
+</img></div>
+</img></div>
+<div class="float textCenter" style="width:50%;margin-top:25px;">
+<input class="buttonGrey pos-abs" style="bottom:30px;left:30%;" type="button" value="Reparatur läuft">
+</input></div>
+<br class="clear">
+<div class="pos-rel" style="height:18px;border-top:1px solid #666;border-bottom:1px solid #666;background:#fff;z-index:1;top:-5px;">
+<div class="pos-rel textCenter" style="top:-6px;width:338px;">
+<p class="small bold" style="color:#ff0000;">
+													noch 1 Spieltag Bauzeit													<img alt="" class="pos-rel" onmouseout="$('#extensionTimeInfo_3').hide();" onmouseover="$('#extensionTimeInfo_3').show();" src="/bilder/icons/icon_info_v3.png" style="top:1px;left:3px;width:10px;height:10px;">
+</img></p>
+</div>
+<!-- Extension Time Info Start -->
+<div class="pos-abs textLeft" id="extensionTimeInfo_3" style="display:none;bottom:20px;right:10px;z-index:10;">
+<div class="infoLayerBox" style="padding:0 10px;width:170px;">
+<h3 class="bold infoLayerHeadline">Info</h3>
+<p class="line bold">Stehplätze, überdacht</p>
+<p class="medium" style="margin:10px 0 0 0;padding:0;">
+													Fertigstellung:<br>24. Spieltag, Saison 141													<br><br>
+</br></br></br></p>
+</div>
+</div>
+<!-- Extension Time Info End -->
+</div>
+</br></div></td></tr>
+</tbody></table>
+</div> <!-- end build mode layer -->
+<div class="ticket-mode nonvisible" rel="3">
 <table cellpadding="0" cellspacing="0" style="border:1px solid #666;">
 <tbody><tr height="10">
 <td background="../bilder/back/bluelight1.png" height="10" width="336">
@@ -342,30 +500,28 @@
 <td background="../bilder/back/grey.png" class="minitext dsR44 img-pos" rowspan="6">
 <div align="center" class="pos-rel" style="top:-5px;">
 <h1 class="small" style="margin-bottom:0;padding-bottom:0;">Stehplätze, überdacht</h1>
-<div class="pos-rel" style="width:155px;height:75px;">
-<img class="mouseOverImg" src="/bilder/stadium/extension/small/stand1_tc.png">
-<div class="nonvisible mouseOverPos pos-abs" style="left:130px;top:-50px;z-index:100;">
-<img alt="" src="/bilder/stadium/extension/big/stand1_tc.jpg">
+<div style="width:155px;height:75px;">
+<img class="mouseOverImg pos-rel" src="/bilder/stadium/extension/small/stand_upgrading.png" style="top:12px;">
+<div class="nonvisible pos-abs mouseOverPos" style="left:130px;top:-50px;z-index:100;">
+<img alt="" src="/bilder/stadium/extension/big/stand_upgrading.jpg">
 </img></div>
 </img></div>
-<span>Stadionzustand:</span><br>
-<span style="font-weight:bold;">50,86%</span> <!-- Tutorial -->
-<!-- End tutorial --->
-<br class="clear">
-<input class="cursor buttonGreen" onclick="developStadiumBlock(3)" style="margin-top:10px;" type="button" value="ausbauen">
+<br>
+<br>
+<span class="intText small cursor showBuildView" rel="3">Details zum Ausbau anzeigen</span>
 <!-- Stadium Extension End -->
-</input></br></br></div>
+</br></br></div>
 </td>
 <td class="minitext" width="2"> </td>
 <td class="minitext" style="white-space:nowrap;"><div style="margin-top:8px;">Plätze:</div></td>
-<td class="minitext" style="white-space:nowrap;" width="65"><div class="bold" style="margin-top:8px;">100</div></td>
+<td class="minitext" style="white-space:nowrap;" width="65"><div class="bold" style="margin-top:8px;">400</div></td>
 </tr>
 <!-- End tribune state --->
 <!-- Stadion visitors -->
 <tr>
 <td class="minitext" width="2"></td>
 <td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
-<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">88</span></td>
+<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">398</span></td>
 </tr>
 <tr>
 <td class="minitext" width="2"></td>
@@ -449,7 +605,7 @@
 </img></div>
 </img></div>
 <span>Stadionzustand:</span><br>
-<span style="font-weight:bold;">94,02%</span> <!-- Tutorial -->
+<span style="font-weight:bold;">100,00%</span> <!-- Tutorial -->
 <!-- End tutorial --->
 <br class="clear">
 <input class="cursor buttonGreen" onclick="developStadiumBlock(4)" style="margin-top:10px;" type="button" value="ausbauen">
@@ -465,7 +621,7 @@
 <tr>
 <td class="minitext" width="2"></td>
 <td class="minitext" style="white-space:nowrap;">letztes Liga-Spiel:</td>
-<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">99</span></td>
+<td class="minitext" style="white-space:nowrap;" width="65"><span class="bold">-</span></td>
 </tr>
 <tr>
 <td class="minitext" width="2"></td>
@@ -546,7 +702,7 @@
 		  var User	 = {};
 
 		  User.kixx  = 600;
-		  User.money = 4100147;
+		  User.money = 3664169;
 		  User.rapidRepairPrice = 0;
 		  User.reloadPage = 1;
 
