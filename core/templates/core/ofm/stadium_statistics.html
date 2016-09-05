@@ -46,50 +46,9 @@
 
     <script>
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
-        var $tables = $('.statistics_table')
-
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-        });
-
-        $("#strength-slider-label").html('Gemittelte Stärke');
-        $("#strength-slider-label").attr('title', "Harmonisches Mittel der Mannschaftsstärken");
-        $("#strength-slider-label").attr('data-original-title', "Harmonisches Mittel der Mannschaftsstärken");
-
-        $("#strength-slider").slider('destroy');
-        $("#strength-slider").slider({  min: 0, max: 400, value: [100,150], labelledby: 'strength-slider-label'});
-
-        function get_current_params(){
-            var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
-            var strength2 = parseInt($('#strength-slider').attr('value').split(',')[1], 10);
-
-            var params = {
-                tolerance: $('#tolerance-slider').attr('value'),
-                harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0)
-            };
-
-            return params;
-        }
-
-        function update_stadium_statistics() {
-            var params = get_current_params();
-
-            $.get(JSON_URL, params, function (returnedData) {
-                    $tables.bootstrapTable('removeAll');
-                    $tables.bootstrapTable('load', returnedData);
-                }
-            );
-        }
-
-        $('#strength-slider').slider().on('slideStop', function(event){
-            update_stadium_statistics()
-        });
-
-        $('#tolerance-slider').slider().on('slideStop', function(event){
-            update_stadium_statistics()
-        });
     </script>
 
+    <script src="{% static 'core/js/strength_slider.js' %}"></script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
 
 {% endblock %}
