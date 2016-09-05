@@ -613,6 +613,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['capacity'] = 0
             match_stadium_stat['earnings'] = 0
             match_stadium_stat['workload'] = 0
+        match_stadium_stat['venue'] = stadium_stat.match.venue
         match_stadium_stat['home_strength'] = stadium_stat.match.home_team_statistics.strength
         match_stadium_stat['guest_strength'] = stadium_stat.match.guest_team_statistics.strength
         match_stadium_stat['harmonic_strength'] = 2*match_stadium_stat['home_strength']*match_stadium_stat['guest_strength']/(match_stadium_stat['home_strength']+match_stadium_stat['guest_strength'])
