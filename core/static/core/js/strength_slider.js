@@ -5,10 +5,11 @@ $(function () {
 });
 
 $("#strength-slider-label").html('Gemittelte Stärke');
-$("#strength-slider-label").attr('title', "Harmonisches Mittel der Mannschaftsstärken");
-$("#strength-slider-label").attr('data-original-title', "Harmonisches Mittel der Mannschaftsstärken");
-
+$("#strength-slider-label").attr('title', "Harmonisches Mittel beider eingegebenen Mannschaftsstärken");
 $("#strength-slider").slider({labelledby: 'strength-slider-label'});
+
+$("#tolerance-slider-label").attr('title', "Toleranzwert um die gemittelte Stärke");
+
 
 function get_current_params(){
     var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
