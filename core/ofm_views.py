@@ -602,10 +602,17 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         match_stadium_stat = dict()
         match_stadium_stat['matchday'] = "<a href='" + stadium_stat.get_absolute_url() + "'>" + str(stadium_stat.match.matchday.number) + "</a>"
-        match_stadium_stat['visitors'] = stadium_stat.visitors
-        match_stadium_stat['capacity'] = stadium_stat.capacity
-        match_stadium_stat['earnings'] = stadium_stat.earnings
-        match_stadium_stat['workload'] = '{:.2%}'.format(stadium_stat.visitors / stadium_stat.capacity)
+        if stadium_stat.visitors and stadium_stat.capacity:
+            match_stadium_stat['visitors'] = stadium_stat.visitors
+            match_stadium_stat['capacity'] = stadium_stat.capacity
+            match_stadium_stat['earnings'] = stadium_stat.earnings
+            match_stadium_stat['workload'] = '{:.2%}'.format(stadium_stat.visitors / stadium_stat.capacity)
+        else:
+            # all stadium stands were under construction during match
+            match_stadium_stat['visitors'] = 0
+            match_stadium_stat['capacity'] = 0
+            match_stadium_stat['earnings'] = 0
+            match_stadium_stat['workload'] = 0
         match_stadium_stat['home_strength'] = stadium_stat.match.home_team_statistics.strength
         match_stadium_stat['guest_strength'] = stadium_stat.match.guest_team_statistics.strength
         match_stadium_stat['harmonic_strength'] = 2*match_stadium_stat['home_strength']*match_stadium_stat['guest_strength']/(match_stadium_stat['home_strength']+match_stadium_stat['guest_strength'])
