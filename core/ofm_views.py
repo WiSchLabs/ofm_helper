@@ -363,6 +363,19 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         income_betting = []
         matchdays = []
 
+        if len(data_source) >= 1:
+            income_visitors_league.append(data_source[0].income_visitors_league)
+            income_sponsoring.append(data_source[0].income_sponsoring)
+            income_cup.append(data_source[0].income_cup)
+            income_interests.append(data_source[0].income_interests)
+            income_loan.append(data_source[0].income_loan)
+            income_transfer.append(data_source[0].income_transfer)
+            income_visitors_friendlies.append(data_source[0].income_visitors_friendlies)
+            income_friendlies.append(data_source[0].income_friendlies)
+            income_funcup.append(data_source[0].income_funcup)
+            income_betting.append(data_source[0].income_betting)
+            matchdays.append(data_source[0].matchday.number)
+
         for idx, entry in enumerate(data_source):
             if idx+1 < data_source.count():
                 income_visitors_league.append(data_source[idx+1].income_visitors_league - data_source[idx].income_visitors_league)
@@ -426,6 +439,19 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         expenses_funcup = []
         expenses_betting = []
         matchdays = []
+
+        if len(data_source) >= 1:
+            expenses_player_salaries.append(-data_source[0].expenses_player_salaries)
+            expenses_stadium.append(-data_source[0].expenses_stadium)
+            expenses_youth.append(-data_source[0].expenses_youth)
+            expenses_interests.append(-data_source[0].expenses_interests)
+            expenses_trainings.append(-data_source[0].expenses_trainings)
+            expenses_transfer.append(-data_source[0].expenses_transfer)
+            expenses_compensation.append(-data_source[0].expenses_compensation)
+            expenses_friendlies.append(-data_source[0].expenses_friendlies)
+            expenses_funcup.append(-data_source[0].expenses_funcup)
+            expenses_betting.append(-data_source[0].expenses_betting)
+            matchdays.append(data_source[0].matchday.number)
 
         for idx, entry in enumerate(data_source):
             if idx+1 < data_source.count():
