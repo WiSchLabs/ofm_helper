@@ -1,0 +1,1460 @@
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="/java/jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="/java/jquery/js/jquery-ui-1.8.7.custom.min.js"></script>
+	<script type="text/javascript" src="/java/scrollbar/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="/java/scrollbar/jquery.jscrollpane.min.js"></script>
+	<script type="text/javascript" src="/java/ofm_biblio.js362.js"></script>
+    <script type="text/javascript" src="/java/ofm_javascript.js362.js"></script>
+    <script type="text/javascript" src="/java/office/office.js362.js"></script>
+	<script type="text/javascript" src="/java/wz_tooltip.js362.js"></script>
+	<script type="text/javascript" src="/010_mannschaft/spieler.js362.js"></script>
+	<script type="text/javascript" src="/java/custom/friendship/controller.js362.js"></script>
+    
+			<script type="text/javascript" src="/java/jquery.countdown.js362.js"></script>
+		<script type="text/javascript" src="/java/payment/countdown.js362.js"></script>
+		
+	<style>
+		.helpusIconImg{background-position:0 0;}
+		.helpusIconImg:hover{background-position:0 -41px;}
+		.helpusIcon{background:url(/db/images/ingame/icon_helpus.png);width:58px;height:41px;display:block;}
+	</style>
+	<script type="text/javascript" id="sourcecode">
+		$(function()
+		{
+					});
+	</script>
+			<script type="text/javascript" src="/includes/phpclass/overlay/overlay.js362.js"></script>		<script type="text/javascript">
+		overlayArray = []		</script>
+		
+	<link href="/style/reset.css496.css" rel="stylesheet" type="text/css" media="all" />
+	        <link href="/style/core/base.css496.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/base-int.css496.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/style/core/layout.css496.css" rel="stylesheet" type="text/css" media="all" />
+    	<link href="/style/office/core/layout.css496.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/style/tutorial/core/layout.css496.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/style/features/core/layout.css496.css" rel="stylesheet" type="text/css" media="all" />
+	<script type="text/javascript" src="https://script.ioam.de/iam.js"></script>
+    <style>
+    @media only screen
+    and (min-device-width : 320px)
+    and (max-device-width : 568px)
+    and (orientation : portrait){
+    body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.428571429 !important;
+    }
+
+    #contentRight{
+    clear:left !important;
+    float:left !important;
+    position:relative;
+    left:60px;
+    width:650px !important;
+    }
+
+    #buddyBox,#personalBox{
+    float:left !important;
+    margin-right:20px;
+    }
+
+    #logBook{
+    max-width:880px !important;
+    }
+
+    }
+    </style>
+  </head>
+  <body>
+    
+      <style>
+    .scrollTop{
+		background-color:#808080;
+		background-color:rgba(128, 128, 128, 0.8);
+		border:1px solid #808080;
+		border-radius:3px;
+		bottom:25px;
+		box-shadow:0 0 5px 1px #808080;
+		color:#fff;
+		cursor:pointer;
+		outline:0;
+		padding:10px 30px 10px 10px;
+		position:fixed;
+		right:25px;
+		-webkit-transition:opacity .1s ease-out;
+		-moz-transition:opacity .1s ease-out;
+		-ms-transition:opacity .1s ease-out;
+		-o-transition:opacity .1s ease-out;
+		transition:opacity .1s ease-out;
+		white-space:nowrap;
+		z-index:1000;
+		text-align:center;
+		text-transform:capitalize;
+		}
+
+		.scrollTop:before{
+		background-color:rgba(240, 240, 240, 0.6);
+		border-radius:2px 2px 2px 2px;
+		content:"";
+		height:20px;
+		position:absolute;
+		right:5px;
+		top:8px;
+		width:20px;
+		}
+
+		.scrollTop:hover{
+		background-color:#808080;
+		text-decoration:none;
+		}
+
+		.scrollTop span{
+		height:6px;
+		position:absolute;
+		right:10px;
+		top:16px;
+		width:9px;
+		background:url(/bilder/icons/scroll-top.png) no-repeat transparent;
+		}
+
+        @media all and (max-width: 1024px) {div.scrollTop{display:none !important;}}
+    </style>
+
+    <script>
+		$(document).ready(function(){
+
+         $(".scrollTop").click(function(){
+	      $("html, body").animate({ scrollTop: 0 }, 600);
+	      return false;
+	     });
+
+			var $scrollTop = $(".scrollTop");
+
+			var $win = $(window).scroll(function() {
+			    if($win.scrollTop() > 50) {
+			        if(!$scrollTop.is(":visible")) {
+			            $scrollTop.stop(true, true).fadeIn();
+			        }
+			    } else {
+			        if(!$scrollTop.is(":animated")) {
+			            $scrollTop.stop(true, true).fadeOut();
+			        }
+			    }
+			});
+
+		});
+		</script>
+		<div class="scrollTop nonvisible">
+			top
+			<span></span>
+		</div>
+		  <!-- EASTER 2k15 Start -->
+    <!-- EASTER 2k15 End -->
+
+  <!--  OFM8 Popup Start -->
+
+  
+  <!--  OFM8 Popup End -->
+
+  
+	  <!-- Double-OptIn Layer Start -->
+	  	  <!-- Double-OptIn Layer End -->
+
+	<!-- CHANGE COUNTRY BUBBLE START -->
+    <!-- CHANGE COUNTRY BUBBLE END -->
+				    <script type="text/javascript" src="/java/wz_tooltip.js362.js"></script>
+  
+		<div class="pageWrapper pos-rel" style="">
+		<!-- Double-OptIn Layer Start -->
+				<!-- Double-OptIn Layer End -->
+
+
+		<div class="float" style="width:65px;">
+
+			<!--- OFM8 Verlinkung  Start --->
+<!--			--><!--				--><!--					<img src="/bilder/icons/ofm8_icon.png"-->
+<!--                         alt="OFM8"-->
+<!--                         class="ofm8button">-->
+<!--					<p class="textCenter">OFM 8</p>-->
+<!--				</a>-->
+<!--			-->			<!--- OFM8 Verlinkung  Ende  --->
+
+
+									<a href="../weiterempfehlen.php?ingame=true" class="intLink" onclick="NewWindow(this.href,'ofm_weiterempfehlen','650','600','no','no');return false">
+				<img src="/bilder/icons/megaphone.png" alt="" style="width:46px;height:56px;">
+				<p class="textCenter">Manager werben</p>
+			</a>
+		<br/>		</div>
+		<div id="contentLeft" class="float pos-rel">
+			<table class="shadow rightBg" cellpadding="0" cellspacing="0" style="min-width:810px;">
+			<!-- EASTEREGG2k13 Start -->
+						<!-- EASTEREGG2k13 End -->
+			<!-- 10 Jahre OFM Start -->
+						<!-- 10 Jahre OFM End -->
+
+			<!-- Weihnachtsaktion 2014 Start -->
+						<!-- Weihnachtsaktion 2014 End -->
+					<thead>
+			<tr>
+				<th colspan="3" class="officeHeader clearfix">
+					<p class="bold">1. SC Wedding</p>
+											<div class="floatR pos-rel" style="top:-13px;right:10px;">
+							<span style="font-size:11px;color:#95b7d5;">
+							Serverzeit 							:							<span id="serverTimeField">00:15</span> Uhr														</span>
+							<script type="text/javascript">
+
+								var Zeit = new Date();
+								Zeit.setHours(0);
+								Zeit.setMinutes(15);
+								Zeit.setSeconds(34);
+
+								
+								function setServerTime(addSeconds)
+								{
+									Zeit.setTime(Zeit.getTime() + (addSeconds * 1000));
+									minutes = Zeit.getMinutes();
+									hours = Zeit.getHours();
+									if (hours < 10)
+									{
+										hours = '0' + hours;
+									}
+									if (minutes < 10)
+									{
+										minutes = '0' + minutes;
+									}
+									timeString = "H:i".replace(/H/g, hours).replace(/i/g, minutes);									$('#serverTimeField').text(timeString);
+								}
+
+								function startTimeInterval(addSeconds)
+								{
+									setServerTime(addSeconds);
+									window.setInterval("setServerTime(60)", 60000);
+								}
+
+								window.setTimeout("startTimeInterval(26)", 26000);
+								//setServerTime();
+
+							</script>
+							<img src="/bilder/icons/icon_info_v3.png" alt="Info" class="pos-rel cursor" style="top:3px;" onmouseover="$('#serverTime').show();" onmouseout="$('#serverTime').hide();" />
+							<div id="serverTime" class="requestBox pos-abs shadow" style="right:0;top:20px;display:none;width:250px;">
+								<h1 class="bold">Spielberechnung</h1>
+								<p style="margin-top:4px;">
+									<span class="bold">um 2:00 Uhr</span>
+									(ca. 61 Min.)
+								</p>
+								<br /><br />
+								<h1 class="bold">Transfermarkt</h1>
+								<p style="margin-top:4px;">
+									<span class="bold">um 7:00 Uhr</span>
+									(ca. 6 Min.)
+								</p>
+								<br /><br />
+								<h1 class="bold">Saisonumbruch</h1>
+								<p style="margin-top:4px;" class="line">
+																		<span class="bold">um 22:00 Uhr</span>
+									(ca. 99 Min.)
+								</p>
+								<br /><br />
+								<h1 class="bold">Pokalspiele</h1>
+								<p style="margin-top:4px;" class="line">
+																		<span class="bold">um 20:00 Uhr</span>
+									(ca. 1 Min.)
+									<div style="margin-top:6px;margin-left:10px;line-height:15px;">
+										                                                <li style="margin-left:10px;">1. Runde am 2. Spieltag</li>                                                <li style="margin-left:10px;">2. Runde am 6. Spieltag</li>                                                <li style="margin-left:10px;">3. Runde am 10. Spieltag</li>                                                <li style="margin-left:10px;">4. Runde am 14. Spieltag</li>                                                <li style="margin-left:10px;">5. Runde am 18. Spieltag</li>                                                <li style="margin-left:10px;">Achtelfinale am 22. Spieltag</li>                                                <li style="margin-left:10px;">Viertelfinale am 25. Spieltag</li>                                                <li style="margin-left:10px;">Halbfinale am 30. Spieltag</li>                                                <li style="margin-left:10px;">Finale am 33. Spieltag</li>									</div>
+								</p>
+														  </div>
+						</div>
+						<br class="clear" />
+										</th>
+			</tr>
+		</thead>
+					<tr>
+				<td rowspan="20" class="leftBox">
+							<div class="textCenter pos-rel" style="margin:10px 0 70px 0;" onmouseover="$('#changeTeamImg').show();" onmouseout="$('#changeTeamImg').hide();">
+							<a href="/club/81860-1.-SC-Wedding" onclick="NewWindow(this.href,'81860','750','550','yes','no');return false;">
+					<img src="/db/images/lang/emblem_default_100.png" height="100" width="100" border=0 align=absmiddle alt="" />
+				</a>
+							<a href="/premium/_frame_plus_aufladen.php" target="_parent" style="color:#303030;">
+				<form action="" method="post" enctype="multipart/form-data" name="uploadImage" id="uploadImage">
+				<div id="changeTeamImg" class="nonvisible pos-abs shadow cursor changeTeamBanner">
+					<img src="/bilder/personal/edit.png" class="float" alt="" />
+					<p class="float clearfix bold">ändern</p>
+				</div>
+				</form>
+			</a>
+		</div>
+		
+							<table style="margin-left:15px;" class="pos-rel" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<div class="officeArrowSmall">&nbsp;</div>
+				</td>
+				<td style="vertical-align:top;">
+					<a title="zur Postfachübersicht" onfocus="this.blur()" class="leftLink" href="/pss/ingamemail/index.php" target="_self">
+						<p class="bauhaus pos-rel fontDefine" style="z-index:10;">Postfach</p>
+					</a>
+				</td>
+				<td style="vertical-align:top;">
+                    					<a onfocus="this.blur()" class="gray_small_arial" href="/pss/ingamemail/index.php" alt="" title="" target="_self">
+						<span class="incomingMail pos-rel bold">(1)</span>
+					</a>
+										<a onfocus="this.blur()" href="/pss/ingamemail/index.php" target="_self" alt="" title="">
+					<div class="officeMap pos-abs imgMail">&nbsp;</div>
+					</a>
+									</td>
+			</tr>
+		</table>
+		
+							<table class="tableMargin" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<div class="officeArrowSmall">&nbsp;</div>
+				</td>
+				<td style="vertical-align:top;" colspan="2">
+					<a title="zur Teamübersicht" class="leftLink" href="../010_mannschaft/_frame_mannschaft.php" target=_parent>
+						<p class="bauhaus pos-rel textLeft fontDefine">Team</p>
+					</a>
+				</td>
+			</tr>
+						<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">
+						Kadergröße:						<span class="bold" style="color:#303030;">
+							12 Spieler						</span>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">Gesperrte/Verletzte:
+						<span class="bold" style="color:#303030;">
+							0						</span> /
+						<span class="bold" style="color:#303030;">
+							0						</span>
+					</span>
+				</td>
+			</tr>
+			</table>
+		
+							<table class="tableMargin" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<div class="officeArrowSmall">&nbsp;</div>
+				</td>
+				<td style="vertical-align:top;" colspan="2">
+					<a title="zur Finanzübersicht" class="leftLink" href="../010_finanzen/_frame_finanzen.php" target=_parent>
+					<p class="bauhaus pos-rel textLeft fontDefine">
+						Finanzen					</p>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">Konto:						<span class="bold" style="color:#303030;">
+							130.305.860 €						</span>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">
+						Kredit:						<span class="bold" style="color:#303030;">
+							0 €						</span>
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+							<table class="tableMargin" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<div class="officeArrowSmall">&nbsp;</div>
+				</td>
+				<td style="vertical-align:top;" colspan="2">
+					<a title="zur Stadionübersicht" class="leftLink" href="../010_stadion/_frame_stadion.php" target=_parent>
+					<p class="bauhaus pos-rel textLeft fontDefine">Stadion</p>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">
+						Kapazität :						<span class="bold">
+							151.460 Plätze						</span>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<span class="small">
+						Letztes Ligaspiel:						<span class="bold">
+							89.784						</span>
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+				</td>
+			</tr>
+			<!-- League Column Start -->
+			<tr>
+						<td class="resultColumn gameInfo pos-rel" style="z-index:10;">
+			<table class="resultLeftColumn" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3">
+						<div class="officeArrow float">&nbsp;</div>
+						<a class="bauhaus gameFont float leftLink" href="/010_liga/_frame_liga.php" target="_parent">Liga</a>
+						<br class="clear" />
+					</td>
+				</tr>
+				<tr><td class="minHeight" colspan="3">&nbsp;</td></tr>
+				<tr>
+					<td colspan="3">2. Liga Nord / 1. Platz</td>
+				</tr>
+									<tr>
+						<td>
+							<a title="Aufstellung Liga" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_liga" target="_parent" style="color:#303030;">
+								Teamstärke:							</a>
+						</td>
+						<td>
+														<span style="color:#303030;padding:0 3px;text-align:right;">
+							154							</span>
+						</td>
+						<td class="bold">
+														<a title="Aufstellung Liga" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_liga" target="_parent" style="color:#006f37;text-align:right;">
+								(11 Spieler)
+							</a>
+						</td>
+					</tr>
+							</table>
+		</td>
+				<td class="resultColumn ieFix" style="vertical-align:top;">
+							<table class="resultRightColumn" cellpadding="0" cellspacing="0" style="height:81px;position:relative;top:-15px;">
+					<tr>
+						<td style="vertical-align:middle;">
+							<p class="textCenter bold" style="font-size:12px;color:#fff;position:relative;">
+							Kein Ligaspiel am 0. Spieltag							</p>
+						</td>
+					</tr>
+				</table>
+						</td>
+					</tr>
+					<tr>
+			<td colspan="5">
+				<div class="pos-rel">
+					<div style="border-bottom:1px solid #fff;background-position:0 0;height:15px;width:100%;right:0;top:-15px;z-index:1;" class="officeMap pos-abs">
+						<p class="floatR">
+							<span class="pos-rel small" style="top:1px;color:#303030;padding:0 1px 0 0;">
+								... <span >
+											1.. Spieltag:										</span>&nbsp;
+										<a href='/club/318982-Spartak-Colonies' onclick="NewWindow(this.href,'318982','750','550','yes','no');return false;" class=>Spartak Colonies</a>										<span title="11 Spieler aufgestellt.">(177)</span> -
+										<a href='/club/81860-1.-SC-Wedding' onclick="NewWindow(this.href,'81860','750','550','yes','no');return false;" class=>1. SC Wedding</a>										<span title="11 Spieler aufgestellt.">(154)</span>
+																	</span>
+						</p>
+						<br class="clear" />
+					</div>
+				</div>
+			</td>
+		</tr>
+					<!-- League Column End -->
+
+			<!-- Friendly Column Start -->
+			<tr>
+						<td class="resultColumn gameInfo pos-rel" style="z-index:10;">
+			<table class="resultLeftColumn" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3">
+						<div class="officeArrow float">&nbsp;</div>
+						<a class="bauhaus gameFont float leftLink" href="/010_freund/_frame_freund.php" target="_parent">Friendly</a>
+						<br class="clear" />
+					</td>
+				</tr>
+				<tr><td class="minHeight" colspan="3">&nbsp;</td></tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+									<tr>
+						<td>
+							<a title="Aufstellung Freundschaftsspiele" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_friendly" target="_parent" style="color:#303030;">
+								Teamstärke:							</a>
+						</td>
+						<td>
+														<span style="color:#303030;padding:0 3px;text-align:right;">
+							154							</span>
+						</td>
+						<td class="bold">
+														<a title="Aufstellung Freundschaftsspiele" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_friendly" target="_parent" style="color:#006f37;text-align:right;">
+								(11 Spieler)
+							</a>
+						</td>
+					</tr>
+							</table>
+		</td>
+				<td class="resultColumn ieFix" style="vertical-align:top;">
+							<table class="resultRightColumn" cellpadding="0" cellspacing="0" style="height:81px;position:relative;top:-15px;">
+					<tr>
+						<td style="vertical-align:middle;">
+							<p class="textCenter bold" style="font-size:12px;color:#fff;position:relative;">
+							Ein offenes Angebot!							</p>
+						</td>
+					</tr>
+				</table>
+						</td>
+					</tr>
+					<tr>
+			<td colspan="5">
+				<div class="pos-rel">
+					<div style="border-bottom:1px solid #fff;background-position:0 0;height:15px;width:100%;right:0;top:-15px;z-index:1;" class="officeMap pos-abs">
+						<p class="floatR">
+							<span class="pos-rel small" style="top:1px;color:#303030;padding:0 1px 0 0;">
+								... <span >
+											1.. Spieltag:										</span>&nbsp;
+										<a href='/club/81860-1.-SC-Wedding' onclick="NewWindow(this.href,'81860','750','550','yes','no');return false;" class=>1. SC Wedding</a>										<span title="11 Spieler aufgestellt.">(154)</span> -
+										<a href='/club/-Noch-kein-Gegner' onclick="NewWindow(this.href,'0','750','550','yes','no');return false;" class=>Noch kein Gegner</a>										<span title="">(0)</span>
+																	</span>
+						</p>
+						<br class="clear" />
+					</div>
+				</div>
+			</td>
+		</tr>
+					<!-- Friendly Column End -->
+
+			<!-- Pokal Column Start -->
+			<tr>
+						<td class="resultColumn gameInfo pos-rel" style="z-index:10;">
+			<table class="resultLeftColumn" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3">
+						<div class="officeArrow float">&nbsp;</div>
+						<a class="bauhaus gameFont float leftLink" href="/010_pokal/_frame_pokal.php" target="_parent">Pokal</a>
+						<br class="clear" />
+					</td>
+				</tr>
+				<tr><td class="minHeight" colspan="3">&nbsp;</td></tr>
+				<tr>
+					<td colspan="3">1. Runde am 2. Spieltag</td>
+				</tr>
+									<tr>
+						<td>
+							<a title="Aufstellung Pokal" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_pokal" target="_parent" style="color:#303030;">
+								Teamstärke:							</a>
+						</td>
+						<td>
+														<span style="color:#303030;padding:0 3px;text-align:right;">
+							154							</span>
+						</td>
+						<td class="bold">
+														<a title="Aufstellung Pokal" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_pokal" target="_parent" style="color:#006f37;text-align:right;">
+								(11 Spieler)
+							</a>
+						</td>
+					</tr>
+							</table>
+		</td>
+				<td class="resultColumn ieFix" style="vertical-align:top;">
+							<table class="resultRightColumn" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<p class="textCenter bold" style="font-size:10px;color:#fff;padding-bottom:10px;position:relative;">
+								<a href='/club/93379-7.-FC-Lattentreffer' onclick="NewWindow(this.href,'93379','750','550','yes','no');return false;" class=white>7. FC Lattentreffer</a>								(81) -
+								<a href='/club/81860-1.-SC-Wedding' onclick="NewWindow(this.href,'81860','750','550','yes','no');return false;" class=white>1. SC Wedding</a>								(154)
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p class="textCenter bold" style="font-size:34px;color:#e4ff32;position:relative;">
+																<img src=/db/images/lang/emblem_default_100.v2.png height=30 border=0 align=absmiddle>&nbsp;-:-<span style="font-size:13px;"></span>&nbsp;<img src=/db/images/lang/emblem_default_100.v2.png height=30 border=0 align=absmiddle>							</p>
+							<div class="floatR pos-rel" style="top:-23px;">
+								
+																<br /><br />
+								
+
+							</div>
+							<br class="clear" />
+						</td>
+					</tr>
+				</table>
+						</td>
+					</tr>
+					<tr>
+			<td colspan="5">
+				<div class="pos-rel">
+					<div style="border-bottom:1px solid #fff;background-position:0 0;height:15px;width:100%;right:0;top:-15px;z-index:1;" class="officeMap pos-abs">
+						<p class="floatR">
+							<span class="pos-rel small" style="top:1px;color:#303030;padding:0 1px 0 0;">
+								&nbsp;							</span>
+						</p>
+						<br class="clear" />
+					</div>
+				</div>
+			</td>
+		</tr>
+					<!-- Pokal Column End -->
+
+			<!-- Weltpokal Column Start -->
+            
+						<!-- Weltpokal Column End -->
+
+			<!-- Funcup Column Start -->
+							<tr>
+						<td class="resultColumn gameInfo pos-rel" style="z-index:10;">
+			<table class="resultLeftColumn" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3">
+						<div class="officeArrow float">&nbsp;</div>
+						<a class="bauhaus gameFont float leftLink" href="/010_funcup/_frame_funcup.php" target="_parent">FunCup</a>
+						<br class="clear" />
+					</td>
+				</tr>
+				<tr><td class="minHeight" colspan="3">&nbsp;</td></tr>
+				<tr>
+					<td colspan="3"><a href="/010_funcup/detail/index.php?funcupid=" class="" onclick="NewWindow(this.href,'funcup_','900','600','YES','YES');return false" style='color:#303030;'></a></td>
+				</tr>
+									<tr>
+						<td>
+							<a title="Aufstellung FunCup" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_funcup" target="_parent" style="color:#303030;">
+								Teamstärke:							</a>
+						</td>
+						<td>
+														<span style="color:#303030;padding:0 3px;text-align:right;">
+							154							</span>
+						</td>
+						<td class="bold">
+														<a title="Aufstellung FunCup" href="../010_mannschaft/_frame_mannschaft.php?page=aufstellung_funcup" target="_parent" style="color:#006f37;text-align:right;">
+								(11 Spieler)
+							</a>
+						</td>
+					</tr>
+							</table>
+		</td>
+				<td class="resultColumn ieFix" style="vertical-align:top;">
+							<table class="resultRightColumn" cellpadding="0" cellspacing="0" style="height:81px;position:relative;top:-15px;">
+					<tr>
+						<td style="vertical-align:middle;">
+							<p class="textCenter bold" style="font-size:12px;color:#fff;position:relative;">
+							Heute kein FunCup-Spiel							</p>
+						</td>
+					</tr>
+				</table>
+						</td>
+						</tr>
+						<tr>
+			<td colspan="5">
+				<div class="pos-rel">
+					<div style="border-bottom:1px solid #fff;background-position:0 0;height:15px;width:100%;right:0;top:-15px;z-index:1;" class="officeMap pos-abs">
+						<p class="floatR">
+							<span class="pos-rel small" style="top:1px;color:#303030;padding:0 1px 0 0;">
+								&nbsp;							</span>
+						</p>
+						<br class="clear" />
+					</div>
+				</div>
+			</td>
+		</tr>
+									<!-- Funcup Column End -->
+			<!-- Footer Column Start -->
+					<tr>
+			<td class="officeInfoFooter" colspan="2" style="vertical-align:middle;width:590px;">
+				<div style="margin-top:8px;">
+				<!-- Kixx/Plus Start-->
+							<div style="width:45%;margin:0 0 4px 15px;" class="float pos-rel">
+				<div style="top:8px;" class="officeArrow float pos-rel">&nbsp;</div>
+				<div style="background-position:-64px -17px;width:50px;height:18px;top:8px;left:-5px;" class="officeMap float pos-rel">&nbsp;</div>
+				<div style="height:25px;border-radius:8px;background:#e88100;width:80px;margin-top:4px;border:1px solid #fff;-moz-box-shadow:inset 0 0 6px #ffc560;-webkit-box-shadow:inset 0 0 6px #ffc560;box-shadow:inset 0 0 6px #ffc560;" class="float pos-rel">
+					<a href="/premium/_frame_plus_aufladen.php" title="" style="text-decoration:none;" target="_parent">
+					<p class="bold textRight small" style="color:#fff;padding:3px 6px 0 0;">
+					0 Tage<br/>1.393					Kixx
+					</p>
+					</a>
+				</div>
+				<br class="clear">
+			</div>
+						<!-- Kixx/Plus End-->
+				<!-- Personal Start-->
+								<!-- Personal End-->
+				<!-- Match Report Start-->
+								<div class="float" style="width:45%;">
+					<div class="officeArrow float pos-rel" style="top:8px;">&nbsp;</div>
+					<div class="officeMap float pos-rel" style="top:5px;background-position:-155px -67px;width:21px;height:21px;"></div>
+					<a href="/010_buero/buero_spannend.php">
+						<p class="float pos-rel small excitinMatchReport">
+							Spannende<br>Spielberichte						</p>
+					</a>
+					<br class="clear" />
+				</div>
+				<!-- Match Report End-->
+				<br class="clear" />
+				</div>
+			</td>
+		</tr>
+		
+			<!-- Footer Column End -->
+			</table>
+
+					<div id="logBook" class="shadow" style="border-radius:8px;">
+			<div class="logbookHeader">
+				<p class="bold">Saison-Logbuch</p>
+				<span style="color:#fff;"></span>
+			</div>
+			<div class="logbookContent" style="border:1px solid #8f8f8f;border-top:0;">
+				<div class="scroll-pane" style="height:120px;overflow:hidden;">
+									<div class="logbookColumn " id="logBookColum_487628205" onmouseover="$('#inactiveIcon_487628205').show();" onmouseout="$('#inactiveIcon_487628205').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Jugendförderung: Allahberdy Jumanazarow (15 Jahre) wurde gefeuert.					</p>
+										<div id="inactiveIcon_487628205" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487628138" onmouseover="$('#inactiveIcon_487628138').show();" onmouseout="$('#inactiveIcon_487628138').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Jugendförderung: Rudo Jaga (15 Jahre) wurde gefeuert.					</p>
+										<div id="inactiveIcon_487628138" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487628124" onmouseover="$('#inactiveIcon_487628124').show();" onmouseout="$('#inactiveIcon_487628124').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Jugendförderung: Idrissu Karim (15 Jahre) wurde gefeuert.					</p>
+										<div id="inactiveIcon_487628124" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487628105" onmouseover="$('#inactiveIcon_487628105').show();" onmouseout="$('#inactiveIcon_487628105').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Jugendförderung: Ademola Oluehi (15 Jahre) wurde gefeuert.					</p>
+										<div id="inactiveIcon_487628105" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487594504" onmouseover="$('#inactiveIcon_487594504').show();" onmouseout="$('#inactiveIcon_487594504').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon19">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Aufwertungstag: 1 Spieler hat eine neue Stärke.<br>					</p>
+										<div id="inactiveIcon_487594504" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487547195" onmouseover="$('#inactiveIcon_487547195').show();" onmouseout="$('#inactiveIcon_487547195').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">0</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon3">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						Es sind neue Jugendspieler-Gespräche verfügbar: <a href="/010_mannschaft/_frame_mannschaft.php?page=youth" target="content1" class="blue_big">zur Jugend.</a>					</p>
+										<div id="inactiveIcon_487547195" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487285965" onmouseover="$('#inactiveIcon_487285965').show();" onmouseout="$('#inactiveIcon_487285965').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">34</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon6">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						<a class=black_small href="/player/161217720-Nick-Knight" onclick="NewWindow(this.href,'161217720','400','400','yes');return false">Nick Knight</a> (VS, 31 Jahre, Stärke 13) wurde für einen Preis von <a href="/010_transfer/spielerwechsel_popup.php?aktion=info&spielerid=161217720" onclick="NewWindow(this.href,'History161217720','650','500','yes','yes');return false">6.550.003 €</a> von <a href="/club/83909-1.-FC-Alpenfestung" class=black_small onclick="NewWindow(this.href,'83909','750','550','yes','no');return false;">1. FC Alpenfestung</a> (Oberliga H) verpflichtet.					</p>
+										<div id="inactiveIcon_487285965" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487284900" onmouseover="$('#inactiveIcon_487284900').show();" onmouseout="$('#inactiveIcon_487284900').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">34</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						<a class=black_small href="/player/160195494-Irwin-O%27Canny" onclick="NewWindow(this.href,'160195494','400','400','yes');return false">Irwin O'Canny</a> (LV, 35 Jahre, Stärke 15) wurde für <a href="../010_transfer/spielerwechsel_popup.php?aktion=info&spielerid=160195494" onclick="NewWindow(this.href,'History160195494','650','500','yes','yes');return false">1.500.004 €</a> an <a href="/club/257750-Buenes-Aires-2010" class=black_small onclick="NewWindow(this.href,'257750','750','550','yes','no');return false;">Buenes Aires 2010</a> (Oberliga H) verkauft.					</p>
+										<div id="inactiveIcon_487284900" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487284893" onmouseover="$('#inactiveIcon_487284893').show();" onmouseout="$('#inactiveIcon_487284893').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">34</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						<a class=black_small href="/player/160197200-Christos-Koumas" onclick="NewWindow(this.href,'160197200','400','400','yes');return false">Christos Koumas</a> (VS, 35 Jahre, Stärke 15) wurde für <a href="../010_transfer/spielerwechsel_popup.php?aktion=info&spielerid=160197200" onclick="NewWindow(this.href,'History160197200','650','500','yes','yes');return false">1.812.345 €</a> an <a href="/club/288795-SG-Dansk-Skibsf%C3%B6rer" class=black_small onclick="NewWindow(this.href,'288795','750','550','yes','no');return false;">SG Dansk Skibsförer</a> (2. Liga Nord) verkauft.					</p>
+										<div id="inactiveIcon_487284893" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+							<div class="logbookColumn " id="logBookColum_487284888" onmouseover="$('#inactiveIcon_487284888').show();" onmouseout="$('#inactiveIcon_487284888').hide();" >
+					<div class="float textCenter logbookFirstColumn">
+						<p class="small">Spieltag</p>
+						<p class="bold" style="font-size:18px;">34</p>
+					</div>
+					<div class="float iconBox">
+						<div class="officeMap pos-rel logbookIconSize logbookIcon7">&nbsp;</div>
+					</div>
+					<p class="float logbookTxt">
+						<a class=black_small href="/player/160270788-Robert-Rodcharoen" onclick="NewWindow(this.href,'160270788','400','400','yes');return false">Robert Rodcharoen</a> (ZM, 35 Jahre, Stärke 15) wurde für <a href="../010_transfer/spielerwechsel_popup.php?aktion=info&spielerid=160270788" onclick="NewWindow(this.href,'History160270788','650','500','yes','yes');return false">1.711.000 €</a> an <a href="/club/154900-Dynamo-Daniel" class=black_small onclick="NewWindow(this.href,'154900','750','550','yes','no');return false;">Dynamo Daniel</a> (Landesklasse 38) verkauft.					</p>
+										<div id="inactiveIcon_487284888" title="ausblenden" style="top:7px;right:5px;" class="cursor officeMap pos-rel minHeight inactiveIcon floatR">&nbsp;</div>
+					<br class="clear" />
+				</div>
+								<!-- Mehr Anzeigen Start -->
+											<div id="moreLogsButton" class="bold moreLogsButton cursor textCenter">
+							<span>
+								alle anzeigen							</span>
+							</ul>
+						</div>
+										<!-- Mehr Anzeigen End -->
+				</div>
+				<input type="hidden" value="ausblenden" id="hideLogbuchText" />
+				<input type="hidden" value="einblenden" id="showLogbuchText" />
+				<div class="optionsBorder">
+					<div class="floatR pos-rel" style="padding:5px;">
+						<div class="officeMap optionsIcon float cursor" onclick="$('#optionBoxLog').show();">&nbsp;</div>
+						<!-- Optionbox Start -->
+						<div id="optionBoxLog" class="pos-abs optionBox">
+							<div class="floatR officeMap pos-rel cursor closeIcon" onclick="$('#optionBoxLog').hide();">&nbsp;</div>
+							<input id="firstSelect" class="logbuchAusgeblendet pos-rel" style="top:2px;" type="radio" name="logbuchAusgeblendet" value="0" checked="checked" />
+							<label for="firstSelect">Nur eingeblendete Einträge</label>
+							<br />
+							<input id="secondSelect" class="logbuchAusgeblendet pos-rel" style="top:2px;" type="radio" name="logbuchAusgeblendet" value="2" />
+							<label for="secondSelect">Alle Einträge</label>
+							<br />
+							<input id="thirdSelect" class="logbuchAusgeblendet pos-rel" style="top:2px;" type="radio" name="logbuchAusgeblendet" value="1" />
+							<label for="thirdSelect">Nur ausgeblendete Einträge</label>
+						</div>
+						<!-- Optionbox End -->
+						<div id="moreLogs" class="float officeArrowDown pos-rel cursor" style="top:5px;z-index:10;">&nbsp;</div>
+						<br class="clear" />
+					</div>
+					<br class="clear" />
+				</div>
+			</div>
+		</div>
+
+
+		
+						<!-- GOAL.COM TABELLE - START -->
+			<div id="footballNews" class="shadow" style="border-radius:8px;">
+				<div class="footballNewsHeader">
+					<div class="float">
+						<p class="bold">Fu&szlig;ball News</p>
+						<span style="color:#fff;">
+													</span>
+					</div>
+					<div class="float" style="margin:6px 0 0 10px;">
+						
+					</div>
+					<br class="clear" />
+				</div>
+				<div class="footballNewsContent" style="border:1px solid #8f8f8f;border-top:0;">
+					<div class="footballNewsColumn" style="position:relative;">
+											<div id="news1" class="newstext_goalcom" style="visibility:visible;display:block; position: absolute; top: 6px; left: 16px; width: 200px;">
+							<a style="color:#545454;" href="/sv.rss.php?id=48077" id="goalcom48077" target="_blank" class="line">Perfekt: Bendtner wechselt zu Nottingham Forest&nbsp;&raquo;&raquo;</a>
+						</div>
+											<div id="news2" class="newstext_goalcom" style="visibility:visible;display:block; position: absolute; top: 6px; left: 266px; width: 200px;">
+							<a style="color:#545454;" href="/sv.rss.php?id=48076" id="goalcom48076" target="_blank" class="line">UEFA: Platini bekommt offenbar Abschiedsrede  FIFA verstimmt&nbsp;&raquo;&raquo;</a>
+						</div>
+											<div id="news3" class="newstext_goalcom" style="visibility:visible;display:block; position: absolute; top: 6px; left: 516px; width: 200px;">
+							<a style="color:#545454;" href="/sv.rss.php?id=48075" id="goalcom48075" target="_blank" class="line">Jamaika-Coach Schäfer suspendiert: Attacke gegen Kameramann&nbsp;&raquo;&raquo;</a>
+						</div>
+										</div>
+				<div class="optionsBorder" style="margin-top:20px;">
+					<div class="floatR pos-rel" style="padding:5px;">
+						<div class="officeMap optionsIcon float cursor" onclick="$('#optionNewsBox').show()">&nbsp;</div>
+					</div>
+					<!-- Optionbox Start -->
+					<div id="optionNewsBox" class="pos-abs optionBox">
+						<div class="floatR officeMap pos-rel cursor closeIcon" onclick="$('#optionNewsBox').hide();">&nbsp;</div>
+						<p>
+							<input type="checkbox" name="fussballNews" id="fussballNews" checked class="pos-rel" style="top:2px;" />
+							<label for="fussballNews">
+								Fußball News ausblenden							</label><br />
+							<hr />
+							<span class="small-font">Unter <span class="bold">Büro &raquo; Profil &raquo; Einstellungen</span><br/>kannst du die News jederzeit wieder einblenden.</span>
+						</p>
+					</div>
+					<!-- Optionbox End -->
+					<br class="clear" />
+				</div>
+			</div>
+			</div>
+								<div align="center" style="margin:15px 0;">
+			<span class="bold intText">
+				Manager online: 1.639 			</span>
+			<a class="intLink bold" href="/010_support/_frame_support.php" target="content1">
+				Hilfe & Support			</a>
+			<a href="mehrere_spieler_eine_ip.php" class="intLink bold" onmouseover="Tip('<font color=white class=minitext><b>Mehrere Manager von einer IP</b></font><br><font class=minitext>Falls mehrere Manager an einem Rechner oder in einem Netzwerk spielen (gleiche IP), oder falls du eine Urlaubsvertretung (UV) hast, dann musst du dies hier melden.<br></font>',WIDTH,190,BGIMG,'pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">
+				Mehrere Manager von einer IP (UV)			</a>
+			<a href="../weiterempfehlen.php?ingame=true" class="intLink bold" onclick="NewWindow(this.href,'ofm_weiterempfehlen','650','600','no','no');return false">OFM weiterempfehlen</a>
+						</div>
+			
+		</div>
+		<div id="contentRight" class="floatR" style="width:300px;">
+						<div id="bannerBox" style="margin-bottom:20px;">
+				<div class="orangeHeader">
+											<a href="/premium/_frame_plus_aufladen.php" title="" style="text-decoration:none;color:#fff;" target="_parent">
+											<p class="bold" style="font-style:italic">Werbefreiheit &raquo; Plus</p>
+						</a>
+				</div>
+				<div style="width:300px;height:250px;">
+					<!-- BEGIN ADITIONTAG Website-Tag -->
+<script type="text/javascript" src="http://imagesrv.adition.com/js/adition.js"></script>
+<script type="text/javascript" src="http://ad3.adfarm1.adition.com/js?wp_id=2521608"></script>
+<!-- END ADITIONTAG-->				</div>
+			</div>
+								<div id="personalBox" class="shadow" style="border-radius:8px;margin-bottom:20px;">
+			<div class="orangeHeader pos-rel">
+								<div class="float" >
+					<p class="bold">
+													Assistent-Info
+							
+					</p>
+					<!--<span style="color:#fff;">0 Nachrichten</span>-->
+				</div>
+				<br class="clear" />
+			</div>
+			<div class="rightContentBoxBg">
+				<div id="personalInfo" class="scroll-pane" style="height:135px;overflow:hidden;">
+					<!-- No Personal Start -->
+												<p id="noPersonal" style="padding:10px;line-height:14px;color:#103f75;">
+								Nur mit aktivem PlusPaket möglich!								<br /><br />&raquo; <a style="color:#489be8;text-decoration:underline;" class="bold" href="/premium/_frame_plus_aufladen.php" target="content1">OFM-PlusPaket</a>
+							</p>
+												<!-- Personal Info End -->
+				</div>
+				<div class="optionsBorder">
+					<div class="floatR pos-rel" style="padding:5px;">
+						<a class="officeMap optionsIcon float cursor" href="/premium/_frame_plus.php?showSekre" target="content1"></a>
+												<br class="clear" />
+					</div>
+					<br class="clear" />
+				</div>
+			</div>
+		</div>
+
+		
+					<div id="buddyBox" class="shadow" style="border-radius:8px;margin-bottom:20px;">
+				<input type="hidden" name="teamid" value="81860">
+				<input type="hidden" name="friendsCount" value="5">
+				<div class="buddyHeader">
+					<p class="bold">Freundesliste</p>
+					<span style="color:#fff;">
+						Freunde (<span id="friendsCount">5</span>) / beobachtet (<span id="buddysCount">0</span>)
+					</span>
+				</div>
+				<div class="rightContentBoxBg">
+					<div class="scroll-pane" style="height:160px;overflow:hidden;">
+						<input type="hidden" name="friendErrorCount" value="Du hast das Limit von 500 Freunden bereits erreicht.">
+						<input type="hidden" name="friendErrorRequestCount" value="Du hast {username} schon eine Freundschaftsanfrage geschickt. Die nächste Anfrage ist am {date} möglich.">
+
+						<p class="bold" style="width:250px;margin-left:10px;line-height:14px;color:#103f75;font-size:10px;">
+						
+				<div id="friend_81716" style="border-bottom:1px solid #a1a1a1;height:auto;padding:4px 10px;" class="buddyRow pos-rel">
+					<div class="float textCenter" style="width:30px;margin-right:5px;">
+						&nbsp;					</div>
+					<div class="float pos-rel" style="top:3px;">
+                        						<a href="/club/81716-1.-FC-Wei%C3%9Fensee" onclick="NewWindow(this.href,'81716','750','550','yes','no');return false;" class="bold float" style="color:#21638d;">
+							1. FC Weißensee						</a>
+                        						<p class="float">&nbsp;(152.5)</p>
+						<div class="pos-rel floatR" style="width:15px;height:13px;top:0;"></div>						<!-- Online Status Start -->
+                        <script>
+                            $(document).ready(function(){
+                                $('.status-online').mouseover(function(){
+                                    $('#online-status').show();
+                                });
+                                $('.status-online').mouseleave(function(){
+                                    $('#online-status').hide();
+                                });
+                            });
+                        </script>
+                        						<!-- Online Status End -->
+						<br class="clear" />
+							<p  class="buddyResult">kein Spieltag</p>							<div class="buddyLiga clear" >
+                                								<p class="float" style="margin-top:1px;"><img src="/bilder/fahnen3d/elfenbeinkueste.gif" width=20 height=12 align=absmiddle border=0 onmouseover="Tip('<table cellspacing=0 cellpadding=0 border=0><tr><td height=24><img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25>&nbsp;&nbsp;</td><td><font color=white><b>Elfenbeinküste</td></tr></table></b></font>',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">&nbsp;</p>
+								<p class="float">
+                                    									<a style="color:#303030;" href='../010_liga/spieltag_tabelle_2.php?ligaid=1&land=31' class="black_small"  onmouseover="Tip('<font color=white class=minitext><b>1. Liga</b></font>',BGIMG,'/bilder/back/tipback3.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" >
+										1. Liga									</a>
+									/ 1. Platz								</p>
+								<br class="clear"/>
+							</div>
+					</div>
+
+					<div class="matchReportBox floatR pos-rel levelThree">
+					                        <!-- Chaticon Start -->
+                                                <!-- Chaticon End -->
+						<div class="officeMap optionsIconSmall float cursor" onclick="showRequestBoxList(81716, 'friend')">&nbsp;</div>
+					</div>
+					<br class="clear" />
+				</div> <!-- end id="friend_#XY" -->
+				
+				<div id="friend_62881" style="border-bottom:1px solid #a1a1a1;height:auto;padding:4px 10px;" class="buddyRow pos-rel">
+					<div class="float textCenter" style="width:30px;margin-right:5px;">
+						&nbsp;					</div>
+					<div class="float pos-rel" style="top:3px;">
+                        						<a href="/club/62881-BFC-Partisan-Wedd..." onclick="NewWindow(this.href,'62881','750','550','yes','no');return false;" class="bold float" style="color:#21638d;">
+							BFC Partisan Wedd...						</a>
+                        						<p class="float">&nbsp;(136)</p>
+						<div class="pos-rel floatR" style="width:15px;height:13px;top:0;"></div>						<!-- Online Status Start -->
+                        <script>
+                            $(document).ready(function(){
+                                $('.status-online').mouseover(function(){
+                                    $('#online-status').show();
+                                });
+                                $('.status-online').mouseleave(function(){
+                                    $('#online-status').hide();
+                                });
+                            });
+                        </script>
+                        						<!-- Online Status End -->
+						<br class="clear" />
+							<p  class="buddyResult">kein Spieltag</p>							<div class="buddyLiga clear" >
+                                								<p class="float" style="margin-top:1px;"><img src="/bilder/fahnen3d/01_de.gif" width=20 height=12 align=absmiddle border=0 onmouseover="Tip('<table cellspacing=0 cellpadding=0 border=0><tr><td height=24><img src=/bilder/fahnen3d/01_de.gif border=1 align=absmiddle width=40 height=25>&nbsp;&nbsp;</td><td><font color=white><b>Deutschland</td></tr></table></b></font>',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">&nbsp;</p>
+								<p class="float">
+                                    									<a style="color:#303030;" href='../010_liga/spieltag_tabelle_2.php?ligaid=32&land=1' class="black_small"  onmouseover="Tip('<font color=white class=minitext><b>Landesliga 1</b></font>',BGIMG,'/bilder/back/tipback3.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" >
+										Landesliga									</a>
+									/ 1. Platz								</p>
+								<br class="clear"/>
+							</div>
+					</div>
+
+					<div class="matchReportBox floatR pos-rel levelThree">
+					                        <!-- Chaticon Start -->
+                                                <!-- Chaticon End -->
+						<div class="officeMap optionsIconSmall float cursor" onclick="showRequestBoxList(62881, 'friend')">&nbsp;</div>
+					</div>
+					<br class="clear" />
+				</div> <!-- end id="friend_#XY" -->
+				
+				<div id="friend_44265" style="border-bottom:1px solid #a1a1a1;height:auto;padding:4px 10px;" class="buddyRow pos-rel">
+					<div class="float textCenter" style="width:30px;margin-right:5px;">
+						&nbsp;					</div>
+					<div class="float pos-rel" style="top:3px;">
+                        						<a href="/club/44265-Union-Ob" onclick="NewWindow(this.href,'44265','750','550','yes','no');return false;" class="bold float" style="color:#21638d;">
+							Union Ob						</a>
+                        						<p class="float">&nbsp;(96)</p>
+						<div class="pos-rel floatR" style="width:15px;height:13px;top:0;"></div>						<!-- Online Status Start -->
+                        <script>
+                            $(document).ready(function(){
+                                $('.status-online').mouseover(function(){
+                                    $('#online-status').show();
+                                });
+                                $('.status-online').mouseleave(function(){
+                                    $('#online-status').hide();
+                                });
+                            });
+                        </script>
+                        						<!-- Online Status End -->
+						<br class="clear" />
+							<p  class="buddyResult">kein Spieltag</p>							<div class="buddyLiga clear" >
+                                								<p class="float" style="margin-top:1px;"><img src="/bilder/fahnen3d/elfenbeinkueste.gif" width=20 height=12 align=absmiddle border=0 onmouseover="Tip('<table cellspacing=0 cellpadding=0 border=0><tr><td height=24><img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25>&nbsp;&nbsp;</td><td><font color=white><b>Elfenbeinküste</td></tr></table></b></font>',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">&nbsp;</p>
+								<p class="float">
+                                    									<a style="color:#303030;" href='../010_liga/spieltag_tabelle_2.php?ligaid=23&land=31' class="black_small"  onmouseover="Tip('<font color=white class=minitext><b>Verbandsliga 8</b></font>',BGIMG,'/bilder/back/tipback3.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" >
+										Verbandslig...									</a>
+									/ 9. Platz								</p>
+								<br class="clear"/>
+							</div>
+					</div>
+
+					<div class="matchReportBox floatR pos-rel levelThree">
+					                        <!-- Chaticon Start -->
+                                                <!-- Chaticon End -->
+						<div class="officeMap optionsIconSmall float cursor" onclick="showRequestBoxList(44265, 'friend')">&nbsp;</div>
+					</div>
+					<br class="clear" />
+				</div> <!-- end id="friend_#XY" -->
+				
+				<div id="friend_1488" style="border-bottom:1px solid #a1a1a1;height:auto;padding:4px 10px;" class="buddyRow pos-rel">
+					<div class="float textCenter" style="width:30px;margin-right:5px;">
+						&nbsp;<a onmouseover="Tip('<img src=/db/images/wappen/54/70/wappen_1488_5470.png height=\'100\'>',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img src=/db/images/wappen/54/70/wappen_1488_5470.png  height="25"   border=\'0\'></a>					</div>
+					<div class="float pos-rel" style="top:3px;">
+                        						<a href="/club/1488-Holzbein-Schiel" onclick="NewWindow(this.href,'1488','750','550','yes','no');return false;" class="bold float" style="color:#21638d;">
+							Holzbein Schiel						</a>
+                        						<p class="float">&nbsp;(149)</p>
+						<div class="pos-rel floatR" style="width:15px;height:13px;top:0;"></div>						<!-- Online Status Start -->
+                        <script>
+                            $(document).ready(function(){
+                                $('.status-online').mouseover(function(){
+                                    $('#online-status').show();
+                                });
+                                $('.status-online').mouseleave(function(){
+                                    $('#online-status').hide();
+                                });
+                            });
+                        </script>
+                                                <div class="float">
+                            <img src="/bilder/vereinsseite/icon-online.png" alt="online" class="pos-abs status-online" style="width: 8px; height: 8px; top:2px;margin-left:2px;cursor: default;" />
+                            <div style="right: -65px; top: -5px; min-width: 40px !important; width: 40px !important; display: none;" class="requestBox pos-abs shadow" id="online-status">
+                                <b>online</b>
+                            </div>
+                        </div>
+                        						<!-- Online Status End -->
+						<br class="clear" />
+							<p  class="buddyResult">kein Spieltag</p>							<div class="buddyLiga clear" >
+                                								<p class="float" style="margin-top:1px;"><img src="/bilder/fahnen3d/japan.gif" width=20 height=12 align=absmiddle border=0 onmouseover="Tip('<table cellspacing=0 cellpadding=0 border=0><tr><td height=24><img src=/bilder/fahnen3d/japan.gif border=1 align=absmiddle width=40 height=25>&nbsp;&nbsp;</td><td><font color=white><b>Japan</td></tr></table></b></font>',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">&nbsp;</p>
+								<p class="float">
+                                    									<a style="color:#303030;" href='../010_liga/spieltag_tabelle_2.php?ligaid=6&land=21' class="black_small"  onmouseover="Tip('<font color=white class=minitext><b>Regionalliga C</b></font>',BGIMG,'/bilder/back/tipback3.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" >
+										Regionallig...									</a>
+									/ 6. Platz								</p>
+								<br class="clear"/>
+							</div>
+					</div>
+
+					<div class="matchReportBox floatR pos-rel levelThree">
+					                        <!-- Chaticon Start -->
+                                                <!-- Chaticon End -->
+						<div class="officeMap optionsIconSmall float cursor" onclick="showRequestBoxList(1488, 'friend')">&nbsp;</div>
+					</div>
+					<br class="clear" />
+				</div> <!-- end id="friend_#XY" -->
+				
+				<div id="friend_8272" style="border-bottom:1px solid #a1a1a1;height:auto;padding:4px 10px;" class="buddyRow pos-rel">
+					<div class="float textCenter" style="width:30px;margin-right:5px;">
+						&nbsp;					</div>
+					<div class="float pos-rel" style="top:3px;">
+                        						<a href="/club/8272-BSC-Wittenau" onclick="NewWindow(this.href,'8272','750','550','yes','no');return false;" class="bold float" style="color:#21638d;">
+							BSC Wittenau						</a>
+                        						<p class="float">&nbsp;(45)</p>
+						<div class="pos-rel floatR" style="width:15px;height:13px;top:0;"></div>						<!-- Online Status Start -->
+                        <script>
+                            $(document).ready(function(){
+                                $('.status-online').mouseover(function(){
+                                    $('#online-status').show();
+                                });
+                                $('.status-online').mouseleave(function(){
+                                    $('#online-status').hide();
+                                });
+                            });
+                        </script>
+                        						<!-- Online Status End -->
+						<br class="clear" />
+							<p  class="buddyResult">kein Spieltag</p>							<div class="buddyLiga clear" >
+                                								<p class="float" style="margin-top:1px;"><img src="/bilder/fahnen3d/elfenbeinkueste.gif" width=20 height=12 align=absmiddle border=0 onmouseover="Tip('<table cellspacing=0 cellpadding=0 border=0><tr><td height=24><img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25>&nbsp;&nbsp;</td><td><font color=white><b>Elfenbeinküste</td></tr></table></b></font>',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)">&nbsp;</p>
+								<p class="float">
+                                    									<a style="color:#303030;" href='../010_liga/spieltag_tabelle_2.php?ligaid=43&land=31' class="black_small"  onmouseover="Tip('<font color=white class=minitext><b>Landesliga 12</b></font>',BGIMG,'/bilder/back/tipback3.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" >
+										Landesliga									</a>
+									/ 12. Platz								</p>
+								<br class="clear"/>
+							</div>
+					</div>
+
+					<div class="matchReportBox floatR pos-rel levelThree">
+					                        <!-- Chaticon Start -->
+                                                <!-- Chaticon End -->
+						<div class="officeMap optionsIconSmall float cursor" onclick="showRequestBoxList(8272, 'friend')">&nbsp;</div>
+					</div>
+					<br class="clear" />
+				</div> <!-- end id="friend_#XY" -->
+													<div id="addFriendsLink" style="height:20px;padding:10px; border:0; display:none" class="pos-rel">
+								<a href="../010_statistiken/search_team.php?mode=friendrequest" onClick="NewWindow(this.href,'Freundesliste','850','550','yes','no');return false" style="color:#2d4c64;">
+									+ Freunde hinzuf&uuml;gen								</a>
+							</div>
+						</p>
+					</div>
+
+					<input type="hidden" name="friendsTeamId" value="">
+
+					<div id="requestBoxFriendContent" class="nonvisible">
+						<input type="radio" style="top:2px;" class="pos-rel" name="deleteFriendFromList" value="deleteFriend" id="deleteFriendRadio">
+						<label for="deleteFriendRadio">Freundschaft beenden</label>
+						<p style="margin:10px 0 5px 0;">
+							<input type="button" onClick="showDeleteConfirm('Friend');" class="buttonGreen float cursor" value="ja">
+							<input type="button" onClick="$('#requestBox').hide()" class="buttonRed float cursor" value="nein"  style="margin-left:5px;">
+						<br class="clear" />
+						</p>
+					</div>
+
+					<div id="requestBoxObservedContent" class="nonvisible">
+						<input type="radio" style="top:2px;" class="pos-rel" name="observerAction" value="addFriend" id="addFriendActionRadio">
+						<label for="addFriendActionRadio">Freundschaftsanfrage senden</label>
+						<br>
+						<input type="radio" style="top:2px;" class="pos-rel" name="observerAction" value="deleteObserved" id="deleteFriendActionRadio">
+						<label for="deleteFriendActionRadio">Nicht mehr beobachten</label>
+						<p style="margin:10px 0 5px 0;">
+							<input type="button" onClick="friendsObserverAction()" class="buttonGreen float cursor" value="ja">
+							<input type="button" onClick="$('#requestBox').hide()" class="buttonRed float cursor" value="nein"  style="margin-left:5px;">
+						<br class="clear" />
+						</p>
+					</div>
+
+					<div id="confirmBox" class="pos-abs requestBox nonvisible" style="top:10px;right:10px;">
+						<div onclick="$('#confirmBox').hide();" class="floatR officeMap pos-rel cursor closeIcon">&nbsp;</div>
+						<input type="hidden" name="observedConfirmText" value="Wirklich nicht mehr beobachten?">
+						<input type="hidden" name="friendConfirmText" value="Freundschaft wirklich beenden?">
+						<input type="hidden" name="deleteAction" value="">
+						<span class="confirmMessage"></span>
+						<p style="margin:10px 0 5px 0;">
+							<input type="button" onClick="deleteActionList()" class="buttonGreen float cursor" value="Ja, sicher">
+							<input type="button" onClick="$('#confirmBox').hide()" class="buttonRed float cursor" value="Nein, nicht"  style="margin-left:5px;">
+						<br class="clear" />
+						</p>
+					</div>
+
+					<div id="requestBox" class="pos-abs requestBox nonvisible" style="top:10px;right:10px;">
+						<div onclick="$('#requestBox').hide();" class="floatR officeMap pos-rel cursor closeIcon">&nbsp;</div>
+						<div class="content"></div>
+					</div>
+
+					<div id="errorBox" class="requestBox pos-abs nonvisible" style="top:10px;right:10px;">
+						<div onclick="$(this).parent().hide();" class="floatR officeMap pos-rel cursor closeIcon clear">&nbsp;</div>
+						<span class="errorText"></span>
+						<p style="margin:10px 0 5px 0;">
+							<input type="button" onClick="$('#errorBox').hide()" class="buttonRed float cursor" value="Schließen">
+						</p>
+					</div>
+
+					<div id="messageBox" class="requestBox pos-abs nonvisible" style="top:10px;right:10px;">
+						<div onclick="$(this).parent().hide();" class="floatR officeMap pos-rel cursor closeIcon clear">&nbsp;</div>
+						<span class="messageText"></span>
+						<p style="margin:10px 0 5px 0;">
+							<input type="button" onClick="$('#messageBox').hide()" class="buttonRed float cursor" value="Schließen">
+						</p>
+					</div>
+
+					<div class="optionsBorder">
+						<div class="floatR pos-rel" style="padding:5px;">
+															<div class="officeMap searchIconSmall float cursor" onclick="NewWindow('/010_buero/buero_buddylist_eintragungen.php','','850','550','yes','no');return false">&nbsp;</div>
+															<div class="addIcon add float cursor" title="" onclick="NewWindow('../010_statistiken/search_team.php?mode=friendrequest','Freundesliste','850','550','yes','no');return false" style="margin-right:4px;">&nbsp;</div>
+							<div class="officeMap optionsIcon float cursor" onclick="$('#optionBoxBuddy').show();">&nbsp;</div>
+
+							<!-- Optionbox Start -->
+							<div id="optionBoxBuddy" class="pos-abs optionBox">
+								<div class="floatR officeMap pos-rel cursor closeIcon" onclick="$('#optionBoxBuddy').hide();">&nbsp;</div>
+								<input type="checkbox" name="showBuddyResult" id="showBuddyResult" class="pos-rel" style="top:2px;"
+								 checked="checked" 								/>
+								<label for="showBuddyResult">Ergebnisse anzeigen</label>
+								<br />
+								<input type="checkbox" name="showBuddyLiga" id="showBuddyLiga" class="pos-rel" style="top:2px;"
+								 checked="checked" 								/>
+								<label for="showBuddyLiga">Liga und Platz anzeigen</label>
+							</div>
+							<!-- Optionbox End -->
+															<div class="float officeArrowDown pos-rel cursor" id="moreBuddys" style="top:5px; display:block" id="moreBuddys">&nbsp;</div>
+															<br class="clear" />
+						</div>
+						<br class="clear" />
+					</div>
+				</div>
+			</div>
+		
+					</div>
+		<br class="clear" />
+	</div>
+
+	<!-- SZM VERSION="2.0" -->
+<script type="text/javascript">
+    var iam_data = {
+        "st": "ofmanag", // site/domain
+        "cp": "spieleseite", // code
+        "sv": "ke", // Es wird keine Befragungseinladung ausgeliefert.
+        "co": "kommentar" // comment
+    };
+    iom.c(iam_data, 1);
+</script>
+<!--/SZM -->		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1460754-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+					<div class="dialog-overlay"></div>
+		<div id="dialog-content">
+		<!-- Content Start -->
+
+		<!-- Content Ende -->
+		</div>
+		<style type="text/css" media="screen">
+	/* <![CDATA[ */
+	#spielerboxes .float{
+		float:left;
+	}
+
+	#spielerboxes .clear{
+		clear:both;
+	}
+
+	#spielerboxes .pointer{
+		cursor:pointer;
+	}
+
+	#spielerboxes .frame{
+		margin:0 auto;
+		width:540px;
+		height:370px;
+		background:url(/bilder/overlay/items.png) no-repeat transparent;
+		color:#000;
+		font-size:11px;
+		font-family:verdana,arial,sans-serif;
+	}
+
+	#spielerboxes .background{
+		position:absolute;
+		position:relative\9;
+		width:425px;
+		top:10px;
+		margin:20px 0 0 35px;
+		margin:20px 0 0 -60px\9;
+		z-index:9999;
+	}
+
+	#spielerboxes .headline_overlay{
+		font-size:16px;
+		font-weight:bold;
+		margin:25px 0 0 0;
+		color:#2e8b00;
+	}
+
+	#spielerboxes .button-close{
+		background:url(/bilder/overlay/button-close.png) no-repeat transparent;
+		position:absolute;
+		width:28px;
+		height:28px;
+		z-index:9999;
+		margin:-10px 0 0 455px;
+		margin:-10px 0 0 190px\9;
+	}
+
+	#spielerboxes .error_message{
+		font-weight:bold;
+		color:#de1616;
+	}
+
+	#spielerboxes .window{
+		position:fixed;
+		left:0;
+		top:0;
+		display:none;
+		z-index:9001;
+	}
+
+	#spielerboxes #mask{
+		position:fixed;
+		left:0;
+		top:0;
+		z-index:9000;
+		background-color:#000;
+		display:none;
+	}
+	/* ]]> */
+</style>
+
+<!--[if IE]>
+<style type="text/css">
+		#spielerboxes .window{
+			position:absolute;
+		}
+	</style>
+	<![endif]-->
+<div id="spielerboxes">
+	<div id="dialog" class="window">
+		<div class="frame">
+			<div class="background">
+				<div style="margin-top:15px;">
+					<img src="/010_buero/pics/log_icon7.png" alt="" align="left" style="margin-right:5px;">
+					<span class='name'></span>&nbsp;(<span class='position'></span>, <span class='alter'></span>&nbsp;Jahre,&nbsp;Stärke&nbsp;<span class='staerke'></span>) hat den Verein verlassen (Vertragsende)				</div>
+				<div class="headline_overlay">
+					Spieler zurückholen				</div>
+				<p>
+					<span class="name"></span>&nbsp;ist zur Zeit vereinslos. Möchtest du noch einmal mit ihm sprechen und diesen Spieler wieder einstellen?				</p>
+				<p style="font-weight:bold;">
+					Vertragsdauer:&nbsp;<span class="vertragsdauer"></span>&nbsp;Spieltage,&nbsp;Gehalt:&nbsp;<span class="gehalt"></span>
+				</p>
+				<p id="error_kixx_details" class="error_message" style="visibility:hidden;">
+					Du hast nicht genügend Kixx.				</p>
+				<table cellpadding="0" cellspacing="0" class="float">
+					<tr>
+						<td><span>Kosten:</span></td>
+						<td style="text-align:right;">&nbsp;<span style="font-weight:bold;color:#d25900;" class="kixxkosten"></span></td>
+					</tr>
+					<tr>
+						<td><span>Guthaben:</span></td>
+						<td style="text-align:right;">&nbsp;<span style="font-weight:bold;color:#d25900;" class="kixxkonto"></span></td>
+					</tr>
+				</table>
+				<img src="/bilder/personal/contract.png" class="float" style="margin:5px 0 0 15px;">
+				<input type="hidden" name="spielerid" value="" />
+				<input type="hidden" name="transid" value="" />
+        <input type="button" class="buttonGreen cursor float" style="min-width:94px;width:auto;margin:0 0 0 5px;" value="einstellen" onclick="overlaySpieler.employ();" ondblclick="alert('Keep cool!');">
+				<!--<a href="javascript:overlaySpieler.employ();" class="float buttonGreen cursor" ondblclick="alert('Keep cool!');">
+					<img src="/bilder/personal/contract-button.png" alt="" style="margin:5px 0 0 5px;">
+				</a>-->
+				<input type="button" class="buttonKixx cursor float" style="min-width:94px;width:auto;margin:0 0 0 5px;" value="Kixx kaufen" onclick="NewWindow('/payment/shop.php','plus_preview','1020','670','no','no'); return false;" ondblclick="alert('Keep cool!');">
+    		<!--<a class="float" href="/payment/index.php" onclick="NewWindow(this.href,'plus_preview','1020','670','no','no');return false;" ondblclick="alert('Keep cool!');">
+					<img src="/bilder/personal/buy-kixx-button2.png" alt="" style="margin:5px 0 0 10px;">
+				</a>-->
+				<div class="clear"></div>
+			</div>
+			<div class="button-close close-img pointer" onclick="overlaySpieler.close(true);"></div>
+		</div>
+	</div>
+	<div id="mask"></div>
+</div>
+
+
+		<div id="mask"></div>
+		<!--[if gte IE 5]><style type="text/css">/* <![CDATA[ */@font-face{font-family:bauhaus;src:url(/fonts/bauhaus_pl.eot)}@font-face{font-family:miroslav;src:url(/fonts/bauhaus_ru.eot)}/* ]]> */</style><![endif]-->
+    <script type="text/javascript">
+(function(p,c,f){
+var w,s,s0,n='script',m='PLISTA_FLYAD';try{w=window.top!==window.self?window.top:window;}catch(e){w=window;}if(!w[m]){w[m]={publickey:p,widgets:['flyad'],noCache:true,dataMode:'data-display',fc:c,oncomplete:f,oninit:function(){var t=w.PLISTA;if(t){t.disabled=t.disabled||[];t.disabled=t.disabled.concat(['slide','flyad']);}}};s=w.document.createElement(n);s0=w.document.getElementsByTagName(n)[0];s.async=true;s.type='text/javascript';s.src=(w.location.protocol==='https:'?'https:':'http:')+'//static.plista.com/async/'+m+'.js';s0.parentNode.insertBefore(s,s0);w[m].oninit();}
+}('96b8c99c26eb4640ffb18439', true, function() {
+     if (!this.fly) {
+        /*passback code here*/          
+     }
+}));
+  
+var i ="%i";
+</script>    
+	<!-- EASTERN 2K14 Start -->
+	  <!-- EASTERN 2K14 End -->
+  	    <!-- Worldcup Brazil Start -->
+                <!-- Worldcup Brazil End -->
+  </body>
+</html>
