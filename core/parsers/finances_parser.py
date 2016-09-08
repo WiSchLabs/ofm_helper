@@ -83,4 +83,7 @@ class FinancesParser(BaseParser):
         return finances
 
     def _int_from_money(self, money):
-        return money.replace('.', '').replace('€', '').strip()
+        return self.strip_euro_sign(money.replace('.', '').strip())
+
+    def strip_euro_sign(self, money):
+        return money[:-2]
