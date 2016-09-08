@@ -2,6 +2,8 @@ FROM python:3.5
 
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE ofm_helper.settings.prod
+ENV PHANTOM_VERSION="2.1.1"
+ENV PHANTOM_JS="phantomjs-$PHANTOM_VERSION"
 ENV EDITOR="vim"
 
 RUN mkdir /code
