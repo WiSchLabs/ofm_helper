@@ -627,6 +627,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         """
 
         match_stadium_stat = dict()
+        match_stadium_stat['season'] = stadium_stat.match.matchday.season.number
         match_stadium_stat['matchday'] = "<a href='" + stadium_stat.get_absolute_url() + "'>" + str(stadium_stat.match.matchday.number) + "</a>"
         if stadium_stat.visitors and stadium_stat.capacity:
             match_stadium_stat['visitors'] = stadium_stat.visitors
