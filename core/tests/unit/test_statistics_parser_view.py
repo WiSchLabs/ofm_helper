@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import core
 import os
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Finance
+from core.models import PlayerStatistics, Player, Finance, Match
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
@@ -88,3 +88,6 @@ class ParserViewTest(TestCase):
         self.assertEquals(1, Finance.objects.all().count())
         finance = Finance.objects.all()[0]
         self.assertEquals(1633872, finance.balance)
+
+        # test match
+        # TODO

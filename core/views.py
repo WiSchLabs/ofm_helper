@@ -120,11 +120,13 @@ def trigger_parsing(request):
         site_manager = SiteManager(request.user)
         site_manager.login()
 
-        parse_matchday(site_manager)
+        matchday = parse_matchday(site_manager)
         parse_players(request, site_manager)
         parse_player_statistics(request, site_manager)
         parse_finances(request, site_manager)
-        parse_match(request, site_manager)
+        if matchday.number > 0:
+            #  do not parse on matchday 0
+            parse_match(request, site_manager)
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
@@ -139,7 +141,7 @@ def parse_matchday(site_manager):
     logger.debug('===== parse Matchday ...')
     site_manager.jump_to_frame(Constants.HEAD)
     matchday_parser = MatchdayParser(site_manager.browser.page_source)
-    matchday_parser.parse()
+    return matchday_parser.parse()
 
 
 def parse_players(request, site_manager):
@@ -170,9 +172,9 @@ def parse_match(request, site_manager):
     row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
     is_home_match = "<b>" in str(row.find_all('td')[2].a)
     match_report_image = row.find_all('img', class_='changeMatchReportImg')
-    match_result = row.find_all('font', class_='erganz')[0].get_text().strip()
 
     if match_report_image:
+        # match took place
         link_to_match = match_report_image[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
             site_manager.jump_to_frame(Constants.BASE + link_to_match)
@@ -181,7 +183,7 @@ def parse_match(request, site_manager):
 
             if is_home_match:
                 parse_stadium_statistics(request, site_manager)
-    elif '3:0' in match_result or '0:3' in match_result:
+    else:
         match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
         match_parser.parse()
 
