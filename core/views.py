@@ -170,6 +170,8 @@ def parse_match(request, site_manager):
     row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
     is_home_match = "<b>" in str(row.find_all('td')[2].a)
     match_report_image = row.find_all('img', class_='changeMatchReportImg')
+    match_result = row.find_all('font', class_='erganz')[0].get_text().strip()
+
     if match_report_image:
         link_to_match = match_report_image[0].find_parent('a')['href']
         if "spielbericht" in link_to_match:
@@ -179,7 +181,7 @@ def parse_match(request, site_manager):
 
             if is_home_match:
                 parse_stadium_statistics(request, site_manager)
-    else:
+    elif '3:0' in match_result or '0:3' in match_result:
         match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
         match_parser.parse()
 
