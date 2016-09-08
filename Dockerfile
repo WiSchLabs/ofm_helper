@@ -8,7 +8,8 @@ RUN mkdir /code
 WORKDIR /code
 
 # Install Phantomjs
-RUN scripts/download_phantomjs.sh
+ADD scripts /code/scripts
+RUN /code/scripts/download_phantomjs.sh
 RUN apt-get -qq update && apt-get install -y vim cron xvfb build-essential chrpath libssl-dev libxft-dev libfreetype6 \
         libfreetype6-dev libfontconfig1 libfontconfig1-dev
 RUN tar -xvf $PHANTOM_JS.tar.bz2
