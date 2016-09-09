@@ -39,8 +39,8 @@ class StadiumStandStatisticsParser(BaseParser):
             # stand was not used in the last match (due to repair or construction in progress)
             return
 
-        has_roof = 'überdacht' in stand_data.find('h1').get_text()
-        has_seats = 'Sitzplätze' in stand_data.find('h1').get_text()
+        has_roof = 'berdacht' in stand_data.find('h1').get_text()
+        has_seats = 'Sitzpl' in stand_data.find('h1').get_text()
         capacity = stand_data.find_all('tr')[2].find_all('td')[3].div.get_text().replace('.', '')
 
         sector = stand_data.find('span', class_='white').get_text()[0]
