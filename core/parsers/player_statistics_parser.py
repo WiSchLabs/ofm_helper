@@ -110,6 +110,3 @@ class PlayerStatisticsParser(BaseParser):
 
     def _get_equity_value_from_table_cell(self, field):
         return self.strip_euro_sign(field.get_text().strip('\n').replace('\t', '').replace('.', '').strip(' '))
-
-    def strip_euro_sign(self, money):
-        return money[:-2]

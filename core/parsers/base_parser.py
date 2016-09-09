@@ -11,3 +11,6 @@ class BaseParser:
         return [cell for cell in table_cells
                 if str(cell).replace(' ', '').replace('\t', '').replace('\n', '') != '<td>??</td>' and not
                 counter_cell_pattern.match(str(cell))]
+
+    def strip_euro_sign(self, money):
+        return money[:-2]
