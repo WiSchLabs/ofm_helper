@@ -71,3 +71,13 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[1]['home_strength'], 30)
         self.assertEquals(returned_json_data[1]['guest_strength'], 150)
         self.assertEquals(returned_json_data[1]['harmonic_strength'], 50)
+
+    def test_default_values_for_strength_slider(self):
+        matchday = MatchdayFactory.create(number=2)
+        match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150, matchday=matchday)
+        MatchStadiumStatisticsFactory.create(match=match2)
+
+        response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data['slider_min'], 30)
+        self.assertEqual(response.context_data['slider_max'], 150)

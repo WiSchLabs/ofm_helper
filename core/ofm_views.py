@@ -582,7 +582,17 @@ class StadiumStatisticsView(TemplateView):
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season for m in matchdays)
 
+        if Match.objects.count() > 0:
+            match = Match.objects.filter(user=self.request.user).order_by('matchday')[0]  # latest match
+            slider_min = min(match.home_team_statistics.strength, match.guest_team_statistics.strength)
+            slider_max = max(match.home_team_statistics.strength, match.guest_team_statistics.strength)
+        else:
+            slider_min = 100
+            slider_max = 150
+
         context['seasons'] = seasons
+        context['slider_min'] = slider_min
+        context['slider_max'] = slider_max
 
         return context
 
@@ -598,8 +608,6 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             harmonic_strength = int(harmonic_strength)
             tolerance = int(tolerance)
         except TypeError:
-            print(harmonic_strength)
-            print(tolerance)
             pass
 
         matches = Match.objects.filter(user=self.request.user)
