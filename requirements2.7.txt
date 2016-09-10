@@ -1,5 +1,5 @@
 beautifulsoup4
-Django
+Django==1.9.8
 factory-boy
 requests
 selenium

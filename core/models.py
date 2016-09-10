@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum
+from django.utils.encoding import smart_str
 
 from users.models import OFMUser
 
@@ -250,7 +251,7 @@ class Country(models.Model):
     country = models.CharField(max_length=10, choices=COUNTRIES)
 
     def __str__(self):
-        return dict(self.COUNTRIES).get(self.country)
+        return smart_str(dict(self.COUNTRIES).get(self.country))
 
     def get_iso(self):
         return self.country
