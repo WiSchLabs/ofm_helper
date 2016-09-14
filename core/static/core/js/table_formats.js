@@ -1,7 +1,8 @@
 function table_loader() {
     var $tables = $('.statistics_table'),
         newer_matchday, newer_matchday_season,
-        older_matchday, older_matchday_season;
+        older_matchday, older_matchday_season,
+        season;
 
     function updateData(event, data) {
         var params = {};
@@ -14,7 +15,6 @@ function table_loader() {
         } else {
             params = {newer_matchday_season: newer_matchday_season, newer_matchday: newer_matchday};
         }
-
         $.get(JSON_URL, params,
             function (returnedData) {
                 $tables.bootstrapTable('removeAll');
@@ -30,6 +30,16 @@ function table_loader() {
             }
         );
     }
+
+    $('#season').on('change', function () {
+        season = $("#season").val();
+        $.get(JSON_URL, {season: season},
+            function (returnedData) {
+                $tables.bootstrapTable('removeAll');
+                $tables.bootstrapTable('load', returnedData);
+            }
+        );
+    });
 
     $('#newer_matchday').on('change', function () {
         newer_matchday_season = $("#newer_matchday").val().split("/")[0];
@@ -113,11 +123,14 @@ function balanceFormatter(value) {
         }
     }
 
-    return '<span class="' + color + '">' + numberFormatter(value) + '</span>';
+    return '<span class="' + color + '">' + moneyFormatter(value) + '</span>';
 }
 
 function numberFormatter(value) {
     return value.toLocaleString('de');
+}
+function moneyFormatter(value) {
+    return numberFormatter(value) + " &euro;";
 }
 
 window.onload=table_loader;

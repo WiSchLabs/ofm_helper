@@ -10,12 +10,11 @@
         <div id="table-toolbar">
             <div class="form-inline" role="form">
                 <div class="form-group">
-                    <input id="diff_toggle" name="diff_toggle" type="checkbox" data-on-text="AN" data-off-text="AUS" data-on-color="success" data-size="small">
-                    <label for="diff_toggle">Zeige die Daten vom </label>
+                    <label for="season">Zeige die Daten von Saison </label>
 
                     <select class="form-control" id="season">
-                        {% for s in seasons %}
-                            <option value="{{ s.number }}">{{ s.number }}</option>
+                        {% for season in seasons %}
+                            <option value="{{ season }}">{{ season }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -505,9 +505,9 @@ class MatchesView(TemplateView):
         context = super(MatchesView, self).get_context_data(**kwargs)
 
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
-        seasons = set(m.season for m in matchdays)
+        seasons = set(m.season.number for m in matchdays)
 
-        context['seasons'] = seasons
+        context['seasons'] = sorted(seasons, reverse=True)
 
         return context
 
@@ -580,7 +580,7 @@ class StadiumStatisticsView(TemplateView):
         context = super(StadiumStatisticsView, self).get_context_data(**kwargs)
 
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
-        seasons = set(m.season for m in matchdays)
+        seasons = set(m.season.number for m in matchdays)
 
         if Match.objects.count() > 0:
             match = Match.objects.filter(user=self.request.user).order_by('matchday')[0]  # latest match
@@ -590,7 +590,7 @@ class StadiumStatisticsView(TemplateView):
             slider_min = 100
             slider_max = 150
 
-        context['seasons'] = seasons
+        context['seasons'] = sorted(seasons, reverse=True)
         context['slider_min'] = slider_min
         context['slider_max'] = slider_max
 
@@ -610,7 +610,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         except TypeError:
             pass
 
-        matches = Match.objects.filter(user=self.request.user)
+        matches = Match.objects.filter(user=self.request.user).order_by('matchday')
         filtered_matches = [match for match in matches if
                             match.harmonic_strength <= harmonic_strength + tolerance/2 and
                             match.harmonic_strength >= harmonic_strength - tolerance/2]
@@ -641,7 +641,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['visitors'] = stadium_stat.visitors
             match_stadium_stat['capacity'] = stadium_stat.capacity
             match_stadium_stat['earnings'] = stadium_stat.earnings
-            match_stadium_stat['workload'] = '{:.2%}'.format(stadium_stat.visitors / stadium_stat.capacity)
+            match_stadium_stat['workload'] = '{:.2f}'.format(stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
         else:
             # all stadium stands were under construction during match
             match_stadium_stat['visitors'] = 0
@@ -652,10 +652,10 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         match_stadium_stat['home_strength'] = stadium_stat.match.home_team_statistics.strength
         match_stadium_stat['guest_strength'] = stadium_stat.match.guest_team_statistics.strength
         match_stadium_stat['harmonic_strength'] = 2*match_stadium_stat['home_strength']*match_stadium_stat['guest_strength']/(match_stadium_stat['home_strength']+match_stadium_stat['guest_strength'])
-        match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " €)   " + str(stadium_stat.level.light.daily_costs) + " €"
-        match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " €)   " + str(stadium_stat.level.screen.daily_costs) + " €"
-        match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " €)   " + str(stadium_stat.level.security.daily_costs) + " €"
-        match_stadium_stat['parking_level'] = str(stadium_stat.level.parking.current_level) + " (" + str(stadium_stat.level.parking.value) + " €)   " + str(stadium_stat.level.parking.daily_costs) + " €"
+        match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
+        match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
+        match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " &euro;)   " + str(stadium_stat.level.security.daily_costs) + " &euro;"
+        match_stadium_stat['parking_level'] = str(stadium_stat.level.parking.current_level) + " (" + str(stadium_stat.level.parking.value) + " &euro;)   " + str(stadium_stat.level.parking.daily_costs) + " &euro;"
 
         return match_stadium_stat
 
