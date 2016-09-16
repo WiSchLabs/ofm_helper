@@ -469,11 +469,11 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         series = []
         if sum(expenses_player_salaries) is not 0:
-            series.append({"name": 'Spielergehälter', "data": expenses_player_salaries})
+            series.append({"name": 'Spielergehalt', "data": expenses_player_salaries})
         if sum(expenses_stadium) is not 0:
             series.append({"name": 'Stadion', "data": expenses_stadium})
         if sum(expenses_youth) is not 0:
-            series.append({"name": 'Jugendförderung', "data": expenses_youth})
+            series.append({"name": u'Jugendförderung', "data": expenses_youth})
         if sum(expenses_interests) is not 0:
             series.append({"name": 'Zinsen', "data": expenses_interests})
         if sum(expenses_trainings) is not 0:
