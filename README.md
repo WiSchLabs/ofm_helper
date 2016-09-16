@@ -12,7 +12,7 @@
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
 
-## Windows / OS X 
+## Windows / OS X  mit Docker
 
 1. Installiere Kitematic (https://kitematic.com/)
 2. Downloade das ofm_helper Docker image "wischlabs/ofm_helper" (Es startet automatisch einen neuen Container)
@@ -35,3 +35,13 @@
     `OFM_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ofm_helper)`
 6. Öffne die IP auf dem Port 8000 (`$OFM_IP:8000`) in deinem Browser
 7. Erstelle einen neuen Account mit deinen OFM Logindaten
+
+## Windows / OS X  mit .exe
+
+1. Lade das 7z Archiv vom aktuellen Release
+2. Entapcke das Archiv in ein beliebiges Verzeichnis auf deinem Rechner
+3. Eventuell musst du die .exe Datei in deinem Virenscanner zu den Ausnahmen hinzu
+   - z.B. Avira: Rechtsklibk in der Symbolleiste auf das Logo > Virenschutz verwalten > PC-Sicherheit > Echtzeit-Scanner > Scan > Ausnahmen > Vom Echtzeit-Scanner auszulassende Dateiobjekte 
+4. Falls du eine bestehende Version on OFM Helper updaten willst, kopiere noch die Datenbank (Ordner `ofm_helper/database`) aus dem alten Verzeichnis in das neue
+5. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
+6. Erstelle einen neuen Account mit deinen OFM Logindaten
