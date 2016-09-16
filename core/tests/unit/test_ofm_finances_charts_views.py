@@ -39,7 +39,7 @@ class OFMFinancesViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('series' in returned_json_data)
-        self.assertEquals('Spielergehälter', returned_json_data['series'][0]['name'])
+        self.assertEquals('Spielergehalt', returned_json_data['series'][0]['name'])
         self.assertTrue('data' in returned_json_data['series'][0])
         self.assertTrue('categories' in returned_json_data)
 
