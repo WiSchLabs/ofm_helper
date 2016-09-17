@@ -152,7 +152,7 @@ LOGGING = {
     },
 }
 
-ENCRYPTED_FIELDS_KEYDIR = 'fieldkeys'
+ENCRYPTED_FIELDS_KEYDIR = os.path.join(BASE_DIR, 'fieldkeys')
 
 AUTH_USER_MODEL = 'users.OFMUser'
 
