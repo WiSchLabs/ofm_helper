@@ -7,4 +7,4 @@ tar -xzf ofmhelper2exe.tar.gz
 rm ofmhelper2exe.tar.gz
 ls .. | grep -v release | xargs -i cp -r ../{} ofm_helper/.
 cd ..
-zip -r ofm_helper.zip release/*
+zip -qdgds 10m -r ofm_helper.zip release/*
