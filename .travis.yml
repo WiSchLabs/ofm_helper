@@ -1,23 +1,30 @@
 language: python
 python:
-  - "3.5"
+- '3.5'
 env:
-  - DJANGO_SETTINGS_MODULE=ofm_helper.settings.test
+- DJANGO_SETTINGS_MODULE=ofm_helper.settings.test
 install:
-  - pip install -r requirements.txt
-  - pip install -r travis_requirements.txt
-  - pip install coveralls
-  - mkdir database
+- pip install -r requirements.txt
+- pip install -r travis_requirements.txt
+- pip install coveralls
+- mkdir database
 script:
-  - ./manage.py migrate
-  - coverage run --branch --source . manage.py test
-
+- "./manage.py migrate"
+- coverage run --branch --source . manage.py test
 notifications:
   email:
     recipients:
-      - witmic1@gmail.com
-      - stegschreck@gmail.com
+    - witmic1@gmail.com
+    - stegschreck@gmail.com
     on_success: change
     on_failure: always
-
 after_success: coveralls
+before_deploy:
+  - ./scripts/create_release.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: L2wniOBoJYeLxb3zfCDJv/JHVtcAtoEwOLeLXCB8b4B0/Ndjg2ZwovE/GtzoRLC6i43V7FFiwMdrq3UYKdAQ0GNXGAcwq9bqktArHkndUy/mm4VuRrWqTNKUtbG5xdsnLaVvjcGdMIRj+Ty+acqYpm/t2DcJYR3M2nJkY26kGeTFwrAJa8nAIw49LYOPFA58V5TUhjyabXIZmuI3rZb7RjNo8tDSUscmzLBLK4snaqaupyp/THCee0ZlMYnsZlNOvaEu3CQ6vrKO7qgCT/0KrMr+YQo4kuZnavojK9TDTaEbcYdi1uxY1JQEksOKqHKrE89W/KI75RJhMjs3lgBcAg4l/xxWTZMtVHlUBGQqoOJmOg6unsAeVqdF1k+mkHZHUreNR3OL9809U626dAvS4GLvbNt9fy7cFeGqQVsygiPY7bpNBlM8LchMDrmQcZ04Ul9IV4ZvYY5/4E0OTSJ4ngNzhN8g9mYAn89OMuMR7mdePg3ix/4eFK9W1vfdIvEa1hyaQRAw8i+lHKK8hFOHPP4DRPgylgWnoCmK/fLjqfIAl6gFcx5Tfp/n/YRd30XQk9hnH7NKM/GRsg+TtkStZdG0oZv5ZOIusW012fQ1jc/m7nlzOPzGVR7AOr4+B0BsBrTQG9m9zOU7rbnKPPL+lpOzlF41IK02BgegkQqydOA=
+  file: ofm_helper.zip
+  on:
+    repo: WiSchLabs/ofm_helper
