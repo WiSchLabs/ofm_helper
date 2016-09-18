@@ -28,6 +28,12 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertTrue('seasons' in response.context_data)
 
     def test_user_can_see_his_latest_stadium_statistics_when_given_no_season(self):
+        match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=150, guest_team_statistics__strength=150)
+        stadium_stat = MatchStadiumStatisticsFactory.create(match=match2)
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='N')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='S')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='W')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='O')
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview_json'))
         returned_json_data = json.loads(response.content.decode('utf-8'))
 
@@ -37,7 +43,7 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['visitors'], 168)
         self.assertEquals(returned_json_data[0]['capacity'], 400)
 
-    def test_user_can_only_see_only_his_latest_stadium_statistics(self):
+    def test_user_can_only_see_only_his_stadium_statistics(self):
         user2 = OFMUser.objects.create_user(username='bob', password='bob')
         MatchFactory.create(user=user2, venue='woanders')
 
@@ -45,11 +51,7 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(len(returned_json_data), 1)
-
-        self.assertEquals(returned_json_data[0]['visitors'], 168)
-        self.assertEquals(returned_json_data[0]['capacity'], 400)
-        self.assertEquals(returned_json_data[0]['venue'], self.match.venue)
+        self.assertEquals(len(returned_json_data), 0)
 
     def test_get_two_different_matches_with_same_harmonic_strength(self):
         match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150)

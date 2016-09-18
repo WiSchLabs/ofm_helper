@@ -603,8 +603,13 @@ class StadiumStatisticsView(TemplateView):
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-        harmonic_strength = self.request.GET.get('harmonic_strength', default=150)
-        tolerance = self.request.GET.get('tolerance', default=300)
+        harmonic_strength = 150
+        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max'):
+            slider_min = int(self.request.COOKIES['slider_min'])
+            slider_max = int(self.request.COOKIES['slider_max'])
+            harmonic_strength = round(2 * slider_min * slider_max / (slider_min + slider_max))
+        harmonic_strength = self.request.GET.get('harmonic_strength', default=harmonic_strength)
+        tolerance = self.request.GET.get('tolerance', default=10)
 
         try:
             harmonic_strength = int(harmonic_strength)
@@ -614,8 +619,8 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         matches = Match.objects.filter(user=self.request.user).order_by('matchday')
         filtered_matches = [match for match in matches if
-                            match.harmonic_strength <= harmonic_strength + tolerance/2 and
-                            match.harmonic_strength >= harmonic_strength - tolerance/2]
+                            match.harmonic_strength <= harmonic_strength + tolerance and
+                            match.harmonic_strength >= harmonic_strength - tolerance]
 
         stadium_statistics = []
         for match in filtered_matches:

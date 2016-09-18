@@ -53,3 +53,7 @@ $('#strength-slider').slider().on('slideStop', function(event){
 $('#tolerance-slider').slider().on('slideStop', function(event){
     update_stadium_statistics()
 });
+
+$(document).ready(function() {
+    update_stadium_statistics;
+});
