@@ -53,7 +53,7 @@
        data-url="{% url 'core:ofm:finances_json' %}">
         <thead id="finances_balance_table_head" class="hide">
             <tr>
-                <th data-field="balance" data-formatter="balanceFormatter">Bilanz</th>
+                <th data-field="balance" data-formatter="moneyDiffFormatter">Bilanz</th>
             </tr>
         </thead>
     </table>
@@ -68,16 +68,16 @@
        data-url="{% url 'core:ofm:finances_json' %}">
         <thead id="finances_income_table_head">
             <tr>
-                <th data-field="income_visitors_league" data-formatter="balanceFormatter">Zuschauer Ligaspiele</th>
-                <th data-field="income_sponsoring" data-formatter="balanceFormatter">Sponsoren</th>
-                <th data-field="income_cup" data-formatter="balanceFormatter">Pokal</th>
-                <th data-field="income_interests" data-formatter="balanceFormatter">Zinsen</th>
-                <th data-field="income_loan" data-formatter="balanceFormatter">Kredit</th>
-                <th data-field="income_transfer" data-formatter="balanceFormatter">Transfer</th>
-                <th data-field="income_visitors_friendlies" data-formatter="balanceFormatter">Zuschauer Friendlies</th>
-                <th data-field="income_friendlies" data-formatter="balanceFormatter">Friendlies</th>
-                <th data-field="income_funcup" data-formatter="balanceFormatter">Prämien FunCups</th>
-                <th data-field="income_betting" data-formatter="balanceFormatter">Wetten</th>
+                <th data-field="income_visitors_league" data-formatter="moneyDiffFormatter">Zuschauer Ligaspiele</th>
+                <th data-field="income_sponsoring" data-formatter="moneyDiffFormatter">Sponsoren</th>
+                <th data-field="income_cup" data-formatter="moneyDiffFormatter">Pokal</th>
+                <th data-field="income_interests" data-formatter="moneyDiffFormatter">Zinsen</th>
+                <th data-field="income_loan" data-formatter="moneyDiffFormatter">Kredit</th>
+                <th data-field="income_transfer" data-formatter="moneyDiffFormatter">Transfer</th>
+                <th data-field="income_visitors_friendlies" data-formatter="moneyDiffFormatter">Zuschauer Friendlies</th>
+                <th data-field="income_friendlies" data-formatter="moneyDiffFormatter">Friendlies</th>
+                <th data-field="income_funcup" data-formatter="moneyDiffFormatter">Prämien FunCups</th>
+                <th data-field="income_betting" data-formatter="moneyDiffFormatter">Wetten</th>
             </tr>
         </thead>
     </table>
@@ -93,16 +93,16 @@
 
         <thead id="finances_expenses_table_head">
             <tr>
-                <th data-field="expenses_player_salaries" data-formatter="balanceFormatter">Spielergehälter</th>
-                <th data-field="expenses_stadium" data-formatter="balanceFormatter">Stadionausbau</th>
-                <th data-field="expenses_youth" data-formatter="balanceFormatter">Jugendförderung</th>
-                <th data-field="expenses_interests" data-formatter="balanceFormatter">Zinsen</th>
-                <th data-field="expenses_trainings" data-formatter="balanceFormatter">Trainingslager</th>
-                <th data-field="expenses_transfer" data-formatter="balanceFormatter">Transfer</th>
-                <th data-field="expenses_compensation" data-formatter="balanceFormatter">Abfindungen</th>
-                <th data-field="expenses_friendlies" data-formatter="balanceFormatter">Friendlies</th>
-                <th data-field="expenses_funcup" data-formatter="balanceFormatter">FunCups</th>
-                <th data-field="expenses_betting" data-formatter="balanceFormatter">Wetten</th>
+                <th data-field="expenses_player_salaries" data-formatter="moneyDiffFormatter">Spielergehälter</th>
+                <th data-field="expenses_stadium" data-formatter="moneyDiffFormatter">Stadionausbau</th>
+                <th data-field="expenses_youth" data-formatter="moneyDiffFormatter">Jugendförderung</th>
+                <th data-field="expenses_interests" data-formatter="moneyDiffFormatter">Zinsen</th>
+                <th data-field="expenses_trainings" data-formatter="moneyDiffFormatter">Trainingslager</th>
+                <th data-field="expenses_transfer" data-formatter="moneyDiffFormatter">Transfer</th>
+                <th data-field="expenses_compensation" data-formatter="moneyDiffFormatter">Abfindungen</th>
+                <th data-field="expenses_friendlies" data-formatter="moneyDiffFormatter">Friendlies</th>
+                <th data-field="expenses_funcup" data-formatter="moneyDiffFormatter">FunCups</th>
+                <th data-field="expenses_betting" data-formatter="moneyDiffFormatter">Wetten</th>
             </tr>
         </thead>
     </table>

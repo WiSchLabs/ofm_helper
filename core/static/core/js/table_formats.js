@@ -111,7 +111,7 @@ function table_loader() {
     }
 }
 
-function balanceFormatter(value) {
+function moneyDiffFormatter(value) {
     var is_diff = $('#diff_toggle').bootstrapSwitch('state');
 
     var color = 'statistic_mark ';
@@ -124,6 +124,21 @@ function balanceFormatter(value) {
     }
 
     return '<span class="' + color + '">' + moneyFormatter(value) + '</span>';
+}
+
+function numberDiffFormatter(value) {
+    var is_diff = $('#diff_toggle').bootstrapSwitch('state');
+
+    var color = 'statistic_mark ';
+    if (is_diff) {
+        if (value > 0) {
+            color += "statistic_mark_gain";
+        } else if (value < 0) {
+            color += "statistic_mark_lost";
+        }
+    }
+
+    return '<span class="' + color + '">' + numberFormatter(value) + '</span>';
 }
 
 function numberFormatter(value) {
