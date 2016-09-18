@@ -581,6 +581,7 @@ class StadiumStatisticsView(TemplateView):
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
 
+        tolerance = 10
         if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
             slider_min = self.request.COOKIES['slider_min']
             slider_max = self.request.COOKIES['slider_max']
@@ -589,11 +590,9 @@ class StadiumStatisticsView(TemplateView):
             match = Match.objects.filter(user=self.request.user).order_by('matchday')[0]  # latest match
             slider_min = min(match.home_team_statistics.strength, match.guest_team_statistics.strength)
             slider_max = max(match.home_team_statistics.strength, match.guest_team_statistics.strength)
-            tolerance = 10
         else:
             slider_min = 100
             slider_max = 150
-            tolerance = 10
 
         context['seasons'] = sorted(seasons, reverse=True)
         context['slider_min'] = slider_min

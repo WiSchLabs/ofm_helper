@@ -43,15 +43,24 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['visitors'], 168)
         self.assertEquals(returned_json_data[0]['capacity'], 400)
 
-    def test_user_can_only_see_only_his_stadium_statistics(self):
+    def test_user_can_only_see_his_stadium_statistics(self):
         user2 = OFMUser.objects.create_user(username='bob', password='bob')
         MatchFactory.create(user=user2, venue='woanders')
 
-        response = self.client.get(reverse('core:ofm:stadium_statistics_overview_json'))
+        options = {
+            'harmonic_strength': 50,
+            'tolerance': 2,
+        }
+
+        response = self.client.get(reverse('core:ofm:stadium_statistics_overview_json'), options)
         returned_json_data = json.loads(response.content.decode('utf-8'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(len(returned_json_data), 0)
+        self.assertEquals(len(returned_json_data), 1)
+
+        self.assertEquals(returned_json_data[0]['visitors'], 168)
+        self.assertEquals(returned_json_data[0]['capacity'], 400)
+        self.assertEquals(returned_json_data[0]['venue'], self.match.venue)
 
     def test_get_two_different_matches_with_same_harmonic_strength(self):
         match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150)
