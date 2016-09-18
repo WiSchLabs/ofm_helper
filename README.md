@@ -12,7 +12,7 @@
 
 ## Windows
 
-1. Lade das 7z Archiv vom [aktuellen Release](https://github.com/WiSchLabs/ofm_helper/releases/latest)
+1. Lade das zip Archiv vom [aktuellen Release](https://github.com/WiSchLabs/ofm_helper/releases/latest)
 2. Entapcke das Archiv in ein beliebiges Verzeichnis auf deinem Rechner
 3. Eventuell musst du die .exe Datei in deinem Virenscanner zu den Ausnahmen hinzu
    - z.B. Avira: Rechtsklibk in der Symbolleiste auf das Logo > Virenschutz verwalten > PC-Sicherheit > Echtzeit-Scanner > Scan > Ausnahmen > Vom Echtzeit-Scanner auszulassende Dateiobjekte 
