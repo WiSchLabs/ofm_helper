@@ -14,11 +14,12 @@
 
 1. Lade das zip Archiv vom [aktuellen Release](https://github.com/WiSchLabs/ofm_helper/releases/latest)
 2. Entapcke das Archiv in ein beliebiges Verzeichnis auf deinem Rechner
-3. Eventuell musst du die .exe Datei in deinem Virenscanner zu den Ausnahmen hinzu
+3. Installiere Phantomjs nach C:\Program Files (x86)\phantomjs (enthalten im zip Archiv)
+4. Eventuell musst du die .exe Datei in deinem Virenscanner zu den Ausnahmen hinzu
    - z.B. Avira: Rechtsklibk in der Symbolleiste auf das Logo > Virenschutz verwalten > PC-Sicherheit > Echtzeit-Scanner > Scan > Ausnahmen > Vom Echtzeit-Scanner auszulassende Dateiobjekte 
-4. Falls du eine bestehende Version on OFM Helper updaten willst, kopiere noch die Datenbank (Ordner `ofm_helper/database`) aus dem alten Verzeichnis in das neue
-5. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
-6. Erstelle einen neuen Account mit deinen OFM Logindaten
+5. Falls du eine bestehende Version on OFM Helper updaten willst, kopiere noch die Datenbank (Ordner `ofm_helper/database`) aus dem alten Verzeichnis in das neue
+6. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
+7. Erstelle einen neuen Account mit deinen OFM Logindaten
 
 ## Windows / OS X  mit Docker
 
