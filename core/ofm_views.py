@@ -587,7 +587,7 @@ class StadiumStatisticsView(TemplateView):
             slider_max = self.request.COOKIES['slider_max']
             tolerance = self.request.COOKIES['tolerance']
         elif Match.objects.count() > 0:
-            match = Match.objects.filter(user=self.request.user).order_by('matchday')[0]  # latest match
+            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]  # latest home match
             slider_min = min(match.home_team_statistics.strength, match.guest_team_statistics.strength)
             slider_max = max(match.home_team_statistics.strength, match.guest_team_statistics.strength)
         else:
@@ -608,7 +608,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
     def get(self, request, *args, **kwargs):
         harmonic_strength = 150
         tolerance = 10
-        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max'):
+        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
             slider_min = int(self.request.COOKIES['slider_min'])
             slider_max = int(self.request.COOKIES['slider_max'])
             tolerance = int(self.request.COOKIES['tolerance'])

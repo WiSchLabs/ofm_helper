@@ -83,6 +83,30 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[1]['guest_strength'], 150)
         self.assertEquals(returned_json_data[1]['harmonic_strength'], 50)
 
+    def test_user_can_narrow_statistics_with_strength_slider_by_cookie(self):
+        cookies = self.client.cookies
+        cookies['slider_min'] = 50
+        cookies['slider_max'] = 50
+        cookies['tolerance'] = 0
+
+        options = {
+            'harmonic_strength': 50,
+            'tolerance': 2,
+        }
+
+        response = self.client.get(reverse('core:ofm:stadium_statistics_overview_json'), options)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(len(returned_json_data), 1)
+
+        self.assertEquals(returned_json_data[0]['visitors'], 168)
+        self.assertEquals(returned_json_data[0]['capacity'], 400)
+        self.assertEquals(returned_json_data[0]['home_strength'], 50)
+        self.assertEquals(returned_json_data[0]['guest_strength'], 50)
+        self.assertEquals(returned_json_data[0]['harmonic_strength'], 50)
+        self.assertEquals(returned_json_data[0]['venue'], self.match.venue)
+
     def test_default_values_from_last_match_for_strength_slider(self):
         matchday = MatchdayFactory.create(number=2)
         match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150, matchday=matchday)
@@ -92,6 +116,7 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data['slider_min'], 30)
         self.assertEqual(response.context_data['slider_max'], 150)
+        self.assertEqual(response.context_data['tolerance'], 10)
 
     def test_default_values_from_cookies_for_strength_slider(self):
         cookies = self.client.cookies
