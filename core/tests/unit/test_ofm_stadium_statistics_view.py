@@ -83,12 +83,11 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEqual(response.context_data['slider_max'], 150)
 
     def test_default_values_from_cookies_for_strength_slider(self):
-        session = self.client.session
-        session['slider_min'] = 13
-        session['slider_max'] = 37
-        session.save()
+        cookies = self.client.cookies
+        cookies['slider_min'] = 13
+        cookies['slider_max'] = 37
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data['slider_min'], 13)
-        self.assertEqual(response.context_data['slider_max'], 37)
+        self.assertEqual(response.context_data['slider_min'], '13')
+        self.assertEqual(response.context_data['slider_max'], '37')
