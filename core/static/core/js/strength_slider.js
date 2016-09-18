@@ -15,12 +15,25 @@ function get_current_params(){
     var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
     var strength2 = parseInt($('#strength-slider').attr('value').split(',')[1], 10);
 
+    set_cookie('slider_min', strength1, 1);
+    set_cookie('slider_max', strength2, 1);
+
     var params = {
         tolerance: $('#tolerance-slider').attr('value'),
         harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0)
     };
 
     return params;
+}
+
+function set_cookie(name, value, days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
 }
 
 function update_stadium_statistics() {

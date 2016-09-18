@@ -1,12 +1,11 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
+    StadiumStandStatistics
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
-
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
-    StadiumStandStatistics
 
 
 def _validate_filtered_field(field):
@@ -582,7 +581,10 @@ class StadiumStatisticsView(TemplateView):
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
 
-        if Match.objects.count() > 0:
+        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max'):
+            slider_min = self.request.COOKIES['slider_min']
+            slider_max = self.request.COOKIES['slider_max']
+        elif Match.objects.count() > 0:
             match = Match.objects.filter(user=self.request.user).order_by('matchday')[0]  # latest match
             slider_min = min(match.home_team_statistics.strength, match.guest_team_statistics.strength)
             slider_max = max(match.home_team_statistics.strength, match.guest_team_statistics.strength)
