@@ -14,9 +14,11 @@ $("#tolerance-slider-label").attr('title', "Toleranzwert um die gemittelte Stär
 function get_current_params(){
     var strength1 = parseInt($('#strength-slider').attr('value').split(',')[0], 10);
     var strength2 = parseInt($('#strength-slider').attr('value').split(',')[1], 10);
+    var tolerance = parseInt($('#tolerance-slider').attr('value'), 10);
 
     set_cookie('slider_min', strength1, 1);
     set_cookie('slider_max', strength2, 1);
+    set_cookie('tolerance', tolerance, 1);
 
     var params = {
         tolerance: $('#tolerance-slider').attr('value'),

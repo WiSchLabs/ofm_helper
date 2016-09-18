@@ -88,8 +88,10 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         cookies = self.client.cookies
         cookies['slider_min'] = 13
         cookies['slider_max'] = 37
+        cookies['tolerance'] = 42
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data['slider_min'], '13')
         self.assertEqual(response.context_data['slider_max'], '37')
+        self.assertEqual(response.context_data['tolerance'], '42')
