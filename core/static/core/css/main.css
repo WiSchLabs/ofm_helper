@@ -74,7 +74,13 @@ h1 {
 
 h2 span.glyphicon {
     background-color: transparent;
-    font-size: 20px;
+    font-size: 24px !important;
+}
+
+span.glyphicon.glyphicon-plus.alert-success,
+span.glyphicon.glyphicon-minus.alert-danger {
+    background-color: transparent;
+    font-size: 16px;
 }
 
 p { text-align: justify; }

@@ -43,7 +43,22 @@
         </div>
     {% endif %}
 
-    <h2><span class="glyphicon glyphicon-euro"></span> Bilanz</h2>
+    <h2><span class="glyphicon glyphicon-euro"></span> aktueller Kontostand</h2>
+
+    <table id='finances_account_balance_table' class="table table-bordered table-striped table-hover statistics_table"
+       data-toggle="table"
+       data-sort-name="balance"
+       data-sort-order="desc"
+       data-query-params="queryParams"
+       data-url="{% url 'core:ofm:finances_json' %}">
+        <thead id="finances_account_balance_table_head" class="hide">
+            <tr>
+                <th data-field="account_balance" data-formatter="moneyFormatter">Kontostand</th>
+            </tr>
+        </thead>
+    </table>
+
+    <h2><span class="glyphicon glyphicon-signal"></span> Bilanz</h2>
 
     <table id='finances_balance_table' class="table table-bordered table-striped table-hover statistics_table"
        data-toggle="table"
@@ -51,9 +66,11 @@
        data-sort-order="desc"
        data-query-params="queryParams"
        data-url="{% url 'core:ofm:finances_json' %}">
-        <thead id="finances_balance_table_head" class="hide">
+        <thead id="finances_balance_table_head">
             <tr>
-                <th data-field="balance" data-formatter="moneyDiffFormatter">Bilanz</th>
+                <th data-field="balance" data-formatter="moneyDiffFormatter"><span>&Sigma;</span> Summe</th>
+                <th data-field="sum_income" data-formatter="moneyDiffFormatter"><span class="glyphicon glyphicon-plus alert-success"></span> Einnahmen</th>
+                <th data-field="sum_expenses" data-formatter="moneyDiffFormatter"><span class="glyphicon glyphicon-minus alert-danger"></span> Ausgaben</th>
             </tr>
         </thead>
     </table>

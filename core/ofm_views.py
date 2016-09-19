@@ -211,6 +211,7 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         if not newer_finances:
             newer_finances = Finance.objects.all()[0]
 
+        account_balance = newer_finances.balance
         balance = newer_finances.balance
         if older_finances:
             balance = newer_finances.balance - older_finances.balance
@@ -296,7 +297,7 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             expenses_betting = -(newer_finances.expenses_betting - older_finances.expenses_betting)
 
         finances_diff = dict()
-        finances_diff['balance'] = balance
+        finances_diff['account_balance'] = account_balance
 
         finances_diff['income_visitors_league'] = income_visitors_league
         finances_diff['income_sponsoring'] = income_sponsoring
@@ -319,6 +320,16 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         finances_diff['expenses_friendlies'] = expenses_friendlies
         finances_diff['expenses_funcup'] = expenses_funcup
         finances_diff['expenses_betting'] = expenses_betting
+
+        sum_income = income_visitors_league + income_sponsoring + income_cup + income_interests + income_loan + \
+                     income_transfer + income_visitors_friendlies + income_friendlies + income_funcup + income_betting
+        sum_expenses = expenses_player_salaries + expenses_stadium + expenses_youth + expenses_interests + \
+                       expenses_trainings + expenses_transfer + expenses_compensation + expenses_friendlies + \
+                       expenses_funcup + expenses_betting
+
+        finances_diff['sum_income'] = sum_income
+        finances_diff['sum_expenses'] = sum_expenses
+        finances_diff['balance'] = sum_income + sum_expenses
 
         return [finances_diff]
 

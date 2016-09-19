@@ -34,13 +34,13 @@ class OFMFinancesViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['balance'], 2000)
+        self.assertEquals(returned_json_data[0]['account_balance'], 2000)
         self.assertEquals(returned_json_data[0]['income_visitors_league'], 200)
         self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -200)
 
     def test_user_can_see_his_finances_diff_when_given_both_matchdays(self):
         third_matchday = MatchdayFactory.create(number=self.matchday.number+2)
-        FinanceFactory.create(user=self.user1, matchday=third_matchday, balance=2500, income_visitors_league=250, expenses_player_salaries=250)
+        FinanceFactory.create(user=self.user1, matchday=third_matchday, balance=2500, income_visitors_league=250, income_sponsoring=250, expenses_player_salaries=250, expenses_youth=100)
 
         response = self.client.get(reverse('core:ofm:finances_json'),
                                    {'newer_matchday_season': third_matchday.season.number,
@@ -52,7 +52,10 @@ class OFMFinancesViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['balance'], 1500)
+        self.assertEquals(returned_json_data[0]['account_balance'], 2500)
+        self.assertEquals(returned_json_data[0]['balance'], 150)
+        self.assertEquals(returned_json_data[0]['sum_income'], 400)
+        self.assertEquals(returned_json_data[0]['sum_expenses'], -250)
         self.assertEquals(returned_json_data[0]['income_visitors_league'], 150)
         self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -150)
 
@@ -68,6 +71,9 @@ class OFMFinancesViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['balance'], 2500)
+        self.assertEquals(returned_json_data[0]['account_balance'], 2500)
+        self.assertEquals(returned_json_data[0]['balance'], 0)
+        self.assertEquals(returned_json_data[0]['sum_income'], 250)
+        self.assertEquals(returned_json_data[0]['sum_expenses'], -250)
         self.assertEquals(returned_json_data[0]['income_visitors_league'], 250)
         self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -250)
