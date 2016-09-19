@@ -581,7 +581,7 @@ class StadiumStatisticsView(TemplateView):
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
 
-        tolerance = 10
+        tolerance = 5
         if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
             slider_min = self.request.COOKIES['slider_min']
             slider_max = self.request.COOKIES['slider_max']
@@ -607,7 +607,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
     def get(self, request, *args, **kwargs):
         harmonic_strength = 150
-        tolerance = 10
+        tolerance = 5
         if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
             slider_min = int(self.request.COOKIES['slider_min'])
             slider_max = int(self.request.COOKIES['slider_max'])

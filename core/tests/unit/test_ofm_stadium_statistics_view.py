@@ -116,7 +116,7 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data['slider_min'], 30)
         self.assertEqual(response.context_data['slider_max'], 150)
-        self.assertEqual(response.context_data['tolerance'], 10)
+        self.assertEqual(response.context_data['tolerance'], 5)
 
     def test_default_values_from_cookies_for_strength_slider(self):
         cookies = self.client.cookies
