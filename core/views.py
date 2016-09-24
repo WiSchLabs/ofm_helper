@@ -18,11 +18,12 @@ from users.models import OFMUser
 import logging
 
 logger = logging.getLogger(__name__)
+MSG_NOT_LOGGED_IN = "Du bist nicht eiongeloggt!"
 
 
 def register_view(request):
     if request.user.is_authenticated():
-        messages.error(request, "You are already logged in. You can logout from the side menu.")
+        messages.error(request, "Du bist bereits eingeloggt. Du kannst dich im Menü ausloggen.")
         return render(request, 'core/account/home.html')
     if request.POST:
         username = request.POST.get('username')
@@ -34,23 +35,23 @@ def register_view(request):
         ofm_password2 = request.POST.get('ofm_password2')
 
         if OFMUser.objects.filter(email=email).exists():
-            messages.error(request, "An account with this email address already exists")
+            messages.error(request, "Ein Account mit dieser E-Mail-Adresse existiert bereits.")
             return redirect('core:register')
 
         if OFMUser.objects.filter(username=username).exists():
-            messages.error(request, "An account with this username already exists")
+            messages.error(request, "Ein Account mit diesem Benutzernamen existiert bereits.")
             return redirect('core:register')
 
         if password != password2:
-            messages.error(request, "Your passwords don't match!")
+            messages.error(request, "Die eingegeben Passwörter stimmen nicht überein.")
             return redirect('core:register')
 
         if OFMUser.objects.filter(ofm_username=ofm_username).exists():
-            messages.error(request, "There is already an account linked to this OFM username")
+            messages.error(request, "Es existiert bereits ein Account für diesen OFM Benutzernamen.")
             return redirect('core:register')
 
         if ofm_password != ofm_password2:
-            messages.error(request, "Your OFM passwords don't match!")
+            messages.error(request, "Die eingegeben OFM Passwörter stimmen nicht überein.")
             return redirect('core:register')
 
         OFMUser.objects.create_user(
@@ -61,7 +62,7 @@ def register_view(request):
             ofm_password=ofm_password,
         )
 
-        messages.success(request, "Account created. Please log in.")
+        messages.success(request, "Account wurde erstellt. Jetzt kannst du dich einloggen.")
         return redirect('core:login')
 
     else:
@@ -76,13 +77,13 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                messages.success(request, "Login successful.")
+                messages.success(request, "Login erfolgreich.")
                 return render(request, 'core/account/home.html')
             else:
-                messages.error(request, "Your account is disabled.")
+                messages.error(request, "Login nicht möglich. Dein Account wurde deaktiviert.")
                 return redirect('core:login')
         else:
-            messages.error(request, "Your username and/or your password is incorrect.")
+            messages.error(request, "Benutzername und/oder Passwort nicht korrekt.")
             return redirect('core:login')
     else:
         if request.user.is_authenticated():
@@ -94,7 +95,7 @@ def login_view(request):
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
-        messages.success(request, "You have been logged out.")
+        messages.success(request, "Du wurdest abgemeldet.")
     return redirect('core:home')
 
 
@@ -102,7 +103,7 @@ def account_view(request):
     if request.user.is_authenticated():
         return render(request, 'core/account/home.html')
     else:
-        messages.error(request, "You are not logged in!")
+        messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')
 
 
@@ -134,7 +135,7 @@ def trigger_parsing(request):
 
         return redirect('core:ofm:player_statistics')
     else:
-        messages.error(request, "You are not logged in!")
+        messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')
 
 
