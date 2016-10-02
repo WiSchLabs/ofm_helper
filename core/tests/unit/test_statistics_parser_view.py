@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 import core
 import os
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Finance, Match
+from core.models import PlayerStatistics, Player, Finance, Match, AwpBoundaries, AwpBoundariesKeyVal
+from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
@@ -34,31 +35,36 @@ class ParserViewTest(TestCase):
         with open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8') as matchday_html:
             with open(os.path.join(TESTDATA_PATH, 'player.html'), encoding='utf8') as player_html:
                 with open(os.path.join(TESTDATA_PATH, 'frame_player_statistics.html'), encoding='utf8') as player_statistics_html:
-                    with open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8') as finances_html:
-                        with open(os.path.join(TESTDATA_PATH, 'home_match.html'), encoding='utf8') as match_html:
-                            mdp = MatchdayParser(matchday_html.read())
-                            pp = PlayersParser(player_html.read(), self.user)
-                            psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
-                            fp = FinancesParser(finances_html.read(), self.user)
-                            mp = MatchParser(match_html.read(), self.user, True)
+                    with open(os.path.join(TESTDATA_PATH, 'awp_boundaries.html'), encoding='utf8') as awp_boundaries_html:
+                        with open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8') as finances_html:
+                            with open(os.path.join(TESTDATA_PATH, 'home_match.html'), encoding='utf8') as match_html:
+                                mdp = MatchdayParser(matchday_html.read())
+                                pp = PlayersParser(player_html.read(), self.user)
+                                psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
+                                abp = AwpBoundariesParser(awp_boundaries_html.read(), self.user)
+                                fp = FinancesParser(finances_html.read(), self.user)
+                                mp = MatchParser(match_html.read(), self.user, True)
 
-                            core.views.MatchdayParser = Mock(spec=mdp)
-                            core.views.MatchdayParser.return_value.parse = mdp.parse
+                                core.views.MatchdayParser = Mock(spec=mdp)
+                                core.views.MatchdayParser.return_value.parse = mdp.parse
 
-                            core.views.PlayersParser = Mock(spec=pp)
-                            core.views.PlayersParser.return_value.parse = pp.parse
+                                core.views.PlayersParser = Mock(spec=pp)
+                                core.views.PlayersParser.return_value.parse = pp.parse
 
-                            core.views.PlayerStatisticsParser = Mock(spec=psp)
-                            core.views.PlayerStatisticsParser.return_value.parse = psp.parse
+                                core.views.PlayerStatisticsParser = Mock(spec=psp)
+                                core.views.PlayerStatisticsParser.return_value.parse = psp.parse
 
-                            core.views.FinancesParser = Mock(spec=fp)
-                            core.views.FinancesParser.return_value.parse = fp.parse
+                                core.views.AwpBoundariesParser = Mock(spec=abp)
+                                core.views.AwpBoundariesParser.return_value.parse = abp.parse
 
-                            core.views.MatchParser = Mock(spec=mp)
-                            core.views.MatchParser.return_value.parse = mp.parse
+                                core.views.FinancesParser = Mock(spec=fp)
+                                core.views.FinancesParser.return_value.parse = fp.parse
 
-                            response = self.client.get(reverse('core:trigger_parsing'))
-                            self.assertEqual(response.status_code, 302)
+                                core.views.MatchParser = Mock(spec=mp)
+                                core.views.MatchParser.return_value.parse = mp.parse
+
+                                response = self.client.get(reverse('core:trigger_parsing'))
+                                self.assertEqual(response.status_code, 302)
 
         # test player statistics parsing
         player_statistics = PlayerStatistics.objects.all()
@@ -74,6 +80,10 @@ class ParserViewTest(TestCase):
 
         self.assertEquals(player_statistics[1].player.name, "Irwin O'Canny")
         self.assertEquals(player_statistics[1].strength, 14)
+
+        # test awp boundaries parsing
+        self.assertEquals(AwpBoundariesKeyVal.objects.filter(strength=2)[0].awp, 128)
+        self.assertEquals(AwpBoundariesKeyVal.objects.filter(strength=3)[0].awp, 348)
 
         # test players parsing
         first_parsed_player = Player.objects.all()[2]
