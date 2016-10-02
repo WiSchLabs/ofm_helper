@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
@@ -123,6 +124,7 @@ def trigger_parsing(request):
         matchday = parse_matchday(site_manager)
         parse_players(request, site_manager)
         parse_player_statistics(request, site_manager)
+        parse_awp_boundaries(request, site_manager)
         parse_finances(request, site_manager)
         if matchday.number > 0:
             #  do not parse on matchday 0
@@ -156,6 +158,13 @@ def parse_player_statistics(request, site_manager):
     site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
     player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
     player_stat_parser.parse()
+
+
+def parse_awp_boundaries(request, site_manager):
+    logger.debug('===== parse AWP Boundaries ...')
+    site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
+    awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
+    awp_boundaries_parser.parse()
 
 
 def parse_finances(request, site_manager):

@@ -1,5 +1,6 @@
 from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, StadiumLevelItem
+    MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, StadiumLevelItem, \
+    AwpBoundaries, AwpBoundariesKeyVal
 from django.contrib import admin
 
 
@@ -43,6 +44,19 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
     list_filter = ['matchday']
     list_display = ['player', 'matchday']
     search_fields = ['player', 'matchday']
+
+
+@admin.register(AwpBoundaries)
+class AwpBoundariesAdmin(admin.ModelAdmin):
+    list_filter = ['matchday']
+    list_display = ['matchday', 'awp_boundaries']
+    fields = ['matchday']
+    search_fields = ['matchday']
+
+    def awp_boundaries(self, obj):
+        return AwpBoundariesKeyVal.objects.filter(awp_boundaries=obj)
+    awp_boundaries.short_description = 'awp_boundaries'
+    awp_boundaries.empty_value_display = '[]'
 
 
 @admin.register(Contract)

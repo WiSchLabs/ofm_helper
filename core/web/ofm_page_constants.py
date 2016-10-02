@@ -1,6 +1,7 @@
 class Constants:
     BASE = 'http://www.onlinefussballmanager.de'
     HEAD = 'http://www.onlinefussballmanager.de/head-int.php'
+    AWP_BOUNDARIES = 'http://www.ofm-forum.de/showthread.php?91605-aktuelle-Aufwertungsgrenzen/page9999'
 
     class Office:
         pass

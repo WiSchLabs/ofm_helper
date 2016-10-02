@@ -344,6 +344,23 @@ class PlayerStatistics(models.Model):
         return "%s/%s: %s" % (self.matchday.season.number, self.matchday.number, self.player.name)
 
 
+class AwpBoundaries(models.Model):
+    class Meta:
+        verbose_name_plural = "AWP Boundaries"
+        ordering = ['-matchday']
+
+    matchday = models.ForeignKey(Matchday, related_name='awp_boundaries')
+
+
+class AwpBoundariesKeyVal(models.Model):
+    awp_boundaries = models.ForeignKey(AwpBoundaries)
+    strength = models.IntegerField(db_index=True)
+    awp = models.IntegerField()
+
+    def __str__(self):
+        return "%s: %s" % (self.strength, self.awp)
+
+
 class Contract(models.Model):
     class Meta:
         ordering = ['user', 'player']
