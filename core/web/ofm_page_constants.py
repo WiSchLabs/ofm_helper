@@ -117,3 +117,11 @@ class Constants:
     STATISTICS.SEARCH_ALL = 'http://www.onlinefussballmanager.de/statistics/search_all.php'
     STATISTICS.SEARCH_TEAM = 'http://www.onlinefussballmanager.de/statistics/search_team.php'
     STATISTICS.SEARCH_PLAYER = 'http://www.onlinefussballmanager.de/statistics/search_spieler.php'
+
+    class Quarters:
+        pass
+    QUARTERS = Quarters()
+    QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY = 9
+    QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY = 18
+    QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY = 27
+    QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY = 0

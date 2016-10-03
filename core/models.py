@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from core.web.ofm_page_constants import Constants
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum
@@ -725,6 +726,14 @@ class AwpBoundaries(Dictionary):
 
     @staticmethod
     def _name_from_matchday(matchday):
-        return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(matchday.number)
+
+        if Constants.QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY:
+            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(0)
+        elif Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY:
+            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(1)
+        elif Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY:
+            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(2)
+        else:
+            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(3)
 
     matchday = models.ForeignKey(Matchday, related_name='awp_boundaries')
