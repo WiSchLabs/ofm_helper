@@ -706,13 +706,25 @@ class AwpBoundaries(Dictionary):
         ordering = ['-matchday', '-name']
 
     @staticmethod
-    def get_dict_by_matchday(matchday):
+    def create_from_matchday(matchday):
         """Get the Dictionary of the given matchday.
 
         """
-        name = 'awp_boundaries_' + str(matchday.season.number) + '_' + str(matchday.number)
-        df = Dictionary.objects.select_related().get(name=name)
+        df = AwpBoundaries.objects.create(name=AwpBoundaries._name_from_matchday(matchday), matchday=matchday)
 
         return df
+
+    @staticmethod
+    def get_from_matchday(matchday):
+        """Get the AWP Boundaries of the given matchday.
+
+        """
+        df = Dictionary.objects.select_related().get(name=AwpBoundaries._name_from_matchday(matchday))
+
+        return df
+
+    @staticmethod
+    def _name_from_matchday(matchday):
+        return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(matchday.number)
 
     matchday = models.ForeignKey(Matchday, related_name='awp_boundaries')

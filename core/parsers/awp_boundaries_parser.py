@@ -27,11 +27,10 @@ class AwpBoundariesParser(BaseParser):
         boundaries_raw = soup.find_all('pre', 'bbcode_code')[-1]
         boundaries = boundaries_raw.text.split()[2:]
 
-        name = 'awp_boundaries_' + str(matchday.season.number) + '_' + str(matchday.number)
         try:
-            awp_boundaries = AwpBoundaries.get_dict(name)
+            awp_boundaries = AwpBoundaries.get_from_matchday(matchday)
         except Dictionary.DoesNotExist:
-            awp_boundaries = AwpBoundaries.objects.create(name=name, matchday=matchday)
+            awp_boundaries = AwpBoundaries.create_from_matchday(matchday)
 
         for i in range(26):
             strength = boundaries[i * 4]

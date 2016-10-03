@@ -81,8 +81,8 @@ class ParserViewTest(TestCase):
 
         # test awp boundaries parsing
         matchday = player_statistics[0].matchday
-        self.assertEquals(AwpBoundaries.get_dict_by_matchday(matchday)[2], 128)
-        self.assertEquals(AwpBoundaries.get_dict_by_matchday(matchday)[3], 348)
+        self.assertEquals(AwpBoundaries.get_from_matchday(matchday)[2], 128)
+        self.assertEquals(AwpBoundaries.get_from_matchday(matchday)[3], 348)
 
         # test players parsing
         first_parsed_player = Player.objects.all()[2]
