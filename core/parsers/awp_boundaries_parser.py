@@ -1,8 +1,8 @@
-from bs4 import BeautifulSoup
-
-from core.models import Matchday, Finance, AwpBoundaries, AwpBoundariesKeyVal
-from core.parsers.base_parser import BaseParser
 import logging
+
+from bs4 import BeautifulSoup
+from core.models import Matchday, AwpBoundaries, Dictionary
+from core.parsers.base_parser import BaseParser
 
 logger = logging.getLogger(__name__)
 
@@ -27,13 +27,15 @@ class AwpBoundariesParser(BaseParser):
         boundaries_raw = soup.find_all('pre', 'bbcode_code')[-1]
         boundaries = boundaries_raw.text.split()[2:]
 
-        awp_boundaries, success = AwpBoundaries.objects.get_or_create(matchday=matchday)
+        name = 'awp_boundaries_' + str(matchday.season.number) + '_' + str(matchday.number)
+        try:
+            awp_boundaries = AwpBoundaries.get_dict(name)
+        except Dictionary.DoesNotExist:
+            awp_boundaries = AwpBoundaries.objects.create(name=name, matchday=matchday)
+
         for i in range(26):
             strength = boundaries[i * 4]
             awp = boundaries[i * 4 + 1]
-            AwpBoundariesKeyVal.objects.get_or_create(awp_boundaries=awp_boundaries, strength=strength, awp=awp)
+            awp_boundaries[strength] = awp
 
         return awp_boundaries
-
-    def _int_from_money(self, money):
-        return self.strip_euro_sign(money.replace('.', '').strip())

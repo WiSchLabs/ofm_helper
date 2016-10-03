@@ -1,11 +1,9 @@
 from unittest.mock import Mock, patch
 
-from bs4 import BeautifulSoup
-
 import core
 import os
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Finance, Match, AwpBoundaries, AwpBoundariesKeyVal
+from core.models import PlayerStatistics, Player, Finance, AwpBoundaries
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
@@ -82,8 +80,9 @@ class ParserViewTest(TestCase):
         self.assertEquals(player_statistics[1].strength, 14)
 
         # test awp boundaries parsing
-        self.assertEquals(AwpBoundariesKeyVal.objects.filter(strength=2)[0].awp, 128)
-        self.assertEquals(AwpBoundariesKeyVal.objects.filter(strength=3)[0].awp, 348)
+        matchday = player_statistics[0].matchday
+        self.assertEquals(AwpBoundaries.get_dict_by_matchday(matchday)[2], 128)
+        self.assertEquals(AwpBoundaries.get_dict_by_matchday(matchday)[3], 348)
 
         # test players parsing
         first_parsed_player = Player.objects.all()[2]
