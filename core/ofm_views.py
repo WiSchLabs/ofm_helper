@@ -1,7 +1,7 @@
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
 from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
-    StadiumStandStatistics
+    StadiumStandStatistics, AwpBoundaries
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
@@ -155,14 +155,22 @@ class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         player_id = self.request.GET.get('player_id')
         player = Player.objects.filter(id=player_id)
         data_source = PlayerStatistics.objects.filter(player=player, matchday__season__number=season_number)
+        awps = [player_stat.awp for player_stat in data_source]
 
         chart_json = {
             "series": [{
                 "name": 'AWP',
-                "data": [player_stat.awp for player_stat in data_source]
+                "data": awps
             }],
             "categories": [player_stat.matchday.number for player_stat in data_source]
         }
+
+        awp_boundaries = AwpBoundaries.get_from_matchday(Matchday.objects.all()[0])
+        bound_displayed = False
+        for strength in awp_boundaries:
+            if awp_boundaries[strength] >= max(awps) and not bound_displayed:
+                chart_json['series'].append({'name': 'AWP-Grenze: %s' % strength, 'data': [awp_boundaries[strength]] * len(data_source)})
+                bound_displayed = True
 
         return self.render_json_response(chart_json)
 

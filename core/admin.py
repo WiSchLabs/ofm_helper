@@ -50,7 +50,7 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
 class AwpBoundariesAdmin(admin.ModelAdmin):
     list_filter = ['name', 'matchday']
     list_display = ['name', 'matchday']
-    fields = ['name', 'matchday', 'keys', 'values']
+    fields = ['name', 'matchday']
     search_fields = ['matchday']
 
 

@@ -1,10 +1,9 @@
 import json
 
+from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory
+from core.models import Contract, AwpBoundaries
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-
-from core.factories.core_factories import MatchdayFactory, PlayerFactory
-from core.models import Contract
 from users.models import OFMUser
 
 
@@ -30,10 +29,22 @@ class OFMPlayerDetailViewTestCase(TestCase):
         self.assertFalse('player' in response.context_data)
 
     def test_player_chart_json(self):
+
+        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday)
+
+        awp_boundaries = AwpBoundaries.create_from_matchday(self.matchday)
+        awp_boundaries[2] = 1000
+
         response = self.client.get(reverse('core:ofm:players_chart_json'), {'player_id': self.player.id})
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('series' in returned_json_data)
+
         self.assertEquals('AWP', returned_json_data['series'][0]['name'])
         self.assertTrue('data' in returned_json_data['series'][0])
+
+        self.assertEquals('AWP-Grenze: 2', returned_json_data['series'][1]['name'])
+        self.assertTrue('data' in returned_json_data['series'][1])
+        self.assertEquals([1000], returned_json_data['series'][1]['data'])
+
         self.assertTrue('categories' in returned_json_data)

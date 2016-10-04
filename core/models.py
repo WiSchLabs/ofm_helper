@@ -673,12 +673,6 @@ class Dictionary(models.Model):
         """
         self.keyvaluepair_set.all().delete()
 
-    # def __unicode__(self):
-    #    """Returns a unicode representation of the Dictionary.
-    #
-    #    """
-    #    return unicode(self.asPyDict())
-
     def as_py_dict(self):
         """Get a python dictionary that represents this Dictionary object.
         This object is read-only.
