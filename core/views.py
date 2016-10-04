@@ -1,21 +1,25 @@
+import logging
+
 from bs4 import BeautifulSoup
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
+from core.models import Matchday
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
+from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
 from core.web.ofm_page_constants import Constants
 from core.web.site_manager import SiteManager
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render
 from users.models import OFMUser
-import logging
 
 logger = logging.getLogger(__name__)
 MSG_NOT_LOGGED_IN = "Du bist nicht eiongeloggt!"
@@ -115,7 +119,8 @@ def trigger_parsing(request):
         site_manager = SiteManager(request.user)
         site_manager.login()
 
-        matchday = parse_matchday(site_manager)
+        parse_matchday(request, site_manager)
+        matchday = Matchday.objects.all()[0]
         parse_players(request, site_manager)
         parse_player_statistics(request, site_manager)
         parse_awp_boundaries(request, site_manager)
@@ -139,6 +144,41 @@ def trigger_parsing(request):
         return redirect('core:login')
 
 
+def trigger_single_parsing(request, parsing_function, redirect_to='core:account'):
+    if request.user.is_authenticated():
+        site_manager = SiteManager(request.user)
+        site_manager.login()
+        parsing_function(request, site_manager)
+        return redirect(redirect_to)
+    else:
+        messages.add_message(request, messages.ERROR, MSG_NOT_LOGGED_IN, extra_tags='error')
+        return redirect('core:login')
+
+
+def trigger_matchday_parsing(request):
+    return trigger_single_parsing(request, parse_matchday)
+
+
+def trigger_players_parsing(request):
+    redirect_to = 'core:ofm:player_statistics'
+    return trigger_single_parsing(request, parse_players, redirect_to)
+
+
+def trigger_player_statistics_parsing(request):
+    redirect_to = 'core:ofm:player_statistics'
+    return trigger_single_parsing(request, parse_player_statistics, redirect_to)
+
+
+def trigger_finances_parsing(request):
+    redirect_to = 'core:ofm:finance_overview'
+    return trigger_single_parsing(request, parse_finances, redirect_to)
+
+
+def trigger_match_parsing(request):
+    redirect_to = 'core:ofm:matches_overview'
+    return trigger_single_parsing(request, parse_match, redirect_to)
+
+
 def parse_ofm_version(site_manager):
     site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
     soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
@@ -146,7 +186,7 @@ def parse_ofm_version(site_manager):
     return version
 
 
-def parse_matchday(site_manager):
+def parse_matchday(request, site_manager):
     logger.debug('===== parse Matchday ...')
     site_manager.jump_to_frame(Constants.HEAD)
     matchday_parser = MatchdayParser(site_manager.browser.page_source)
@@ -157,14 +197,14 @@ def parse_players(request, site_manager):
     logger.debug('===== parse Players ...')
     site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
     players_parser = PlayersParser(site_manager.browser.page_source, request.user)
-    players_parser.parse()
+    return players_parser.parse()
 
 
 def parse_player_statistics(request, site_manager):
     logger.debug('===== parse PlayerStatistics ...')
     site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
     player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
-    player_stat_parser.parse()
+    return player_stat_parser.parse()
 
 
 def parse_awp_boundaries(request, site_manager):
@@ -178,10 +218,13 @@ def parse_finances(request, site_manager):
     logger.debug('===== parse Finances ...')
     site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
     finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
-    finances_parser.parse()
+    return finances_parser.parse()
 
 
 def parse_match(request, site_manager):
+    if Matchday.objects.all()[0].number <= 0:
+        return
+
     logger.debug('===== parse latest Match ...')
     site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
     soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
@@ -195,13 +238,15 @@ def parse_match(request, site_manager):
         if "spielbericht" in link_to_match:
             site_manager.jump_to_frame(Constants.BASE + link_to_match)
             match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
-            match_parser.parse()
+            match = match_parser.parse()
 
             if is_home_match:
                 parse_stadium_statistics(request, site_manager)
+
+            return match
     else:
         match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
-        match_parser.parse()
+        return match_parser.parse()
 
 
 def parse_stadium_statistics(request, site_manager):
@@ -211,4 +256,9 @@ def parse_stadium_statistics(request, site_manager):
     stadium_statistics_parser.parse()
     site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
     stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-    stadium_stand_stat_parser.parse()
+    return stadium_stand_stat_parser.parse()
+
+
+@receiver(post_save, sender=Matchday)
+def postsave(sender, **kwargs):
+    pass
