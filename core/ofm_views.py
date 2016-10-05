@@ -154,22 +154,23 @@ class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         season_number = self.request.GET.get('season_number', default=current_season_number)
         player_id = self.request.GET.get('player_id')
         player = Player.objects.filter(id=player_id)
-        data_source = PlayerStatistics.objects.filter(player=player, matchday__season__number=season_number)
-        awps = [player_stat.awp for player_stat in data_source]
+        player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=season_number)
+        awps = [player_stat.awp for player_stat in player_statistics]
 
         chart_json = {
             "series": [{
                 "name": 'AWP',
                 "data": awps
             }],
-            "categories": [player_stat.matchday.number for player_stat in data_source]
+            "categories": [player_stat.matchday.number for player_stat in player_statistics]
         }
 
         awp_boundaries = AwpBoundaries.get_from_matchday(Matchday.objects.all()[0])
         bound_displayed = False
         for strength in awp_boundaries:
+            if awp_boundaries[strength] >= min(awps) and not bound_displayed:
+                chart_json['series'].append({'name': 'AWP-Grenze: %s' % strength, 'data': [awp_boundaries[strength]] * len(player_statistics)})
             if awp_boundaries[strength] >= max(awps) and not bound_displayed:
-                chart_json['series'].append({'name': 'AWP-Grenze: %s' % strength, 'data': [awp_boundaries[strength]] * len(data_source)})
                 bound_displayed = True
 
         return self.render_json_response(chart_json)
