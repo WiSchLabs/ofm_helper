@@ -48,10 +48,10 @@ class PlayerStatisticsAdmin(admin.ModelAdmin):
 
 @admin.register(AwpBoundaries)
 class AwpBoundariesAdmin(admin.ModelAdmin):
-    list_filter = ['name', 'matchday']
-    list_display = ['name', 'matchday']
-    fields = ['name', 'matchday']
-    search_fields = ['matchday']
+    list_filter = ['name']
+    list_display = ['name']
+    fields = ['name']
+    search_fields = ['name']
 
 
 @admin.register(Contract)

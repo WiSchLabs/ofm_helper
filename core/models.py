@@ -698,36 +698,30 @@ class KeyValuePair(models.Model):
 class AwpBoundaries(Dictionary):
     class Meta:
         verbose_name_plural = "AWP Boundaries"
-        ordering = ['-matchday', '-name']
+        ordering = ['-name']
 
     @staticmethod
-    def create_from_matchday(matchday):
+    def get_or_create_from_matchday(matchday):
         """Get the Dictionary of the given matchday.
 
         """
-        df = AwpBoundaries.objects.create(name=AwpBoundaries._name_from_matchday(matchday), matchday=matchday)
-
-        return df
+        awp_boundary, _ = AwpBoundaries.objects.get_or_create(name=AwpBoundaries._name_from_matchday(matchday))
+        return awp_boundary
 
     @staticmethod
     def get_from_matchday(matchday):
         """Get the AWP Boundaries of the given matchday.
 
         """
-        df = Dictionary.objects.select_related().get(name=AwpBoundaries._name_from_matchday(matchday))
-
-        return df
+        return Dictionary.objects.select_related().get(name=AwpBoundaries._name_from_matchday(matchday))
 
     @staticmethod
     def _name_from_matchday(matchday):
-
         if Constants.QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY:
-            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(0)
+            return 'awp_boundaries_' + str(matchday.season.number) + '_0'
         elif Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY:
-            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(1)
+            return 'awp_boundaries_' + str(matchday.season.number) + '_1'
         elif Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY:
-            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(2)
+            return 'awp_boundaries_' + str(matchday.season.number) + '_2'
         else:
-            return 'awp_boundaries_' + str(matchday.season.number) + '_' + str(3)
-
-    matchday = models.ForeignKey(Matchday, related_name='awp_boundaries')
+            return 'awp_boundaries_' + str(matchday.season.number) + '_3'

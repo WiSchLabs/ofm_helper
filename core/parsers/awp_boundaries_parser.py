@@ -30,7 +30,7 @@ class AwpBoundariesParser(BaseParser):
         try:
             awp_boundaries = AwpBoundaries.get_from_matchday(matchday)
         except Dictionary.DoesNotExist:
-            awp_boundaries = AwpBoundaries.create_from_matchday(matchday)
+            awp_boundaries = AwpBoundaries.get_or_create_from_matchday(matchday)
 
         for i in range(26):
             strength = boundaries[i * 4]

@@ -166,12 +166,11 @@ class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         }
 
         awp_boundaries = AwpBoundaries.get_from_matchday(Matchday.objects.all()[0])
-        bound_displayed = False
         for strength in awp_boundaries:
-            if awp_boundaries[strength] >= min(awps) and not bound_displayed:
+            if awp_boundaries[strength] >= min(awps):
                 chart_json['series'].append({'name': 'AWP-Grenze: %s' % strength, 'data': [awp_boundaries[strength]] * len(player_statistics)})
-            if awp_boundaries[strength] >= max(awps) and not bound_displayed:
-                bound_displayed = True
+            if awp_boundaries[strength] >= max(awps):
+                break
 
         return self.render_json_response(chart_json)
 
