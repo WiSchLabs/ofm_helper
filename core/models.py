@@ -713,7 +713,13 @@ class AwpBoundaries(Dictionary):
         """Get the AWP Boundaries of the given matchday.
 
         """
-        return Dictionary.objects.select_related().get(name=AwpBoundaries._name_from_matchday(matchday))
+        try:
+            awp_boundaries = Dictionary.objects.select_related().get(name=AwpBoundaries._name_from_matchday(matchday))
+        except Dictionary.DoesNotExist:
+            awp_boundaries = AwpBoundaries.get_or_create_from_matchday(matchday)
+            for i in range(26):
+                awp_boundaries[i+1] = 0
+        return awp_boundaries
 
     @staticmethod
     def _name_from_matchday(matchday):
