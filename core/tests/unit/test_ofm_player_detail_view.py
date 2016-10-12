@@ -96,6 +96,33 @@ class OFMPlayerDetailViewTestCase(TestCase):
         self.assertTrue('data' in returned_json_data['series'][2])
         self.assertEquals([4000]*2, returned_json_data['series'][2]['data'])
 
+    def test_player_chart_does_not_show_boundary_if_promoted(self):
+
+        PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday, strength=2, awp=2800)
+        matchday_9 = MatchdayFactory.create(number=9)
+        PlayerStatisticsFactory.create(player=self.player, matchday=matchday_9, strength=3, awp=3500)
+
+        awp_boundaries = AwpBoundaries.get_or_create_from_matchday(self.matchday)
+        awp_boundaries[2] = 2000
+        awp_boundaries[3] = 3000
+        awp_boundaries[4] = 3800
+        awp_boundaries9 = AwpBoundaries.get_or_create_from_matchday(matchday_9)
+        awp_boundaries9[2] = 2000
+        awp_boundaries9[3] = 3000
+        awp_boundaries9[4] = 4000
+
+        response = self.client.get(reverse('core:ofm:players_chart_json'), {'player_id': self.player.id})
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('series' in returned_json_data)
+
+        self.assertEquals('AWP', returned_json_data['series'][0]['name'])
+        self.assertTrue('data' in returned_json_data['series'][0])
+
+        self.assertEquals('AWP-Grenze: 4', returned_json_data['series'][1]['name'])
+        self.assertTrue('data' in returned_json_data['series'][1])
+        self.assertEquals([3800, 4000], returned_json_data['series'][1]['data'])
+
     def test_player_chart_shows_different_awp_boundaries(self):
 
         matchday_9 = MatchdayFactory.create(number=9)
