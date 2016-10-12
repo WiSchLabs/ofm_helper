@@ -1,5 +1,14 @@
 # OFM Helper [![Build Status](https://travis-ci.org/WiSchLabs/ofm_helper.svg?branch=master)](https://travis-ci.org/WiSchLabs/ofm_helper) [![Coverage Status](https://coveralls.io/repos/github/WiSchLabs/ofm_helper/badge.svg?branch=master)](https://coveralls.io/github/WiSchLabs/ofm_helper?branch=master) [![](https://images.microbadger.com/badges/image/wischlabs/ofm_helper.svg)](http://microbadger.com/images/wischlabs/ofm_helper "Get your own image badge on microbadger.com") [![Pinkie Pie Approval Status](http://dosowisko.net/pinkiepieapproved.svg)](https://www.youtube.com/watch?v=FULyN9Ai-A0)
 
+# Features
+* Kopieren der aktuellen Spieltagsdaten mittels Knopfdrucks
+* Darstellung historischer Spieltagsdaten:
+    * Spielerstatistiken
+    * Finanzen
+    * Ligaspiele
+    * Stadiondaten
+    * and more to come :=)
+
 # Task board
 
 [![Stories ready](https://badge.waffle.io/WiSchLabs/ofm_helper.png?label=backlog&title=Backlog)](http://waffle.io/WiSchLabs/ofm_helper)
