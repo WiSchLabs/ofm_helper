@@ -7,9 +7,10 @@
     {% if player %}
 
         <h1 class="page-header">{{ player.name }}</h1>
-        {{ player.get_position }} ({{ player.position }})<br>
+        <span class="flaticon-football-player-attempting-to-kick-ball"></span> {{ player.get_position }} ({{ player.position }})<br>
+        <span class="flaticon-flaming-football"></span> Stärke: {{ player_strength }}<br>
         <span class="flag-icon flag-icon-{{ player.nationality.get_iso|lower }}"></span> {{ player.nationality }}<br>
-        Alter: {{ player_age }}
+        <span class="glyphicon glyphicon-gift"></span> Alter: {{ player_age }}
         <br>
         <br>
         <br>

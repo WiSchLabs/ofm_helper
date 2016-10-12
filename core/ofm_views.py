@@ -137,6 +137,7 @@ class PlayerDetailView(DetailView):
         context['seasons'] = seasons
         if player:
             context['player_age'] = current_season.number - player.birth_season.number
+            context['player_strength'] = player_stats[0].strength
 
         return context
 

@@ -17,9 +17,12 @@ class OFMPlayerDetailViewTestCase(TestCase):
         self.client.login(username='alice', password='alice')
 
     def test_user_can_see_his_players(self):
+        PlayerStatisticsFactory.create(player=self.player)
         response = self.client.get('/ofm/players/'+str(self.player.id))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('player' in response.context_data)
+        self.assertTrue('player_age' in response.context_data)
+        self.assertTrue('player_strength' in response.context_data)
         self.assertTrue('seasons' in response.context_data)
 
     def test_user_cannot_see_other_users_players(self):
