@@ -1,6 +1,6 @@
 # OFM Helper [![Build Status](https://travis-ci.org/WiSchLabs/ofm_helper.svg?branch=master)](https://travis-ci.org/WiSchLabs/ofm_helper) [![Coverage Status](https://coveralls.io/repos/github/WiSchLabs/ofm_helper/badge.svg?branch=master)](https://coveralls.io/github/WiSchLabs/ofm_helper?branch=master) [![](https://images.microbadger.com/badges/image/wischlabs/ofm_helper.svg)](http://microbadger.com/images/wischlabs/ofm_helper "Get your own image badge on microbadger.com") [![Pinkie Pie Approval Status](http://dosowisko.net/pinkiepieapproved.svg)](https://www.youtube.com/watch?v=FULyN9Ai-A0)
 
-# Features
+## Features
 * Kopieren der aktuellen Spieltagsdaten mittels Knopfdrucks
 * Darstellung historischer Spieltagsdaten:
     * Spielerstatistiken
@@ -9,7 +9,7 @@
     * Stadiondaten
     * and more to come :=)
 
-# Task board
+## Task board
 
 [![Stories ready](https://badge.waffle.io/WiSchLabs/ofm_helper.png?label=backlog&title=Backlog)](http://waffle.io/WiSchLabs/ofm_helper)
 [![Stories in progress](https://badge.waffle.io/WiSchLabs/ofm_helper.png?label=in%20progress&title=In%20progress)](http://waffle.io/WiSchLabs/ofm_helper)
@@ -17,9 +17,9 @@
 
 [![Throughput Graph](https://graphs.waffle.io/WiSchLabs/ofm_helper/throughput.svg)](https://waffle.io/WiSchLabs/ofm_helper/metrics/throughput)
 
-# Installation
+## Installation
 
-## Windows
+### Windows
 
 1. Lade das zip Archiv vom [aktuellen Release](https://github.com/WiSchLabs/ofm_helper/releases/latest)
 2. Entapcke das Archiv in ein beliebiges Verzeichnis auf deinem Rechner
@@ -30,7 +30,7 @@
 6. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
 7. Erstelle einen neuen Account mit deinen OFM Logindaten
 
-## Windows / OS X  mit Docker
+### Windows / OS X  mit Docker
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
 1. Installiere Kitematic (https://kitematic.com/)
@@ -43,7 +43,7 @@
 8. Klicke auf das Voschaufenster in Kitematic um OFMHelper in deinem Standardbrowser zu öffnen
 9. Erstelle einen neuen Account mit deinen OFM Logindaten
 
-## Linux / OS X
+### Linux / OS X
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
 1. Installiere Docker
