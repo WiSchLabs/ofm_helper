@@ -167,16 +167,16 @@ class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         matchdays = [p.matchday for p in player_statistics]
         current_matchday = Matchday.objects.all()[0]
-        awp_boundaries = AwpBoundaries.get_from_matchday(current_matchday)
+        current_awp_boundaries = AwpBoundaries.get_from_matchday(current_matchday)
         current_player_statistics = PlayerStatistics.objects.get(player=player,
                                                                  matchday__season__number=season_number,
                                                                  matchday__number=current_matchday.number)
 
-        for strength in awp_boundaries:
-            if awp_boundaries[strength] >= min(awps) and strength > current_player_statistics.strength:
+        for strength in current_awp_boundaries:
+            if current_awp_boundaries[strength] >= min(awps) and strength > current_player_statistics.strength:
                 awp_boundary_values = [AwpBoundaries.get_from_matchday(matchday)[strength] for matchday in matchdays]
                 chart_json['series'].append({'name': 'AWP-Grenze: %s' % strength, 'data': awp_boundary_values})
-            if awp_boundaries[strength] >= max(awps):
+            if current_awp_boundaries[strength] >= max(awps):
                 break
 
         return self.render_json_response(chart_json)
