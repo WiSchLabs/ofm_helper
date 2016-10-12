@@ -95,6 +95,9 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         if older_player_statistics:
             freshness = newer_player_statistics.freshness - older_player_statistics.freshness
 
+        awp_boundaries = AwpBoundaries.get_from_matchday(newer_player_statistics.matchday)
+        awp_to_next_bound = awp_boundaries[newer_player_statistics.strength + 1] - newer_player_statistics.awp
+
         statistic_diff = dict()
         statistic_diff['position'] = newer_player_statistics.player.position
         statistic_diff['age'] = newer_player_statistics.age
@@ -113,6 +116,7 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         statistic_diff['yellow_cards_in_season'] = newer_player_statistics.yellow_cards_in_season
         statistic_diff['red_cards_in_season'] = newer_player_statistics.red_cards_in_season
         statistic_diff['equity'] = newer_player_statistics.equity
+        statistic_diff['awp_to_next_bound'] = awp_to_next_bound
 
         return statistic_diff
 
