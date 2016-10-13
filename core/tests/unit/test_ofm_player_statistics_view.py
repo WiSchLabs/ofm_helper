@@ -1,7 +1,7 @@
 import json
 
 from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory
-from core.models import Contract
+from core.models import Contract, AwpBoundaries
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from users.models import OFMUser
@@ -55,9 +55,7 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
                                     'older_matchday': self.matchday.number
                                     })
 
-        self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], 'TW')
         self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
         self.assertEquals(returned_json_data[0]['ep'], 10)
@@ -75,9 +73,7 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
                                     'newer_matchday': third_matchday.number
                                    })
 
-        self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], 'TW')
         self.assertEquals(returned_json_data[0]['name'], '<a href="/ofm/players/1">Martin Adomeit</a>')
         self.assertEquals(returned_json_data[0]['ep'], 12)
@@ -86,10 +82,34 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['strength'], 1)
         self.assertEquals(returned_json_data[0]['freshness'], 14)
 
+    def test_user_can_see_players_diff_to_next_awp_boundary_given_no_matchday(self):
+
+        awp_boundaries = AwpBoundaries.get_or_create_from_matchday(self.matchday)
+        awp_boundaries[2] = 20
+
+        response = self.client.get(reverse('core:ofm:player_statistics_json'))
+
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(returned_json_data[0]['awp_to_next_bound'], 16)
+
+    def test_user_can_see_players_diff_to_next_awp_boundary_given_matchdays(self):
+
+        awp_boundaries = AwpBoundaries.get_or_create_from_matchday(self.matchday)
+        awp_boundaries[2] = 20
+
+        response = self.client.get(reverse('core:ofm:player_statistics_json'),
+                                   {'newer_matchday_season': self.second_matchday.season.number,
+                                    'newer_matchday': self.second_matchday.number,
+                                    'older_matchday_season': self.matchday.season.number,
+                                    'older_matchday': self.matchday.number
+                                    })
+
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(returned_json_data[0]['awp_to_next_bound'], 16)
+
     def test_player_leaves_team_shows_only_older_player_data(self):
         player2 = PlayerFactory.create(name="Tricia McMillan")
         Contract.objects.create(user=self.user1, player=player2, bought_on_matchday=self.matchday, sold_on_matchday=None)
-
         PlayerStatisticsFactory.create(player=player2, matchday=self.matchday, ep=3, tp=6, awp=4, freshness=5)
 
         response = self.client.get(reverse('core:ofm:player_statistics_json'),
@@ -97,9 +117,8 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
                                     'newer_matchday': self.second_matchday.number,
                                     'older_matchday_season': self.matchday.season.number,
                                     'older_matchday': self.matchday.number
-                                   })
+                                    })
 
-        self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], self.player.position)
@@ -122,7 +141,6 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
                                     'older_matchday': self.matchday.number
                                    })
 
-        self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEquals(len(returned_json_data), 1)
         self.assertEquals(returned_json_data[0]['position'], self.player.position)
@@ -131,5 +149,3 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['tp'], 1)
         self.assertEquals(returned_json_data[0]['awp'], 1)
         self.assertEquals(returned_json_data[0]['freshness'], 1)
-
-
