@@ -24,7 +24,9 @@ class PlayersParser(BaseParser):
         """
         players_table = soup.find(id="playerTable").tbody
         player_list = players_table.find_all('tr')  # 1 row per player
-        return [self.parse_row(player_row) for player_row in player_list]
+        parsed_players = [self.parse_row(player_row) for player_row in player_list]
+        self._handle_sold_players(parsed_players)
+        return parsed_players
 
     def parse_row(self, player_row):
         matchday = Matchday.objects.all()[0]
@@ -68,3 +70,13 @@ class PlayersParser(BaseParser):
             )
 
         return contract
+
+    def _handle_sold_players(self, parsed_players):
+        active_contracts = Contract.objects.filter(user=self.user, sold_on_matchday=None)
+        parsed_players_ids = [player.id for player in parsed_players]
+        sold_players = [contract.player for contract in set(active_contracts) if str(contract.player.id) not in set(parsed_players_ids)]
+
+        for player in sold_players:
+            contract = Contract.objects.get(player=player, user=self.user, sold_on_matchday=None)  # latest contract
+            contract.sold_on_matchday = Matchday.objects.all()[0]  # assume today
+            contract.save()

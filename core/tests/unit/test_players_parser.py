@@ -13,7 +13,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class PlayersParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player.html'), encoding='utf8')
-        self.matchday = MatchdayFactory.create()
+        self.matchday = MatchdayFactory.create(number=2)
         self.user = OFMUserFactory.create()
         self.parser = PlayersParser(testdata, self.user)
         self.player_list = self.parser.parse()
@@ -33,3 +33,15 @@ class PlayersParserTest(TestCase):
 
     def test_parsed_player_has_contract_with_user(self):
         self.assertEquals(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))
+
+    def test_sold_player_gets_according_attribute(self):
+        testdata = open(os.path.join(TESTDATA_PATH, 'players_one_player_sold.html'), encoding='utf8')
+        parser = PlayersParser(testdata, self.user)
+        player_list = parser.parse()
+
+        sold_players = [player for player in set(Player.objects.all()) if player not in set(player_list)]
+        contract = Contract.objects.get(player=sold_players[0], user=self.user)
+
+        self.assertEquals(19, len(player_list))
+        self.assertEquals(1, len(sold_players))
+        self.assertEquals(self.matchday.number, contract.sold_on_matchday.number)
