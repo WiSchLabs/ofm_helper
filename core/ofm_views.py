@@ -35,22 +35,22 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
     def get(self, request, *args, **kwargs):
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
         players = [contract.player for contract in contracts]
+        current_matchday = Matchday.objects.all()[0]
+        current_season = current_matchday.season
 
-        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=Matchday.objects.all()[0].season.number)
-        newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
+        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=current_season.number)
+        newer_matchday = self.request.GET.get('newer_matchday', default=current_matchday.number)
         older_matchday_season = self.request.GET.get('older_matchday_season')
         older_matchday = self.request.GET.get('older_matchday')
+        diff_mode_enabled = older_matchday and older_matchday_season
 
         player_statistics_tuples = []
         for player in players:
             newer_player_statistic, older_player_statistic = self._get_statistics_from_player_and_matchday(player,
                                                                             newer_matchday_season, newer_matchday,
                                                                             older_matchday_season, older_matchday)
-            if not (not older_player_statistic and (older_matchday and older_matchday_season)) \
-                    and not (not newer_player_statistic and (newer_matchday and newer_matchday_season)):
+            if newer_player_statistic and (older_player_statistic or not diff_mode_enabled):
                 player_statistics_tuples.append((newer_player_statistic, older_player_statistic))
-            else:
-                pass
 
         player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistic, older_player_statistic)
                                   for (newer_player_statistic, older_player_statistic) in player_statistics_tuples]
