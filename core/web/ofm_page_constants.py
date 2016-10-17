@@ -125,3 +125,8 @@ class Constants:
     QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY = 18
     QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY = 27
     QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY = 0
+
+    class GitHub:
+        pass
+    GITHUB = GitHub()
+    GITHUB.LATEST_RELEASE = 'https://github.com/WiSchLabs/ofm_helper/releases/latest'

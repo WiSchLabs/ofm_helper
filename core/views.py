@@ -130,6 +130,12 @@ def trigger_parsing(request):
             #  do not parse on matchday 0
             parse_match(request, site_manager)
 
+        remote_version = parse_ofm_version(site_manager)
+        with open('.version', 'r') as version_file:
+            own_version = version_file.read().replace('\n', '')
+        if own_version != remote_version:
+            messages.add_message(request, messages.INFO, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version), extra_tags='info')
+
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
 
@@ -137,6 +143,13 @@ def trigger_parsing(request):
     else:
         messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
         return redirect('core:login')
+
+
+def parse_ofm_version(site_manager):
+    site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
+    soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
+    version = soup.find_all(class_='tag-references')[0].find_all(class_='css-truncate-target')[0].get_text()
+    return version
 
 
 def parse_matchday(site_manager):
