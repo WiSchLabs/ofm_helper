@@ -141,6 +141,19 @@ function numberDiffFormatter(value) {
     return '<span class="' + color + '">' + numberFormatter(value) + '</span>';
 }
 
+function awpDiffFormatter(value) {
+    var is_diff = $('#diff_toggle').bootstrapSwitch('state');
+
+    var color = 'statistic_mark ';
+    if (is_diff) {
+        if (value < 0) {
+            color += "statistic_mark_gain";
+        }
+    }
+
+    return '<span class="' + color + '">' + numberFormatter(value) + '</span>';
+}
+
 function numberFormatter(value) {
     return value.toLocaleString('de');
 }
