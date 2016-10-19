@@ -22,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 def register_view(request):
     if request.user.is_authenticated():
-        messages.add_message(request, messages.ERROR, "You are already logged in. You can logout from the side menu.",
-                             extra_tags="error")
+        messages.error(request, "You are already logged in. You can logout from the side menu.")
         return render(request, 'core/account/home.html')
     if request.POST:
         username = request.POST.get('username')
@@ -35,28 +34,23 @@ def register_view(request):
         ofm_password2 = request.POST.get('ofm_password2')
 
         if OFMUser.objects.filter(email=email).exists():
-            messages.add_message(request, messages.ERROR, "An account with this email address already exists",
-                                 extra_tags="error")
+            messages.error(request, "An account with this email address already exists")
             return redirect('core:register')
 
         if OFMUser.objects.filter(username=username).exists():
-            messages.add_message(request, messages.ERROR, "An account with this username already exists",
-                                 extra_tags="error")
+            messages.error(request, "An account with this username already exists")
             return redirect('core:register')
 
         if password != password2:
-            messages.add_message(request, messages.ERROR, "Your passwords don't match!",
-                                 extra_tags="error")
+            messages.error(request, "Your passwords don't match!")
             return redirect('core:register')
 
         if OFMUser.objects.filter(ofm_username=ofm_username).exists():
-            messages.add_message(request, messages.ERROR, "There is already an account linked to this OFM username",
-                                 extra_tags="error")
+            messages.error(request, "There is already an account linked to this OFM username")
             return redirect('core:register')
 
         if ofm_password != ofm_password2:
-            messages.add_message(request, messages.ERROR, "Your OFM passwords don't match!",
-                                 extra_tags="error")
+            messages.error(request, "Your OFM passwords don't match!")
             return redirect('core:register')
 
         OFMUser.objects.create_user(
@@ -67,7 +61,7 @@ def register_view(request):
             ofm_password=ofm_password,
         )
 
-        messages.add_message(request, messages.SUCCESS, "Account created. Please log in.", extra_tags="success")
+        messages.success(request, "Account created. Please log in.")
         return redirect('core:login')
 
     else:
@@ -82,14 +76,13 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                messages.add_message(request, messages.SUCCESS, "Login successful.", extra_tags='success')
+                messages.success(request, "Login successful.")
                 return render(request, 'core/account/home.html')
             else:
-                messages.add_message(request, messages.ERROR, "Your account is disabled.", extra_tags='danger')
+                messages.error(request, "Your account is disabled.")
                 return redirect('core:login')
         else:
-            messages.add_message(request, messages.ERROR, "Your username and/or your password is incorrect.",
-                                 extra_tags='warning')
+            messages.error(request, "Your username and/or your password is incorrect.")
             return redirect('core:login')
     else:
         if request.user.is_authenticated():
@@ -101,7 +94,7 @@ def login_view(request):
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
-        messages.add_message(request, messages.SUCCESS, "You have been logged out.", extra_tags='success')
+        messages.success(request, "You have been logged out.")
     return redirect('core:home')
 
 
@@ -109,7 +102,7 @@ def account_view(request):
     if request.user.is_authenticated():
         return render(request, 'core/account/home.html')
     else:
-        messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
+        messages.error(request, "You are not logged in!")
         return redirect('core:login')
 
 
@@ -134,14 +127,14 @@ def trigger_parsing(request):
         with open('.version', 'r') as version_file:
             own_version = version_file.read().replace('\n', '')
         if own_version != remote_version:
-            messages.add_message(request, messages.INFO, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version), extra_tags='info')
+            messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version))
 
         site_manager.kill()
         logger.debug('===== END parsing ==============================')
 
         return redirect('core:ofm:player_statistics')
     else:
-        messages.add_message(request, messages.ERROR, "You are not logged in!", extra_tags='error')
+        messages.error(request, "You are not logged in!")
         return redirect('core:login')
 
 
