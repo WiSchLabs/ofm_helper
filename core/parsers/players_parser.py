@@ -25,7 +25,7 @@ class PlayersParser(BaseParser):
         players_table = soup.find(id="playerTable").tbody
         player_list = players_table.find_all('tr')  # 1 row per player
         parsed_players = [self.parse_row(player_row) for player_row in player_list]
-        self._handle_sold_players(parsed_players)
+        self._mark_sold_players_as_sold(parsed_players)
         return parsed_players
 
     def parse_row(self, player_row):
@@ -43,13 +43,13 @@ class PlayersParser(BaseParser):
         country_no = list(country_choices.keys())[list(country_choices.values()).index(country_name)]
         nationality, success = Country.objects.get_or_create(country=country_no)
 
-        player, success = Player.objects.get_or_create(
-            id=ofm_id,
-            name=name,
-            position=position,
-            birth_season=birth_season,
-            nationality=nationality
-        )
+        player, success = Player.objects.get_or_create(id=int(ofm_id),
+                                                       birth_season=birth_season,
+                                                       nationality=nationality,
+                                                       position=position)
+        player.name = name
+        player.save()
+
         logger.debug('===== Player parsed: %s' % player.name)
 
         self._create_contract(player, matchday)
@@ -71,10 +71,9 @@ class PlayersParser(BaseParser):
 
         return contract
 
-    def _handle_sold_players(self, parsed_players):
+    def _mark_sold_players_as_sold(self, parsed_players):
         active_contracts = Contract.objects.filter(user=self.user, sold_on_matchday=None)
-        parsed_players_ids = [player.id for player in parsed_players]
-        sold_players = [contract.player for contract in set(active_contracts) if str(contract.player.id) not in set(parsed_players_ids)]
+        sold_players = list(set([contract.player for contract in active_contracts]) - set(parsed_players))
 
         for player in sold_players:
             contract = Contract.objects.get(player=player, user=self.user, sold_on_matchday=None)  # latest contract

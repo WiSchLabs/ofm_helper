@@ -27,7 +27,7 @@ class PlayersParserTest(TestCase):
     def test_parsed_player_contains_all_fields(self):
         self.assertEquals('Igor Vernon', self.first_player.name)
         self.assertEquals('TW', self.first_player.position)
-        self.assertEquals('163739266', self.first_player.id)
+        self.assertEquals(163739266, self.first_player.id)
         self.assertEquals(29, self.matchday.season.number - self.first_player.birth_season.number)
         self.assertEquals('Frankreich', str(self.first_player.nationality))
 
@@ -36,12 +36,11 @@ class PlayersParserTest(TestCase):
 
     def test_sold_player_gets_according_attribute(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'players_one_player_sold.html'), encoding='utf8')
+        MatchdayFactory.create(number=3)
         parser = PlayersParser(testdata, self.user)
-        player_list = parser.parse()
+        parser.parse()
 
-        sold_players = [player for player in set(Player.objects.all()) if player not in set(player_list)]
-        contract = Contract.objects.get(player=sold_players[0], user=self.user)
+        sold_players = [c.player for c in Contract.objects.filter(sold_on_matchday__isnull=False)]
 
-        self.assertEquals(19, len(player_list))
         self.assertEquals(1, len(sold_players))
-        self.assertEquals(self.matchday.number, contract.sold_on_matchday.number)
+        self.assertEquals("Estaníslão Euklidio", sold_players[0].name)
