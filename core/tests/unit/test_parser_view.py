@@ -118,8 +118,10 @@ class ParserViewTest(TestCase):
     @patch('core.views.parse_player_statistics')
     @patch('core.views.parse_finances')
     @patch('core.views.parse_match')
+    @patch('core.views.parse_awp_boundaries')
+    @patch('core.views.parse_ofm_version')
     def test_parser_view(self, site_manager_mock, beatiful_soup_mock, parse_matchday_mock, parse_players_mock,
-                         parse_player_statistics_mock, parse_finances_mock, parse_match_mock):
+                         parse_player_statistics_mock, parse_finances_mock, parse_match_mock, parse_awp_mock, parse_version_mock):
         response = self.client.get(reverse('core:trigger_parsing'))
         self.assertEqual(response.status_code, 302)
 
