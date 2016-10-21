@@ -12,6 +12,7 @@ from core.models import Matchday
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
+from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
@@ -181,9 +182,8 @@ def trigger_match_parsing(request):
 
 def parse_ofm_version(site_manager):
     site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
-    soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
-    version = soup.find_all(class_='tag-references')[0].find_all(class_='css-truncate-target')[0].get_text()
-    return version
+    version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
+    return version_parser.parse()
 
 
 def parse_matchday(request, site_manager):
