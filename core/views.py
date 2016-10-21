@@ -126,7 +126,7 @@ def trigger_parsing(request):
         remote_version = parse_ofm_version(site_manager)
         with open('.version', 'r') as version_file:
             own_version = version_file.read().replace('\n', '')
-        if own_version != remote_version:
+        if own_version != "null" and own_version != remote_version:
             messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version))
 
         site_manager.kill()

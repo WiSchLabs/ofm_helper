@@ -2,9 +2,6 @@
 
 touch .version
 echo `git describe --tags --always` | awk '{split($0,a,"-"); print a[1]}' > .version
-git add .version
-git commit -m '[autocommit] updated version number'
-git push
 
 mkdir release
 cd release
