@@ -1,12 +1,13 @@
 import os
-from unittest.mock import Mock, patch, MagicMock
+from unittest import skip
+from unittest.mock import Mock, patch
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 import core
-from core.factories.core_factories import MatchdayFactory, PlayerFactory
-from core.models import PlayerStatistics, Player, Finance, Match, Matchday
+from core.factories.core_factories import MatchdayFactory
+from core.models import PlayerStatistics, Player, Finance, Matchday
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
@@ -42,6 +43,9 @@ class ParserViewTest(TestCase):
             self.assertEquals(139, parsed_matchday.season.number)
             self.assertEquals(23, parsed_matchday.number)
 
+            assert core.views.SiteManager.called
+            assert beatiful_soup_mock.called
+
     @patch('core.views.SiteManager')
     @patch('core.views.BeautifulSoup')
     def test_player_parser_view(self, site_manager_mock, beatiful_soup_mock):
@@ -59,6 +63,9 @@ class ParserViewTest(TestCase):
             self.assertEquals('TW', parsed_player.position)
             self.assertEquals(163703532, parsed_player.id)
             self.assertEquals('Elfenbeinküste', str(parsed_player.nationality))
+
+            assert core.views.SiteManager.called
+            assert beatiful_soup_mock.called
 
     @patch('core.views.SiteManager')
     @patch('core.views.BeautifulSoup')
@@ -80,6 +87,9 @@ class ParserViewTest(TestCase):
             self.assertEquals("Irwin O'Canny", parsed_player_statistics[1].player.name)
             self.assertEquals(14, parsed_player_statistics[1].strength)
 
+            assert core.views.SiteManager.called
+            assert beatiful_soup_mock.called
+
     @patch('core.views.SiteManager')
     @patch('core.views.BeautifulSoup')
     def test_finances_parser_view(self, site_manager_mock, beatiful_soup_mock):
@@ -94,6 +104,9 @@ class ParserViewTest(TestCase):
             self.assertEquals(1, Finance.objects.all().count())
             parsed_finance = Finance.objects.all()[0]
             self.assertEquals(1633872, parsed_finance.balance)
+
+            assert core.views.SiteManager.called
+            assert beatiful_soup_mock.called
 
     @patch('core.views.SiteManager')
     @patch('core.views.BeautifulSoup')
@@ -111,8 +124,10 @@ class ParserViewTest(TestCase):
             #parsed_match = Match.objects.all()[0]
             #self.assertEquals('Club-Mate-Arena', parsed_match.venue)
 
+            assert core.views.SiteManager.called
+            assert beatiful_soup_mock.called
+
     @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
     @patch('core.views.parse_matchday')
     @patch('core.views.parse_players')
     @patch('core.views.parse_player_statistics')
@@ -120,14 +135,12 @@ class ParserViewTest(TestCase):
     @patch('core.views.parse_match')
     @patch('core.views.parse_awp_boundaries')
     @patch('core.views.parse_ofm_version')
-    def test_parser_view(self, site_manager_mock, beatiful_soup_mock,
-                         parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,
+    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,
                          parse_finances_mock, parse_match_mock, parse_awp_mock, parse_version_mock):
         response = self.client.get(reverse('core:trigger_parsing'))
 
         self.assertEqual(response.status_code, 302)
         assert site_manager_mock.called
-        assert beatiful_soup_mock.called
         assert parse_matchday_mock.called
         assert parse_players_mock.called
         assert parse_player_statistics_mock.called
