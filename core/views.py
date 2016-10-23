@@ -23,7 +23,7 @@ from core.web.site_manager import SiteManager
 from users.models import OFMUser
 
 logger = logging.getLogger(__name__)
-MSG_NOT_LOGGED_IN = "Du bist nicht eiongeloggt!"
+MSG_NOT_LOGGED_IN = "Du bist nicht eingeloggt!"
 
 
 def register_view(request):
@@ -117,15 +117,18 @@ def trigger_parsing(request):
     if request.user.is_authenticated():
         logger.debug('===== got user: %s' % request.user.username)
         logger.debug('===== SiteManager login ...')
+
         site_manager = SiteManager(request.user)
         site_manager.login()
 
-        parse_matchday(request, site_manager)
         matchday = Matchday.objects.all()[0]
+
+        parse_matchday(request, site_manager)
         parse_players(request, site_manager)
         parse_player_statistics(request, site_manager)
         parse_awp_boundaries(request, site_manager)
         parse_finances(request, site_manager)
+
         if matchday.number > 0:
             #  do not parse on matchday 0
             parse_match(request, site_manager)
@@ -257,8 +260,3 @@ def parse_stadium_statistics(request, site_manager):
     site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
     stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
     return stadium_stand_stat_parser.parse()
-
-
-@receiver(post_save, sender=Matchday)
-def postsave(sender, **kwargs):
-    pass
