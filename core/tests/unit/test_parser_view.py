@@ -32,35 +32,44 @@ class ParserViewTest(TestCase):
         assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
 
     @patch('core.views.SiteManager')
+    @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.PlayersParser')
-    def test_player_parser_view(self, site_manager_mock, players_parser_mock):
+    def test_player_parser_view(self, matchday_parser_mock, site_manager_mock, players_parser_mock):
         response = self.client.get(reverse('core:trigger_players_parsing'))
         self.assertEqual(response.status_code, 302)
 
-        assert core.managers.parser_manager.PlayersParser.return_value.parse.called
         assert core.views.SiteManager.called
+        assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
+        assert core.managers.parser_manager.PlayersParser.return_value.parse.called
 
     @patch('core.views.SiteManager')
+    @patch('core.managers.parser_manager.MatchdayParser')
+    @patch('core.managers.parser_manager.PlayersParser')
     @patch('core.managers.parser_manager.PlayerStatisticsParser')
-    def test_player_statistics_parser_view(self, site_manager_mock, player_statistics_parser_mock):
+    def test_player_statistics_parser_view(self, matchday_parser_mock, player_parser_mock, site_manager_mock, player_statistics_parser_mock):
         response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
         self.assertEqual(response.status_code, 302)
 
-        assert core.managers.parser_manager.PlayerStatisticsParser.return_value.parse.called
         assert core.views.SiteManager.called
+        assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
+        assert core.managers.parser_manager.PlayersParser.return_value.parse.called
+        assert core.managers.parser_manager.PlayerStatisticsParser.return_value.parse.called
 
     @patch('core.views.SiteManager')
+    @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.FinancesParser')
-    def test_finances_parser_view(self, site_manager_mock, finances_parser_mock):
+    def test_finances_parser_view(self, matchday_parser_mock, site_manager_mock, finances_parser_mock):
         response = self.client.get(reverse('core:trigger_finances_parsing'))
         self.assertEqual(response.status_code, 302)
 
-        assert core.managers.parser_manager.FinancesParser.return_value.parse.called
         assert core.views.SiteManager.called
+        assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
+        assert core.managers.parser_manager.FinancesParser.return_value.parse.called
 
+    @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.MatchParser')
-    @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
-    def test_match_parser_view(self, match_parser_mock, parse_stadium_statistics_mock):
+    @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
+    def test_match_parser_view(self, matchday_parser_mock, match_parser_mock, parse_stadium_statistics_mock):
         with open(os.path.join(TESTDATA_PATH, 'matchday_table.html'), encoding='utf8') as matchday_table_html:
             with patch('core.views.SiteManager') as site_manager_mock:
                 site_manager_instance_mock = site_manager_mock.return_value
@@ -69,6 +78,7 @@ class ParserViewTest(TestCase):
                 response = self.client.get(reverse('core:trigger_match_parsing'))
                 self.assertEqual(response.status_code, 302)
 
+                assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
                 assert core.managers.parser_manager.MatchParser.return_value.parse.called
                 assert parse_stadium_statistics_mock.called
 

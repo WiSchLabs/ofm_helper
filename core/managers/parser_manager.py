@@ -15,18 +15,28 @@ from core.web.ofm_page_constants import Constants
 
 
 class ParserManager:
+    matchday_already_parsed = False
+    players_already_parsed = False
+
     def parse_all_ofm_data(self, request, site_manager):
         self.parse_matchday(request, site_manager)
+        self.matchday_already_parsed = True
         self.parse_players(request, site_manager)
+        self.players_already_parsed = True
         self.parse_player_statistics(request, site_manager)
         self.parse_awp_boundaries(request, site_manager)
         self.parse_finances(request, site_manager)
     
         matchday = Matchday.objects.all()[0]
     
-        if matchday.number > 0:
-            #  do not parse on matchday 0
+        if matchday.number > 0:  # do not parse matches on matchday 0
             self.parse_match(request, site_manager)
+
+        self.reset_parsing_flags()
+
+    def reset_parsing_flags(self):
+        self.matchday_already_parsed = False
+        self.players_already_parsed = False
 
     def parse_ofm_version(self, site_manager):
         site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
@@ -39,28 +49,37 @@ class ParserManager:
         return matchday_parser.parse()
     
     def parse_players(self, request, site_manager):
+        if not self.matchday_already_parsed:
+            self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
         players_parser = PlayersParser(site_manager.browser.page_source, request.user)
         return players_parser.parse()
 
     def parse_player_statistics(self, request, site_manager):
+        if not self.players_already_parsed:
+            self.parse_players(request, site_manager)
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
         player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
         return player_stat_parser.parse()
-    
-    
+
     def parse_awp_boundaries(self, request, site_manager):
+        if not self.matchday_already_parsed:
+            self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
         awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
         return awp_boundaries_parser.parse()
 
     def parse_finances(self, request, site_manager):
+        if not self.matchday_already_parsed:
+            self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
         return finances_parser.parse()
     
     def parse_match(self, request, site_manager):
-        if Matchday.objects.all()[0].number <= 0:
+        if not self.matchday_already_parsed:
+            self.parse_matchday(request, site_manager)
+        if Matchday.objects.all()[0].number <= 0:  # do not parse matches on matchday 0
             return
     
         site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
@@ -78,14 +97,14 @@ class ParserManager:
                 match = match_parser.parse()
     
                 if is_home_match:
-                    self.parse_stadium_statistics(request, site_manager)
+                    self._parse_stadium_statistics(request, site_manager)
     
                 return match
         else:
             match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
             return match_parser.parse()
     
-    def parse_stadium_statistics(self, request, site_manager):
+    def _parse_stadium_statistics(self, request, site_manager):
         site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
         stadium_statistics_parser.parse()
