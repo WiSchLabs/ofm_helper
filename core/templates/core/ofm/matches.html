@@ -4,7 +4,10 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">Deine Spiele</h1>
+    <h1 class="page-header">
+        Deine Spiele
+        <form class="parseTrigger" action="{% url 'core:trigger_finances_parsing' %}" method="get">{% csrf_token %}</form>
+    </h1>
 
     {% if seasons|length > 1 %}
         <div id="table-toolbar">
@@ -56,5 +59,7 @@
     </script>
 
     <script src="{% static 'core/js/table_formats.js' %}"></script>
+
+    <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
 
 {% endblock %}
