@@ -167,7 +167,12 @@ ul.nav-sub {  padding-left: 10%; }
 }
 
 
-.slider-handle { background: #239123; }
+.slider-handle { background: #1b6f1b; }
+.slider-selection {
+    background-image: -webkit-linear-gradient(top,#239123 0,#239123 100%);
+    background-image: -o-linear-gradient(top,#239123 0,#239123 100%);
+    background-image: linear-gradient(to bottom,#239123 0,#239123 100%);
+}
 
 
 footer.footer {
