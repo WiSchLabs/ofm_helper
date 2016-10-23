@@ -6,7 +6,7 @@
 
     <h1 class="page-header">
         Deine Spielerliste
-        <form class="parseTrigger" action="{% url 'core:trigger_finances_parsing' %}" method="get">{% csrf_token %}</form>
+        <form class="parseTrigger" action="{% url 'core:trigger_player_statistics_parsing' %}" method="get">{% csrf_token %}</form>
     </h1>
 
     {% if matchdays|length > 1 %}
