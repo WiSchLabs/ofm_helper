@@ -18,6 +18,15 @@
         </div>
     </div>
 
+    <div>
+        Filter nach Stadium-Ausbaustufe:<br>
+        <select class="form-control" id="stadium_level_filter">
+            {% for s in stadium_configurations %}
+                <option value="">{{s}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <table id='stadium_statistics_table' class="table table-bordered table-striped table-hover statistics_table"
            data-toolbar="#table-toolbar"
            data-toggle="table"

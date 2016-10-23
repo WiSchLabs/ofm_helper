@@ -1,7 +1,7 @@
 import json
 
-from core.factories.core_factories import MatchdayFactory, MatchFactory, \
-    MatchStadiumStatisticsFactory, StadiumStandStatisticsFactory
+from core.factories.core_factories import MatchdayFactory, MatchFactory, MatchStadiumStatisticsFactory, \
+    StadiumStandStatisticsFactory
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from users.models import OFMUser
@@ -26,6 +26,10 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('seasons' in response.context_data)
+        self.assertEqual(response.context_data['slider_min'], 50)
+        self.assertEqual(response.context_data['slider_max'], 50)
+        self.assertEqual(response.context_data['tolerance'], 5)
+        self.assertTrue('stadium_configurations' in response.context_data)
 
     def test_user_can_see_his_latest_stadium_statistics_when_given_no_season(self):
         match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=150, guest_team_statistics__strength=150)

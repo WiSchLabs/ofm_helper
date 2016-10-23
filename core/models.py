@@ -483,6 +483,32 @@ class MatchStadiumStatistics(models.Model):
     def get_absolute_url(self):
         return reverse('core:ofm:stadium_detail', args=[str(self.id)])
 
+    def get_configuration(self):
+        config = {}
+        config['light'] = self.level.light.current_level
+        config['screen'] = self.level.screen.current_level
+        config['security'] = self.level.security.current_level
+        config['parking'] = self.level.parking.current_level
+
+        north_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='N')
+        south_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='S')
+        west_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='W')
+        east_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='O')
+        config['north_capacity'] = north_stand[0].level.capacity if north_stand.count() > 0 else 0
+        config['south_capacity'] = south_stand[0].level.capacity if south_stand.count() > 0 else 0
+        config['west_capacity'] = west_stand[0].level.capacity if west_stand.count() > 0 else 0
+        config['east_capacity'] = east_stand[0].level.capacity if east_stand.count() > 0 else 0
+        config['north_has_seats'] = north_stand[0].level.has_seats if north_stand.count() > 0 else 0
+        config['south_has_seats'] = south_stand[0].level.has_seats if south_stand.count() > 0 else 0
+        config['west_has_seats'] = west_stand[0].level.has_seats if west_stand.count() > 0 else 0
+        config['east_has_seats'] = east_stand[0].level.has_seats if east_stand.count() > 0 else 0
+        config['north_has_roof'] = north_stand[0].level.has_roof if north_stand.count() > 0 else 0
+        config['south_has_roof'] = south_stand[0].level.has_roof if south_stand.count() > 0 else 0
+        config['west_has_roof'] = west_stand[0].level.has_roof if west_stand.count() > 0 else 0
+        config['east_has_roof'] = east_stand[0].level.has_roof if east_stand.count() > 0 else 0
+
+        return config
+
     @property
     def visitors(self):
         return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))['visitors__sum']

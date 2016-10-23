@@ -625,10 +625,17 @@ class StadiumStatisticsView(TemplateView):
             slider_min = 100
             slider_max = 150
 
+        unique_stadium_configurations = []
+        stadium_configurations = [s.get_configuration() for s in MatchStadiumStatistics.objects.all()]
+        for s in stadium_configurations:
+            if s not in unique_stadium_configurations:
+                unique_stadium_configurations.append(s)
+
         context['seasons'] = sorted(seasons, reverse=True)
         context['slider_min'] = slider_min
         context['slider_max'] = slider_max
         context['tolerance'] = tolerance
+        context['stadium_configurations'] = reversed(unique_stadium_configurations)
 
         return context
 
