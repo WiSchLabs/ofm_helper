@@ -7,7 +7,7 @@ from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class MatchdayParserTest(TestCase):
+class OfmHelperVersionParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'GitHubRelease.html'), encoding='utf8')
         self.parser = OfmHelperVersionParser(testdata)
