@@ -1,16 +1,12 @@
 import os
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 import core
 from core.factories.core_factories import MatchdayFactory
-from core.models import PlayerStatistics, Player, Finance, Matchday
-from core.parsers.finances_parser import FinancesParser
-from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.player_statistics_parser import PlayerStatisticsParser
-from core.parsers.players_parser import PlayersParser
+from core.models import Player
 from users.models import OFMUser
 
 TESTDATA_PATH = 'core/tests/assets'

@@ -3,9 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from core.managers.parser_manager import parse_ofm_version, parse_matchday, parse_players, parse_player_statistics, \
-    parse_awp_boundaries, parse_finances, parse_match, parse_all_ofm_data
+    parse_finances, parse_match, parse_all_ofm_data
 from core.managers.site_manager import SiteManager
-from core.models import Matchday
 from users.models import OFMUser
 
 MSG_NOT_LOGGED_IN = "Du bist nicht eingeloggt!"
