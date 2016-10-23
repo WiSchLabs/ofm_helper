@@ -1,5 +1,4 @@
 import os
-from unittest import skip
 from unittest.mock import Mock, patch
 
 from django.core.urlresolvers import reverse
@@ -9,7 +8,6 @@ import core
 from core.factories.core_factories import MatchdayFactory
 from core.models import PlayerStatistics, Player, Finance, Matchday
 from core.parsers.finances_parser import FinancesParser
-from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
@@ -108,24 +106,19 @@ class ParserViewTest(TestCase):
             assert core.views.SiteManager.called
             assert beatiful_soup_mock.called
 
-    @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
-    def test_match_parser_view(self, site_manager_mock, beatiful_soup_mock):
-        with open(os.path.join(TESTDATA_PATH, 'home_match.html'), encoding='utf8') as match_html:
-            mp = MatchParser(match_html.read(), self.user, True)
-            core.views.MatchParser = Mock(spec=mp)
-            core.views.MatchParser.return_value.parse = mp.parse
+    @patch('core.views.MatchParser')
+    @patch('core.views.parse_stadium_statistics')
+    def test_match_parser_view(self, _, parse_stadium_statistics_mock):
+        with open(os.path.join(TESTDATA_PATH, 'matchday_table.html'), encoding='utf8') as matchday_table:
+            with patch('core.views.SiteManager') as site_manager_mock:
+                site_manager_instance_mock = site_manager_mock.return_value
+                site_manager_instance_mock.browser.page_source = matchday_table
 
-            response = self.client.get(reverse('core:trigger_match_parsing'))
-            self.assertEqual(response.status_code, 302)
+                response = self.client.get(reverse('core:trigger_match_parsing'))
+                self.assertEqual(response.status_code, 302)
 
-            # TODO: test it!
-            #self.assertEquals(1, Match.objects.all().count())
-            #parsed_match = Match.objects.all()[0]
-            #self.assertEquals('Club-Mate-Arena', parsed_match.venue)
-
-            assert core.views.SiteManager.called
-            assert beatiful_soup_mock.called
+                assert core.views.MatchParser.return_value.parse.called
+                assert parse_stadium_statistics_mock.called
 
     @patch('core.views.SiteManager')
     @patch('core.views.parse_matchday')
