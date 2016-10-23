@@ -14,6 +14,20 @@ from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
 from core.web.ofm_page_constants import Constants
 
 
+def parse_all_ofm_data(request, site_manager):
+    parse_matchday(request, site_manager)
+    parse_players(request, site_manager)
+    parse_player_statistics(request, site_manager)
+    parse_awp_boundaries(request, site_manager)
+    parse_finances(request, site_manager)
+
+    matchday = Matchday.objects.all()[0]
+
+    if matchday.number > 0:
+        #  do not parse on matchday 0
+        parse_match(request, site_manager)
+
+
 def parse_ofm_version(site_manager):
     site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
     version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
@@ -41,7 +55,7 @@ def parse_player_statistics(request, site_manager):
 def parse_awp_boundaries(request, site_manager):
     site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
     awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
-    awp_boundaries_parser.parse()
+    return awp_boundaries_parser.parse()
 
 
 def parse_finances(request, site_manager):

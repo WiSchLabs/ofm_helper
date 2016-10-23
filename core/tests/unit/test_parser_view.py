@@ -77,12 +77,12 @@ class ParserViewTest(TestCase):
                 assert parse_stadium_statistics_mock.called
 
     @patch('core.views.SiteManager')
-    @patch('core.views.parse_matchday')
-    @patch('core.views.parse_players')
-    @patch('core.views.parse_player_statistics')
-    @patch('core.views.parse_finances')
-    @patch('core.views.parse_match')
-    @patch('core.views.parse_awp_boundaries')
+    @patch('core.managers.parser_manager.parse_matchday')
+    @patch('core.managers.parser_manager.parse_players')
+    @patch('core.managers.parser_manager.parse_player_statistics')
+    @patch('core.managers.parser_manager.parse_finances')
+    @patch('core.managers.parser_manager.parse_match')
+    @patch('core.managers.parser_manager.parse_awp_boundaries')
     @patch('core.views.parse_ofm_version')
     def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,
                          parse_finances_mock, parse_match_mock, parse_awp_mock, parse_version_mock):

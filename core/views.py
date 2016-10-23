@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
 from core.managers.parser_manager import parse_ofm_version, parse_matchday, parse_players, parse_player_statistics, \
-    parse_awp_boundaries, parse_finances, parse_match
+    parse_awp_boundaries, parse_finances, parse_match, parse_all_ofm_data
 from core.managers.site_manager import SiteManager
 from core.models import Matchday
 from users.models import OFMUser
@@ -102,17 +102,7 @@ def trigger_parsing(request):
         site_manager = SiteManager(request.user)
         site_manager.login()
 
-        matchday = Matchday.objects.all()[0]
-
-        parse_matchday(request, site_manager)
-        parse_players(request, site_manager)
-        parse_player_statistics(request, site_manager)
-        parse_awp_boundaries(request, site_manager)
-        parse_finances(request, site_manager)
-
-        if matchday.number > 0:
-            #  do not parse on matchday 0
-            parse_match(request, site_manager)
+        parse_all_ofm_data(request, site_manager)
 
         remote_version = parse_ofm_version(site_manager)
         with open('.version', 'r') as version_file:
