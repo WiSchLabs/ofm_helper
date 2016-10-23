@@ -1,28 +1,19 @@
-from bs4 import BeautifulSoup
-from core.parsers.awp_boundaries_parser import AwpBoundariesParser
-
-from core.parsers.finances_parser import FinancesParser
-from core.parsers.match_parser import MatchParser
-from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
-from core.parsers.player_statistics_parser import PlayerStatisticsParser
-from core.parsers.players_parser import PlayersParser
-from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
-from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.web.ofm_page_constants import Constants
-from core.web.site_manager import SiteManager
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
-from users.models import OFMUser
-import logging
 
-logger = logging.getLogger(__name__)
+from core.managers.parser_manager import parse_ofm_version, parse_matchday, parse_players, parse_player_statistics, \
+    parse_awp_boundaries, parse_finances, parse_match
+from core.managers.site_manager import SiteManager
+from core.models import Matchday
+from users.models import OFMUser
+
+MSG_NOT_LOGGED_IN = "Du bist nicht eingeloggt!"
 
 
 def register_view(request):
     if request.user.is_authenticated():
-        messages.error(request, "You are already logged in. You can logout from the side menu.")
+        messages.error(request, "Du bist bereits eingeloggt. Du kannst dich im Menü ausloggen.")
         return render(request, 'core/account/home.html')
     if request.POST:
         username = request.POST.get('username')
@@ -34,23 +25,23 @@ def register_view(request):
         ofm_password2 = request.POST.get('ofm_password2')
 
         if OFMUser.objects.filter(email=email).exists():
-            messages.error(request, "An account with this email address already exists")
+            messages.error(request, "Ein Account mit dieser E-Mail-Adresse existiert bereits.")
             return redirect('core:register')
 
         if OFMUser.objects.filter(username=username).exists():
-            messages.error(request, "An account with this username already exists")
+            messages.error(request, "Ein Account mit diesem Benutzernamen existiert bereits.")
             return redirect('core:register')
 
         if password != password2:
-            messages.error(request, "Your passwords don't match!")
+            messages.error(request, "Die eingegeben Passwörter stimmen nicht überein.")
             return redirect('core:register')
 
         if OFMUser.objects.filter(ofm_username=ofm_username).exists():
-            messages.error(request, "There is already an account linked to this OFM username")
+            messages.error(request, "Es existiert bereits ein Account für diesen OFM Benutzernamen.")
             return redirect('core:register')
 
         if ofm_password != ofm_password2:
-            messages.error(request, "Your OFM passwords don't match!")
+            messages.error(request, "Die eingegeben OFM Passwörter stimmen nicht überein.")
             return redirect('core:register')
 
         OFMUser.objects.create_user(
@@ -61,7 +52,7 @@ def register_view(request):
             ofm_password=ofm_password,
         )
 
-        messages.success(request, "Account created. Please log in.")
+        messages.success(request, "Account wurde erstellt. Jetzt kannst du dich einloggen.")
         return redirect('core:login')
 
     else:
@@ -76,13 +67,13 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                messages.success(request, "Login successful.")
+                messages.success(request, "Login erfolgreich.")
                 return render(request, 'core/account/home.html')
             else:
-                messages.error(request, "Your account is disabled.")
+                messages.error(request, "Login nicht möglich. Dein Account wurde deaktiviert.")
                 return redirect('core:login')
         else:
-            messages.error(request, "Your username and/or your password is incorrect.")
+            messages.error(request, "Benutzername und/oder Passwort nicht korrekt.")
             return redirect('core:login')
     else:
         if request.user.is_authenticated():
@@ -94,7 +85,7 @@ def login_view(request):
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)
-        messages.success(request, "You have been logged out.")
+        messages.success(request, "Du wurdest abgemeldet.")
     return redirect('core:home')
 
 
@@ -102,23 +93,23 @@ def account_view(request):
     if request.user.is_authenticated():
         return render(request, 'core/account/home.html')
     else:
-        messages.error(request, "You are not logged in!")
+        messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')
 
 
 def trigger_parsing(request):
-    logger.debug('===== START parsing ==============================')
     if request.user.is_authenticated():
-        logger.debug('===== got user: %s' % request.user.username)
-        logger.debug('===== SiteManager login ...')
         site_manager = SiteManager(request.user)
         site_manager.login()
 
-        matchday = parse_matchday(site_manager)
+        matchday = Matchday.objects.all()[0]
+
+        parse_matchday(request, site_manager)
         parse_players(request, site_manager)
         parse_player_statistics(request, site_manager)
         parse_awp_boundaries(request, site_manager)
         parse_finances(request, site_manager)
+
         if matchday.number > 0:
             #  do not parse on matchday 0
             parse_match(request, site_manager)
@@ -130,84 +121,43 @@ def trigger_parsing(request):
             messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version))
 
         site_manager.kill()
-        logger.debug('===== END parsing ==============================')
 
         return redirect('core:ofm:player_statistics')
     else:
-        messages.error(request, "You are not logged in!")
+        messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')
 
 
-def parse_ofm_version(site_manager):
-    site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
-    soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
-    version = soup.find_all(class_='tag-references')[0].find_all(class_='css-truncate-target')[0].get_text()
-    return version
-
-
-def parse_matchday(site_manager):
-    logger.debug('===== parse Matchday ...')
-    site_manager.jump_to_frame(Constants.HEAD)
-    matchday_parser = MatchdayParser(site_manager.browser.page_source)
-    return matchday_parser.parse()
-
-
-def parse_players(request, site_manager):
-    logger.debug('===== parse Players ...')
-    site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
-    players_parser = PlayersParser(site_manager.browser.page_source, request.user)
-    players_parser.parse()
-
-
-def parse_player_statistics(request, site_manager):
-    logger.debug('===== parse PlayerStatistics ...')
-    site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
-    player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
-    player_stat_parser.parse()
-
-
-def parse_awp_boundaries(request, site_manager):
-    logger.debug('===== parse AWP Boundaries ...')
-    site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
-    awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
-    awp_boundaries_parser.parse()
-
-
-def parse_finances(request, site_manager):
-    logger.debug('===== parse Finances ...')
-    site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
-    finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
-    finances_parser.parse()
-
-
-def parse_match(request, site_manager):
-    logger.debug('===== parse latest Match ...')
-    site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
-    soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
-    row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
-    is_home_match = "<b>" in str(row.find_all('td')[2].a)
-    match_report_image = row.find_all('img', class_='changeMatchReportImg')
-
-    if match_report_image:
-        # match took place
-        link_to_match = match_report_image[0].find_parent('a')['href']
-        if "spielbericht" in link_to_match:
-            site_manager.jump_to_frame(Constants.BASE + link_to_match)
-            match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
-            match_parser.parse()
-
-            if is_home_match:
-                parse_stadium_statistics(request, site_manager)
+def trigger_single_parsing(request, parsing_function, redirect_to='core:account'):
+    if request.user.is_authenticated():
+        site_manager = SiteManager(request.user)
+        site_manager.login()
+        parsing_function(request, site_manager)
+        return redirect(redirect_to)
     else:
-        match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
-        match_parser.parse()
+        messages.add_message(request, messages.ERROR, MSG_NOT_LOGGED_IN, extra_tags='error')
+        return redirect('core:login')
 
 
-def parse_stadium_statistics(request, site_manager):
-    logger.debug('===== parse latest Stadium statistics ...')
-    site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-    stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
-    stadium_statistics_parser.parse()
-    site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-    stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-    stadium_stand_stat_parser.parse()
+def trigger_matchday_parsing(request):
+    return trigger_single_parsing(request, parse_matchday)
+
+
+def trigger_players_parsing(request):
+    redirect_to = 'core:ofm:player_statistics'
+    return trigger_single_parsing(request, parse_players, redirect_to)
+
+
+def trigger_player_statistics_parsing(request):
+    redirect_to = 'core:ofm:player_statistics'
+    return trigger_single_parsing(request, parse_player_statistics, redirect_to)
+
+
+def trigger_finances_parsing(request):
+    redirect_to = 'core:ofm:finance_overview'
+    return trigger_single_parsing(request, parse_finances, redirect_to)
+
+
+def trigger_match_parsing(request):
+    redirect_to = 'core:ofm:matches_overview'
+    return trigger_single_parsing(request, parse_match, redirect_to)
