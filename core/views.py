@@ -1,28 +1,13 @@
-import logging
-
-from bs4 import BeautifulSoup
-from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
+from core.managers.parser_manager import parse_ofm_version, parse_matchday, parse_players, parse_player_statistics, \
+    parse_awp_boundaries, parse_finances, parse_match
+from core.managers.site_manager import SiteManager
 from core.models import Matchday
-from core.parsers.finances_parser import FinancesParser
-from core.parsers.match_parser import MatchParser
-from core.parsers.matchday_parser import MatchdayParser
-from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
-from core.parsers.player_statistics_parser import PlayerStatisticsParser
-from core.parsers.players_parser import PlayersParser
-from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
-from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
-from core.web.ofm_page_constants import Constants
-from core.web.site_manager import SiteManager
 from users.models import OFMUser
 
-logger = logging.getLogger(__name__)
 MSG_NOT_LOGGED_IN = "Du bist nicht eingeloggt!"
 
 
@@ -113,11 +98,7 @@ def account_view(request):
 
 
 def trigger_parsing(request):
-    logger.debug('===== START parsing ==============================')
     if request.user.is_authenticated():
-        logger.debug('===== got user: %s' % request.user.username)
-        logger.debug('===== SiteManager login ...')
-
         site_manager = SiteManager(request.user)
         site_manager.login()
 
@@ -140,7 +121,6 @@ def trigger_parsing(request):
             messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version))
 
         site_manager.kill()
-        logger.debug('===== END parsing ==============================')
 
         return redirect('core:ofm:player_statistics')
     else:
@@ -181,82 +161,3 @@ def trigger_finances_parsing(request):
 def trigger_match_parsing(request):
     redirect_to = 'core:ofm:matches_overview'
     return trigger_single_parsing(request, parse_match, redirect_to)
-
-
-def parse_ofm_version(site_manager):
-    site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
-    version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
-    return version_parser.parse()
-
-
-def parse_matchday(request, site_manager):
-    logger.debug('===== parse Matchday ...')
-    site_manager.jump_to_frame(Constants.HEAD)
-    matchday_parser = MatchdayParser(site_manager.browser.page_source)
-    return matchday_parser.parse()
-
-
-def parse_players(request, site_manager):
-    logger.debug('===== parse Players ...')
-    site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
-    players_parser = PlayersParser(site_manager.browser.page_source, request.user)
-    return players_parser.parse()
-
-
-def parse_player_statistics(request, site_manager):
-    logger.debug('===== parse PlayerStatistics ...')
-    site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
-    player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
-    return player_stat_parser.parse()
-
-
-def parse_awp_boundaries(request, site_manager):
-    logger.debug('===== parse AWP Boundaries ...')
-    site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
-    awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
-    awp_boundaries_parser.parse()
-
-
-def parse_finances(request, site_manager):
-    logger.debug('===== parse Finances ...')
-    site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
-    finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
-    return finances_parser.parse()
-
-
-def parse_match(request, site_manager):
-    if Matchday.objects.all()[0].number <= 0:
-        return
-
-    logger.debug('===== parse latest Match ...')
-    site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
-    soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
-    row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
-    is_home_match = "<b>" in str(row.find_all('td')[2].a)
-    match_report_image = row.find_all('img', class_='changeMatchReportImg')
-
-    if match_report_image:
-        # match took place
-        link_to_match = match_report_image[0].find_parent('a')['href']
-        if "spielbericht" in link_to_match:
-            site_manager.jump_to_frame(Constants.BASE + link_to_match)
-            match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
-            match = match_parser.parse()
-
-            if is_home_match:
-                parse_stadium_statistics(request, site_manager)
-
-            return match
-    else:
-        match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
-        return match_parser.parse()
-
-
-def parse_stadium_statistics(request, site_manager):
-    logger.debug('===== parse latest Stadium statistics ...')
-    site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-    stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
-    stadium_statistics_parser.parse()
-    site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-    stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-    return stadium_stand_stat_parser.parse()

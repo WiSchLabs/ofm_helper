@@ -1,12 +1,11 @@
-from unittest import skip
-
 import os
 import unittest
+from unittest import skip
 
 from django.conf import settings
 
+from core.managers.site_manager import SiteManager
 from core.web.ofm_page_constants import Constants
-from core.web.site_manager import SiteManager
 from users.models import OFMUser
 
 

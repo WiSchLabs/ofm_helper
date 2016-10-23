@@ -27,87 +27,43 @@ class ParserViewTest(TestCase):
         self.client.login(username='name', password='pass')
 
     @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
-    def test_matchday_parser_view(self, site_manager_mock, beatiful_soup_mock):
-        with open(os.path.join(TESTDATA_PATH, 'head.html'), encoding='utf8') as matchday_html:
-            mdp = MatchdayParser(matchday_html.read())
-            core.views.MatchdayParser = Mock(spec=mdp)
-            core.views.MatchdayParser.return_value.parse = mdp.parse
+    @patch('core.managers.parser_manager.MatchdayParser')
+    def test_matchday_parser_view(self, site_manager_mock, matchday_parser_mock):
+        response = self.client.get(reverse('core:trigger_matchday_parsing'))
+        self.assertEqual(response.status_code, 302)
 
-            response = self.client.get(reverse('core:trigger_matchday_parsing'))
-            self.assertEqual(response.status_code, 302)
-
-            parsed_matchday = Matchday.objects.all()[0]
-            self.assertEquals(139, parsed_matchday.season.number)
-            self.assertEquals(23, parsed_matchday.number)
-
-            assert core.views.SiteManager.called
-            assert beatiful_soup_mock.called
+        assert core.views.SiteManager.called
+        assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
 
     @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
-    def test_player_parser_view(self, site_manager_mock, beatiful_soup_mock):
-        with open(os.path.join(TESTDATA_PATH, 'player.html'), encoding='utf8') as player_html:
-            pp = PlayersParser(player_html.read(), self.user)
-            core.views.PlayersParser = Mock(spec=pp)
-            core.views.PlayersParser.return_value.parse = pp.parse
+    @patch('core.managers.parser_manager.PlayersParser')
+    def test_player_parser_view(self, site_manager_mock, players_parser_mock):
+        response = self.client.get(reverse('core:trigger_players_parsing'))
+        self.assertEqual(response.status_code, 302)
 
-            response = self.client.get(reverse('core:trigger_players_parsing'))
-            self.assertEqual(response.status_code, 302)
-
-            parsed_player = Player.objects.all()[2]
-            self.assertEquals(22, Player.objects.all().count())
-            self.assertEquals('Saliou Dassé', parsed_player.name)
-            self.assertEquals('TW', parsed_player.position)
-            self.assertEquals(163703532, parsed_player.id)
-            self.assertEquals('Elfenbeinküste', str(parsed_player.nationality))
-
-            assert core.views.SiteManager.called
-            assert beatiful_soup_mock.called
+        assert core.managers.parser_manager.PlayersParser.return_value.parse.called
+        assert core.views.SiteManager.called
 
     @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
-    def test_player_statistics_parser_view(self, site_manager_mock, beatiful_soup_mock):
-        with open(os.path.join(TESTDATA_PATH, 'frame_player_statistics.html'), encoding='utf8') as player_statistics_html:
-            psp = PlayerStatisticsParser(player_statistics_html.read(), self.user)
-            core.views.PlayerStatisticsParser = Mock(spec=psp)
-            core.views.PlayerStatisticsParser.return_value.parse = psp.parse
+    @patch('core.managers.parser_manager.PlayerStatisticsParser')
+    def test_player_statistics_parser_view(self, site_manager_mock, player_statistics_parser_mock):
+        response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
+        self.assertEqual(response.status_code, 302)
 
-            response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
-            self.assertEqual(response.status_code, 302)
-
-            parsed_player_statistics = PlayerStatistics.objects.all()
-            self.assertEquals(parsed_player_statistics.count(), 2)
-            self.assertEquals(parsed_player_statistics[0].matchday.number, 1)
-            self.assertEquals(parsed_player_statistics[0].matchday.season.number, 100)
-            self.assertEquals('Chrístos Tsigas', parsed_player_statistics[0].player.name)
-            self.assertEquals(15, parsed_player_statistics[0].strength)
-            self.assertEquals("Irwin O'Canny", parsed_player_statistics[1].player.name)
-            self.assertEquals(14, parsed_player_statistics[1].strength)
-
-            assert core.views.SiteManager.called
-            assert beatiful_soup_mock.called
+        assert core.managers.parser_manager.PlayerStatisticsParser.return_value.parse.called
+        assert core.views.SiteManager.called
 
     @patch('core.views.SiteManager')
-    @patch('core.views.BeautifulSoup')
-    def test_finances_parser_view(self, site_manager_mock, beatiful_soup_mock):
-        with open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8') as finances_html:
-            fp = FinancesParser(finances_html.read(), self.user)
-            core.views.FinancesParser = Mock(spec=fp)
-            core.views.FinancesParser.return_value.parse = fp.parse
+    @patch('core.managers.parser_manager.FinancesParser')
+    def test_finances_parser_view(self, site_manager_mock, finances_parser_mock):
+        response = self.client.get(reverse('core:trigger_finances_parsing'))
+        self.assertEqual(response.status_code, 302)
 
-            response = self.client.get(reverse('core:trigger_finances_parsing'))
-            self.assertEqual(response.status_code, 302)
+        assert core.managers.parser_manager.FinancesParser.return_value.parse.called
+        assert core.views.SiteManager.called
 
-            self.assertEquals(1, Finance.objects.all().count())
-            parsed_finance = Finance.objects.all()[0]
-            self.assertEquals(1633872, parsed_finance.balance)
-
-            assert core.views.SiteManager.called
-            assert beatiful_soup_mock.called
-
-    @patch('core.views.MatchParser')
-    @patch('core.views.parse_stadium_statistics')
+    @patch('core.managers.parser_manager.MatchParser')
+    @patch('core.managers.parser_manager.parse_stadium_statistics')
     def test_match_parser_view(self, _, parse_stadium_statistics_mock):
         with open(os.path.join(TESTDATA_PATH, 'matchday_table.html'), encoding='utf8') as matchday_table:
             with patch('core.views.SiteManager') as site_manager_mock:
@@ -117,7 +73,7 @@ class ParserViewTest(TestCase):
                 response = self.client.get(reverse('core:trigger_match_parsing'))
                 self.assertEqual(response.status_code, 302)
 
-                assert core.views.MatchParser.return_value.parse.called
+                assert core.managers.parser_manager.MatchParser.return_value.parse.called
                 assert parse_stadium_statistics_mock.called
 
     @patch('core.views.SiteManager')
