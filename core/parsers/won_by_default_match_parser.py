@@ -31,8 +31,8 @@ class WonByDefaultMatchParser(BaseParser):
         is_home_match = "<b>" in str(row.find_all('td')[2].a)
 
         match_result = row.find_all('font', class_='erganz')[0].get_text().strip()
-        home_team_score = match_result.split(':')[0]
-        guest_team_score = match_result.split(':')[1]
+        home_team_score = match_result.split(':')[0].strip()
+        guest_team_score = match_result.split(':')[1].strip()
 
         home_team = row.find_all('b')[0].find_parent('tr').find_all('td')[2].get_text().strip()
         home_team_name = home_team[0:home_team.find('(')-1]

@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html><head>
+<title>OFM - Spieltag &amp; Tabelle</title>
+<meta content="0" http-equiv="expires">
+<meta charset="utf-8">
+<meta content="OnlineFussballManager GmbH, Dr. Thorsten Lottici" name="author">
+<meta content="OnlineFussballManager GmbH" name="publisher">
+<meta content="OnlineFussballManager GmbH" name="copyright">
+<link href="/ofm_style.css527.css" media="all" rel="stylesheet" type="text/css">
+<link href="/style/core/base.css527.css" media="all" rel="stylesheet" type="text/css">
+<link href="/style/core/base-int.css527.css" media="all" rel="stylesheet" type="text/css">
+<link href="/style/core/layout.css527.css" media="all" rel="stylesheet" type="text/css">
+<link href="/style/league/core/layout.css527.css" media="all" rel="stylesheet" type="text/css">
+<script src="http://pagead2.googlesyndication.com/pagead/osd.js"></script><script async="" src="http://dmp.theadex.com/d/607/2256/s/adex.js" type="text/javascript"></script><script async="" src="https://cdn.m6r.eu/sync/api" type="text/javascript"></script><script async="" src="http://www.google-analytics.com/ga.js" type="text/javascript"></script><script src="/java/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="/java/jquery/js/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
+<script src="/java/ofm_biblio.js393.js" type="text/javascript"></script>
+<script src="/java/liga/spieltag_tabelle.js393.js" type="text/javascript"></script>
+<style>
+	.bgLeagueTable{
+	background:#f0f9ff; /* Old browsers */
+	background:-moz-linear-gradient(top,  rgba(241,241,242,1.0) 50%, rgba(220,220,221,1.0) 100%); /* FF3.6+ */
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(241,241,242,1.0)), color-stop(100%,rgba(220,220,221,1.0))); /* Chrome,Safari4+ */
+	background:-webkit-linear-gradient(top,  rgba(241,241,242,1.0) 50%,rgba(220,220,221,1.0) 100%); /* Chrome10+,Safari5.1+ */
+	background:-o-linear-gradient(top,  rgba(241,241,242,1.0) 50%,rgba(220,220,221,1.0) 100%); /* Opera 11.10+ */
+	background:-ms-linear-gradient(top,  rgba(241,241,242,1.0) 50%,rgba(220,220,221,1.0) 100%); /* IE10+ */
+	background:linear-gradient(to bottom,  rgba(241,241,242,1.0) 50%,rgba(220,220,221,1.0) 100%); /* W3C */
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1f1f2', endColorstr='#dcdcdd',GradientType=0 ); /* IE6-9 */
+	}
+
+	/*.highlightMatchOne{background:#79cfb2;}*/
+	.highlightMatchOne{background:#ffda43 !important;}
+	.highlightMatchTwo{background:#ffb443 !important;}
+	.highlightMatchThree{background:#eb9257 !important;}
+	.highlightActive{height:28px;}
+    }
+	</style>
+<script src="/java/ofm_javascript.js393.js" type="text/javascript"></script>
+<script type="text/javascript">
+      /* <![CDATA[ */
+
+      var oldContent="";
+      function CheckLen(Target)
+      {
+        var maxlength = 200; //die maximale Zeichenlänge
+        var CharsLeft = 0; //verbleibende Zeichen
+        var breakLines = 0; //anzahl Zeilenumbrüche
+        var theChar = ""; //zu testendes Zeichen
+        StrLen=Target.value.length;
+        if (StrLen==1&&Target.value.substring(0,1)==" ")
+        {
+          Target.value="";
+          StrLen=0;
+        }
+
+        if (StrLen>maxlength)
+        {
+          Target.value=Target.value.substring(0,maxlength);
+          CharsLeft=0;
+        }
+        else
+        {
+          CharsLeft=maxlength-StrLen;
+        }
+
+        for(var i=0; i<StrLen; i++)
+        {
+          theChar = Target.value.substring(i,i+1);
+          if(theChar == "\n")
+          {
+            breakLines++;
+          }
+        }
+
+        if(breakLines>30) //mehr als 30 Umbrüche
+        {
+          Target.value = oldContent;
+        }
+        else if(oldContent!=Target.value)
+        {
+          oldContent = Target.value;
+        }
+        document.getElementById('anzahltext').innerHTML="(noch "+CharsLeft+" Zeichen übrig)";
+      }
+      function clickText(id) {
+        var box = document.getElementById("begr");
+        var kat = document.getElementById("melde_kat");
+        if(box.value=="" && kat.value==0) {
+          document.getElementById('3').disabled="true";
+          alert("Der Begründung darf nicht leer sein");
+        }
+        else if (box.value.length < 5 && kat.value==0) {
+          document.getElementById('3').disabled="true";
+          alert("Die Begründung muss mindestens 5 Zeichen enthalten");
+        }
+        else {
+          id.form.submit();
+        }
+      }
+	      /* ]]> */
+    </script>
+<script type="text/javascript">
+		$(document).ready(function() {
+			$("#land").change(function() {
+				var url = "ligaauswahl_ajax.php?land=";
+				url = url + $("#land :selected").val() + "&activeLeague="+$("#liga :selected").val();
+				$.get(url, function(data) {
+					$("#liga").children().remove();
+					$("#liga").append(data);
+				});
+			});
+		});
+	</script>
+<script type="text/javascript">
+                          /* <![CDATA[ */
+							var max_uebpruefungen = 100;
+							var uebpruefungen = 0;
+							function menue_aufrufen()
+							{
+								if (parent && (parent.frames.length > 0))
+								{
+									//if ((top.frames.length > 0) && (top.frames.content1.frames.length > 0))
+									if (parent.frames.length > 0)
+									{
+										if (parent.frames.menu)
+										{
+											if (parent.frames.menu.menuepunkt_auswaehlen && parent.frames.menu.location.href)
+											{
+
+												if (parent.frames.menu.location.href == "http://www.onlinefussballmanager.de/010_liga/_menu_liga_int.php")
+												{
+													if (!parent.frames.menu.menuepunkt_auswaehlen(1))
+													{
+														if (uebpruefungen < max_uebpruefungen)
+														{
+															uebpruefungen++;
+															window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+														}
+													}
+												}
+
+												else if (uebpruefungen = max_uebpruefungen)
+												{
+													if (!submenuloaded)
+													{
+														submenuloaded = true;
+														parent.frames.menu.location.href = "http://www.onlinefussballmanager.de/010_liga/_menu_liga_int.php";
+													}
+													uebpruefungen = 0;
+													window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+												}
+											}
+											else if (uebpruefungen < max_uebpruefungen)
+											{
+												uebpruefungen++;
+												window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+											}
+										}
+										else if (uebpruefungen < max_uebpruefungen)
+										{
+											uebpruefungen++;
+											window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+										}
+									}
+								}
+							}
+						var submenuloaded = false;
+						menue_aufrufen();
+                        /* ]]> */
+						</script>
+<script type="text/javascript">
+                          /* <![CDATA[ */
+							var max_uebpruefungen = 100;
+							var uebpruefungen = 0;
+							function menue_aufrufen()
+							{
+								if (parent && (parent.frames.length > 0))
+								{
+									//if ((top.frames.length > 0) && (top.frames.content1.frames.length > 0))
+									if (parent.frames.length > 0)
+									{
+										if (parent.frames.menu)
+										{
+											if (parent.frames.menu.menuepunkt_auswaehlen && parent.frames.menu.location.href)
+											{
+
+												if (parent.frames.menu.location.href == "http://www.onlinefussballmanager.de/010_liga/_menu_liga_int.php")
+												{
+													if (!parent.frames.menu.menuepunkt_auswaehlen(1))
+													{
+														if (uebpruefungen < max_uebpruefungen)
+														{
+															uebpruefungen++;
+															window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+														}
+													}
+												}
+
+												else if (uebpruefungen = max_uebpruefungen)
+												{
+													if (!submenuloaded)
+													{
+														submenuloaded = true;
+														parent.frames.menu.location.href = "http://www.onlinefussballmanager.de/010_liga/_menu_liga_int.php";
+													}
+													uebpruefungen = 0;
+													window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+												}
+											}
+											else if (uebpruefungen < max_uebpruefungen)
+											{
+												uebpruefungen++;
+												window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+											}
+										}
+										else if (uebpruefungen < max_uebpruefungen)
+										{
+											uebpruefungen++;
+											window.setTimeout("menue_aufrufen()",50+uebpruefungen*3);
+										}
+									}
+								}
+							}
+						var submenuloaded = false;
+						menue_aufrufen();
+                        /* ]]> */
+						</script>
+<script src="https://script.ioam.de/iam.js" type="text/javascript"></script> <script src="//dmp.theadex.com/d/173/249/s/adex.js?ts=1477339544063" type="text/javascript"></script><script src="//rtax.criteo.com/delivery/rta/rta.js?netId=5346&amp;rnd=243898264666&amp;varName=crtg_content&amp;cookiecreation=0" type="text/javascript"></script><script src="http://si.nuggad.net/rc?nuggn=571289945&amp;nuggsid=112913666&amp;nuggrid=http%3A%2F%2Fwww.onlinefussballmanager.de%2Fleague%2Fspieltag_tabelle_2.php" type="text/javascript"></script><script src="http://de.ioam.de/tx.io?st=ofmanag&amp;cp=spieleseite&amp;sv=ke&amp;co=kommentar&amp;pt=CP&amp;rf=&amp;r2=&amp;ur=www.onlinefussballmanager.de&amp;xy=1920x1080x32&amp;lo=DE%2FBerlin&amp;cb=000c&amp;vr=309&amp;id=4qnqhz&amp;lt=1477339544119&amp;ev=&amp;cs=xoq3jz&amp;mo=1" type="text/javascript"></script><script src="//js.adscale.de/map.js" type="text/javascript"></script><script src="//cdn.stroeerdigitalmedia.de/dynback/gpt_call.sjs?243898264666" type="text/javascript"></script><script src="//www.googletagservices.com/tag/js/gpt.js" type="text/javascript"></script><script async="" src="http://partner.googleadservices.com/gpt/pubads_impl_104.js"></script></link></link></link></link></link></meta></meta></meta></meta></meta></head>
+<body><div id="WzTtDiV" style="visibility: hidden; position: absolute; overflow: hidden; padding: 0px; width: 1919px; left: -1920px; top: 0px; display: block;"></div>
+<style>
+    .scrollTop{
+		background-color:#808080;
+		background-color:rgba(128, 128, 128, 0.8);
+		border:1px solid #808080;
+		border-radius:3px;
+		bottom:25px;
+		box-shadow:0 0 5px 1px #808080;
+		color:#fff;
+		cursor:pointer;
+		outline:0;
+		padding:10px 30px 10px 10px;
+		position:fixed;
+		right:25px;
+		-webkit-transition:opacity .1s ease-out;
+		-moz-transition:opacity .1s ease-out;
+		-ms-transition:opacity .1s ease-out;
+		-o-transition:opacity .1s ease-out;
+		transition:opacity .1s ease-out;
+		white-space:nowrap;
+		z-index:1000;
+		text-align:center;
+		text-transform:capitalize;
+		}
+
+		.scrollTop:before{
+		background-color:rgba(240, 240, 240, 0.6);
+		border-radius:2px 2px 2px 2px;
+		content:"";
+		height:20px;
+		position:absolute;
+		right:5px;
+		top:8px;
+		width:20px;
+		}
+
+		.scrollTop:hover{
+		background-color:#808080;
+		text-decoration:none;
+		}
+
+		.scrollTop span{
+		height:6px;
+		position:absolute;
+		right:10px;
+		top:16px;
+		width:9px;
+		background:url(/bilder/icons/scroll-top.png) no-repeat transparent;
+		}
+
+        @media all and (max-width: 1024px) {div.scrollTop{display:none !important;}}
+    </style>
+<iframe height="0" src="http://ih.adscale.de/adscale-ih/map?ssl=0&amp;format=video" style="display: none; border: thin none;" width="0"></iframe><script>
+		$(document).ready(function(){
+
+         $(".scrollTop").click(function(){
+	      $("html, body").animate({ scrollTop: 0 }, 600);
+	      return false;
+	     });
+
+			var $scrollTop = $(".scrollTop");
+
+			var $win = $(window).scroll(function() {
+			    if($win.scrollTop() > 50) {
+			        if(!$scrollTop.is(":visible")) {
+			            $scrollTop.stop(true, true).fadeIn();
+			        }
+			    } else {
+			        if(!$scrollTop.is(":animated")) {
+			            $scrollTop.stop(true, true).fadeOut();
+			        }
+			    }
+			});
+
+		});
+		</script>
+<div class="scrollTop nonvisible">
+			top
+			<span></span>
+</div>
+<script src="/java/wz_tooltip.js393.js" type="text/javascript"></script>
+<div align="center" class="pos-rel" id="spieltag-tabelle" style="width:auto;margin:0 auto;top:-20px;">
+<br>
+<!-- Gesamttabelle -->
+<table cellpadding="0" cellspacing="15" style="text-align:left;">
+<tbody><tr>
+<td style="vertical-align: top;">
+</td>
+<td valign="top" width="auto">
+<div align="center" style="width:auto;margin:0 auto;">
+<div class="standardHeader">
+<p class="white bold standardHeadline textLeft">
+<span class="pos-rel" style="top:-2px;"><img align="absmiddle" border="0" height="15" onmouseover="Tip('&lt;table cellspacing=0 cellpadding=0 border=0&gt;&lt;tr&gt;&lt;td height=24&gt;&lt;img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25&gt;  &lt;/td&gt;&lt;td&gt;&lt;font color=white&gt;&lt;b&gt;Elfenbeinküste&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/b&gt;&lt;/font&gt;',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" src="/bilder/fahnen3d/elfenbeinkueste.gif" width="23"/></span>
+								Ergebnisse des 11. Spieltags Landesliga 1:							</p>
+</div>
+<table cellpadding="0" cellspacing="0" class="tableFrame shadow bgLeagueTable" style="padding:0 10px;text-align:left;background:url(/db/images/lang/tabelle_back.png) no-repeat right top #fff;">
+<tbody><tr>
+<td height="10" width="100%">
+<table border="0" cellpadding="2" cellspacing="0" width="auto">
+<tbody><tr>
+<td>
+<div align="center">
+<br>
+<form id="filterLeague" method="post">
+<span class="intText">Spieltag: </span>
+<select class="spieltag" name="spieltag" size="1" style="width:45px;">
+<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option selected="selected" value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option> </select>
+<select class="liga" id="liga" name="ligaid" size="1" style="width:130px;">
+<option value="1">1. Liga</option><option value="2">2. Liga Nord</option><option value="3">2. Liga Süd</option><option value="4">Regionalliga A</option><option value="5">Regionalliga B</option><option value="6">Regionalliga C</option><option value="7">Regionalliga D</option><option value="8">Oberliga A</option><option value="9">Oberliga B</option><option value="10">Oberliga C</option><option value="11">Oberliga D</option><option value="12">Oberliga E</option><option value="13">Oberliga F</option><option value="14">Oberliga G</option><option value="15">Oberliga H</option><option value="16">Verbandsliga 1</option><option value="17">Verbandsliga 2</option><option value="18">Verbandsliga 3</option><option value="19">Verbandsliga 4</option><option value="20">Verbandsliga 5</option><option value="21">Verbandsliga 6</option><option value="22">Verbandsliga 7</option><option value="23">Verbandsliga 8</option><option value="24">Verbandsliga 9</option><option value="25">Verbandsliga 10</option><option value="26">Verbandsliga 11</option><option value="27">Verbandsliga 12</option><option value="28">Verbandsliga 13</option><option value="29">Verbandsliga 14</option><option value="30">Verbandsliga 15</option><option value="31">Verbandsliga 16</option><option selected="selected" value="32">Landesliga 1</option><option value="33">Landesliga 2</option><option value="34">Landesliga 3</option><option value="35">Landesliga 4</option><option value="36">Landesliga 5</option><option value="37">Landesliga 6</option><option value="38">Landesliga 7</option><option value="39">Landesliga 8</option><option value="40">Landesliga 9</option><option value="41">Landesliga 10</option><option value="42">Landesliga 11</option><option value="43">Landesliga 12</option><option value="44">Landesliga 13</option><option value="45">Landesliga 14</option><option value="46">Landesliga 15</option><option value="47">Landesliga 16</option><option value="48">Landesliga 17</option> </select>
+<select class="land" id="land" name="land" size="1"><option value="16">Argentinien</option><option value="18">Australien</option><option value="15">Brasilien</option><option value="25">Dänemark</option><option value="1">Deutschland</option><option selected="" value="31">Elfenbeinküste</option><option value="4">England</option><option value="7">Frankreich</option><option value="13">Griechenland</option><option value="26">Irland</option><option value="5">Italien</option><option value="23">Jamaika</option><option value="21">Japan</option><option value="19">Kamerun</option><option value="28">Kroatien</option><option value="29">Mexiko</option><option value="9">Niederlande</option><option value="2">Österreich</option><option value="10">Polen</option><option value="12">Portugal</option><option value="11">Russland</option><option value="17">Schottland</option><option value="14">Schweden</option><option value="3">Schweiz</option><option value="27">Serbien</option><option value="6">Spanien</option><option value="24">Südafrika</option><option value="30">Südkorea</option><option value="32">Trinidad &amp; Tobago</option><option value="20">Tschechien</option><option value="8">Türkei</option><option value="22">USA</option></select> <input class="buttonGreen cursor" type="Submit" value="OK">    																             <a href="?land=31&amp;ligaid=32&amp;spieltag=10&amp;vs=0" style="text-decoration:none" title="vorheriger Spieltag">
+<img align="absmiddle" alt="" border="0" height="15" src="../bilder/pfeil_links.gif" width="15">
+</img></a>
+                                                               <span class="intText">blättern </span> <a href="?land=31&amp;ligaid=32&amp;spieltag=12&amp;vs=0" style="text-decoration:none;" title="Nächster Spieltag">
+<img align="absmiddle" alt="" height="15" src="../bilder/pfeil_rechts.gif" width="15">
+</img></a>
+<!-- <div id="tutorial-arrow-liga" class="nonvisible tutorial-arrows tutorial-arrow-menu-liga  pos-rel" style=""></div>-->
+<br class="clear">
+<input name="vs" type="hidden" value="0">
+</input></br></input></form>
+</br></div>
+</td>
+</tr>
+<tr>
+<td>
+<div align="center">
+<table cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td width="101">
+</td>
+</tr>
+</tbody></table>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div align="center">
+<table cellpadding="1" cellspacing="0" class="table_head" id="table_head" style="text-align:left;border:1px solid #666;width:800px;">
+<thead class="top">
+<tr>
+<th height="21">  </th>
+<th height="21" width="22">  </th>
+<th height="21" style="text-align:left;">Heimmannschaft </th>
+<th height="21"> </th>
+<th height="21"> </th>
+<th height="21"> </th>
+<th height="21" width="22">  </th>
+<th height="21" style="text-align:left;">Auswärtsmannschaft </th>
+<th height="21"> Ergebnis </th>
+<th height="21">
+<span style="color:#ddd; font-weight:normal;">(Halbzeit)</span>
+</th>
+<th height="21">   Bericht</th>
+<th height="21"></th>
+</tr>
+</thead>
+<tbody>
+<tr bgcolor="#f5f9ff" class="team_101470 team_141280" id="teams_101470_141280">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=101470"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/101470-Diggihoppenstedt" onclick="NewWindow(this.href,'101470','750','550','no','no');return false">
+                                      Diggihoppenstedt</a> (95)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=141280"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/141280-TUS-Baustelle" onclick="NewWindow(this.href,'141280','750','550','no','no');return false">TUS Baustelle</a> (89)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">3 : 2 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(3 : 0)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733526&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733526','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733526" onclick="$('#matchReportDone_liga_1027733526').show();$('#matchReport_liga_1027733526').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733526" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733526').show();$('#matchReport_liga_1027733526').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=101470&amp;t2=141280" onclick="NewWindow(this.href,'spiel293','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#c9e1ec" class="team_64223 team_129163" id="teams_64223_129163">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=64223"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/64223-1.FC-Marsberg" onclick="NewWindow(this.href,'64223','750','550','no','no');return false">
+                                      1.FC Marsberg</a> (0)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=129163"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/129163-Abr%C3%A4umer" onclick="NewWindow(this.href,'129163','750','550','no','no');return false">Abräumer</a> (78)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#cccccc" size="2">
+							0 : 3                		</font></strong>
+</td>
+<td align="center">
+</td>
+<td align="center">
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=64223&amp;t2=129163" onclick="NewWindow(this.href,'spiel359','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#f5f9ff" class="team_23802 team_659598" id="teams_23802_659598">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=23802"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/23802-FCB92" onclick="NewWindow(this.href,'23802','750','550','no','no');return false">
+                                      FCB92</a> (78)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=659598"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/659598-TSV-Stiffler" onclick="NewWindow(this.href,'659598','750','550','no','no');return false">TSV Stiffler</a> (82)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">4 : 1 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(2 : 0)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733528&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733528','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733528" onclick="$('#matchReportDone_liga_1027733528').show();$('#matchReport_liga_1027733528').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733528" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733528').show();$('#matchReport_liga_1027733528').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=23802&amp;t2=659598" onclick="NewWindow(this.href,'spiel666','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#c9e1ec" class="team_8272 team_81840" id="teams_8272_81840">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=8272"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/8272-BSC-Wittenau" onclick="NewWindow(this.href,'8272','750','550','no','no');return false">
+                                      <b>BSC Wittenau</b></a> (59)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=81840"></a>
+</td>
+
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/81840-Borussia-Paniermehl" onclick="NewWindow(this.href,'81840','750','550','no','no');return false">Borussia Paniermehl</a> (0)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#cccccc" size="2">
+							3 : 0                		</font></strong>
+</td>
+<td align="center">
+</td>
+<td align="center">
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=81840&amp;t2=8272" onclick="NewWindow(this.href,'spiel856','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#f5f9ff" class="team_78182 team_62490" id="teams_78182_62490">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"><a onmouseover="Tip('&lt;img src=/db/images/wappen/84/40/wappen_78182_8440.png height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/84/40/wappen_78182_8440.png"/></a></span>
+<a href="teaminfo.php?team=78182"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/78182-Red-Bull-Pandas" onclick="NewWindow(this.href,'78182','750','550','no','no');return false">
+                                      Red Bull Pandas</a> (86)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg">
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="trikotpos" style="">
+<tbody><tr>
+<td align="center" class="cursor"><a onmouseover="Tip('&lt;img src=/db/images/trikots/24/90/sp100px62490.png height=100px&gt;',BGCOLOR,'white',WIDTH,70,FADEIN,200,FADEOUT,200,BORDERWIDTH,1,ABOVE,true,OFFSETY,-25)"><img border="0" height="25px" src="/db/images/trikots/24/90/sp25px62490.png"/></a></td>
+</tr>
+</tbody></table></span>
+<a href="teaminfo.php?team=62490"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/62490-Hansi" onclick="NewWindow(this.href,'62490','750','550','no','no');return false">Hansi</a> (24)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">8 : 0 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(4 : 0)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733530&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733530','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733530" onclick="$('#matchReportDone_liga_1027733530').show();$('#matchReport_liga_1027733530').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733530" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733530').show();$('#matchReport_liga_1027733530').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=78182&amp;t2=62490" onclick="NewWindow(this.href,'spiel274','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#c9e1ec" class="team_283223 team_657414" id="teams_283223_657414">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"><a onmouseover="Tip('&lt;img src=/db/images/wappen/11/65/wappen_283223_1165.gif height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/11/65/wappen_283223_1165.gif"/></a></span>
+<a href="teaminfo.php?team=283223"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/283223-TSV-1860-Giesinger-BUAM" onclick="NewWindow(this.href,'283223','750','550','no','no');return false">
+                                      TSV 1860 Giesinger BUAM</a> (72)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"><a onmouseover="Tip('&lt;img src=/db/images/wappen/77/03/wappen_657414_7703.jpg height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/77/03/wappen_657414_7703.jpg"/></a></span>
+<a href="teaminfo.php?team=657414"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/657414-HSV-1.8.9.6" onclick="NewWindow(this.href,'657414','750','550','no','no');return false">HSV 1.8.9.6</a> (88)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">1 : 2 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(0 : 1)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733531&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733531','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733531" onclick="$('#matchReportDone_liga_1027733531').show();$('#matchReport_liga_1027733531').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733531" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733531').show();$('#matchReport_liga_1027733531').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=283223&amp;t2=657414" onclick="NewWindow(this.href,'spiel77','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#f5f9ff" class="team_157360 team_88567" id="teams_157360_88567">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"><a onmouseover="Tip('&lt;img src=/db/images/wappen/87/43/wappen_157360_8743.png height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/87/43/wappen_157360_8743.png"/></a></span>
+<a href="teaminfo.php?team=157360"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/157360-1.FC-MANNHEIM-SCH%C3%96NAU" onclick="NewWindow(this.href,'157360','750','550','no','no');return false">
+                                      1.FC MANNHEIM SCHÖNAU</a> (85)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=88567"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/88567-NicNock" onclick="NewWindow(this.href,'88567','750','550','no','no');return false">NicNock</a> (4)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">8 : 0 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(5 : 0)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733532&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733532','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733532" onclick="$('#matchReportDone_liga_1027733532').show();$('#matchReport_liga_1027733532').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733532" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733532').show();$('#matchReport_liga_1027733532').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=157360&amp;t2=88567" onclick="NewWindow(this.href,'spiel700','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#c9e1ec" class="team_201366 team_23961" id="teams_201366_23961">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=201366"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/201366-Supporters-Kiel" onclick="NewWindow(this.href,'201366','750','550','no','no');return false">
+                                      Supporters Kiel</a> (0)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=23961"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/23961-HJK-Tantrum" onclick="NewWindow(this.href,'23961','750','550','no','no');return false">HJK Tantrum</a> (67)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#cccccc" size="2">
+							0 : 3                		</font></strong>
+</td>
+<td align="center">
+</td>
+<td align="center">
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=201366&amp;t2=23961" onclick="NewWindow(this.href,'spiel83','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+<tbody><tr bgcolor="#f5f9ff" class="team_104578 team_108707" id="teams_104578_108707">
+<td class="highlightActive cursor" height="28"> </td>
+<td align="center" class="highlightActive cursor" width="22"><span class="opacityImg"></span>
+<a href="teaminfo.php?team=104578"></a></td>
+<td class="cursor" nowrap="" style="width:250px;">
+<a class="black_small" href="/club/104578-SV-Turbine-Traktor" onclick="NewWindow(this.href,'104578','750','550','no','no');return false">
+                                      SV Turbine Traktor</a> (84)
+                                  </td>
+<td class="cursor"></td>
+<td class="cursor">-</td>
+<td class="cursor"></td>
+<td class="cursor" width="22">
+<span class="opacityImg"></span>
+<a href="teaminfo.php?team=108707"></a>
+</td>
+<td class="cursor" nowrap="" style="width:250px;"><a class="black_small" href="/club/108707-1.F.C.-Leder" onclick="NewWindow(this.href,'108707','750','550','no','no');return false">1.F.C. Leder</a> (55)</td>
+<td align="center" valign="middle">
+<strong><font class="erganz" color="#21638d" size="2">4 : 0 </font></strong>
+</td>
+<td align="center">
+<span style="color:#3e769a; font-size:11px;">(2 : 0)</span>
+</td>
+<td align="center">
+<span class="opacityImg"><a class="white_small" href="/spielbericht.php?spielid=1027733534&amp;spielart=liga" onclick="NewWindow(this.href,'Game1027733534','1100','650','yes','yes');return false;"><img alt="" class="changeMatchReportImg" id="matchReport_liga_1027733534" onclick="$('#matchReportDone_liga_1027733534').show();$('#matchReport_liga_1027733534').hide();" src="/bilder/icons/icon-matchreport.png"><img alt="" id="matchReportDone_liga_1027733534" src="/bilder/icons/icon-matchreport-done.png" style="display:none;"><span onclick="$('#matchReportDone_liga_1027733534').show();$('#matchReport_liga_1027733534').hide();"></span></img></img></a></span>
+</td>
+<td nowrap="">
+<span class="opacityImg">
+<a href="/010_statistiken/statistiken_begegnungen.php?t1=104578&amp;t2=108707" onclick="NewWindow(this.href,'spiel46','675','550','yes');return false"><img border="0" src="/bilder/icons/icon_info_mini_stats.png"/></a>  
+						</span>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+</br></div>
+</td>
+</tr>
+<tr>
+<td align="center" height="93"><div data-google-query-id="COmr9oKf9M8CFdQi0wodw9IA0Q" id="div-gpt-ad-banner" style="">
+<script>
+// Lade Präludium wenn noch nicht gestartet
+if (typeof SDM_head == 'undefined') {
+    // Präludium wird jetzt geladen
+    document.writeln('<scr' + 'ipt type="text/javascript" src="//cdn.str' + 'oeerd' + 'igitalmed' + 'ia.de/pra' + 'eludium/pra' + 'eludium_onlinefussmanag.min.js"></scr' + 'ipt>');
+}
+
+$(document).ready(function() {
+    SDM_head.registerAd({
+      defnet: '4444',
+      defsite: 'onlinefussballmanager.de_sdm_gan',
+      defzone: 'Rest',
+      size: '728x90',
+      adset: '',
+      name: 'banner',
+      display: true,
+      writeTargetDiv: false,
+      targetDiv: 'div-gpt-ad-banner'
+    });
+});
+</script><script src="//cdn.stroeerdigitalmedia.de/praeludium/praeludium_onlinefussmanag.min.js" type="text/javascript"></script>
+<div id="google_ads_iframe_/4444/onlinefussballmanager.de_sdm_gan/Rest_0__container__" style="border: 0pt none;"><iframe frameborder="0" height="90" id="google_ads_iframe_/4444/onlinefussballmanager.de_sdm_gan/Rest_0" marginheight="0" marginwidth="0" name="google_ads_iframe_/4444/onlinefussballmanager.de_sdm_gan/Rest_0" scrolling="no" srcdoc="" style="border: 0px; vertical-align: bottom;" title="3rd party ad content" width="728"></iframe></div><iframe frameborder="0" height="0" id="google_ads_iframe_/4444/onlinefussballmanager.de_sdm_gan/Rest_0__hidden__" marginheight="0" marginwidth="0" name="google_ads_iframe_/4444/onlinefussballmanager.de_sdm_gan/Rest_0__hidden__" scrolling="no" srcdoc="" style="border: 0px; vertical-align: bottom; visibility: hidden; display: none;" title="" width="0"></iframe></div></td>
+</tr>
+<tr>
+<td>
+<div align="center" class="pos-rel">
+<table cellpadding="0" cellspacing="0" style="text-align:left;">
+<tbody><tr>
+<td>
+<!-- LIGA SELECT RESULTS START -->
+<style>
+																	ul{list-style-type:none;margin:0;padding:0;}
+                                  ul li{padding-right:10px;}
+                                  ul li:last-child{padding-right:0;}
+                                  </style>
+<ul>
+<li class="float">
+<img align="absmiddle" border="0" height="13" onmouseover="Tip('&lt;table cellspacing=0 cellpadding=0 border=0&gt;&lt;tr&gt;&lt;td height=24&gt;&lt;img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25&gt;  &lt;/td&gt;&lt;td&gt;&lt;font color=white&gt;&lt;b&gt;Elfenbeinküste&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/b&gt;&lt;/font&gt;',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" src="/bilder/fahnen3d/elfenbeinkueste.gif" width="20"> <a class="blue" href="?land=31&amp;ligaid=32&amp;spieltag=11&amp;ansicht_tabelle=0&amp;vs=0">
+<span class="bold">Gesamttabelle</span>
+</a>
+<span class="bold intText">
+</span>
+</img></li>
+<li class="float" style="color:#21638d;">|</li>
+<li class="float">
+<a class="blue" href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr Tabellen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Heim-und Auswärtstabellen sowie Hin-und Rückrundentabellen gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" target="content1">Heimtabelle</a> - <a class="blue" href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr Tabellen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Heim-und Auswärtstabellen sowie Hin-und Rückrundentabellen gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" target="content1">Auswärtstabelle</a> </li>
+<li class="float" style="color:#21638d;">|</li>
+<li class="float">
+<a class="blue" href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr Tabellen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Heim-und Auswärtstabellen sowie Hin-und Rückrundentabellen gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" target="content1">Hinrunde</a> </li>
+<li class="float" style="color:#21638d;">|</li>
+<li class="float"><a href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Mehr Tabellen&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Heim-und Auswärtstabellen sowie Hin-und Rückrundentabellen gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" target="content1"><img alt="Mehr Funktionen auf dieser Seite!" class="pos-rel" src="/bilder/plus_icon.png" style="top:-5px;"/></a></li>
+<br class="clear">
+</br></ul>
+<!-- LIGA SELECT RESULTS END -->
+</td>
+</tr>
+</tbody></table>
+<img alt="" border="0" height="5" src="/bilder/dummy.gif" width="5">
+<table border="0" cellpadding="1" cellspacing="0" class="table_head" id="table_head" style="text-align:left;border:1px solid #666;width:800px;">
+<thead class="top">
+<tr>
+<th height="29"></th>
+<th>  </th>
+<th> </th>
+<th width="50">  </th>
+<th style="text-align:left;">Team </th>
+<th>  </th>
+<th align="center">Spiele </th>
+<th>  </th>
+<th align="center">S/U/N </th>
+<th>  </th>
+<th align="center">
+<a href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Aktueller Verlauf&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Die letzten Partien als Verlauf gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" style="text-decoration:none;" target="content1"><font color="white">Verlauf</font></a> </th>
+<th>  </th>
+<th align="center">Tore </th>
+<th>  </th>
+<th align="right">Tordif. </th>
+<th>  </th>
+<th align="center">Punkte </th>
+</tr>
+</thead>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e2ffa4" class="" id="team_23802" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 1.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/23802-FCB92" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           FCB92                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">10/0/1</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">32:5</td>
+<td> </td>
+<td align="right">+27</td>
+<td> </td>
+<td align="center">30 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e2ffa4" class="tr.borderNone linieAufsteiger" id="team_78182" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 2.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+<a onmouseover="Tip('&lt;img src=/db/images/wappen/84/40/wappen_78182_8440.png height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/84/40/wappen_78182_8440.png"/></a> </span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/78182-Red-Bull-Pandas" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Red Bull Pandas                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">9/2/0</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">41:9</td>
+<td> </td>
+<td align="right">+32</td>
+<td> </td>
+<td align="center">29 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_101470" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 3.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/101470-Diggihoppenstedt" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Diggihoppenstedt                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">9/2/0</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">29:5</td>
+<td> </td>
+<td align="right">+24</td>
+<td> </td>
+<td align="center">29 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_659598" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 4.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/659598-TSV-Stiffler" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           TSV Stiffler                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">8/1/2</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">31:9</td>
+<td> </td>
+<td align="right">+22</td>
+<td> </td>
+<td align="center">25 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_141280" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 5.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/141280-TUS-Baustelle" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           TUS Baustelle                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">8/1/2</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">35:15</td>
+<td> </td>
+<td align="right">+20</td>
+<td> </td>
+<td align="center">25 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_104578" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 6.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/104578-SV-Turbine-Traktor" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           SV Turbine Traktor                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">7/1/3</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">22:6</td>
+<td> </td>
+<td align="right">+16</td>
+<td> </td>
+<td align="center">22 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_657414" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 7.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+<a onmouseover="Tip('&lt;img src=/db/images/wappen/77/03/wappen_657414_7703.jpg height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/77/03/wappen_657414_7703.jpg"/></a> </span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/657414-HSV-1.8.9.6" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           HSV 1.8.9.6                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">6/4/1</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">25:13</td>
+<td> </td>
+<td align="right">+12</td>
+<td> </td>
+<td align="center">22 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_157360" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 8.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+<a onmouseover="Tip('&lt;img src=/db/images/wappen/87/43/wappen_157360_8743.png height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/87/43/wappen_157360_8743.png"/></a> </span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/157360-1.FC-MANNHEIM-SCH%C3%96NAU" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           1.FC MANNHEIM SCHÖNAU                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">6/2/3</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">28:10</td>
+<td> </td>
+<td align="right">+18</td>
+<td> </td>
+<td align="center">20 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_129163" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 9.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil+.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/129163-Abr%C3%A4umer" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Abräumer                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">5/1/5</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">17:11</td>
+<td> </td>
+<td align="right">+6</td>
+<td> </td>
+<td align="center">16 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_8272" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 10.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil+.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/8272-BSC-Wittenau" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+<b>BSC Wittenau</b> </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">5/1/5</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">18:20</td>
+<td> </td>
+<td align="right">-2</td>
+<td> </td>
+<td align="center">16 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_283223" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 11.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil-.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+<a onmouseover="Tip('&lt;img src=/db/images/wappen/11/65/wappen_283223_1165.gif height=\'100\'&gt;',FADEIN,200,FADEOUT,200,BORDERWIDTH,0)"><img border="\'0\'" height="25" src="/db/images/wappen/11/65/wappen_283223_1165.gif"/></a> </span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/283223-TSV-1860-Giesinger-BUAM" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           TSV 1860 Giesinger BUAM                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">5/0/6</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">23:19</td>
+<td> </td>
+<td align="right">+4</td>
+<td> </td>
+<td align="center">15 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_23961" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 12.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/23961-HJK-Tantrum" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           HJK Tantrum                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">3/5/3</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">17:15</td>
+<td> </td>
+<td align="right">+2</td>
+<td> </td>
+<td align="center">14 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#f7fcff" class="tr.borderNone" id="team_88567" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 13.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/88567-NicNock" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           NicNock                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">2/2/7</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">8:28</td>
+<td> </td>
+<td align="right">-20</td>
+<td> </td>
+<td align="center">8 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#c9e1ec" class="tr.borderNone" id="team_108707" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 14.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/108707-1.F.C.-Leder" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           1.F.C. Leder                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">1/0/10</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">9:39</td>
+<td> </td>
+<td align="right">-30</td>
+<td> </td>
+<td align="center">3 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e7b68b" class="tr.borderNone linieAbsteiger" id="team_62490" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 15.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+<table align="center" border="0" cellpadding="0" cellspacing="0" id="trikotpos" style="">
+<tbody><tr>
+<td align="center" class="cursor"><a onmouseover="Tip('&lt;img src=/db/images/trikots/24/90/sp100px62490.png height=100px&gt;',BGCOLOR,'white',WIDTH,70,FADEIN,200,FADEOUT,200,BORDERWIDTH,1,ABOVE,true,OFFSETY,-25)"><img border="0" height="25px" src="/db/images/trikots/24/90/sp25px62490.png"/></a></td>
+</tr>
+</tbody></table> </span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/62490-Hansi" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Hansi                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">1/0/10</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">3:53</td>
+<td> </td>
+<td align="right">-50</td>
+<td> </td>
+<td align="center">3 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e7b68b" class="tr.borderNone" id="team_201366" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 16.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/201366-Supporters-Kiel" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Supporters Kiel                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">0/2/9</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">0:27</td>
+<td> </td>
+<td align="right">-27</td>
+<td> </td>
+<td align="center">2 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e7b68b" class="tr.borderNone" id="team_64223" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 17.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/64223-1.FC-Marsberg" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           1.FC Marsberg                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">0/2/9</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">0:27</td>
+<td> </td>
+<td align="right">-27</td>
+<td> </td>
+<td align="center">2 </td>
+</tr>
+</tbody>
+<tbody class="removeBackground">
+<style>
+																	tr.borderBottom td{border-bottom:2px solid #3a76b8;height:26px;}
+																	tr.borderNone td{border:0;}
+																	tr.borderTop td{border-top:2px solid #b32f07;height:26px;}
+																	</style>
+<tr bgcolor="#e7b68b" class="tr.borderNone" id="team_81840" valign="middle">
+<td class="cursor" height="28"></td>
+<td class="cursor">
+<div align="right">
+<strong><font class="erganz" color="#666" size="2"> 18.</font></strong></div>
+</td>
+<td class="cursor">
+<span class="opacityImg">
+<img alt="" border="0" src="../bilder/pfeil=.gif"> </img></span>
+</td>
+<td class="cursor" width="50">
+<div align="center">
+<span class="opacityImg">
+</span>
+</div>
+</td>
+<td class="cursor" style="white-space:nowrap;width:250px;">
+<!-- ##### TEAMSTATUS TABELLEN-SYMBOL #####-->
+<a class="black_small" href="/club/81840-Borussia-Paniermehl" onclick="NewWindow(this.href,'name','750','550','no','no');return false">
+                                           Borussia Paniermehl                                      </a>
+<span class="opacityImg">
+</span>
+</td>
+<td class="cursor"> </td>
+<td align="center" class="cursor">11</td>
+<td class="cursor"> </td>
+<td align="center">0/2/9</td>
+<td> </td>
+<td align="left" title="Die letzten 5 Spiele des Teams. Groß=Heim, klein=auswärts, S=Sieg, U=Unentschieden, N=Niederlage">
+<font color="gray">-----</font> </td>
+<td> </td>
+<td align="center">0:27</td>
+<td> </td>
+<td align="right">-27</td>
+<td> </td>
+<td align="center">2 </td>
+</tr>
+</tbody>
+</table>
+<br>
+</br></img></div>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<tr>
+<td colspan="10">
+<div class="pos-rel">
+<div class="officeMap optionsIcon floatR cursor" onclick="$('#changeSettings').show()" style="margin-top:-8px;"> </div>
+<br class="clear">
+<div class="requestBox pos-abs shadow" id="changeSettings" style="display:none;right:40px;top:-100px;">
+<div class="floatR officeMap pos-rel cursor closeIcon" onclick="$('#changeSettings').hide();"> </div>
+<h1>Optionen</h1><br>
+<input class="pos-rel cursor" id="inactiveMatchHighligth" name="highlightSettings" style="top:2px;" type="radio" value="0"><label class="cursor" for="inactiveMatchHighligth">Highlight deaktivieren</label><br>
+<input class="pos-rel cursor" id="oneMatch" name="highlightSettings" style="top:2px;" type="radio" value="1"><label class="cursor" for="oneMatch">ein Spiel</label><br>
+<input class="pos-rel cursor" id="twoMatches" name="highlightSettings" style="top:2px;" type="radio" value="2"><label class="cursor" for="twoMatches">zwei Spiele</label><br>
+<input checked="checked" class="pos-rel cursor" id="threeMatches" name="highlightSettings" style="top:2px;" type="radio" value="3"><label class="cursor" for="threeMatches">drei Spiele</label>
+</input></br></input></br></input></br></input></br></div>
+</br></div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</td>
+<td valign="top">
+<div class="pos-rel" style="top:14px;"><style>
+.talk-head{
+background:url(/bilder/back/talk-head.png) no-repeat transparent;
+height:47px;
+width:232px;
+}
+
+span.talk_headline{
+color:#fff;
+font-size:16px;
+font-weight:bold;
+font-style:italic;
+font-family:verdana,arial,sans-serif;
+margin:0;
+padding:3px 0 0 10px;
+display:block;
+}
+
+.talk-footer-content{
+background:url(/bilder/back/talk-footer1.png) repeat-y bottom transparent;
+width:232px;
+height:auto;
+}
+
+.talk-footer{
+background:url(/bilder/back/talk-footer2.png) no-repeat bottom transparent;
+width:232px;
+height:19px;
+}
+
+span.talk_footer_txt{
+font-size:9px;
+display:block;
+font-family:arial,sans-serif;
+color:#fff;
+padding:10px;
+line-height:12px;
+}
+
+a.talk_hover{
+background:url(/bilder/buttons/minim_button_1.png) no-repeat transparent;
+width:15px;
+height:13px;
+position:relative;
+top:-15px;
+left:-15px;
+display:block;
+}
+
+/* CSS HACK ONLY FOR OPERA 10 AND ABOVE */
+@media not all and (-webkit-min-device-pixel-ratio:0) {
+a.talk_hover{
+margin-bottom:-1px;
+}
+}
+/* CSS HACK ONLY FOR OPERA 10 AND ABOVE */
+
+a.talk_hover:hover{
+background:url(/bilder/buttons/minim_button_2.png) no-repeat transparent;
+}
+
+.talk_back_content{
+background:url(/bilder/back/talk-back-cont.png) repeat-y transparent;
+width:232px;
+}
+</style>
+<table cellpadding="0" cellspacing="0">
+<tbody><tr height="10">
+<td height="10" width="100%">
+<table cellpadding="0" cellspacing="0" width='232"'>
+<tbody><tr>
+<td class="talk-head" style="vertical-align:top;">
+<span class="talk_headline">Liga-Talk</span>
+<span class="white" style="padding-left:10px;"><img align="absmiddle" border="0" height="12" onmouseover="Tip('&lt;table cellspacing=0 cellpadding=0 border=0&gt;&lt;tr&gt;&lt;td height=24&gt;&lt;img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25&gt;  &lt;/td&gt;&lt;td&gt;&lt;font color=white&gt;&lt;b&gt;Elfenbeinküste&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/b&gt;&lt;/font&gt;',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" src="/bilder/fahnen3d/elfenbeinkueste.gif" width="23"> Landesliga 1</img></span>
+<div class="floatR">
+<a class="white_small talk_hover" href="?land=31&amp;ligaid=32&amp;ligatalk_ausblenden=1&amp;ligatalk_ausblenden_save=1"></a>
+</div>
+</td>
+</tr>
+<tr>
+<td class="talk_back_content" style="height:270px;vertical-align:top;">
+<div style="height:98%;overflow:auto;width:214px;position:relative;left:0;top:5px;padding-left:5px;">
+<!-- BEGIN - SELECTION BY HOVERING THE NAME IN SHOUTBOX -->
+<script type="text/javascript">
+			  var eachTeamRows=function(teamId, callback){
+                  var tableRows = $('.table_head tbody tr');
+                  tableRows.each(function(index){
+                      var element = tableRows[index];
+                      if(!element) return;
+	              	  if(element.id.match("teams_")){
+	              		  var data = element.id.split("_");
+	              		  if(data){
+		              		  var teamIdHeimmannschaft = data[1],
+		              			  teamIdGastmannschaft = data[2];
+		              		  if(callback && ( teamIdHeimmannschaft==teamId || teamIdGastmannschaft==teamId )){
+		              			  callback(element, 'begegnung', {
+			              			  heim:teamIdHeimmannschaft==teamId?true:false,
+			              			  gast:teamIdGastmannschaft==teamId?true:false
+			              		  });
+			                  }
+	              		  }
+	              	  } else {
+	              		  var data = element.id.split("_");
+	              		  if(data){
+	              			  var teamIdHeimmannschaft = data[1];
+		              		  if(callback && teamIdHeimmannschaft==teamId ){
+		              			  callback(element, 'tabelle', false);
+			                  }
+	              		  }
+	              	  }
+		          });
+		      };
+
+              /**
+               * select a team entry in league-table or result-table
+               * @param object.teamName
+               * @param object.nic
+               * @param object.teamId
+               */
+              function selectTeam(data, bRemove){
+                  var teamName  = data.teamName, /** @unused */
+                  	  nic		= data.nic,		 /** @unused */
+                  	  teamId	= data.teamId;
+
+                  eachTeamRows(teamId,function(element, area, oBegegnungen){
+                      var aTds = $(element).find('td'),
+                          aMarkTds = [],
+                          aTeamMarksTds = [],
+
+                          //
+                          // @mark for configuration
+                          //
+                        //CSS-Klasse die für die Selection verwendet wird
+                          cssClassName 	= "team-highlight",
+
+                        //welche TDs sollen makiert werden in dem Begegnungen-Bereich
+                          aTDBegegnung 	= [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+
+                        //welche TDs sollen makiert werden in dem Tabellen-Bereich
+                          aTDTabelle 	= [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ],
+
+                        //welche TDs sollen im Begegnungen-Bereich für das Team selektiert werden
+                          aTDBegegnungenTeamMarkerHeim = [ 2, 3 ],
+                          aTDBegegnungenTeamMarkerGast = [ 7, 8 ],
+                        //welche TDs sollen im Begegnungen-Bereich für das Team selektiert werden
+                          aTDTabelleTeamMarker = [ 4 ];
+
+
+
+                      switch(area){
+	                      case 'begegnung':
+	                    	  aMarkTds = aTDBegegnung;
+	                    	  if(oBegegnungen){
+		                    	  if(oBegegnungen.heim){
+		                    		  aTeamMarksTds = aTDBegegnungenTeamMarkerHeim;
+			                      } else if(oBegegnungen.gast){
+			                    	  aTeamMarksTds = aTDBegegnungenTeamMarkerGast;
+				                  }
+	                    	  }
+	                          break;
+	                      case 'tabelle':
+	                    	  aMarkTds = aTDTabelle;
+	                    	  aTeamMarksTds = aTDTabelleTeamMarker;
+	                          break;
+                      }
+                      for(var i=0,nLen=aTds.length; i<nLen; i++){
+                          //row selection
+                          if(jQuery.inArray( i, aMarkTds ) != -1){
+                              if(bRemove){
+                            	  $(aTds[i]).removeClass(cssClassName);
+                              } else {
+                            	  $(aTds[i]).addClass(cssClassName);
+                              }
+                          }
+
+                          //team selection
+                          if(jQuery.inArray( i, aTeamMarksTds ) != -1){
+                              if(bRemove){
+                            	  $(aTds[i]).css("color","");
+                                  $(aTds[i]).css("font-weight","");
+                            	  $(aTds[i]).children().css("color","");
+                                  $(aTds[i]).children().css("font-weight","");
+                              } else {
+                            	  $(aTds[i]).css("color","#21638d");
+                                  $(aTds[i]).css("font-weight","bold");
+                            	  $(aTds[i]).children().css("color","#21638d");
+                                  $(aTds[i]).children().css("font-weight","bold");
+                              }
+                          }
+                      }
+                  });
+              };
+
+              function deselectTeam(data){
+            	  selectTeam(data, true);
+              };
+              </script>
+<!-- END - SELECTION BY HOVERING THE NAME IN SHOUTBOX -->
+<span class="minitext" style="color:#969696;">
+                    0. Spieltag 18:04 Uhr                  </span>
+<br>
+<span class="bold" style="color:#0f5287;">
+<a class="blue" href="/club/657414-DreAn" onclick="NewWindow(this.href,'657414','750','550','yes','no');return false;" onmouseout="try{deselectTeam({teamName:'HSV 1.8.9.6',nic:'DreAn',teamId:'657414'})}catch(e){};" onmouseover="try{selectTeam({teamName:'HSV 1.8.9.6',nic:'DreAn',teamId:'657414'})}catch(e){};" style="font-size:11px;" title="HSV 1.8.9.6">
+                      DreAn                    </a>:
+									</span>
+<br>
+<span style="line-height:16px;">Schon wieder so ein Red Bull<br>rotz in der Liga -.-</br></span>
+<br>
+<span class="minitext" style="color:#969696;">
+		                 [<a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;eintrag_melden=8402084" title="Wenn der Eintrag gegen die Regeln verstößt oder beleidigende Inhalte enthält kannst du ihn melden.">
+<span class="minitext">melden</span>
+</a>]
+		                 [<a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;shoutbox_spielart=liga&amp;eintrag_loeschen=8402084">
+<span class="minitext">löschen</span>
+</a>]
+                  </span>
+<br><br>
+<div class="minitext" style="color:#969696;">
+	                  Anzahl der angezeigten Beiträge:<br>
+<a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;l=10">10</a> |
+	                  <a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;l=20">20</a> |
+	                  <a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;l=50">50</a> |
+	                  <a class="gray_nobold" href="?ligaid=32&amp;land=31&amp;l=alle">alle</a>
+</br></div>
+</br></br></br></br></br></div>
+</td>
+</tr>
+<form method="post" name="box_submit"></form>
+<tr>
+<td style="background:url(/bilder/back/talk-back.png) no-repeat transparent;width:232px;height:190px;padding-bottom:5px;">
+<div align="center">
+<p class="minitext10 bold textCenter" style="color:#495e6e;margin:0;padding:0 0 2px 0;">Neuer Eintrag:</p>
+<textarea cols="23" name="shoutbox_input" onchange="CheckLen(this)" onfocus="CheckLen(this)" onkeydown="CheckLen(this)" onkeyup="CheckLen(this)" rows="6" style="position:relative;left:-3px;"></textarea><br>
+<div class="minitext" id="anzahltext">
+<span class="minitext" style="color:#3a3a3a;">(noch 200 Zeichen übrig)</span></div>
+<input name="ligaid" type="hidden" value="32">
+<input name="land" type="hidden" value="31">
+<input name="shoutbox_spielart" type="hidden" value="liga">
+<input name="spieltag" type="hidden" value="11">
+<!-- Disabled Button Start -->
+<!--<input type="submit" name="absenden" value="absenden" class="buttonGreen cursor" disabled id="2" /><br />-->
+<!-- Disabled Button Ende -->
+<!-- Button Disabled Delete Start -->
+<input class="buttonGreen cursor" id="2" name="absenden" type="submit" value="absenden"><br>
+<!-- Button Disabled Delete Ende -->
+</br></input></input></input></input></input></br></div>
+</td>
+</tr>
+<tr>
+<td class="talk-footer-content">
+<span class="talk_footer_txt">INFO: Bitte kein Spam, keine Beleidigungen, keine Werbung - auch nicht für Friendlies, FunCups, Transfers. <a class="lightgreen10" href="/010_liga/shoutbox_regeln.php" onclick="NewWindow(this.href,'ShoutboxRegeln','750','550','yes','no');return false">Regeln</a></span>
+</td>
+</tr>
+<tr>
+<td class="talk-footer"> </td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</div>
+</td>
+</tr>
+</tbody></table>
+<br>
+<br>
+<div class="standardHeader" style="width:850px;">
+<p class="white bold standardHeadline textLeft">
+<span class="pos-rel" style="top:-2px;"><img align="absmiddle" border="0" height="15" onmouseover="Tip('&lt;table cellspacing=0 cellpadding=0 border=0&gt;&lt;tr&gt;&lt;td height=24&gt;&lt;img src=/bilder/fahnen3d/elfenbeinkueste.gif border=1 align=absmiddle width=40 height=25&gt;  &lt;/td&gt;&lt;td&gt;&lt;font color=white&gt;&lt;b&gt;Elfenbeinküste&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/b&gt;&lt;/font&gt;',WIDTH,173,BGIMG,'/bilder/tipback_land.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" src="/bilder/fahnen3d/elfenbeinkueste.gif" width="23"/></span>
+							Transfers des 11. Spieltags Landesliga 1:						</p>
+</div>
+<table cellpadding="0" cellspacing="0" class="pos-rel textLeft" style="width:850px;">
+<tbody><tr>
+<td height="10" width="100%">
+<table cellpadding="5" cellspacing="0" class="tableFrame shadow" id="transferWindow" style="width:850px;">
+<tbody><tr>
+<td>
+<div align="center">
+<table>
+<tbody><tr>
+<td>
+<font color="#fff">
+<a href="../premium/_frame_plus.php" onmouseover="Tip('&lt;font color=white class=minitext&gt;&lt;b&gt;Aktuelle Transfers&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font class=minitext&gt;Die aktuellen Transfers Deiner Liga gibt es im Plus-Paket.&lt;br&gt;&lt;/font&gt;',WIDTH,190,BGIMG,'../010_buero/pics/tipback2.jpg',FADEIN,200,FADEOUT,200,BORDERWIDTH,1)" style="text-decoration: none;" target="content1">
+<img align="absmiddle" alt="Mehr Funktionen auf dieser Seite!" border="0" height="25" src="../bilder/plus_icon.png" width="40">
+</img></a>
+                      Tägliche Transfers der Teams Deiner Liga und viele zusätzliche Statistiken gibt es im OFM Plus-Paket.                      </font>
+<br>
+<br>
+<br>
+</br></br></br></td>
+</tr>
+</tbody></table>
+</div></td>
+</tr>
+</tbody></table>
+<br>
+<!-- Tutorial Close -->
+<!-- SZM VERSION="2.0" -->
+<script type="text/javascript">
+    var iam_data = {
+        "st": "ofmanag", // site/domain
+        "cp": "spieleseite", // code
+        "sv": "ke", // Es wird keine Befragungseinladung ausgeliefert.
+        "co": "kommentar" // comment
+    };
+    iom.c(iam_data, 1);
+</script>
+<!--/SZM --> <script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1460754-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+</br></td></tr></tbody></table></br></br></br></div><img src="//de-gmtdmp.mookie1.com/t/v2/learn?tagid=V2_343&amp;src.rand=1477339544152&amp;src.id=Stroeer"><script async="" src="https://tracking.m6r.eu/pixel/container?pixelId=eaa843f7-840a-4a36-8fdd-3b79df0d4fa0&amp;n3=1&amp;n4=0&amp;n5=5&amp;n6=1&amp;n7=2&amp;n8=5&amp;n9=1&amp;n10=2&amp;n11=2&amp;n12=5&amp;n21=2&amp;n39=4&amp;n40=4&amp;n43=3&amp;n47=4&amp;n60=4&amp;n62=3&amp;n70=4&amp;n71=5&amp;n75=1&amp;n76=1&amp;n77=0&amp;n78=0&amp;n79=0&amp;n81=1&amp;n82=1&amp;n83=0&amp;n84=1&amp;n86=0&amp;n88=0&amp;n117=2&amp;n118=4&amp;n119=2&amp;n120=2&amp;n127=0&amp;n132=5&amp;n135=-1&amp;n98=1&amp;n97=6&amp;n101=1&amp;n107=1&amp;n112=1&amp;n113=1&amp;n74=1" type="text/javascript"></script><iframe src="http://tpc.googlesyndication.com/safeframe/1-0-5/html/container.html" style="visibility: hidden; display: none;"></iframe><iframe id="rdr_173_249" src="//dmp.theadex.com/r/173/249/?c=1000410602015550000" style="height: 1px; width: 1px; border: none; position: absolute; top: -100px; left: -100px; z-index: -5;"></iframe><iframe id="rdr_607_2256" src="//dmp.theadex.com/r/173/249/?c=1000410602015550000" style="height: 1px; width: 1px; border: none; position: absolute; top: -100px; left: -100px; z-index: -5;"></iframe></img></body></html>
