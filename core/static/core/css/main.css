@@ -169,6 +169,18 @@ ul.nav-sub {  padding-left: 10%; }
 
 .slider-handle { background: #239123; }
 
+#StadiumConfigFilter {
+    font-family: monospace;
+        content: "-";
+}
+    #StadiumConfigFilter .separator {
+        margin: 0 5px;
+        color: rgba(177, 180, 151, 0.5);
+    }
+    #StadiumConfigFilter .stadium_config_general:not(:first-child) {
+        margin-left: 15px;
+    }
+
 
 footer.footer {
     width: 100%;

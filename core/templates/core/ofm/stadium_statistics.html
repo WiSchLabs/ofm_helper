@@ -16,15 +16,66 @@
                 <input id="tolerance-slider" data-provide="slider" data-slider-max="50" data-slider-value="{{tolerance}}" data-slider-step="1" type="text"/>
             </div>
         </div>
-    </div>
 
-    <div>
-        Filter nach Stadium-Ausbaustufe:<br>
-        <select class="form-control" id="stadium_level_filter">
+        <div id="StadiumConfigFilter" class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter nach Stadium-Ausbaustufe <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
             {% for s in stadium_configurations %}
-                <option value="">{{s}}</option>
+                 <li><a href="#">
+                    <span class="stadium_config_general flaticon-football-court-illumination-lamps"></span> {{s.light}}
+                    <span class="stadium_config_general flaticon-football-game-on-tv"></span> {{s.screen}}
+                    <img class="stadium_config_general" src="{% static 'core/img/parking.svg' %}" height="16px"/> {{s.parking}}
+                    <span class="stadium_config_general flaticon-football-badge"></span> {{s.security}}
+                    &nbsp;&nbsp;<span class="separator">|</span>&nbsp;&nbsp;
+                    <span class="stand_filter_data">
+                        Nord: {% spaceless %}
+                        {% if s.north_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.north_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.north_capacity < 100 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.north_capacity < 10 %}<span class="invisible">0</span>{% endif %}
+                        {% endspaceless %}{{s.north_capacity}}
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.north_has_roof %}invisible{% endif %}"/>
+                        <span class="{% if not s.north_has_seats %}invisible{% endif %}">&#128186;</span>
+                    </span>
+                    <span class="separator">|</span>
+                    <span class="stand_filter_data">
+                        Süd: {% spaceless %}
+                        {% if s.south_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.south_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.south_capacity < 100 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.south_capacity < 10 %}<span class="invisible">0</span>{% endif %}
+                        {% endspaceless %}{{s.south_capacity}}
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.south_has_roof %}invisible{% endif %}"/>
+                        <span class="{% if not s.south_has_seats %}invisible{% endif %}">&#128186;</span>
+                    </span>
+                    <span class="separator">|</span>
+                    <span class="stand_filter_data">
+                        West: {% spaceless %}
+                        {% if s.west_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.west_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.west_capacity < 100 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.west_capacity < 10 %}<span class="invisible">0</span>{% endif %}
+                        {% endspaceless %}{{s.west_capacity}}
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.west_has_roof %}invisible{% endif %}"/>
+                        <span class="{% if not s.west_has_seats %}invisible{% endif %}">&#128186;</span>
+                    </span>
+                    <span class="separator">|</span>
+                    <span class="stand_filter_data">
+                        Ost: {% spaceless %}
+                        {% if s.east_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.east_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.east_capacity < 100 %}<span class="invisible">0</span>{% endif %}
+                        {% if s.east_capacity < 10 %}<span class="invisible">0</span>{% endif %}
+                        {% endspaceless %}{{s.east_capacity}}
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.east_has_roof %}invisible{% endif %}"/>
+                        <span class="{% if not s.east_has_seats %}invisible{% endif %}">&#128186;</span>
+                    </span>
+                </a></li>
             {% endfor %}
-        </select>
+          </ul>
+        </div>
     </div>
 
     <table id='stadium_statistics_table' class="table table-bordered table-striped table-hover statistics_table"
