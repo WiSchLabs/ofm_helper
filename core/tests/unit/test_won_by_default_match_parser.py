@@ -10,7 +10,7 @@ from users.factories.users_factories import OFMUserFactory
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class MatchParserTest(TestCase):
+class WonByDefaultMatchParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'home_match_won_by_default.html'), encoding='utf8')
         MatchdayFactory.create(number=1)
