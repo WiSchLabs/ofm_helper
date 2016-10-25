@@ -67,6 +67,9 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         ps1 = _validate_filtered_field(ps1)
         ps2 = _validate_filtered_field(ps2)
 
+        if not ps1:
+            ps1 = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by('matchday')[0]
+
         return ps1, ps2
 
     def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics):
@@ -78,9 +81,6 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         Returns:
             A dictionary of player statistics data. If st2 is None st1 is returned
         """
-
-        if not newer_player_statistics:
-            newer_player_statistics = PlayerStatistics.objects.all()[0]
 
         ep = newer_player_statistics.ep
         if older_player_statistics:
@@ -229,12 +229,9 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         """
 
         if not newer_finances:
-            newer_finances = Finance.objects.all()[0]
+            newer_finances = Finance.objects.all().order_by('matchday')[0]
 
         account_balance = newer_finances.balance
-        balance = newer_finances.balance
-        if older_finances:
-            balance = newer_finances.balance - older_finances.balance
 
         income_visitors_league = newer_finances.income_visitors_league
         if older_finances:
