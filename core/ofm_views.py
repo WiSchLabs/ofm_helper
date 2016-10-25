@@ -46,14 +46,14 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         player_statistics_tuples = []
         for player in players:
-            newer_player_statistic, older_player_statistic = self._get_statistics_from_player_and_matchday(player,
+            newer_player_statistics, older_player_statistics = self._get_statistics_from_player_and_matchday(player,
                                                                             newer_matchday_season, newer_matchday,
                                                                             older_matchday_season, older_matchday)
-            if newer_player_statistic and (older_player_statistic or not diff_mode_enabled):
-                player_statistics_tuples.append((newer_player_statistic, older_player_statistic))
+            if newer_player_statistics and (older_player_statistics or not diff_mode_enabled):
+                player_statistics_tuples.append((newer_player_statistics, older_player_statistics))
 
-        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistic, older_player_statistic)
-                                  for (newer_player_statistic, older_player_statistic) in player_statistics_tuples]
+        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
+                                  for (newer_player_statistics, older_player_statistics) in player_statistics_tuples]
 
         return self.render_json_response(player_statistics_json)
 
@@ -61,16 +61,16 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
                                                  newer_matchday_season, newer_matchday,
                                                  older_matchday_season, older_matchday):
 
-        ps1 = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
-        ps2 = PlayerStatistics.objects.filter(player=player, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
+        newer_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
+        older_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
 
-        ps1 = _validate_filtered_field(ps1)
-        ps2 = _validate_filtered_field(ps2)
+        newer_player_statistics = _validate_filtered_field(newer_player_statistics)
+        older_player_statistics = _validate_filtered_field(older_player_statistics)
 
-        if not ps1:
-            ps1 = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by('matchday')[0]
+        if not newer_player_statistics:
+            newer_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by('matchday')[0]
 
-        return ps1, ps2
+        return newer_player_statistics, older_player_statistics
 
     def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics):
         """
