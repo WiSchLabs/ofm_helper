@@ -109,7 +109,7 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
 
     def test_player_leaves_team_shows_only_older_player_data(self):
         player2 = PlayerFactory.create(name="Tricia McMillan")
-        Contract.objects.create(user=self.user1, player=player2, bought_on_matchday=self.matchday, sold_on_matchday=None)
+        Contract.objects.create(user=self.user1, player=player2, bought_on_matchday=self.matchday, sold_on_matchday=self.matchday)
         PlayerStatisticsFactory.create(player=player2, matchday=self.matchday, ep=3, tp=6, awp=4, freshness=5)
 
         response = self.client.get(reverse('core:ofm:player_statistics_json'),
