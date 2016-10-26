@@ -171,11 +171,9 @@ class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         }
 
         matchdays = [p.matchday for p in player_statistics]
-        current_matchday = Matchday.objects.all()[0]
-        current_awp_boundaries = AwpBoundaries.get_from_matchday(current_matchday)
-        current_player_statistics = PlayerStatistics.objects.get(player=player,
-                                                                 matchday__season__number=season_number,
-                                                                 matchday__number=current_matchday.number)
+        current_player_statistics = PlayerStatistics.objects.filter(player=player).order_by('matchday')[0]
+
+        current_awp_boundaries = AwpBoundaries.get_from_matchday(current_player_statistics.matchday)
 
         for strength in current_awp_boundaries:
             if current_awp_boundaries[strength] >= min(awps) and strength > current_player_statistics.strength:
