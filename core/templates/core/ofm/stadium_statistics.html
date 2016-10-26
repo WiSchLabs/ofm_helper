@@ -4,7 +4,10 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">Deine Stadionstatistik</h1>
+    <h1 class="page-header">
+        Deine Stadionstatistik
+        <form class="parseTrigger" action="{% url 'core:trigger_match_parsing' %}" method="get">{% csrf_token %}</form>
+    </h1>
 
     <div id="table-toolbar">
         <div class="form-inline" role="form">
@@ -51,5 +54,7 @@
 
     <script src="{% static 'core/js/strength_slider.js' %}"></script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
+
+    <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
 
 {% endblock %}

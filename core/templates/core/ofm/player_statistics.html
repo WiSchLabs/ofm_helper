@@ -4,7 +4,10 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">Deine Spielerliste</h1>
+    <h1 class="page-header">
+        Deine Spielerliste
+        <form class="parseTrigger" action="{% url 'core:trigger_player_statistics_parsing' %}" method="get">{% csrf_token %}</form>
+    </h1>
 
     {% if matchdays|length > 1 %}
         <div id="table-toolbar">
@@ -82,4 +85,7 @@
     </script>
 
     <script src="{% static 'core/js/table_formats.js' %}"></script>
+
+    <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
+
 {% endblock %}

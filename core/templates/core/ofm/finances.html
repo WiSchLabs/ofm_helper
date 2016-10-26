@@ -4,7 +4,10 @@
 
     {% load staticfiles %}
 
-    <h1 class="page-header">Deine Finanzen</h1>
+    <h1 class="page-header">
+        Deine Finanzen
+        <form class="parseTrigger" action="{% url 'core:trigger_finances_parsing' %}" method="get">{% csrf_token %}</form>
+    </h1>
 
     {% if matchdays|length > 1 %}
         <div id="table-toolbar">
@@ -191,5 +194,7 @@
     <div id="income_chart_container"></div>
     <br>
     <div id="expenses_chart_container"></div>
+
+    <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
 
 {% endblock %}
