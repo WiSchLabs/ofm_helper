@@ -59,9 +59,10 @@ class StadiumStandStatisticsParser(BaseParser):
             stadium_statistics=self.match_stadium_stat,
             sector=sector,
             visitors=visitors,
-            ticket_price=ticket_price,
             level=stand_level
         )
+        if not stadium_stand_stat.ticket_price:
+            stadium_stand_stat.ticket_price = ticket_price
 
         stadium_stand_stat.condition = condition
         stadium_stand_stat.save()
