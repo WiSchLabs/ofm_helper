@@ -61,7 +61,7 @@ class OFMPlayerStatisticsViewTestCase(TestCase):
         self.assertEquals(returned_json_data[0]['ep'], 10)
         self.assertEquals(returned_json_data[0]['tp'], 10)
         self.assertEquals(returned_json_data[0]['awp'], 10)
-        self.assertEquals(returned_json_data[0]['strength'], 1)
+        self.assertEquals(returned_json_data[0]['strength'], 0)
         self.assertEquals(returned_json_data[0]['freshness'], 10)
 
     def test_user_can_see_his_player_statistics_diff_when_given_only_newer_matchday(self):

@@ -82,6 +82,9 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
             A dictionary of player statistics data. If st2 is None st1 is returned
         """
 
+        strength = newer_player_statistics.strength
+        if older_player_statistics:
+            strength = newer_player_statistics.strength - older_player_statistics.strength
         ep = newer_player_statistics.ep
         if older_player_statistics:
             ep = newer_player_statistics.ep - older_player_statistics.ep
@@ -101,7 +104,7 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         statistic_diff = dict()
         statistic_diff['position'] = newer_player_statistics.player.position
         statistic_diff['age'] = newer_player_statistics.age
-        statistic_diff['strength'] = newer_player_statistics.strength
+        statistic_diff['strength'] = strength
         statistic_diff['name'] = '<a href="%s">%s</a>' % (newer_player_statistics.player.get_absolute_url(), newer_player_statistics.player.name)
         statistic_diff['ep'] = ep
         statistic_diff['tp'] = tp
