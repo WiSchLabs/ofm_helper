@@ -1,9 +1,10 @@
 import json
 
-from core.factories.core_factories import MatchdayFactory, MatchFactory, MatchStadiumStatisticsFactory, \
-    StadiumStandStatisticsFactory
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+
+from core.factories.core_factories import MatchdayFactory, MatchFactory, MatchStadiumStatisticsFactory, \
+    StadiumStandStatisticsFactory, StadiumLevelFactory, StadiumLevelItemFactory
 from users.models import OFMUser
 
 
@@ -133,3 +134,25 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEqual(response.context_data['slider_min'], '13')
         self.assertEqual(response.context_data['slider_max'], '37')
         self.assertEqual(response.context_data['tolerance'], '42')
+
+    def test_user_can_filter_for_stadium_configuration(self):
+        matchday = MatchdayFactory.create(number=2)
+        match2 = MatchFactory.create(user=self.user, matchday=matchday)
+        light_level = StadiumLevelItemFactory(current_level=1)
+        level = StadiumLevelFactory.create(light=light_level)
+        stadium_stat_2 = MatchStadiumStatisticsFactory.create(match=match2, level=level)
+        self.north_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='N')
+        self.south_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='S')
+        self.west_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='W')
+        self.east_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='O')
+
+        options = {
+            'harmonic_strength': 50,
+            'tolerance': 2,
+            'configuration_filter': self.stadium_stat.get_configuration()
+        }
+        response = self.client.get(reverse('core:ofm:stadium_statistics_overview_json'), options)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(len(returned_json_data), 1)

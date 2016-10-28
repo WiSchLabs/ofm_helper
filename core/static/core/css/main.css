@@ -169,17 +169,14 @@ ul.nav-sub {  padding-left: 10%; }
 
 .slider-handle { background: #239123; }
 
-#StadiumConfigFilter {
-    font-family: monospace;
-        content: "-";
-}
+#StadiumConfigFilter li { font-family: monospace; }
+#StadiumConfigFilter button { font-weight: bold; }
     #StadiumConfigFilter .separator {
         margin: 0 5px;
         color: rgba(177, 180, 151, 0.5);
+        font-weight: bold;
     }
-    #StadiumConfigFilter .stadium_config_general:not(:first-child) {
-        margin-left: 15px;
-    }
+    #StadiumConfigFilter .stadium_config_general:not(:first-child) { margin-left: 15px; }
 
 
 footer.footer {
