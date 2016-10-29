@@ -22,6 +22,7 @@
             <span class="glyphicon glyphicon-filter"></span> Filter nach Stadium-Ausbaustufe <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
+              <li class="clear_filter hide"><a href="#" class="selected" data-value=""><span class="glyphicon glyphicon-remove alert-danger"></span> Filter aufheben</a></li>
             {% for s in stadium_configurations %}
                  <li><a href="#" data-value="{{s}}">
                    <span class="stadium_config_general flaticon-football-court-illumination-lamps"></span> {{s.light}}
@@ -94,18 +95,5 @@
 
     <script src="{% static 'core/js/strength_slider.js' %}"></script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
-
-    <script>
-        $("#StadiumConfigFilter a").click(function(){
-            var params = {
-                configuration_filter: $(this).attr('data-value')
-            };
-            $.get(JSON_URL, params, function (returnedData) {
-                    $tables.bootstrapTable('removeAll');
-                    $tables.bootstrapTable('load', returnedData);
-                }
-            );
-        });
-    </script>
 
 {% endblock %}
