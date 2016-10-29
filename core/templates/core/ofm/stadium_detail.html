@@ -30,7 +30,7 @@
                 <tr>
                     <td><a href="{% url 'core:ofm:stadium_stand_statistics' %}?sector=N&season={{stadium_stat.match.matchday.season.number}}">Nord</a></td>
                     <td>
-                        <small>{% if north_stand.level.has_seats %} Sitzplätze &#128186; {% else %} Stehplätze {% endif %}</small>
+                        <small>{% if north_stand.level.has_seats %} Sitzplätze <img src="{% static 'core/img/seat.svg' %}" height="16px"/> {% else %} Stehplätze {% endif %}</small>
                         {% if north_stand.level.has_roof %} <br><small>überdacht</small> <img src="{% static 'core/img/roof.svg' %}" height="16px"/> {% endif %}
                     </td>
                     <td>
@@ -54,7 +54,7 @@
                 <tr>
                     <td><a href="{% url 'core:ofm:stadium_stand_statistics' %}?sector=S&season={{stadium_stat.match.matchday.season.number}}">Süd</a></td>
                     <td>
-                        <small>{% if south_stand.level.has_seats %} Sitzplätze &#128186; {% else %} Stehplätze {% endif %}</small>
+                        <small>{% if south_stand.level.has_seats %} Sitzplätze <img src="{% static 'core/img/seat.svg' %}" height="16px"/> {% else %} Stehplätze {% endif %}</small>
                         {% if south_stand.level.has_roof %} <br><small>überdacht</small> <img src="{% static 'core/img/roof.svg' %}" height="16px"/> {% endif %}
                     </td>
                     <td>
@@ -78,7 +78,7 @@
                 <tr>
                     <td><a href="{% url 'core:ofm:stadium_stand_statistics' %}?sector=W&season={{stadium_stat.match.matchday.season.number}}">West</a></td>
                     <td>
-                        <small>{% if west_stand.level.has_seats %} Sitzplätze &#128186; {% else %} Stehplätze {% endif %}</small>
+                        <small>{% if west_stand.level.has_seats %} Sitzplätze <img src="{% static 'core/img/seat.svg' %}" height="16px"/> {% else %} Stehplätze {% endif %}</small>
                         {% if west_stand.level.has_roof %} <br><small>überdacht</small> <img src="{% static 'core/img/roof.svg' %}" height="16px"/> {% endif %}
                     </td>
                     <td>
@@ -102,7 +102,7 @@
                 <tr>
                     <td><a href="{% url 'core:ofm:stadium_stand_statistics' %}?sector=O&season={{stadium_stat.match.matchday.season.number}}">Ost</a></td>
                     <td>
-                        <small>{% if east_stand.level.has_seats %} Sitzplätze &#128186; {% else %} Stehplätze {% endif %}</small>
+                        <small>{% if east_stand.level.has_seats %} Sitzplätze <img src="{% static 'core/img/seat.svg' %}" height="16px"/> {% else %} Stehplätze {% endif %}</small>
                         {% if east_stand.level.has_roof %} <br><small>überdacht</small> <img src="{% static 'core/img/roof.svg' %}" height="16px"/> {% endif %}
                     </td>
                     <td>

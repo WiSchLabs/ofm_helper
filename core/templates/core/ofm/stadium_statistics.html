@@ -33,28 +33,28 @@
                         Nord:
                         <span class="stand_capacity">{{s.north_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.north_has_roof %}invisible{% endif %}"/>
-                        <span class="{% if not s.north_has_seats %}invisible{% endif %}">&#128186;</span>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.north_has_seats %}invisible{% endif %}"/>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
                         Süd:
                         <span class="stand_capacity">{{s.south_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.south_has_roof %}invisible{% endif %}"/>
-                        <span class="{% if not s.south_has_seats %}invisible{% endif %}">&#128186;</span>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.south_has_seats %}invisible{% endif %}"/>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
                         West:
                         <span class="stand_capacity">{{s.west_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.west_has_roof %}invisible{% endif %}"/>
-                        <span class="{% if not s.west_has_seats %}invisible{% endif %}">&#128186;</span>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.west_has_seats %}invisible{% endif %}"/>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
                         Ost:
                         <span class="stand_capacity">{{s.east_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.east_has_roof %}invisible{% endif %}"/>
-                        <span class="{% if not s.east_has_seats %}invisible{% endif %}">&#128186;</span>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.east_has_seats %}invisible{% endif %}"/>
                    </span>
                 </a></li>
             {% endfor %}
