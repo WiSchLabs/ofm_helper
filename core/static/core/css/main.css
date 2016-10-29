@@ -177,6 +177,11 @@ ul.nav-sub {  padding-left: 10%; }
         font-weight: bold;
     }
     #StadiumConfigFilter .stadium_config_general:not(:first-child) { margin-left: 15px; }
+    #StadiumConfigFilter .stand_capacity {
+        width: 6ex;
+        display: inline-block;
+        text-align: right;
+    }
 
 
 footer.footer {

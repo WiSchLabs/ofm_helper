@@ -30,45 +30,29 @@
                    <span class="stadium_config_general flaticon-football-badge"></span> {{s.security}}
                    &nbsp;&nbsp;<span class="separator">|</span>&nbsp;&nbsp;
                    <span class="stand_filter_data">
-                        Nord: {% spaceless %}
-                        {% if s.north_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.north_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.north_capacity < 100 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.north_capacity < 10 %}<span class="invisible">0</span>{% endif %}
-                        {% endspaceless %}{{s.north_capacity}}
+                        Nord:
+                        <span class="stand_capacity">{{s.north_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.north_has_roof %}invisible{% endif %}"/>
                         <span class="{% if not s.north_has_seats %}invisible{% endif %}">&#128186;</span>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
-                        Süd: {% spaceless %}
-                        {% if s.south_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.south_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.south_capacity < 100 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.south_capacity < 10 %}<span class="invisible">0</span>{% endif %}
-                        {% endspaceless %}{{s.south_capacity}}
+                        Süd:
+                        <span class="stand_capacity">{{s.south_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.south_has_roof %}invisible{% endif %}"/>
                         <span class="{% if not s.south_has_seats %}invisible{% endif %}">&#128186;</span>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
-                        West: {% spaceless %}
-                        {% if s.west_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.west_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.west_capacity < 100 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.west_capacity < 10 %}<span class="invisible">0</span>{% endif %}
-                        {% endspaceless %}{{s.west_capacity}}
+                        West:
+                        <span class="stand_capacity">{{s.west_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.west_has_roof %}invisible{% endif %}"/>
                         <span class="{% if not s.west_has_seats %}invisible{% endif %}">&#128186;</span>
                    </span>
                    <span class="separator">|</span>
                    <span class="stand_filter_data">
-                        Ost: {% spaceless %}
-                        {% if s.east_capacity < 10000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.east_capacity < 1000 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.east_capacity < 100 %}<span class="invisible">0</span>{% endif %}
-                        {% if s.east_capacity < 10 %}<span class="invisible">0</span>{% endif %}
-                        {% endspaceless %}{{s.east_capacity}}
+                        Ost:
+                        <span class="stand_capacity">{{s.east_capacity}}</span>
                         <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.east_has_roof %}invisible{% endif %}"/>
                         <span class="{% if not s.east_has_seats %}invisible{% endif %}">&#128186;</span>
                    </span>
