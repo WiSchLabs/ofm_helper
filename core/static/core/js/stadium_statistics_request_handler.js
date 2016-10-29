@@ -1,7 +1,8 @@
-var $tables = $('.statistics_table')
+var $tables = $('.statistics_table');
+var selected_config = "";
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip();
 });
 
 $("#strength-slider-label").html('Gemittelte Stärke');
@@ -22,19 +23,20 @@ function get_current_params(){
 
     var params = {
         tolerance: $('#tolerance-slider').attr('value'),
-        harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0)
+        harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0),
+        configuration_filter: selected_config
     };
 
     return params;
 }
 
 function set_cookie(name, value, days) {
+    var expires = "";
     if (days) {
         var date = new Date();
         date.setTime(date.getTime()+(days*24*60*60*1000));
-        var expires = "; expires="+date.toGMTString();
+        expires = "; expires="+date.toGMTString();
     }
-    else var expires = "";
     document.cookie = name+"="+value+expires+"; path=/";
 }
 
@@ -49,11 +51,28 @@ function update_stadium_statistics() {
 }
 
 $('#strength-slider').slider().on('slideStop', function(event){
-    update_stadium_statistics()
+    update_stadium_statistics();
 });
 
 $('#tolerance-slider').slider().on('slideStop', function(event){
-    update_stadium_statistics()
+    update_stadium_statistics();
+});
+
+
+$("#StadiumConfigFilter a").click(function(){
+    $("#StadiumConfigFilter a").removeClass('selected');
+    $(this).addClass('selected');
+
+    /** only show clear filter button, if a filter is set */
+    var clear_filter = $("#StadiumConfigFilter .clear_filter");
+    if (clear_filter.find('a').hasClass('selected')) {
+        clear_filter.addClass('hide');
+    } else {
+        clear_filter.removeClass('hide');
+    }
+
+    selected_config = $(this).attr('data-value');
+    update_stadium_statistics();
 });
 
 $(document).ready(function() {

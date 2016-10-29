@@ -19,8 +19,52 @@
                 <input id="tolerance-slider" data-provide="slider" data-slider-max="50" data-slider-value="{{tolerance}}" data-slider-step="1" type="text"/>
             </div>
         </div>
-    </div>
 
+        <div id="StadiumConfigFilter" class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-filter"></span> Filter nach Stadium-Ausbaustufe <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+              <li class="clear_filter hide"><a href="#" class="selected" data-value=""><span class="glyphicon glyphicon-remove alert-danger"></span> Filter aufheben</a></li>
+            {% for s in stadium_configurations %}
+                 <li><a href="#" data-value="{{s}}">
+                   <span class="stadium_config_general flaticon-football-court-illumination-lamps"></span> {{s.light}}
+                   <span class="stadium_config_general flaticon-football-game-on-tv"></span> {{s.screen}}
+                   <img class="stadium_config_general" src="{% static 'core/img/parking.svg' %}" height="16px"/> {{s.parking}}
+                   <span class="stadium_config_general flaticon-football-badge"></span> {{s.security}}
+                   &nbsp;&nbsp;<span class="separator">|</span>&nbsp;&nbsp;
+                   <span class="stand_filter_data">
+                        Nord:
+                        <span class="stand_capacity">{{s.north_capacity}}</span>
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.north_has_roof %}invisible{% endif %}"/>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.north_has_seats %}invisible{% endif %}"/>
+                   </span>
+                   <span class="separator">|</span>
+                   <span class="stand_filter_data">
+                        Süd:
+                        <span class="stand_capacity">{{s.south_capacity}}</span>
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.south_has_roof %}invisible{% endif %}"/>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.south_has_seats %}invisible{% endif %}"/>
+                   </span>
+                   <span class="separator">|</span>
+                   <span class="stand_filter_data">
+                        West:
+                        <span class="stand_capacity">{{s.west_capacity}}</span>
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.west_has_roof %}invisible{% endif %}"/>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.west_has_seats %}invisible{% endif %}"/>
+                   </span>
+                   <span class="separator">|</span>
+                   <span class="stand_filter_data">
+                        Ost:
+                        <span class="stand_capacity">{{s.east_capacity}}</span>
+                        <img src="{% static 'core/img/roof.svg' %}" height="16px" class="{% if not s.east_has_roof %}invisible{% endif %}"/>
+                        <img src="{% static 'core/img/seat.svg' %}" height="16px" class="{% if not s.east_has_seats %}invisible{% endif %}"/>
+                   </span>
+                </a></li>
+            {% endfor %}
+          </ul>
+        </div>
+    </div>
     <table id='stadium_statistics_table' class="table table-bordered table-striped table-hover statistics_table"
            data-toolbar="#table-toolbar"
            data-toggle="table"
@@ -52,7 +96,7 @@
         var JSON_URL = '{% url 'core:ofm:stadium_statistics_overview_json' %}';
     </script>
 
-    <script src="{% static 'core/js/strength_slider.js' %}"></script>
+    <script src="{% static 'core/js/stadium_statistics_request_handler.js' %}"></script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
 
     <script src="{% static 'core/js/parsing_overlay.js' %}"></script>

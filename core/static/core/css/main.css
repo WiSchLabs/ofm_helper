@@ -189,6 +189,23 @@ ul.nav-sub {  padding-left: 10%; }
     background-image: linear-gradient(to bottom,#239123 0,#239123 100%);
 }
 
+#StadiumConfigFilter li { font-family: monospace; }
+#StadiumConfigFilter a.selected { background-color: rgba(177, 180, 151, 0.5); }
+#StadiumConfigFilter button { font-weight: bold; }
+#StadiumConfigFilter .separator {
+    margin: 0 5px;
+    color: rgba(177, 180, 151, 0.5);
+    font-weight: bold;
+}
+#StadiumConfigFilter .stadium_config_general:not(:first-child) { margin-left: 15px; }
+#StadiumConfigFilter .stand_capacity {
+    width: 6ex;
+    display: inline-block;
+    text-align: right;
+}
+
+.clear_filter .alert-danger { background-color: transparent; }
+
 
 footer.footer {
     width: 100%;

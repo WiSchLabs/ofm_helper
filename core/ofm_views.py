@@ -1,11 +1,14 @@
+import ast
+
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
-from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
-    StadiumStandStatistics, AwpBoundaries
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView, View
+
+from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, Match, MatchStadiumStatistics, \
+    StadiumStandStatistics, AwpBoundaries
 
 
 def _validate_filtered_field(field):
@@ -623,10 +626,17 @@ class StadiumStatisticsView(TemplateView):
             slider_min = 100
             slider_max = 150
 
+        unique_stadium_configurations = []
+        stadium_configurations = [s.get_configuration() for s in MatchStadiumStatistics.objects.all()]
+        for s in stadium_configurations:
+            if s not in unique_stadium_configurations:
+                unique_stadium_configurations.append(s)
+
         context['seasons'] = sorted(seasons, reverse=True)
         context['slider_min'] = slider_min
         context['slider_max'] = slider_max
         context['tolerance'] = tolerance
+        context['stadium_configurations'] = reversed(unique_stadium_configurations)
 
         return context
 
@@ -662,7 +672,16 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             if stat.count() > 0:
                 stadium_statistics.append(stat[0])
 
-        stadium_statistics_json = [self._get_stadium_statistics_in_json(stat) for stat in stadium_statistics]
+        stadium_configuration_filter = self.request.GET.get('configuration_filter')
+        filtered_stadium_stats = []
+        if stadium_configuration_filter:
+            for stat in stadium_statistics:
+                if stat.get_configuration() == ast.literal_eval(stadium_configuration_filter):
+                    filtered_stadium_stats.append(stat)
+        else:
+            filtered_stadium_stats = stadium_statistics
+
+        stadium_statistics_json = [self._get_stadium_statistics_in_json(stat) for stat in filtered_stadium_stats]
 
         return self.render_json_response(stadium_statistics_json)
 
