@@ -10,7 +10,7 @@ from users.factories.users_factories import OFMUserFactory
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class PlayersParserTest(TestCase):
+class FinancesParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8')
         self.matchday = MatchdayFactory.create()
@@ -18,7 +18,7 @@ class PlayersParserTest(TestCase):
         self.parser = FinancesParser(testdata, self.user)
         self.finances = self.parser.parse()
 
-    def test_players_parser(self):
+    def test_finances_parser(self):
         self.assertEquals(type(self.finances), Finance)
 
         self.assertEquals('1633872', self.finances.balance)

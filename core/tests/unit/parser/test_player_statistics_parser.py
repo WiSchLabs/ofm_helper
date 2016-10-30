@@ -9,7 +9,7 @@ from users.factories.users_factories import OFMUserFactory
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class StatisticsParserTest(TestCase):
+class PlayerStatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
         MatchdayFactory.create()
