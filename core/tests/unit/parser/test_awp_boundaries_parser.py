@@ -20,6 +20,7 @@ class AwpBoundariesParserTest(TestCase):
 
     def test_parser(self):
         self.assertEquals(type(self.awp_boundaries), AwpBoundaries)
+        self.assertEquals(AwpBoundaries.objects.count(), 1)
 
         self.assertEquals(self.awp_boundaries[2], 113)
         self.assertEquals(self.awp_boundaries[3], 332)
@@ -47,3 +48,18 @@ class AwpBoundariesParserTest(TestCase):
         self.assertEquals(self.awp_boundaries[25], 20078)
         self.assertEquals(self.awp_boundaries[26], 20795)
         self.assertEquals(self.awp_boundaries[27], 21105)
+
+    def test_parser_does_not_create_new_boundaries_object_if_already_exists_for_quarter(self):
+        self.matchday = MatchdayFactory.create(number=2)
+        self.parser = AwpBoundariesParser(open(os.path.join(TESTDATA_PATH, 'awp_boundaries.html'), encoding='utf8'), self.user)
+        self.parser.parse()
+
+        self.assertEquals(AwpBoundaries.objects.count(), 1)
+
+    def test_parser_creates_new_boundaries_object(self):
+        self.matchday = MatchdayFactory.create(number=17)
+        self.parser = AwpBoundariesParser(open(os.path.join(TESTDATA_PATH, 'awp_boundaries.html'), encoding='utf8'), self.user)
+        self.parser.parse()
+
+        self.assertEquals(AwpBoundaries.objects.count(), 2)
+
