@@ -6,7 +6,6 @@ from django.test import TestCase
 
 import core
 from core.factories.core_factories import MatchdayFactory
-from core.models import Player
 from users.models import OFMUser
 
 TESTDATA_PATH = 'core/tests/assets'
@@ -14,12 +13,9 @@ TESTDATA_PATH = 'core/tests/assets'
 
 class ParserViewTest(TestCase):
     def setUp(self):
-        matchday = MatchdayFactory.create(season__number=100, number=1)
-        self.user = OFMUser.objects.create_user('name', 'mail@pro.com', 'pass', ofm_username='name', ofm_password='pass')
-
-        self.player = Player.objects.create(id='159883060', name='Chrístos Tsigas', birth_season=matchday.season)
-        self.player = Player.objects.create(id='160195494', name='Irwin O\'Canny', birth_season=matchday.season)
-
+        MatchdayFactory.create(season__number=100, number=1)
+        
+        self.user = OFMUser.objects.create_user('name', '', 'pass', ofm_username='name', ofm_password='pass')
         self.client.login(username='name', password='pass')
 
     @patch('core.views.SiteManager')
