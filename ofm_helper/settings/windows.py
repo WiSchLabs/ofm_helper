@@ -1,10 +1,8 @@
 from ofm_helper.common_settings import *
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-STATIC_ROOT = '/code/staticfiles/'
 
 LOGGING['handlers']['file'] = {
     'level': 'ERROR',

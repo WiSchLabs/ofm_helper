@@ -2,7 +2,7 @@ language: python
 python:
 - '3.5'
 env:
-- DJANGO_SETTINGS_MODULE=ofm_helper.settings.test
+- DJANGO_SETTINGS_MODULE=ofm_helper.settings.windows
 install:
 - pip install -r requirements.txt
 - pip install -r travis_requirements.txt
