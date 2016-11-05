@@ -24,9 +24,9 @@ RUN pip3 install -r requirements.txt
 ADD . /code/
 
 # put current release into version file
-RUN echo $(git describe --tags --always) | awk '{split($0,a,"-"); print a[1]}'
-RUN echo `git describe --tags --always` | awk '{split($0,a,"-"); print a[1]}'
-RUN echo $(git describe --tags --always) | awk '{split($0,a,"-"); print a[1]}' > version
+RUN git fetch --tags
+RUN git describe --tags --always | awk '{split($0,a,"-"); print a[1]}'
+RUN git describe --tags --always | awk '{split($0,a,"-"); print a[1]}' > version
 
 # add database dir
 RUN mkdir database
