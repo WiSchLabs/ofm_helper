@@ -19,14 +19,18 @@ RUN mv $PHANTOM_JS-linux-x86_64 /usr/local/share/$PHANTOM_JS
 RUN ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 
 COPY requirements.txt /code
-#COPY prod_requirements.txt /code
 RUN pip3 install -r requirements.txt
-#RUN pip3 install -r prod_requirements.txt
 
 ADD . /code/
+
+# put current release into version file
+RUN echo `git describe --tags --always` | awk '{split($0,a,"-"); print a[1]}' > version
+
+# add database dir
 RUN mkdir database
 VOLUME /code/database
 
+# put static files
 RUN python3 manage.py collectstatic --no-input
 
 expose 8000
