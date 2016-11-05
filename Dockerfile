@@ -25,6 +25,7 @@ ADD . /code/
 
 # put current release into version file
 RUN git fetch --tags
+RUN git checkout tags/v0.1.17
 RUN git describe --tags --always | awk '{split($0,a,"-"); print a[1]}'
 RUN git describe --tags --always | awk '{split($0,a,"-"); print a[1]}' > version
 
