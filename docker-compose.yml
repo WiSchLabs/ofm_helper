@@ -18,5 +18,5 @@ ofmhelper:
 
 phantomjs:
     image: wernight/phantomjs
-    #entrypoint: phantomjs
+    entrypoint: phantomjs
     command: "--webdriver=8910"
