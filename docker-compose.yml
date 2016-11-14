@@ -1,0 +1,22 @@
+ofmhelper:
+  image: wischlabs/ofm_helper
+  #build: .
+  #volumes:
+  #  - .:/usr/src/app
+  links:
+  #  - postgres
+  #  - memcached
+    - phantomjs
+  ports:
+    - "8000:8000"
+
+#postgres:
+#  image: postgres
+
+#memcached:
+#  image: atbaker/memcached-verbose
+
+phantomjs:
+    image: wernight/phantomjs
+    #entrypoint: phantomjs
+    command: "--webdriver=8910"
