@@ -16,7 +16,9 @@ RUN echo "0.0.1" > version
 RUN mkdir database
 VOLUME /usr/src/app/database
 
+
 # migrate database to current structure
+RUN mkdir logs
 RUN python3 manage.py migrate
 
 # put static files
