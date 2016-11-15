@@ -12,14 +12,8 @@ WORKDIR /usr/src/app
 #RUN git describe --tags --always | awk '{split($0,a,"-"); print a[1]}' > version
 RUN echo "0.0.1" > version
 
-# add database dir
-RUN mkdir database
-VOLUME /usr/src/app/database
-
-
 # migrate database to current structure
 RUN mkdir logs
-RUN python3 manage.py migrate
 
 # put static files
 RUN python3 manage.py collectstatic --no-input
