@@ -1,8 +1,7 @@
 ofmhelper:
-  image: wischlabs/ofm_helper
-  #build: .
-  #volumes:
-  #  - .:/usr/src/app
+  build: .
+  volumes:
+    - .:/usr/src/app
   links:
   #  - postgres
   #  - memcached

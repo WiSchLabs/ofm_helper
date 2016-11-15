@@ -7,7 +7,3 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('core.urls'), name='core'),
 ]
-
-if not settings.DEBUG:
-    urlpatterns += [url(r'^static/(?P<path>.*)$', django.views.static.serve,
-                        {'document_root': settings.STATIC_ROOT, 'show_indexes': settings.DEBUG})]

@@ -9,3 +9,5 @@ django-chartit2
 django-braces
 django-extensions
 werkzeug
+
+gunicorn

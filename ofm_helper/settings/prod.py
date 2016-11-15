@@ -4,8 +4,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = '/code/staticfiles/'
-
 LOGGING['handlers']['file'] = {
     'level': 'ERROR',
     'class': 'logging.handlers.RotatingFileHandler',
