@@ -19,6 +19,7 @@ VOLUME /usr/src/app/database
 
 # migrate database to current structure
 RUN mkdir logs
+RUN touch logs/error.log
 RUN python3 manage.py migrate
 
 # put static files
