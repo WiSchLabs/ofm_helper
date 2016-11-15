@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from core.models import Matchday
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
+from core.parsers.future_match_parser import FutureMatchParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
@@ -31,6 +32,7 @@ class ParserManager:
     
         if matchday.number > 0:  # do not parse matches on matchday 0
             self.parse_match(request, site_manager)
+            #self.parse_all_matches(request, site_manager)
 
         self.reset_parsing_flags()
 
@@ -75,7 +77,43 @@ class ParserManager:
         site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
         return finances_parser.parse()
-    
+
+    def parse_all_matches(self, request, site_manager):
+        if not self.matchday_already_parsed:
+            self.parse_matchday(request, site_manager)
+        site_manager.jump_to_frame(Constants.LEAGUE.MATCH_SCHEDULE)
+        soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
+
+        rows = soup.find(id='table_head').find_all('tr')
+        for row in rows:
+            if row.has_attr("class"):  # exclude table header
+                self._parse_single_match(request, site_manager, row)
+
+    def _parse_single_match(self, request, site_manager, row):
+        is_home_match = "black" in row.find_all('td')[1].a.get('class')
+        match_report_image = row.find_all('img', class_='changeMatchReportImg')
+        match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
+
+        if match_report_image:
+            # match took place
+            link_to_match = match_report_image[0].find_parent('a')['href']
+            if "spielbericht" in link_to_match:
+                site_manager.jump_to_frame(Constants.BASE + link_to_match)
+                match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
+                match = match_parser.parse()
+
+                if is_home_match:
+                    self._parse_stadium_statistics(request, site_manager)
+
+                return match
+        elif "-:-" in match_result:
+            # match is scheduled, but did not take place yet
+            match_parser = FutureMatchParser(row, request.user)
+            return match_parser.parse()
+        else:
+            match_parser = WonByDefaultMatchParser(row, request.user)
+            return match_parser.parse()
+
     def parse_match(self, request, site_manager):
         if not self.matchday_already_parsed:
             self.parse_matchday(request, site_manager)

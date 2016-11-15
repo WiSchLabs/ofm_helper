@@ -133,6 +133,7 @@ ul.nav-sub {  padding-left: 10%; }
         .flaticon-football-card-with-cross-mark { color: red; }
         .table th span { font-size: 1.3em; }
         .table td span.users-team { text-decoration: underline; }
+        .table td span.match_scheduled,
         .table td span.match_won,
         .table td span.match_lost,
         .table td span.match_draw { background-color: transparent; }

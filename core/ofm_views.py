@@ -576,7 +576,9 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             venue = match.venue
 
         result_score = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
-        if match.is_won:
+        if match.is_scheduled:
+            result = "<span class='match_scheduled alert-info'>-:-</span>"
+        elif match.is_won:
             result = "<span class='match_won alert-success'>" + result_score + "</span>"
         elif match.is_draw:
             result = "<span class='match_draw alert-warning'>" + result_score + "</span>"

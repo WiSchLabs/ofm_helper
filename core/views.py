@@ -127,7 +127,7 @@ def trigger_single_parsing(request, parsing_function, redirect_to='core:account'
         parsing_function(request, site_manager)
         return redirect(redirect_to)
     else:
-        messages.add_message(request, messages.ERROR, MSG_NOT_LOGGED_IN, extra_tags='error')
+        messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')
 
 
@@ -158,3 +158,4 @@ def trigger_match_parsing(request):
     pm = ParserManager()
     redirect_to = 'core:ofm:matches_overview'
     return trigger_single_parsing(request, pm.parse_match, redirect_to)
+    #return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)

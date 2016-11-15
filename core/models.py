@@ -439,6 +439,10 @@ class Match(models.Model):
         return self.home_team_statistics.score == self.guest_team_statistics.score
 
     @property
+    def is_scheduled(self):
+        return self.home_team_statistics.score == 0 and self.guest_team_statistics.score == 0 and not self.venue
+
+    @property
     def harmonic_strength(self):
         return 2*self.home_team_statistics.strength*self.guest_team_statistics.strength / \
                (self.home_team_statistics.strength + self.guest_team_statistics.strength)
