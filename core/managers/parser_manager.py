@@ -104,7 +104,7 @@ class ParserManager:
                 match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
                 match = match_parser.parse()
 
-                if is_home_match:# and is_current_matchday:
+                if is_home_match and is_current_matchday:
                     self._parse_stadium_statistics(request, site_manager)
 
                 return match
