@@ -11,7 +11,6 @@ from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
 from core.parsers.won_by_default_match_row_parser import WonByDefaultMatchRowParser
 from core.web.ofm_page_constants import Constants
 
@@ -111,34 +110,6 @@ class ParserManager:
             match_parser = WonByDefaultMatchRowParser(row, request.user)
             return match_parser.parse()
 
-    def parse_match(self, request, site_manager):
-        if not self.matchday_already_parsed:
-            self.parse_matchday(request, site_manager)
-        if Matchday.objects.all()[0].number <= 0:  # do not parse matches on matchday 0
-            return
-    
-        site_manager.jump_to_frame(Constants.LEAGUE.MATCHDAY_TABLE)
-        soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
-        row = soup.find(id='table_head').find_all('b')[0].find_parent('tr')
-        is_home_match = "<b>" in str(row.find_all('td')[2].a)
-        match_report_image = row.find_all('img', class_='changeMatchReportImg')
-    
-        if match_report_image:
-            # match took place
-            link_to_match = match_report_image[0].find_parent('a')['href']
-            if "spielbericht" in link_to_match:
-                site_manager.jump_to_frame(Constants.BASE + link_to_match)
-                match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
-                match = match_parser.parse()
-    
-                if is_home_match:
-                    self._parse_stadium_statistics(request, site_manager)
-    
-                return match
-        else:
-            match_parser = WonByDefaultMatchParser(site_manager.browser.page_source, request.user)
-            return match_parser.parse()
-    
     def _parse_stadium_statistics(self, request, site_manager):
         site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
