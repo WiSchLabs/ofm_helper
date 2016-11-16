@@ -28,7 +28,7 @@ class FutureMatchRowParserTest(TestCase):
         self.assertEquals(self.match_stat.user, self.user)
         self.assertEquals(self.match_stat.match_type, 'L')
         self.assertEquals(self.match_stat.venue, '')
-        self.assertEquals(self.match_stat.is_scheduled, True)
+        self.assertEquals(self.match_stat.is_in_future, True)
 
     def test_match_home_team_statistics(self):
         self.assertEquals(type(self.match_stat.home_team_statistics), MatchTeamStatistics)

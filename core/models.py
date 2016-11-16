@@ -439,7 +439,7 @@ class Match(models.Model):
         return self.home_team_statistics.score == self.guest_team_statistics.score
 
     @property
-    def is_scheduled(self):
+    def is_in_future(self):
         return self.home_team_statistics.score == 0 and self.guest_team_statistics.score == 0 and not self.venue
 
     @property
