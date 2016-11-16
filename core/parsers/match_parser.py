@@ -25,8 +25,10 @@ class MatchParser(BaseParser):
         :rtype: Match
         """
 
-        # we assume to have parsed the matchday beforehand
-        matchday = Matchday.objects.all()[0]
+        # we assume to have parsed the season beforehand (via matchday)
+        season = Matchday.objects.all()[0].season
+        matchday_number = soup.find_all('tbody')[2].find_all('b')[0].get_text().split(',')[1].split('.')[0].strip()
+        matchday, success = Matchday.objects.get_or_create(season=season, number=matchday_number)
 
         venue = soup.find_all('em')[1].get_text()
         match_result = soup.find_all('table')[5].find_all('tr')[0].find_all('td')[3].div.font.get_text()

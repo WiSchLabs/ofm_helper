@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from core.models import Matchday
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
-from core.parsers.future_match_parser import FutureMatchParser
+from core.parsers.future_match_row_parser import FutureMatchRowParser
 from core.parsers.match_parser import MatchParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
@@ -12,6 +12,7 @@ from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
 from core.parsers.won_by_default_match_parser import WonByDefaultMatchParser
+from core.parsers.won_by_default_match_row_parser import WonByDefaultMatchRowParser
 from core.web.ofm_page_constants import Constants
 
 
@@ -93,6 +94,7 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
+        is_current_matchday = row.find_all('td')[0].get_text() == Matchday.objects.get()[0].number
 
         if match_report_image:
             # match took place
@@ -102,16 +104,16 @@ class ParserManager:
                 match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
                 match = match_parser.parse()
 
-                if is_home_match:
+                if is_home_match:# and is_current_matchday:
                     self._parse_stadium_statistics(request, site_manager)
 
                 return match
         elif "-:-" in match_result:
             # match is scheduled, but did not take place yet
-            match_parser = FutureMatchParser(row, request.user)
+            match_parser = FutureMatchRowParser(row, request.user)
             return match_parser.parse()
         else:
-            match_parser = WonByDefaultMatchParser(row, request.user)
+            match_parser = WonByDefaultMatchRowParser(row, request.user)
             return match_parser.parse()
 
     def parse_match(self, request, site_manager):
@@ -146,6 +148,7 @@ class ParserManager:
         site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
         stadium_statistics_parser.parse()
+
         site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
         stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
         return stadium_stand_stat_parser.parse()

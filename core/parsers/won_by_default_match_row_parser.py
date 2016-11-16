@@ -8,23 +8,20 @@ from core.parsers.base_parser import BaseParser
 logger = logging.getLogger(__name__)
 
 
-class WonByDefaultMatchParser(BaseParser):
+class WonByDefaultMatchRowParser(BaseParser):
     def __init__(self, html_source, user):
         self.html_source = html_source
         self.user = user
 
     def parse(self):
-        #soup = BeautifulSoup(self.html_source, "html.parser")
         return self.parse_html(self.html_source)
 
-    def parse_html(self, soup):
+    def parse_html(self, row):
         """
-        :param soup: BeautifulSoup of match page
+        :param row: BeautifulSoup of match table row
         :return: parsed match
         :rtype: Match
         """
-
-        row = soup
 
         # we assume to have parsed the season beforehand (with the matchday)
         season = Matchday.objects.all()[0].season

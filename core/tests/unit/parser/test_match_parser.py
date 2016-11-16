@@ -21,7 +21,7 @@ class MatchParserTest(TestCase):
 
     def test_match_parser_general_informations(self):
         self.assertEquals(type(self.match_stat), Match)
-        self.assertEquals(self.match_stat.matchday.number, 1)
+        self.assertEquals(self.match_stat.matchday.number, '8')
         self.assertEquals(self.match_stat.user, self.user)
         self.assertEquals(self.match_stat.match_type, 'L')
         self.assertEquals(self.match_stat.venue, 'Club-Mate-Arena')
