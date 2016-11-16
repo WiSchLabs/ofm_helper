@@ -25,7 +25,7 @@ class FutureMatchRowParser(BaseParser):
 
         # we assume to have parsed the season beforehand (with the matchday)
         season = Matchday.objects.all()[0].season
-        matchday_number = row.find_all('td')[0].get_text()
+        matchday_number = row.find_all('td')[0].get_text().replace('\n', '')
         matchday, success = Matchday.objects.get_or_create(season=season, number=matchday_number)
 
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
