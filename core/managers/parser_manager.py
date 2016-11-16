@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 
-from core.models import Matchday
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.future_match_row_parser import FutureMatchRowParser
@@ -16,12 +15,11 @@ from core.web.ofm_page_constants import Constants
 
 
 class ParserManager:
-    matchday_already_parsed = False
+    matchday_already_parsed = None
     players_already_parsed = False
 
     def parse_all_ofm_data(self, request, site_manager):
-        self.parse_matchday(request, site_manager)
-        self.matchday_already_parsed = True
+        self.matchday_already_parsed = self.parse_matchday(request, site_manager)
         self.parse_players(request, site_manager)
         self.players_already_parsed = True
         self.parse_player_statistics(request, site_manager)
@@ -32,7 +30,7 @@ class ParserManager:
         self.reset_parsing_flags()
 
     def reset_parsing_flags(self):
-        self.matchday_already_parsed = False
+        self.matchday_already_parsed = None
         self.players_already_parsed = False
 
     def parse_ofm_version(self, site_manager):
@@ -75,7 +73,7 @@ class ParserManager:
 
     def parse_all_matches(self, request, site_manager):
         if not self.matchday_already_parsed:
-            self.parse_matchday(request, site_manager)
+            self.matchday_already_parsed = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.LEAGUE.MATCH_SCHEDULE)
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
 
@@ -88,7 +86,7 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
-        is_current_matchday = row.find_all('td')[0].get_text() == Matchday.objects.all()[0].number
+        is_current_matchday = int(row.find_all('td')[0].get_text()) == self.matchday_already_parsed.number
 
         if match_report_image:
             # match took place
