@@ -76,9 +76,10 @@ class MatchParser(BaseParser):
             matchday=matchday,
             is_home_match=self.is_home_match,
             user=self.user,
-            venue=venue,
             home_team_statistics=home_team_stat,
             guest_team_statistics=guest_team_stat
         )
+        match.venue = venue
+        match.save()
 
         return match
