@@ -157,5 +157,4 @@ def trigger_finances_parsing(request):
 def trigger_match_parsing(request):
     pm = ParserManager()
     redirect_to = 'core:ofm:matches_overview'
-    return trigger_single_parsing(request, pm.parse_match, redirect_to)
-    #return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)
+    return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)

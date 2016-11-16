@@ -66,10 +66,10 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.MatchParser')
     @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
     def test_match_parser_view(self, matchday_parser_mock, match_parser_mock, parse_stadium_statistics_mock):
-        with open(os.path.join(TESTDATA_PATH, 'matchday_table.html'), encoding='utf8') as matchday_table_html:
+        with open(os.path.join(TESTDATA_PATH, 'match_schedule.html'), encoding='utf8') as match_schedule_html:
             with patch('core.views.SiteManager') as site_manager_mock:
                 site_manager_instance_mock = site_manager_mock.return_value
-                site_manager_instance_mock.browser.page_source = matchday_table_html
+                site_manager_instance_mock.browser.page_source = match_schedule_html
 
                 response = self.client.get(reverse('core:trigger_match_parsing'))
                 self.assertEqual(response.status_code, 302)
@@ -83,11 +83,11 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_finances')
-    @patch('core.managers.parser_manager.ParserManager.parse_match')
+    @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,
-                         parse_finances_mock, parse_match_mock, parse_awp_mock, parse_version_mock):
+                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
         response = self.client.get(reverse('core:trigger_parsing'))
 
         self.assertEqual(response.status_code, 302)
@@ -96,7 +96,7 @@ class ParserViewTest(TestCase):
         assert parse_players_mock.called
         assert parse_player_statistics_mock.called
         assert parse_finances_mock.called
-        assert parse_match_mock.called
+        assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
 

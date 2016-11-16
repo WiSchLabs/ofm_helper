@@ -28,12 +28,7 @@ class ParserManager:
         self.parse_player_statistics(request, site_manager)
         self.parse_awp_boundaries(request, site_manager)
         self.parse_finances(request, site_manager)
-    
-        matchday = Matchday.objects.all()[0]
-    
-        if matchday.number > 0:  # do not parse matches on matchday 0
-            self.parse_match(request, site_manager)
-            #self.parse_all_matches(request, site_manager)
+        self.parse_all_matches(request, site_manager)
 
         self.reset_parsing_flags()
 
@@ -94,7 +89,7 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
-        is_current_matchday = row.find_all('td')[0].get_text() == Matchday.objects.get()[0].number
+        is_current_matchday = row.find_all('td')[0].get_text() == Matchday.objects.all()[0].number
 
         if match_report_image:
             # match took place
