@@ -114,6 +114,10 @@ class CreateCoreModelsTest(TestCase):
         m = MatchFactory.create()
         self.assertEqual(m.match_type, 'L')
         self.assertEqual(m.venue, 'Olympiastadion Berlin')
+        self.assertFalse(m.is_won)
+        self.assertTrue(m.is_draw)
+        self.assertFalse(m.is_lost)
+        self.assertFalse(m.is_in_future)
 
     def test_create_match_stadium_statistics(self):
         mss = MatchStadiumStatisticsFactory.create()
