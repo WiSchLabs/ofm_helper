@@ -37,9 +37,10 @@ services:
   #    - redisdata:/data
 
   phantomjs:
-      image: wernight/phantomjs
-      entrypoint: phantomjs
-      command: "--webdriver=8910"
+    image: wernight/phantomjs
+    entrypoint: phantomjs
+    command: "--webdriver=8910"
+    restart: unless-stopped
 
 volumes:
   pgdata:
