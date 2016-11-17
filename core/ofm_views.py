@@ -537,15 +537,8 @@ class MatchesView(TemplateView):
 
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
-        current_season = Matchday.objects.all()[0].season
-        matches_won = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_won])
-        matches_draw = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_draw])
-        matches_lost = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_lost])
 
         context['seasons'] = sorted(seasons, reverse=True)
-        context['matches_won'] = matches_won
-        context['matches_draw'] = matches_draw
-        context['matches_lost'] = matches_lost
 
         return context
 
@@ -610,6 +603,25 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         match_stat['matchday'] = match.matchday.number
 
         return match_stat
+
+
+@method_decorator(login_required, name='dispatch')
+class MatchesSummaryJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        current_season = Matchday.objects.all()[0].season
+        season_number = self.request.GET.get('season_number', current_season.number)
+        matches_won = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_won])
+        matches_draw = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_draw])
+        matches_lost = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_lost])
+
+        json = {
+            "matches_won": matches_won,
+            "matches_draw": matches_draw,
+            "matches_lost": matches_lost
+        }
+
+        return self.render_json_response(json)
 
 
 @method_decorator(login_required, name='dispatch')

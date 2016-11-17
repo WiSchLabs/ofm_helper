@@ -10,10 +10,10 @@
     </h1>
 
     <p id="matches_summary">
-        <span class="headline">Bilanz der aktuellen Saison {{ seasons|first }}:</span>
-        <span class="alert-success">gewonnen: {{ matches_won }}</span><span class="separator">|</span>
-        <span class="alert-warning">unentschieden: {{ matches_draw }}</span><span class="separator">|</span>
-        <span class="alert-danger">verloren: {{ matches_lost }}</span>
+        <span class="headline">Saison-Bilanz:</span>
+        <span class="alert-success">gewonnen: <var id="matches_won">{{ matches_won }}</var></span><span class="separator">|</span>
+        <span class="alert-warning">unentschieden: <var id="matches_draw">{{ matches_draw }}</var></span><span class="separator">|</span>
+        <span class="alert-danger">verloren: <var id="matches_lost">{{ matches_lost }}</var></span>
     </p>
 
     {% if seasons|length > 1 %}
@@ -60,6 +60,29 @@
             </tr>
         </thead>
     </table>
+
+    <script>
+        function requestMatchesSummaryData(season_number) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:matches_summary_json' %}",
+                data: {season_number: season_number},
+                dataType: 'json',
+                success: function (data) {
+                    $("#matches_won").text(data['matches_won']);
+                    $("#matches_draw").text(data['matches_draw']);
+                    $("#matches_lost").text(data['matches_lost']);
+                }
+            });
+        }
+
+        window.onload=requestMatchesSummaryData();
+
+        $('#season').on('change', function () {
+            var season = $("#season").val();
+            requestMatchesSummaryData(season);
+        });
+    </script>
 
     <script>
         var JSON_URL = '{% url 'core:ofm:matches_overview_json' %}';
