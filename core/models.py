@@ -436,7 +436,14 @@ class Match(models.Model):
 
     @property
     def is_draw(self):
-        return self.home_team_statistics.score == self.guest_team_statistics.score
+        return self.home_team_statistics.score == self.guest_team_statistics.score and not self.is_in_future
+
+    @property
+    def is_lost(self):
+        if self.is_home_match:
+            return self.home_team_statistics.score < self.guest_team_statistics.score
+        else:
+            return self.home_team_statistics.score > self.guest_team_statistics.score
 
     @property
     def is_in_future(self):

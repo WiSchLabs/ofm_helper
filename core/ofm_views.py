@@ -537,8 +537,15 @@ class MatchesView(TemplateView):
 
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
+        current_season = Matchday.objects.all()[0].season
+        matches_won = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_won])
+        matches_draw = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_draw])
+        matches_lost = len([match for match in Match.objects.filter(matchday__season=current_season) if match.is_lost])
 
         context['seasons'] = sorted(seasons, reverse=True)
+        context['matches_won'] = matches_won
+        context['matches_draw'] = matches_draw
+        context['matches_lost'] = matches_lost
 
         return context
 

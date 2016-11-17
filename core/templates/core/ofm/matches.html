@@ -9,6 +9,13 @@
         <form class="parseTrigger" action="{% url 'core:trigger_match_parsing' %}" method="get">{% csrf_token %}</form>
     </h1>
 
+    <p id="matches_summary">
+        <span class="headline">Bilanz der aktuellen Saison {{ seasons|first }}:</span>
+        <span class="alert-success">gewonnen: {{ matches_won }}</span><span class="separator">|</span>
+        <span class="alert-warning">unentschieden: {{ matches_draw }}</span><span class="separator">|</span>
+        <span class="alert-danger">verloren: {{ matches_lost }}</span>
+    </p>
+
     {% if seasons|length > 1 %}
         <div id="table-toolbar">
             <div class="form-inline" role="form">

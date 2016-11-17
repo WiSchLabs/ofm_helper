@@ -144,6 +144,17 @@ ul.nav-sub {  padding-left: 10%; }
         border-top-width: 5px;
     }
 
+#matches_summary span.headline {
+    font-size: 1.2em;
+    margin-right: 20px;
+}
+#matches_summary span { background-color: transparent; }
+#matches_summary .separator {
+    margin: 0 15px;
+    color: rgba(177, 180, 151, 1);
+    font-weight: bold;
+}
+
 .bootstrap-switch.bootstrap-switch-focused,
 .form-control:focus {
     border-color: #239123;
