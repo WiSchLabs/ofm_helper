@@ -1,44 +1,46 @@
-web:
-  build: .
-  volumes:
-    - /usr/src/app
-    - /usr/src/app/staticfiles
-  links:
-    - db
-    - phantomjs
-  #  - memcached
-  ports:
-    - "8000:8000"
+version: "2"
 
-nginx:
-  restart: always
-  build: ./nginx/
-  ports:
-    - "80:80"
-  volumes:
-    - /www/static
-  volumes_from:
-    - web
-  links:
-    - web:web
+services:
+  web:
+    build: .
+    volumes:
+      - /usr/src/app
+      - /usr/src/app/staticfiles
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
 
-db:
-  restart: always
-  image: postgres
-  ports:
-    - "5432:5432"
-  volumes:
-    - pgdata:/var/lib/postgresql/data/
+  nginx:
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - /www/static
+    volumes_from:
+      - web
+    restart: unless-stopped
 
-#redis:
-#  restart: always
-#  image: redis
-#  ports:
-#    - "6379:6379"
-#  volumes:
-#    - redisdata:/data
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    restart: unless-stopped
 
-phantomjs:
-    image: wernight/phantomjs
-    entrypoint: phantomjs
-    command: "--webdriver=8910"
+  #redis:
+  #  restart: always
+  #  image: redis
+  #  ports:
+  #    - "6379:6379"
+  #  volumes:
+  #    - redisdata:/data
+
+  phantomjs:
+      image: wernight/phantomjs
+      entrypoint: phantomjs
+      command: "--webdriver=8910"
+
+volumes:
+  pgdata:
+    external: true
