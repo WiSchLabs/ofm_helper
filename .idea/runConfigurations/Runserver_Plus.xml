@@ -14,7 +14,7 @@
     <module name="ofm_helper" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-    <option name="PARAMETERS" value="runserver_plus" />
+    <option name="PARAMETERS" value="runserver_plus 0.0.0.0:8080" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <method />
   </configuration>
