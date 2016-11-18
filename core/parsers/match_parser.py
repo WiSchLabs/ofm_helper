@@ -75,10 +75,10 @@ class MatchParser(BaseParser):
         match, success = Match.objects.get_or_create(
             matchday=matchday,
             is_home_match=self.is_home_match,
-            user=self.user,
-            home_team_statistics=home_team_stat,
-            guest_team_statistics=guest_team_stat
+            user=self.user
         )
+        match.home_team_statistics = home_team_stat
+        match.guest_team_statistics = guest_team_stat
         match.venue = venue
         match.save()
 
