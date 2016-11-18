@@ -25,3 +25,6 @@ LOGGING['handlers']['file'] = {
 
 LOGGING['loggers']['django']['handlers'] = ['file', 'console']
 LOGGING['loggers']['django.request']['handlers'] = ['file', 'console']
+
+PHANTOMJS_REMOTE = True
+PHANTOMJS_HOST = 'phantomjs'

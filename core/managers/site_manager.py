@@ -11,11 +11,11 @@ from core.web.ofm_page_constants import Constants
 class SiteManager:
     def __init__(self, user=None):
 
-        PHANTOMJS_HOST = os.environ['PHANTOMJS_PORT_8910_TCP_ADDR']
-
-        self.browser = webdriver.Remote(
-            command_executor='http://{}:8910'.format(PHANTOMJS_HOST),
-            desired_capabilities=DesiredCapabilities.PHANTOMJS)
+        if settings.PHANTOMJS_REMOTE:
+            self.browser = webdriver.Remote(command_executor='http://{}:8910'.format(settings.PHANTOMJS_HOST),
+                                            desired_capabilities=DesiredCapabilities.PHANTOMJS)
+        else:
+            self.browser = webdriver.PhantomJS()
 
         self._handle_aws_display_bug()
 

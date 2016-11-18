@@ -160,3 +160,5 @@ ENCRYPTED_FIELDS_KEYDIR = os.path.join(BASE_DIR, 'fieldkeys')
 AUTH_USER_MODEL = 'users.OFMUser'
 
 USE_DISPLAY_FOR_AWS = False
+
+PHANTOMJS_REMOTE = False
