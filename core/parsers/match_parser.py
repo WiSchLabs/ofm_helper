@@ -72,14 +72,22 @@ class MatchParser(BaseParser):
             red_cards=guest_team_red_cards
         )
 
-        match, success = Match.objects.get_or_create(
-            matchday=matchday,
-            is_home_match=self.is_home_match,
-            user=self.user
-        )
-        match.home_team_statistics = home_team_stat
-        match.guest_team_statistics = guest_team_stat
-        match.venue = venue
-        match.save()
+        existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
-        return match
+        if existing_match:
+            existing_match.home_team_statistics = home_team_stat
+            existing_match.guest_team_statistics = guest_team_stat
+            existing_match.venue = venue
+            existing_match.save()
+            return existing_match
+        else:
+            match, success = Match.objects.get_or_create(
+                matchday=matchday,
+                is_home_match=self.is_home_match,
+                user=self.user,
+                home_team_statistics=home_team_stat,
+                guest_team_statistics=guest_team_stat
+            )
+            match.venue = venue
+            match.save()
+            return match
