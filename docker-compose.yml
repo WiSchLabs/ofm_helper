@@ -2,20 +2,16 @@ version: "2"
 
 services:
   web:
-    build: .
+    image: wischlabs/ofm_helper:django_compose-_49
     volumes:
       - /usr/src/app
       - /usr/src/app/staticfiles
-    ports:
-      - "8000:8000"
     restart: unless-stopped
 
   nginx:
-    build: ./nginx/
+    image: wischlabs/ofm_nginx
     ports:
       - "80:80"
-    volumes:
-      - /www/static
     volumes_from:
       - web
     restart: unless-stopped
@@ -44,4 +40,4 @@ services:
 
 volumes:
   pgdata:
-    external: true
+  #redisdata:
