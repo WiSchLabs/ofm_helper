@@ -237,7 +237,7 @@ class Country(models.Model):
         ('VU', "Vanuatu"),
         ('VE', "Venezuela"),
         ('AE', "Vereinigte Arabische Emirate"),
-        ('US', "Vereinigte Staaten von Amerika"),
+        ('US', "USA"),
         ('GB', "Vereinigtes Königreich"),
         ('VN', "Vietnam"),
         ('BY', "Weißrussland"),
@@ -400,7 +400,7 @@ class MatchTeamStatistics(models.Model):
 
     team_name = models.CharField(max_length=200)
     score = models.IntegerField(default=0)
-    strength = models.IntegerField(default=0)
+    strength = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
     ball_possession = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
     chances = models.IntegerField(default=0)
     yellow_cards = models.IntegerField(default=0)

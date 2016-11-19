@@ -1,17 +1,21 @@
 import os
 import time
 
-import subprocess
-
 from django.conf import settings
 from selenium import webdriver
+from selenium.webdriver import DesiredCapabilities
 
 from core.web.ofm_page_constants import Constants
 
 
 class SiteManager:
     def __init__(self, user=None):
-        self.browser = webdriver.PhantomJS()
+
+        if settings.PHANTOMJS_REMOTE:
+            self.browser = webdriver.Remote(command_executor='http://{}:8910'.format(settings.PHANTOMJS_HOST),
+                                            desired_capabilities=DesiredCapabilities.PHANTOMJS)
+        else:
+            self.browser = webdriver.PhantomJS()
 
         self._handle_aws_display_bug()
 

@@ -9,3 +9,9 @@ django-chartit2
 django-braces
 django-extensions
 werkzeug
+
+# local webserver for serving django
+gunicorn
+
+# postgres requirement
+psycopg2

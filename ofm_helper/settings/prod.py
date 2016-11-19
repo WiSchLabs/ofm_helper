@@ -4,7 +4,15 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = '/code/staticfiles/'
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': 'postgres',
+         'USER': 'postgres',
+         'HOST': 'db',
+         'PORT': 5432,
+     }
+ }
 
 LOGGING['handlers']['file'] = {
     'level': 'ERROR',
@@ -17,3 +25,6 @@ LOGGING['handlers']['file'] = {
 
 LOGGING['loggers']['django']['handlers'] = ['file', 'console']
 LOGGING['loggers']['django.request']['handlers'] = ['file', 'console']
+
+PHANTOMJS_REMOTE = True
+PHANTOMJS_HOST = 'phantomjs'
