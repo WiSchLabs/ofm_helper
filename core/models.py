@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from core.web.ofm_page_constants import Constants
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum
 from django.utils.encoding import smart_str
 
+from core.web.ofm_page_constants import Constants
 from users.models import OFMUser
 
 AGE_AT_BIRTH = 17

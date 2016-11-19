@@ -12,7 +12,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class PlayerStatisticsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'player_statistics.html'), encoding='utf8')
-        MatchdayFactory.create()
+        self.matchday = MatchdayFactory.create()
         user = OFMUserFactory.create()
         season = SeasonFactory.create()
 
@@ -24,7 +24,7 @@ class PlayerStatisticsParserTest(TestCase):
         self.player = Player.objects.create(id='160195494', position='LV', name='Irwin O\'Canny', birth_season=season, nationality=nationality_greece)
         self.player = Player.objects.create(id='159341445', position='LMD', name='Jan Stemmler', birth_season=season, nationality=nationality_greece)
 
-        self.parser = PlayerStatisticsParser(testdata, user)
+        self.parser = PlayerStatisticsParser(testdata, user, self.matchday)
         self.player_stat_list = self.parser.parse()
         self.first_player_stat = self.player_stat_list[0]
         self.assertEqual(Matchday.objects.all().count(), 1)

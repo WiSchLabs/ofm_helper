@@ -15,7 +15,7 @@ class PlayersParserTest(TestCase):
         testdata = open(os.path.join(TESTDATA_PATH, 'player.html'), encoding='utf8')
         self.matchday = MatchdayFactory.create(number=2)
         self.user = OFMUserFactory.create()
-        self.parser = PlayersParser(testdata, self.user)
+        self.parser = PlayersParser(testdata, self.user, self.matchday)
         self.player_list = self.parser.parse()
         self.first_player = self.player_list[0]
 
@@ -37,7 +37,7 @@ class PlayersParserTest(TestCase):
     def test_sold_player_gets_according_attribute(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'players_one_player_sold.html'), encoding='utf8')
         MatchdayFactory.create(number=3)
-        parser = PlayersParser(testdata, self.user)
+        parser = PlayersParser(testdata, self.user, self.matchday)
         parser.parse()
 
         sold_players = [c.player for c in Contract.objects.filter(sold_on_matchday__isnull=False)]

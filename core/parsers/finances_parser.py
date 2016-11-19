@@ -1,16 +1,18 @@
+import logging
+
 from bs4 import BeautifulSoup
 
-from core.models import Matchday, Finance
+from core.models import Finance
 from core.parsers.base_parser import BaseParser
-import logging
 
 logger = logging.getLogger(__name__)
 
 
 class FinancesParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, matchday):
         self.html_source = html_source
         self.user = user
+        self.matchday = matchday
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
@@ -22,7 +24,6 @@ class FinancesParser(BaseParser):
         :return: parsed finances
         :rtype: list
         """
-        matchday = Matchday.objects.all()[0]
 
         finance_table = soup.find(id="einaus").find_all('table')[2]
         finance_values = finance_table.find_all('tr')
@@ -52,7 +53,7 @@ class FinancesParser(BaseParser):
 
         finances, success = Finance.objects.get_or_create(
             user=self.user,
-            matchday=matchday,
+            matchday=self.matchday,
         )
         logger.debug('===== Finance parsed: %s' % finances)
 
