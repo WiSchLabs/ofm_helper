@@ -115,4 +115,4 @@ class ParserManager:
 
         site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
         stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-        return stadium_stand_stat_parser.parse()
+        stadium_stand_stat_parser.parse()

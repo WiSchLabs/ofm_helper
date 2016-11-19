@@ -17,7 +17,7 @@ class StadiumStandStatisticsParserTest(TestCase):
         self.match = MatchFactory.create(user=self.user)
         MatchStadiumStatisticsFactory.create(match=self.match)
 
-        self.parser = StadiumStandStatisticsParser(testdata, self.user)
+        self.parser = StadiumStandStatisticsParser(testdata, self.user, self.match)
         self.stadium_stand_stats = self.parser.parse()
 
     def test_stadium_stand_stat_parser_north_stand_set_under_construction_after_match(self):
