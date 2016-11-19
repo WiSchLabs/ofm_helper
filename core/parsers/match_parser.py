@@ -75,11 +75,9 @@ class MatchParser(BaseParser):
         existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
         if existing_match:
-            existing_match.home_team_statistics = home_team_stat
-            existing_match.guest_team_statistics = guest_team_stat
-            existing_match.venue = venue
-            existing_match.save()
-            return existing_match
+            match = existing_match[0]
+            match.home_team_statistics = home_team_stat
+            match.guest_team_statistics = guest_team_stat
         else:
             match, success = Match.objects.get_or_create(
                 matchday=matchday,
@@ -88,6 +86,7 @@ class MatchParser(BaseParser):
                 home_team_statistics=home_team_stat,
                 guest_team_statistics=guest_team_stat
             )
-            match.venue = venue
-            match.save()
-            return match
+
+        match.venue = venue
+        match.save()
+        return match
