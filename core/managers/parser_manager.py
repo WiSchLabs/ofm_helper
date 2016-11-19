@@ -97,7 +97,7 @@ class ParserManager:
                 match = match_parser.parse()
 
                 if is_home_match and is_current_matchday:
-                    self._parse_stadium_statistics(request, site_manager)
+                    self._parse_stadium_statistics(request, site_manager, match)
 
                 return match
         elif "-:-" in match_result:
@@ -108,11 +108,11 @@ class ParserManager:
             match_parser = WonByDefaultMatchRowParser(row, request.user)
             return match_parser.parse()
 
-    def _parse_stadium_statistics(self, request, site_manager):
+    def _parse_stadium_statistics(self, request, site_manager, match):
         site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-        stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
+        stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_statistics_parser.parse()
 
         site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-        stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
+        stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_stand_stat_parser.parse()
