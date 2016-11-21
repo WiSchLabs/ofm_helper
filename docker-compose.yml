@@ -23,13 +23,13 @@ services:
       - pgdata:/var/lib/postgresql/data/
     restart: unless-stopped
 
-  #redis:
-  #  restart: always
-  #  image: redis
-  #  ports:
-  #    - "6379:6379"
-  #  volumes:
-  #    - redisdata:/data
+  redis:
+    restart: unless-stopped
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
 
   phantomjs:
     image: wernight/phantomjs
@@ -39,4 +39,4 @@ services:
 
 volumes:
   pgdata:
-  #redisdata:
+  redisdata:
