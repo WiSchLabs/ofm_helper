@@ -3,3 +3,6 @@ gunicorn
 
 # postgres requirement
 psycopg2
+
+# redis backend
+django-redis

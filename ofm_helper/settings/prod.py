@@ -4,6 +4,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# DB
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
@@ -14,6 +15,22 @@ DATABASES = {
      }
  }
 
+# CACHING
+CACHE_HOST = 'redis'
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+        'OPTIONS': {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+    }
+}
+
+# Now we can use our super fast redis as session store
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+# LOGGING
 LOGGING['handlers']['file'] = {
     'level': 'ERROR',
     'class': 'logging.handlers.RotatingFileHandler',
@@ -26,5 +43,6 @@ LOGGING['handlers']['file'] = {
 LOGGING['loggers']['django']['handlers'] = ['file', 'console']
 LOGGING['loggers']['django.request']['handlers'] = ['file', 'console']
 
+# PHANTOMJS
 PHANTOMJS_REMOTE = True
 PHANTOMJS_HOST = 'phantomjs'
