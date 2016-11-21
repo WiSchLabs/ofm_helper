@@ -1,6 +1,6 @@
 import logging
 
-from bs4 import BeautifulSoup
+from django.core.exceptions import MultipleObjectsReturned
 
 from core.models import Matchday, Match, MatchTeamStatistics
 from core.parsers.base_parser import BaseParser
@@ -42,32 +42,42 @@ class WonByDefaultMatchRowParser(BaseParser):
         guest_team_name = guest_team[0:guest_team.find('(')-1]
         guest_team_strength = guest_team[guest_team.find('(')+1:guest_team.find(')')]
 
-        home_team_stat, success = MatchTeamStatistics.objects.get_or_create(
-            score=home_team_score,
-            team_name=home_team_name,
-            strength=home_team_strength,
-            ball_possession=100,
-            chances=0,
-            yellow_cards=0,
-            red_cards=0
-        )
-
-        guest_team_stat, success = MatchTeamStatistics.objects.get_or_create(
-            score=guest_team_score,
-            team_name=guest_team_name,
-            strength=guest_team_strength,
-            ball_possession=0,
-            chances=0,
-            yellow_cards=0,
-            red_cards=0
-        )
         existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
         if existing_match:
-            match = existing_match[0]
-            match.home_team_statistics = home_team_stat
-            match.guest_team_statistics = guest_team_stat
+            if len(existing_match) == 1:
+                match = existing_match[0]
+
+                match.home_team_statistics.score = home_team_score
+                match.home_team_statistics.team_name = home_team_name
+                match.home_team_statistics.strength = home_team_strength
+
+                match.guest_team_statistics.score = guest_team_score
+                match.guest_team_statistics.team_name = guest_team_name
+                match.guest_team_statistics.strength = guest_team_strength
+            else:
+                raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
         else:
+            home_team_stat, success = MatchTeamStatistics.objects.get_or_create(
+                score=home_team_score,
+                team_name=home_team_name,
+                strength=home_team_strength,
+                ball_possession=100,
+                chances=0,
+                yellow_cards=0,
+                red_cards=0
+            )
+
+            guest_team_stat, success = MatchTeamStatistics.objects.get_or_create(
+                score=guest_team_score,
+                team_name=guest_team_name,
+                strength=guest_team_strength,
+                ball_possession=0,
+                chances=0,
+                yellow_cards=0,
+                red_cards=0
+            )
+
             match, success = Match.objects.get_or_create(
                 matchday=matchday,
                 is_home_match=is_home_match,
@@ -75,5 +85,4 @@ class WonByDefaultMatchRowParser(BaseParser):
                 home_team_statistics=home_team_stat,
                 guest_team_statistics=guest_team_stat
             )
-
         return match
