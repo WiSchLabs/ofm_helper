@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
-from django.core.urlresolvers import reverse
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -147,11 +145,11 @@ ENCRYPTED_FIELDS_KEYDIR = os.path.join(BASE_DIR, 'fieldkeys')
 
 AUTH_USER_MODEL = 'users.OFMUser'
 
-LOGIN_URL = reverse('core:login')
-LOGIN_REDIRECT_URL = reverse('core:home')
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_URL = reverse('core:logout')
-LOGOUT_REDIRECT_URL = reverse('core:home')
+LOGOUT_URL = '/logout'
+LOGOUT_REDIRECT_URL = '/'
 
 USE_DISPLAY_FOR_AWS = False
 
