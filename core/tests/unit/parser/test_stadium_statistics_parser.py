@@ -18,7 +18,7 @@ class StadiumStatisticsParserTest(TestCase):
         matchday2 = MatchdayFactory.create(number=2)
         self.match2 = MatchFactory.create(user=self.user, matchday=matchday2)
 
-        self.parser = StadiumStatisticsParser(testdata, self.user)
+        self.parser = StadiumStatisticsParser(testdata, self.user, self.match2)
 
     def test_stadium_environment_parser_contains_correct_types(self):
         stadium_stat = self.parser.parse()

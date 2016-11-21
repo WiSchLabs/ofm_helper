@@ -9,12 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class StadiumStandStatisticsParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, match):
         self.html_source = html_source
         self.user = user
 
-        # we assume to have parsed the match beforehand
-        match = Match.objects.filter(user=self.user).order_by('matchday')[0]
         self.match_stadium_stat = MatchStadiumStatistics.objects.filter(match=match)[0]
 
     def parse(self):

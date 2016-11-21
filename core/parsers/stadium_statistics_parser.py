@@ -9,9 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class StadiumStatisticsParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, match):
         self.html_source = html_source
         self.user = user
+        self.match = match
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
@@ -24,11 +25,11 @@ class StadiumStatisticsParser(BaseParser):
         :rtype: MatchStadiumStatistics
         """
 
-        # we assume to have parsed the match beforehand
-        match = Match.objects.filter(user=self.user).order_by('matchday')[0]
         last_home_matches = Match.objects.filter(user=self.user, stadium_statistics__isnull=False).order_by('matchday')
         last_stadium_level = None
         if last_home_matches.count() > 0:
+            # only consider matches statistics BEFORE current match
+            last_home_matches = [match for match in last_home_matches if match.matchday.number <= self.match.matchday.number]
             last_home_match = last_home_matches[0]
             last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
 
@@ -71,7 +72,7 @@ class StadiumStatisticsParser(BaseParser):
         )
 
         match_stadium_stat, success = MatchStadiumStatistics.objects.get_or_create(
-            match=match,
+            match=self.match,
             level=stadium_level
         )
 

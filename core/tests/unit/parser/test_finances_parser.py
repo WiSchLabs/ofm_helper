@@ -15,7 +15,7 @@ class FinancesParserTest(TestCase):
         testdata = open(os.path.join(TESTDATA_PATH, 'finances.html'), encoding='utf8')
         self.matchday = MatchdayFactory.create()
         self.user = OFMUserFactory.create()
-        self.parser = FinancesParser(testdata, self.user)
+        self.parser = FinancesParser(testdata, self.user, self.matchday)
         self.finances = self.parser.parse()
 
     def test_finances_parser(self):

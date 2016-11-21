@@ -1,8 +1,9 @@
+import logging
+
 from bs4 import BeautifulSoup
 
-from core.models import Player, PlayerStatistics, Matchday, Contract
+from core.models import Player, PlayerStatistics, Contract
 from core.parsers.base_parser import BaseParser
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -10,9 +11,10 @@ MULTIVALUE_SEPARATOR = '/'
 
 
 class PlayerStatisticsParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, matchday):
         self.html_source = html_source
         self.user = user
+        self.matchday = matchday
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
@@ -30,8 +32,6 @@ class PlayerStatisticsParser(BaseParser):
         return [self.parse_row(player_row) for player_row in player_list]
 
     def parse_row(self, player_row):
-        # we assume to have parsed the matchday beforehand
-        matchday = Matchday.objects.all()[0]
         player_stat_values = self._filter_invalid_cells(player_row.find_all('td'))
 
         strength = player_stat_values[4].get_text().strip(' ')
@@ -58,7 +58,7 @@ class PlayerStatisticsParser(BaseParser):
         player = self._parse_player(player_stat_values)
 
         parsed_player_stat, success = PlayerStatistics.objects.get_or_create(
-            matchday=matchday,
+            matchday=self.matchday,
             player=player
         )
         logger.debug('===== PlayerStatistics parsed: %s' % parsed_player_stat)
@@ -85,21 +85,22 @@ class PlayerStatisticsParser(BaseParser):
     def _parse_player(self, player_stat_values):
         ofm_id = player_stat_values[2].a['href'].split('/player/')[1].split('-')[0]
 
-        # we assume to have parsed the matchday beforehand
-        matchday = Matchday.objects.all()[0]
-
         # we assume to have parsed the players beforehand
         player = Player.objects.get(id=ofm_id)
+        self._create_contract(player)
 
-        self._create_contract(player, matchday)
         return player
 
-    def _create_contract(self, player, matchday):
+    def _create_contract(self, player):
         existing_contracts = Contract.objects.filter(player=player, user=self.user, sold_on_matchday=None)
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
-            contract, success = Contract.objects.get_or_create(player=player, user=self.user, bought_on_matchday=matchday)
+            contract, success = Contract.objects.get_or_create(
+                player=player,
+                user=self.user,
+                bought_on_matchday=self.matchday
+            )
         return contract
 
     def _get_value_from_multivalue_table_cell(self, field, index):

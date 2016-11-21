@@ -15,11 +15,11 @@ from core.web.ofm_page_constants import Constants
 
 
 class ParserManager:
-    matchday_already_parsed = None
+    parsed_matchday = None
     players_already_parsed = False
 
     def parse_all_ofm_data(self, request, site_manager):
-        self.matchday_already_parsed = self.parse_matchday(request, site_manager)
+        self.parsed_matchday = self.parse_matchday(request, site_manager)
         self.parse_players(request, site_manager)
         self.players_already_parsed = True
         self.parse_player_statistics(request, site_manager)
@@ -30,7 +30,7 @@ class ParserManager:
         self.reset_parsing_flags()
 
     def reset_parsing_flags(self):
-        self.matchday_already_parsed = None
+        self.parsed_matchday = None
         self.players_already_parsed = False
 
     def parse_ofm_version(self, site_manager):
@@ -44,36 +44,36 @@ class ParserManager:
         return matchday_parser.parse()
     
     def parse_players(self, request, site_manager):
-        if not self.matchday_already_parsed:
-            self.parse_matchday(request, site_manager)
+        if not self.parsed_matchday:
+            self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
-        players_parser = PlayersParser(site_manager.browser.page_source, request.user)
+        players_parser = PlayersParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return players_parser.parse()
 
     def parse_player_statistics(self, request, site_manager):
         if not self.players_already_parsed:
             self.parse_players(request, site_manager)
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
-        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user)
+        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return player_stat_parser.parse()
 
     def parse_awp_boundaries(self, request, site_manager):
-        if not self.matchday_already_parsed:
-            self.parse_matchday(request, site_manager)
+        if not self.parsed_matchday:
+            self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
-        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user)
+        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return awp_boundaries_parser.parse()
 
     def parse_finances(self, request, site_manager):
-        if not self.matchday_already_parsed:
-            self.parse_matchday(request, site_manager)
+        if not self.parsed_matchday:
+            self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
-        finances_parser = FinancesParser(site_manager.browser.page_source, request.user)
+        finances_parser = FinancesParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return finances_parser.parse()
 
     def parse_all_matches(self, request, site_manager):
-        if not self.matchday_already_parsed:
-            self.matchday_already_parsed = self.parse_matchday(request, site_manager)
+        if not self.parsed_matchday:
+            self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.LEAGUE.MATCH_SCHEDULE)
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
 
@@ -86,7 +86,7 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
-        is_current_matchday = int(row.find_all('td')[0].get_text()) == self.matchday_already_parsed.number
+        is_current_matchday = int(row.find_all('td')[0].get_text()) == self.parsed_matchday.number
 
         if match_report_image:
             # match took place
@@ -97,7 +97,7 @@ class ParserManager:
                 match = match_parser.parse()
 
                 if is_home_match and is_current_matchday:
-                    self._parse_stadium_statistics(request, site_manager)
+                    self._parse_stadium_statistics(request, site_manager, match)
 
                 return match
         elif "-:-" in match_result:
@@ -108,11 +108,11 @@ class ParserManager:
             match_parser = WonByDefaultMatchRowParser(row, request.user)
             return match_parser.parse()
 
-    def _parse_stadium_statistics(self, request, site_manager):
+    def _parse_stadium_statistics(self, request, site_manager, match):
         site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
-        stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user)
+        stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_statistics_parser.parse()
 
         site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
-        stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user)
-        return stadium_stand_stat_parser.parse()
+        stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user, match)
+        stadium_stand_stat_parser.parse()

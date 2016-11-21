@@ -1,16 +1,18 @@
+import logging
+
 from bs4 import BeautifulSoup
 
-from core.models import Player, Matchday, Season, Country, Contract
+from core.models import Player, Season, Country, Contract
 from core.parsers.base_parser import BaseParser
-import logging
 
 logger = logging.getLogger(__name__)
 
 
 class PlayersParser(BaseParser):
-    def __init__(self, html_source, user):
+    def __init__(self, html_source, user, matchday):
         self.html_source = html_source
         self.user = user
+        self.matchday = matchday
 
     def parse(self):
         soup = BeautifulSoup(self.html_source, "html.parser")
@@ -29,13 +31,12 @@ class PlayersParser(BaseParser):
         return parsed_players
 
     def parse_row(self, player_row):
-        matchday = Matchday.objects.all()[0]
         player_values = self._filter_invalid_cells(player_row.find_all('td'))
         ofm_id = player_row.find_all('input', class_='playerid')[0]['value']
         name = player_values[6].a.get_text().replace('\n', '').replace('\t', '').strip(' ')
         position = player_values[5].find_all('span')[1].get_text()
         age = int(player_values[7].get_text())
-        birth_season, success = Season.objects.get_or_create(number=matchday.season.number - age)
+        birth_season, success = Season.objects.get_or_create(number=self.matchday.season.number - age)
 
         displayed_country = player_values[8].get_text().replace('\n', '').replace('\t', '').strip(' ')
         country_name = ''.join([i for i in displayed_country if not i.isdigit()])
@@ -52,12 +53,12 @@ class PlayersParser(BaseParser):
 
         logger.debug('===== Player parsed: %s' % player.name)
 
-        self._create_contract(player, matchday)
+        self._create_contract(player)
         logger.debug('===== Contract created.')
 
         return player
 
-    def _create_contract(self, player, matchday):
+    def _create_contract(self, player):
         existing_contracts = Contract.objects.filter(player=player, user=self.user, sold_on_matchday=None)
 
         if existing_contracts.count() > 0:
@@ -66,7 +67,7 @@ class PlayersParser(BaseParser):
             contract, success = Contract.objects.get_or_create(
                 player=player,
                 user=self.user,
-                bought_on_matchday=matchday
+                bought_on_matchday=self.matchday
             )
 
         return contract
@@ -77,5 +78,5 @@ class PlayersParser(BaseParser):
 
         for player in sold_players:
             contract = Contract.objects.get(player=player, user=self.user, sold_on_matchday=None)  # latest contract
-            contract.sold_on_matchday = Matchday.objects.all()[0]  # assume today
+            contract.sold_on_matchday = self.matchday  # assume today
             contract.save()
