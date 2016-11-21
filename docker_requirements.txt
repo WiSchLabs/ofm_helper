@@ -1,0 +1,5 @@
+# local webserver for serving django
+gunicorn
+
+# postgres requirement
+psycopg2
