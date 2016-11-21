@@ -589,8 +589,16 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         match_stat['home_team'] = home_team_name
         match_stat['guest_team'] = guest_team_name
         match_stat['result'] = result
-        match_stat['home_strength'] = match.home_team_statistics.strength
-        match_stat['guest_strength'] = match.guest_team_statistics.strength
+        home_strength = match.home_team_statistics.strength
+        if home_strength == int(home_strength):
+            match_stat['home_strength'] = int(home_strength)
+        else:
+            match_stat['home_strength'] = '{:.1f}'.format(home_strength)
+        guest_strength = match.guest_team_statistics.strength
+        if guest_strength == int(guest_strength):
+            match_stat['guest_strength'] = int(guest_strength)
+        else:
+            match_stat['guest_strength'] = '{:.1f}'.format(guest_strength)
         match_stat['home_ball_possession'] = str(match.home_team_statistics.ball_possession) + " %"
         match_stat['guest_ball_possession'] = str(match.guest_team_statistics.ball_possession) + " %"
         match_stat['home_chances'] = match.home_team_statistics.chances
@@ -734,13 +742,13 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         if home_strength == int(home_strength):
             match_stadium_stat['home_strength'] = int(home_strength)
         else:
-            match_stadium_stat['home_strength'] = home_strength
+            match_stadium_stat['home_strength'] = '{:.1f}'.format(home_strength)
         guest_strength = stadium_stat.match.guest_team_statistics.strength
         if guest_strength == int(guest_strength):
             match_stadium_stat['guest_strength'] = int(guest_strength)
         else:
-            match_stadium_stat['guest_strength'] = guest_strength
-        harmonic_strength = 2 * match_stadium_stat['home_strength'] * match_stadium_stat['guest_strength'] / (match_stadium_stat['home_strength'] + match_stadium_stat['guest_strength'])
+            match_stadium_stat['guest_strength'] = '{:.1f}'.format(guest_strength)
+        harmonic_strength = 2 * home_strength * guest_strength / (home_strength + guest_strength)
         match_stadium_stat['harmonic_strength'] = '{:.1f}'.format(harmonic_strength)
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
         match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
