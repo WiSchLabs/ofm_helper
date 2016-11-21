@@ -63,3 +63,4 @@ class WonByDefaultMatchRowParserTest(TestCase):
         self.assertEquals(self.match_stat.guest_team_statistics.id, match_stat2.guest_team_statistics.id)
         self.assertEquals(match_stat2.home_team_statistics.strength, '66')
         self.assertEquals(match_stat2.guest_team_statistics.strength, '1')
+        self.assertEquals(2, MatchTeamStatistics.objects.all().count())

@@ -58,3 +58,4 @@ class MatchParserTest(TestCase):
         self.assertEquals(self.match_stat.guest_team_statistics.id, match_stat2.guest_team_statistics.id)
         self.assertEquals(match_stat2.home_team_statistics.strength, '42')
         self.assertEquals(match_stat2.guest_team_statistics.strength, '69')
+        self.assertEquals(2, MatchTeamStatistics.objects.all().count())
