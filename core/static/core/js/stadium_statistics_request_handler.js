@@ -23,7 +23,7 @@ function get_current_params(){
 
     var params = {
         tolerance: $('#tolerance-slider').attr('value'),
-        harmonic_strength: Number(2*strength1*strength2/(strength1+strength2)).toFixed(0),
+        harmonic_strength: Number(2 * strength1 * strength2 / (strength1 + strength2)).toFixed(0),
         configuration_filter: selected_config
     };
 

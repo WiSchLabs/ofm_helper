@@ -244,7 +244,7 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         income_sponsoring = newer_finances.income_sponsoring
         if older_finances:
             income_sponsoring = newer_finances.income_sponsoring - older_finances.income_sponsoring
-            
+
         income_cup = newer_finances.income_cup
         if older_finances:
             income_cup = newer_finances.income_cup - older_finances.income_cup
@@ -252,67 +252,67 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         income_interests = newer_finances.income_interests
         if older_finances:
             income_interests = newer_finances.income_interests - older_finances.income_interests
-            
+
         income_loan = newer_finances.income_loan
         if older_finances:
             income_loan = newer_finances.income_loan - older_finances.income_loan
-            
+
         income_transfer = newer_finances.income_transfer
         if older_finances:
             income_transfer = newer_finances.income_transfer - older_finances.income_transfer
-            
+
         income_visitors_friendlies = newer_finances.income_visitors_friendlies
         if older_finances:
             income_visitors_friendlies = newer_finances.income_visitors_friendlies - older_finances.income_visitors_friendlies
-            
+
         income_friendlies = newer_finances.income_friendlies
         if older_finances:
             income_friendlies = newer_finances.income_friendlies - older_finances.income_friendlies
-            
+
         income_funcup = newer_finances.income_funcup
         if older_finances:
             income_funcup = newer_finances.income_funcup - older_finances.income_funcup
-            
+
         income_betting = newer_finances.income_betting
         if older_finances:
             income_betting = newer_finances.income_betting - older_finances.income_betting
-            
+
         expenses_player_salaries = -newer_finances.expenses_player_salaries
         if older_finances:
             expenses_player_salaries = -(newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries)
-            
+
         expenses_stadium = -newer_finances.expenses_stadium
         if older_finances:
             expenses_stadium = -(newer_finances.expenses_stadium - older_finances.expenses_stadium)
-            
+
         expenses_youth = -newer_finances.expenses_youth
         if older_finances:
             expenses_youth = -(newer_finances.expenses_youth - older_finances.expenses_youth)
-            
+
         expenses_interests = -newer_finances.expenses_interests
         if older_finances:
             expenses_interests = -(newer_finances.expenses_interests - older_finances.expenses_interests)
-            
+
         expenses_trainings = -newer_finances.expenses_trainings
         if older_finances:
             expenses_trainings = -(newer_finances.expenses_trainings - older_finances.expenses_trainings)
-            
+
         expenses_transfer = -newer_finances.expenses_transfer
         if older_finances:
             expenses_transfer = -(newer_finances.expenses_transfer - older_finances.expenses_transfer)
-            
+
         expenses_compensation = -newer_finances.expenses_compensation
         if older_finances:
             expenses_compensation = -(newer_finances.expenses_compensation - older_finances.expenses_compensation)
-            
+
         expenses_friendlies = -newer_finances.expenses_friendlies
         if older_finances:
             expenses_friendlies = -(newer_finances.expenses_friendlies - older_finances.expenses_friendlies)
-            
+
         expenses_funcup = -newer_finances.expenses_funcup
         if older_finances:
             expenses_funcup = -(newer_finances.expenses_funcup - older_finances.expenses_funcup)
-            
+
         expenses_betting = -newer_finances.expenses_betting
         if older_finances:
             expenses_betting = -(newer_finances.expenses_betting - older_finances.expenses_betting)
@@ -641,8 +641,8 @@ class StadiumStatisticsView(TemplateView):
             tolerance = self.request.COOKIES['tolerance']
         elif Match.objects.count() > 0:
             match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]  # latest home match
-            slider_min = min(match.home_team_statistics.strength, match.guest_team_statistics.strength)
-            slider_max = max(match.home_team_statistics.strength, match.guest_team_statistics.strength)
+            slider_min = int(min(match.home_team_statistics.strength, match.guest_team_statistics.strength))
+            slider_max = int(max(match.home_team_statistics.strength, match.guest_team_statistics.strength))
         else:
             slider_min = 100
             slider_max = 150
@@ -730,9 +730,18 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['earnings'] = 0
             match_stadium_stat['workload'] = 0
         match_stadium_stat['venue'] = stadium_stat.match.venue
-        match_stadium_stat['home_strength'] = stadium_stat.match.home_team_statistics.strength
-        match_stadium_stat['guest_strength'] = stadium_stat.match.guest_team_statistics.strength
-        match_stadium_stat['harmonic_strength'] = 2*match_stadium_stat['home_strength']*match_stadium_stat['guest_strength']/(match_stadium_stat['home_strength']+match_stadium_stat['guest_strength'])
+        home_strength = stadium_stat.match.home_team_statistics.strength
+        if home_strength == int(home_strength):
+            match_stadium_stat['home_strength'] = int(home_strength)
+        else:
+            match_stadium_stat['home_strength'] = home_strength
+        guest_strength = stadium_stat.match.guest_team_statistics.strength
+        if guest_strength == int(guest_strength):
+            match_stadium_stat['guest_strength'] = int(guest_strength)
+        else:
+            match_stadium_stat['guest_strength'] = guest_strength
+        harmonic_strength = 2 * match_stadium_stat['home_strength'] * match_stadium_stat['guest_strength'] / (match_stadium_stat['home_strength'] + match_stadium_stat['guest_strength'])
+        match_stadium_stat['harmonic_strength'] = '{:.1f}'.format(harmonic_strength)
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
         match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
         match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " &euro;)   " + str(stadium_stat.level.security.daily_costs) + " &euro;"

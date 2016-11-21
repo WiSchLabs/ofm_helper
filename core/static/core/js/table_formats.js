@@ -155,7 +155,7 @@ function awpDiffFormatter(value) {
 }
 
 function numberFormatter(value) {
-    return value.toLocaleString('de');
+    return value.toLocaleString('de-DE');
 }
 function moneyFormatter(value) {
     return numberFormatter(value) + " &euro;";
