@@ -61,13 +61,19 @@ class WonByDefaultMatchRowParser(BaseParser):
             yellow_cards=0,
             red_cards=0
         )
+        existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
-        match, success = Match.objects.get_or_create(
-            matchday=matchday,
-            is_home_match=is_home_match,
-            user=self.user,
-            home_team_statistics=home_team_stat,
-            guest_team_statistics=guest_team_stat
-        )
+        if existing_match:
+            match = existing_match[0]
+            match.home_team_statistics = home_team_stat
+            match.guest_team_statistics = guest_team_stat
+        else:
+            match, success = Match.objects.get_or_create(
+                matchday=matchday,
+                is_home_match=is_home_match,
+                user=self.user,
+                home_team_statistics=home_team_stat,
+                guest_team_statistics=guest_team_stat
+            )
 
         return match
