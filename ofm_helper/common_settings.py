@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+from django.core.urlresolvers import reverse
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -76,20 +76,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ofm_helper.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, "database", 'db.sqlite3'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -105,10 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'de-de'
 
@@ -158,6 +146,12 @@ LOGGING = {
 ENCRYPTED_FIELDS_KEYDIR = os.path.join(BASE_DIR, 'fieldkeys')
 
 AUTH_USER_MODEL = 'users.OFMUser'
+
+LOGIN_URL = reverse('core:login')
+LOGIN_REDIRECT_URL = reverse('core:home')
+
+LOGOUT_URL = reverse('core:logout')
+LOGOUT_REDIRECT_URL = reverse('core:home')
 
 USE_DISPLAY_FOR_AWS = False
 
