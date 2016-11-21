@@ -55,29 +55,28 @@ class MatchParser(BaseParser):
 
         existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
-        if existing_match:
-            if len(existing_match) == 1:
-                match = existing_match[0]
+        if len(existing_match) == 1:
+            match = existing_match[0]
 
-                match.home_team_statistics.score = home_team_score
-                match.home_team_statistics.team_name = home_team_name
-                match.home_team_statistics.strength = home_team_strength
-                match.home_team_statistics.ball_possession = home_team_ball_possession
-                match.home_team_statistics.chances = home_team_chances
-                match.home_team_statistics.yellow_cards = home_team_yellow_cards
-                match.home_team_statistics.red_cards = home_team_red_cards
+            match.home_team_statistics.score = home_team_score
+            match.home_team_statistics.team_name = home_team_name
+            match.home_team_statistics.strength = home_team_strength
+            match.home_team_statistics.ball_possession = home_team_ball_possession
+            match.home_team_statistics.chances = home_team_chances
+            match.home_team_statistics.yellow_cards = home_team_yellow_cards
+            match.home_team_statistics.red_cards = home_team_red_cards
+            match.home_team_statistics.save()
 
-                match.guest_team_statistics.score = guest_team_score
-                match.guest_team_statistics.team_name = guest_team_name
-                match.guest_team_statistics.strength = guest_team_strength
-                match.guest_team_statistics.ball_possession = guest_team_ball_possession
-                match.guest_team_statistics.chances = guest_team_chances
-                match.guest_team_statistics.yellow_cards = guest_team_yellow_cards
-                match.guest_team_statistics.red_cards = guest_team_red_cards
-            else:
-                raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
-        else:
-            home_team_stat, success = MatchTeamStatistics.objects.get_or_create(
+            match.guest_team_statistics.score = guest_team_score
+            match.guest_team_statistics.team_name = guest_team_name
+            match.guest_team_statistics.strength = guest_team_strength
+            match.guest_team_statistics.ball_possession = guest_team_ball_possession
+            match.guest_team_statistics.chances = guest_team_chances
+            match.guest_team_statistics.yellow_cards = guest_team_yellow_cards
+            match.guest_team_statistics.red_cards = guest_team_red_cards
+            match.guest_team_statistics.save()
+        elif len(existing_match) == 0:
+            home_team_stat = MatchTeamStatistics.objects.create(
                 score=home_team_score,
                 team_name=home_team_name,
                 strength=home_team_strength,
@@ -87,7 +86,7 @@ class MatchParser(BaseParser):
                 red_cards=home_team_red_cards
             )
 
-            guest_team_stat, success = MatchTeamStatistics.objects.get_or_create(
+            guest_team_stat = MatchTeamStatistics.objects.create(
                 score=guest_team_score,
                 team_name=guest_team_name,
                 strength=guest_team_strength,
@@ -97,13 +96,15 @@ class MatchParser(BaseParser):
                 red_cards=guest_team_red_cards
             )
 
-            match, success = Match.objects.get_or_create(
+            match = Match.objects.create(
                 matchday=matchday,
                 is_home_match=self.is_home_match,
                 user=self.user,
                 home_team_statistics=home_team_stat,
                 guest_team_statistics=guest_team_stat
             )
+        else:
+            raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
 
         match.venue = venue
         match.save()

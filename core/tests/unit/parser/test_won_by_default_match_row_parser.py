@@ -49,3 +49,17 @@ class WonByDefaultMatchRowParserTest(TestCase):
         self.assertEquals(self.match_stat.guest_team_statistics.chances, 0)
         self.assertEquals(self.match_stat.guest_team_statistics.yellow_cards, 0)
         self.assertEquals(self.match_stat.guest_team_statistics.red_cards, 0)
+
+    def test_match_gets_updated_on_parsing_again(self):
+        testdata = open(os.path.join(TESTDATA_PATH, 'home_match_row_won_by_default_2.html'), encoding='utf8')
+
+        soup = BeautifulSoup(testdata, "html.parser")
+
+        self.parser = WonByDefaultMatchRowParser(soup, self.user)
+        match_stat2 = self.parser.parse()
+
+        self.assertEquals(self.match_stat.id, match_stat2.id)
+        self.assertEquals(self.match_stat.home_team_statistics.id, match_stat2.home_team_statistics.id)
+        self.assertEquals(self.match_stat.guest_team_statistics.id, match_stat2.guest_team_statistics.id)
+        self.assertEquals(match_stat2.home_team_statistics.strength, '66')
+        self.assertEquals(match_stat2.guest_team_statistics.strength, '1')

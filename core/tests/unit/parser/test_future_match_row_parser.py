@@ -19,8 +19,8 @@ class FutureMatchRowParserTest(TestCase):
 
         soup = BeautifulSoup(testdata, "html.parser")
 
-        self.parser = FutureMatchRowParser(soup, self.user)
-        self.match_stat = self.parser.parse()
+        parser = FutureMatchRowParser(soup, self.user)
+        self.match_stat = parser.parse()
 
     def test_match_parser_general_informations(self):
         self.assertEquals(type(self.match_stat), Match)
@@ -49,3 +49,18 @@ class FutureMatchRowParserTest(TestCase):
         self.assertEquals(self.match_stat.guest_team_statistics.chances, 0)
         self.assertEquals(self.match_stat.guest_team_statistics.yellow_cards, 0)
         self.assertEquals(self.match_stat.guest_team_statistics.red_cards, 0)
+
+    def test_match_gets_updated_on_parsing_again(self):
+        testdata = open(os.path.join(TESTDATA_PATH, 'future_match_row_2.html'), encoding='utf8')
+
+        soup = BeautifulSoup(testdata, "html.parser")
+
+        parser = FutureMatchRowParser(soup, self.user)
+        match_stat2 = parser.parse()
+
+        self.assertEquals(self.match_stat.id, match_stat2.id)
+        self.assertEquals(self.match_stat.home_team_statistics.id, match_stat2.home_team_statistics.id)
+        self.assertEquals(self.match_stat.guest_team_statistics.id, match_stat2.guest_team_statistics.id)
+        self.assertEquals(match_stat2.home_team_statistics.strength, '61')
+        self.assertEquals(match_stat2.guest_team_statistics.strength, '29')
+

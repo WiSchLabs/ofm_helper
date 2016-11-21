@@ -16,8 +16,8 @@ class MatchParserTest(TestCase):
         MatchdayFactory.create(number=1)
         self.user = OFMUserFactory.create()
 
-        self.parser = MatchParser(testdata, self.user, True)
-        self.match_stat = self.parser.parse()
+        parser = MatchParser(testdata, self.user, True)
+        self.match_stat = parser.parse()
 
     def test_match_parser_general_informations(self):
         self.assertEquals(type(self.match_stat), Match)
@@ -46,3 +46,15 @@ class MatchParserTest(TestCase):
         self.assertEquals(self.match_stat.guest_team_statistics.chances, '4')
         self.assertEquals(self.match_stat.guest_team_statistics.yellow_cards, '0')
         self.assertEquals(self.match_stat.guest_team_statistics.red_cards, '0')
+
+    def test_match_gets_updated_on_parsing_again(self):
+        testdata = open(os.path.join(TESTDATA_PATH, 'home_match_2.html'), encoding='utf8')
+
+        parser = MatchParser(testdata, self.user, True)
+        match_stat2 = parser.parse()
+
+        self.assertEquals(self.match_stat.id, match_stat2.id)
+        self.assertEquals(self.match_stat.home_team_statistics.id, match_stat2.home_team_statistics.id)
+        self.assertEquals(self.match_stat.guest_team_statistics.id, match_stat2.guest_team_statistics.id)
+        self.assertEquals(match_stat2.home_team_statistics.strength, '42')
+        self.assertEquals(match_stat2.guest_team_statistics.strength, '69')
