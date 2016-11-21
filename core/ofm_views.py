@@ -1,4 +1,5 @@
 import ast
+import locale
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from chartit import DataPool, Chart
@@ -562,6 +563,7 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         Returns:
             A dictionary of match data.
         """
+        locale.setlocale(locale.LC_ALL, '')
 
         if match.is_home_match:
             home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
@@ -593,14 +595,14 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         if home_strength == int(home_strength):
             match_stat['home_strength'] = int(home_strength)
         else:
-            match_stat['home_strength'] = '{:.1f}'.format(home_strength)
+            match_stat['home_strength'] = locale.format("%.1f", home_strength)
         guest_strength = match.guest_team_statistics.strength
         if guest_strength == int(guest_strength):
             match_stat['guest_strength'] = int(guest_strength)
         else:
-            match_stat['guest_strength'] = '{:.1f}'.format(guest_strength)
-        match_stat['home_ball_possession'] = str(match.home_team_statistics.ball_possession) + " %"
-        match_stat['guest_ball_possession'] = str(match.guest_team_statistics.ball_possession) + " %"
+            match_stat['guest_strength'] = locale.format("%.1f", guest_strength)
+        match_stat['home_ball_possession'] = locale.format("%.1f", match.home_team_statistics.ball_possession) + " %"
+        match_stat['guest_ball_possession'] = locale.format("%.1f", match.guest_team_statistics.ball_possession) + " %"
         match_stat['home_chances'] = match.home_team_statistics.chances
         match_stat['guest_chances'] = match.guest_team_statistics.chances
         match_stat['home_yellow_cards'] = match.home_team_statistics.yellow_cards
@@ -722,6 +724,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         Returns:
             A dictionary of stadium statistics data.
         """
+        locale.setlocale(locale.LC_ALL, '')
 
         match_stadium_stat = dict()
         match_stadium_stat['season'] = stadium_stat.match.matchday.season.number
@@ -730,7 +733,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['visitors'] = stadium_stat.visitors
             match_stadium_stat['capacity'] = stadium_stat.capacity
             match_stadium_stat['earnings'] = stadium_stat.earnings
-            match_stadium_stat['workload'] = '{:.2f}'.format(stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
+            match_stadium_stat['workload'] = locale.format("%.2f", stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
         else:
             # all stadium stands were under construction during match
             match_stadium_stat['visitors'] = 0
@@ -742,14 +745,14 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         if home_strength == int(home_strength):
             match_stadium_stat['home_strength'] = int(home_strength)
         else:
-            match_stadium_stat['home_strength'] = '{:.1f}'.format(home_strength)
+            match_stadium_stat['home_strength'] = locale.format("%.1f", home_strength)
         guest_strength = stadium_stat.match.guest_team_statistics.strength
         if guest_strength == int(guest_strength):
             match_stadium_stat['guest_strength'] = int(guest_strength)
         else:
-            match_stadium_stat['guest_strength'] = '{:.1f}'.format(guest_strength)
+            match_stadium_stat['guest_strength'] = locale.format("%.1f", guest_strength)
         harmonic_strength = 2 * home_strength * guest_strength / (home_strength + guest_strength)
-        match_stadium_stat['harmonic_strength'] = '{:.1f}'.format(harmonic_strength)
+        match_stadium_stat['harmonic_strength'] = locale.format("%.1f", harmonic_strength)
         match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
         match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
         match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " &euro;)   " + str(stadium_stat.level.security.daily_costs) + " &euro;"
