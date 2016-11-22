@@ -81,12 +81,12 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
 
         self.assertEquals(len(returned_json_data), 2)
 
-        self.assertEquals(float(returned_json_data[0]['home_strength']), 50)
-        self.assertEquals(float(returned_json_data[0]['guest_strength']), 50)
-        self.assertEquals(float(returned_json_data[0]['harmonic_strength']), 50)
-        self.assertEquals(float(returned_json_data[1]['home_strength']), 30)
-        self.assertEquals(float(returned_json_data[1]['guest_strength']), 150)
-        self.assertEquals(float(returned_json_data[1]['harmonic_strength']), 50)
+        self.assertEquals(returned_json_data[0]['home_strength'], 50)
+        self.assertEquals(returned_json_data[0]['guest_strength'], 50)
+        self.assertEquals(returned_json_data[0]['harmonic_strength'], '50,0')
+        self.assertEquals(returned_json_data[1]['home_strength'], 30)
+        self.assertEquals(returned_json_data[1]['guest_strength'], 150)
+        self.assertEquals(returned_json_data[1]['harmonic_strength'], '50,0')
 
     def test_user_can_narrow_statistics_with_strength_slider_by_cookie(self):
         cookies = self.client.cookies
@@ -107,9 +107,9 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
 
         self.assertEquals(returned_json_data[0]['visitors'], 168)
         self.assertEquals(returned_json_data[0]['capacity'], 400)
-        self.assertEquals(float(returned_json_data[0]['home_strength']), 50)
-        self.assertEquals(float(returned_json_data[0]['guest_strength']), 50)
-        self.assertEquals(float(returned_json_data[0]['harmonic_strength']), 50)
+        self.assertEquals(returned_json_data[0]['home_strength'], 50)
+        self.assertEquals(returned_json_data[0]['guest_strength'], 50)
+        self.assertEquals(returned_json_data[0]['harmonic_strength'], '50,0')
         self.assertEquals(returned_json_data[0]['venue'], self.match.venue)
 
     def test_default_values_from_last_match_for_strength_slider(self):
