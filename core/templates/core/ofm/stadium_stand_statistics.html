@@ -6,8 +6,72 @@
 
     {% if sector_name %}
 
-        <h1 class="page-header">Saison {{season}}  -  {{sector_name}}-Tribüne</h1>
-        <div id='chart_container'></div>
+        <h1 class="page-header">Saison <var id="title_season">{{ season }}</var>  -  <var id="title_sector">{{ sector_name }}</var>-Tribüne</h1>
+
+        <div id="table-toolbar">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    {% if seasons|length > 0 %}
+                        <label for="season">Zeige die Daten der Saison </label>
+
+                        <select class="form-control" id="season">
+                            {% for s in seasons %}
+                                <option value="{{ s.number }}" {% if s.number == season|add:"0" %}selected{% endif %}>{{ s.number }}&nbsp;</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    {% if sectors|length > 0 %}
+                        <label for="sector"> zu der Tribüne </label>
+
+                        <select class="form-control" id="sector">
+                            {% for s in sectors %}
+                                <option value="{{ s|slice:"1" }}" data-name="{{ s }}" {% if s|slice:"1" == sector %}selected{% endif %}>{{ s }}&nbsp;</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <script>
+            var season_number = $("#season").val();
+            var sector = $("#sector").val();
+        </script>
+        <script src="{% static 'core/js/chart_options.js' %}"></script>
+
+        <script>
+            var stand_chart_options = $.extend( true, {}, chart_options );
+
+            function requestChartData(season_number, sector) {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'core:ofm:stadium_stand_statistics_chart_json' %}",
+                    data: {season_number: season_number, sector: sector},
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        stand_chart_options.series = data['series'];
+                        stand_chart_options.xAxis.categories = data['categories'];
+                        stand_chart_options.title.text='Tribünenstatistik der Saison ' + season_number;
+                        $('#stand_chart_container').highcharts(stand_chart_options);
+                    }
+                });
+            }
+
+            function update_chart() {
+                var season_number = $("#season").val();
+                var sector = $("#sector").val();
+                var sector_name = $("#sector option:selected").attr('data-name');
+                requestChartData(season_number, sector);
+                $('#title_season').text(season_number);
+                $('#title_sector').text(sector_name);
+            }
+
+            $('#season').on('change', function () { update_chart(); });
+            $('#sector').on('change', function () { update_chart(); });
+        </script>
+        <div id='stand_chart_container'></div>
 
     {% else %}
 

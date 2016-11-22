@@ -24,7 +24,8 @@ class OFMStadiumStandStatisticsViewTestCase(TestCase):
     def test_user_can_see_his_data(self):
         response = self.client.get('/ofm/stadium_stand/?sector=N')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('chart' in response.context_data)
+        self.assertTrue('seasons' in response.context_data)
+        self.assertTrue('sectors' in response.context_data)
         self.assertTrue('season' in response.context_data)
         self.assertTrue('sector_name' in response.context_data)
         self.assertEqual(response.context_data['sector_name'], 'Nord')

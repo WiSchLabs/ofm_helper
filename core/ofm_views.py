@@ -803,55 +803,46 @@ class StadiumStandStatisticsView(TemplateView):
                                                          stadium_statistics__match__matchday__season__number=season_number,
                                                          sector=sector)
 
+        seasons = []
+        sectors = []
+        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user).order_by('stadium_statistics__match__matchday')
+        for stat in statistics:
+            if stat.stadium_statistics.match.matchday.season not in seasons:
+                seasons.append(stat.stadium_statistics.match.matchday.season)
+            if stat.get_sector() not in sectors:
+                sectors.append(stat.get_sector())
+
+        context['seasons'] = seasons
+        context['sectors'] = sectors
+
+        context['sector'] = sector
         context['season'] = season_number
         if queryset.count() > 0:
             context['sector_name'] = queryset[0].get_sector()
 
-        chart_data = DataPool(
-            series=[{
-                'options': {
-                    'source': queryset
-                },
-                'terms': {
-                    'Spieltag': 'stadium_statistics__match__matchday__number',
-                    'Kapazität': 'level__capacity',
-                    'Besucher': 'visitors',
-                    'Ticketpreis': 'ticket_price',
-                    'Zustand': 'condition'
-                }
-            }]
-        )
-
-        chart = Chart(
-            datasource=chart_data,
-            series_options=[{
-                'options': {
-                    'type': 'spline',
-                    'xAxis': 0,
-                    'yAxis': 0,
-                    'zIndex': 1,
-                    'stacking': False
-                },
-                'terms': {'Spieltag': ['Kapazität', 'Besucher', ]}
-            }, {
-                'options': {
-                    'type': 'line',
-                    'xAxis': 1,
-                    'yAxis': 1,
-                    'stacking': False
-                },
-                'terms': {'Spieltag': ['Ticketpreis', 'Zustand', ]}
-            }],
-            chart_options={
-                'title': {
-                    'text': 'Tribünenstatistik'
-                },
-                'yAxis': {
-                    'min': 0
-                },
-            },
-        )
-
-        context['chart'] = chart
-
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+
+        current_season_number = Matchday.objects.all()[0].season.number
+        season_number = self.request.GET.get('season_number', default=current_season_number)
+        sector = self.request.GET.get('sector', 'N')
+        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
+                                                         stadium_statistics__match__matchday__season__number=season_number,
+                                                         sector=sector)
+
+        capacitites = [s.level.capacity for s in statistics]
+
+        chart_json = {
+            "data": [{
+                "name": 'Kapazität',
+                "data": capacitites
+            }],
+            "categories": [s.stadium_statistics.match.matchday.number for s in statistics]
+        }
+
+        return self.render_json_response(chart_json)
