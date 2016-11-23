@@ -36,24 +36,27 @@
 
         <script>
             var season_number = $("#season").val();
-            var sector = $("#sector").val();
+            var sector_abbr = $("#sector").val();
         </script>
         <script src="{% static 'core/js/chart_options.js' %}"></script>
 
         <script>
             var stand_chart_options = $.extend( true, {}, chart_options );
 
-            function requestChartData(season_number, sector) {
+            function requestChartData(season_number, sector_abbr) {
+                if (sector_abbr === undefined) {
+                    sector_abbr = "{{ sector }}";
+                }
                 $.ajax({
                     type: "GET",
                     url: "{% url 'core:ofm:stadium_stand_statistics_chart_json' %}",
-                    data: {season_number: season_number, sector: sector},
+                    data: {season_number: season_number, sector: sector_abbr},
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
                         stand_chart_options.series = data['series'];
                         stand_chart_options.xAxis.categories = data['categories'];
                         stand_chart_options.title.text='Tribünenstatistik der Saison ' + season_number;
+                        stand_chart_options.yAxis = data['yAxis'];
                         $('#stand_chart_container').highcharts(stand_chart_options);
                     }
                 });
@@ -61,9 +64,9 @@
 
             function update_chart() {
                 var season_number = $("#season").val();
-                var sector = $("#sector").val();
+                var sector_abbr = $("#sector").val();
                 var sector_name = $("#sector option:selected").attr('data-name');
-                requestChartData(season_number, sector);
+                requestChartData(season_number, sector_abbr);
                 $('#title_season').text(season_number);
                 $('#title_sector').text(sector_name);
             }

@@ -2,7 +2,6 @@ import ast
 import locale
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
-from chartit import DataPool, Chart
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned
 from django.utils.decorators import method_decorator
@@ -796,9 +795,9 @@ class StadiumStandStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StadiumStandStatisticsView, self).get_context_data(**kwargs)
 
-        current_season = Matchday.objects.all()[0].season
+        current_season_number = Matchday.objects.all()[0].season.number
         sector = self.request.GET.get('sector', 'N')
-        season_number = self.request.GET.get('season', current_season.number)
+        season_number = self.request.GET.get('season', current_season_number)
         queryset = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
                                                          stadium_statistics__match__matchday__season__number=season_number,
                                                          sector=sector)
@@ -827,22 +826,48 @@ class StadiumStandStatisticsView(TemplateView):
 class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
-
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
         sector = self.request.GET.get('sector', 'N')
         statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
-                                                         stadium_statistics__match__matchday__season__number=season_number,
-                                                         sector=sector)
-
-        capacitites = [s.level.capacity for s in statistics]
+                                                           stadium_statistics__match__matchday__season__number=season_number,
+                                                           sector=sector)
 
         chart_json = {
-            "data": [{
+            "series": [{
                 "name": 'Kapazität',
-                "data": capacitites
+                "data": [s.level.capacity for s in statistics],
+                "yAxis": 0
+            }, {
+                "name": 'Besucher',
+                "data": [s.visitors for s in statistics],
+                "yAxis": 0
+            }, {
+                "name": 'Ticketpreis',
+                "data": [s.ticket_price for s in statistics],
+                "yAxis": 1
+            }, {
+                "name": 'Zustand',
+                "data": [float(s.condition) for s in statistics],
+                "yAxis": 1
+            }, {
+                "name": 'Harmonische Stärke der Mannschaften',
+                 "data": [float("{0:.2f}".format(s.stadium_statistics.match.harmonic_strength)) for s in statistics],
+                "yAxis": 1
             }],
-            "categories": [s.stadium_statistics.match.matchday.number for s in statistics]
+            "categories": [s.stadium_statistics.match.matchday.number for s in statistics],
+            "yAxis": [{
+                "title": {
+                    "text": 'Kapazität & Besucher'
+                },
+                'min': 0
+            }, {
+                "title": {
+                    "text": 'Ticketpreis & Zustand & Stärke'
+                },
+                'min': 0,
+                "opposite": "true"
+            }]
         }
 
         return self.render_json_response(chart_json)
