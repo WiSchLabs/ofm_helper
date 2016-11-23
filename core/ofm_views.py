@@ -838,7 +838,7 @@ class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin,
                 "data": [s.level.capacity for s in statistics],
                 "yAxis": 0
             }, {
-                "name": 'Besucher',
+                "name": 'Zuschauer',
                 "data": [s.visitors for s in statistics],
                 "yAxis": 0
             }, {
@@ -850,19 +850,19 @@ class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin,
                 "data": [float(s.condition) for s in statistics],
                 "yAxis": 1
             }, {
-                "name": 'Harmonische Stärke der Mannschaften',
+                "name": 'Gemittelte Stärke der Mannschaften',
                  "data": [float("{0:.2f}".format(s.stadium_statistics.match.harmonic_strength)) for s in statistics],
                 "yAxis": 1
             }],
             "categories": [s.stadium_statistics.match.matchday.number for s in statistics],
             "yAxis": [{
                 "title": {
-                    "text": 'Kapazität & Besucher'
+                    "text": 'Kapazität & Zuschauer'
                 },
                 'min': 0
             }, {
                 "title": {
-                    "text": 'Ticketpreis & Zustand & Stärke'
+                    "text": 'Ticketpreis, Zustand & Stärke'
                 },
                 'min': 0,
                 "opposite": "true"
