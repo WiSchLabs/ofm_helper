@@ -563,7 +563,7 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         Returns:
             A dictionary of match data.
         """
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
         if match.is_home_match:
             home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
@@ -724,7 +724,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         Returns:
             A dictionary of stadium statistics data.
         """
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
         match_stadium_stat = dict()
         match_stadium_stat['season'] = stadium_stat.match.matchday.season.number
