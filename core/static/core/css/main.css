@@ -103,7 +103,7 @@ ul.nav li span { margin-right: 2rem; }
         left: -0.75em;
     }
 
-        ul.nav li span.glyphicon-ofm img { height: 2rem; }
+span.glyphicon-ofm img { height: 2rem; }
 
 ul.nav-sub {  padding-left: 10%; }
 

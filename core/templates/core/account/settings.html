@@ -8,4 +8,106 @@
         Hier kannst du deine persönlichen Einstellungen anpassen.
     </p>
 
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Registrierungsdaten
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <form id="user_form" method="post" action="{% url 'core:settings_save' %}">
+
+                {% csrf_token %}
+
+                <!-- Display each form. The as_p method wraps each element in a paragraph
+                     (<p>) element. This ensures each element appears on a new line,
+                     making everything look neater. -->
+                <div class="form-group">
+                    <label for="username">Benutzername</label>
+                    <input type="email" class="form-control" id="email" placeholder="E-Mail" name="email" value="{{ user.username }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-Mail</label>
+                    <input type="email" class="form-control" id="email" placeholder="E-Mail" name="email" value="{{ user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="password">Neues Passwort</label>
+                    <input type="password" class="form-control" id="password" placeholder="Passwort" name="password" value="{{ user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="password2">Neues Passwort bestätigen</label>
+                    <input type="password" class="form-control" id="password2" placeholder="Passwort" name="password2" value="{{ user.email }}">
+                </div>
+
+                <button type="submit" class="btn btn-success">Speichern</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <span class="glyphicon glyphicon-ofm">
+                    <img src="{% static 'core/img/OFM_icon.png' %}"/>
+                </span>
+                OFM-Zugangsdaten
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <form id="user_form" method="post" action="{% url 'core:settings_save' %}">
+
+                {% csrf_token %}
+
+                <!-- Display each form. The as_p method wraps each element in a paragraph
+                     (<p>) element. This ensures each element appears on a new line,
+                     making everything look neater. -->
+                <div class="form-group">
+                    <label for="ofm_username">
+                        OFM Benutzername
+                    </label>
+                    <input type="text" class="form-control" id="ofm_username" placeholder="OFM Benutzername" name="ofm_username" value="{{ user.ofm_username }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="ofm_password">
+                        Neues OFM Passwort
+                    </label>
+                    <input type="password" class="form-control" id="ofm_password" placeholder="OFM Passwort" name="ofm_password" value="{{ user.ofm_password }}">
+                </div>
+                <div class="form-group">
+                    <label for="ofm_password2">
+                        Neues OFM Passwort bestätigen
+                    </label>
+                    <input type="password" class="form-control" id="ofm_password2" placeholder="OFM Passwort" name="ofm_password2" value="{{ user.ofm_password }}">
+                </div>
+
+                <button type="submit" class="btn btn-success">Speichern</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Parser-Einstellung
+            </a>
+          </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <span style="color:darkgray;">Demnächst.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 {% endblock %}

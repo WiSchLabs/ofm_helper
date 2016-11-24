@@ -1,5 +1,7 @@
 {% extends "core/base.html" %}
 
+    {% load staticfiles %}
+
 {% block content %}
     <h1>Registrierung</h1>
 
@@ -30,15 +32,30 @@
                 <input type="password" class="form-control" id="password2" placeholder="Passwort" name="password2">
             </div>
             <div class="form-group">
-                <label for="ofm_username">Dein OFM Benutzername</label>
+                <label for="ofm_username">
+                    <span class="glyphicon glyphicon-ofm">
+                        <img src="{% static 'core/img/OFM_icon.png' %}"/>
+                    </span>
+                    Dein OFM Benutzername
+                </label>
                 <input type="text" class="form-control" id="ofm_username" placeholder="OFM Benutzername" name="ofm_username">
             </div>
             <div class="form-group">
-                <label for="ofm_password">Dein OFM Passwort</label>
+                <label for="ofm_password">
+                    <span class="glyphicon glyphicon-ofm">
+                        <img src="{% static 'core/img/OFM_icon.png' %}"/>
+                    </span>
+                    Dein OFM Passwort
+                </label>
                 <input type="password" class="form-control" id="ofm_password" placeholder="OFM Passwort" name="ofm_password">
             </div>
             <div class="form-group">
-                <label for="ofm_password2">OFM Passwort wiederholen</label>
+                <label for="ofm_password2">
+                    <span class="glyphicon glyphicon-ofm">
+                        <img src="{% static 'core/img/OFM_icon.png' %}"/>
+                    </span>
+                    OFM Passwort wiederholen
+                </label>
                 <input type="password" class="form-control" id="ofm_password2" placeholder="OFM Passwort" name="ofm_password2">
             </div>
 

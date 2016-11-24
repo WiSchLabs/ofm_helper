@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
     url(r'^settings/?$', views.settings_view, name='settings'),
+    url(r'^settings_save/?$', views.settings_view, name='settings_save'),
     url(r'^logout/?$', views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
 
