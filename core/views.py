@@ -80,6 +80,14 @@ def login_view(request):
             return render(request, 'core/account/login.html')
 
 
+def settings_view(request):
+    if request.user.is_authenticated():
+        return render(request, 'core/account/settings.html')
+    else:
+        messages.error(request, MSG_NOT_LOGGED_IN)
+        return redirect('core:login')
+
+
 def logout_view(request):
     if request.user.is_authenticated():
         logout(request)

@@ -73,6 +73,19 @@ class LoginTestCase(TestCase):
         self.assertRedirects(response, reverse('core:login'))
         self.assertFalse(response.wsgi_request.user.is_authenticated())
 
+    def test_view_account_settings_when_logged_in(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.get(reverse('core:settings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/account/settings.html')
+        self.assertTrue(response.wsgi_request.user.is_authenticated())
+
+    def test_view_account_settings_when_not_logged_in(self):
+        response = self.client.get(reverse('core:settings'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('core:login'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated())
+
 
 class RegistrationTestCase(TestCase):
     def setUp(self):

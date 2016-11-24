@@ -66,6 +66,12 @@
             {% endif %}
 
             <li>
+                <a href="{% url 'core:settings' %}">
+                    <span class="glyphicon glyphicon-cog"></span> Einstellungen
+                </a>
+            </li>
+
+            <li>
                 <a href="{% url 'core:logout' %}">
                     <span class="glyphicon glyphicon-log-out"></span> Logout
                 </a>

@@ -1,6 +1,7 @@
-from core import views
 from django.conf.urls import url, include
 from django.views.generic.base import TemplateView, RedirectView
+
+from core import views
 
 app_name = 'core'
 urlpatterns = [
@@ -9,6 +10,7 @@ urlpatterns = [
     url(r'^register/?$', views.register_view, name='register'),
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
+    url(r'^settings/?$', views.settings_view, name='settings'),
     url(r'^logout/?$', views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
 
