@@ -451,7 +451,7 @@ class Match(models.Model):
 
     @property
     def harmonic_strength(self):
-        return 2*self.home_team_statistics.strength*self.guest_team_statistics.strength / \
+        return 2 * self.home_team_statistics.strength * self.guest_team_statistics.strength / \
                (self.home_team_statistics.strength + self.guest_team_statistics.strength)
 
     def __str__(self):

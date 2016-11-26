@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'core',
     'users',
-    'chartit',
 ]
 
 MIDDLEWARE_CLASSES = [

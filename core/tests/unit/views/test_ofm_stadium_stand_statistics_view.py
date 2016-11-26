@@ -24,7 +24,8 @@ class OFMStadiumStandStatisticsViewTestCase(TestCase):
     def test_user_can_see_his_data(self):
         response = self.client.get('/ofm/stadium_stand/?sector=N')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('chart' in response.context_data)
+        self.assertTrue('seasons' in response.context_data)
+        self.assertTrue('sectors' in response.context_data)
         self.assertTrue('season' in response.context_data)
         self.assertTrue('sector_name' in response.context_data)
         self.assertEqual(response.context_data['sector_name'], 'Nord')
@@ -34,5 +35,19 @@ class OFMStadiumStandStatisticsViewTestCase(TestCase):
         response = self.client.get('/ofm/stadium_stand/?sector=N')
         self.assertEqual(response.status_code, 200)
         self.assertFalse('sector_name' in response.context_data)
+
+    def test_finance_balance_chart_json(self):
+        response = self.client.get(reverse('core:ofm:stadium_stand_statistics_chart_json'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('series' in returned_json_data)
+        self.assertEquals('Kapazität', returned_json_data['series'][0]['name'])
+        self.assertEquals('Zuschauer', returned_json_data['series'][1]['name'])
+        self.assertEquals('Ticketpreis', returned_json_data['series'][2]['name'])
+        self.assertEquals('Zustand', returned_json_data['series'][3]['name'])
+        self.assertEquals('Gemittelte Stärke der Mannschaften', returned_json_data['series'][4]['name'])
+        self.assertTrue('data' in returned_json_data['series'][0])
+        self.assertTrue('categories' in returned_json_data)
+        self.assertTrue('yAxis' in returned_json_data)
 
 
