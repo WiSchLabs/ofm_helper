@@ -17,6 +17,7 @@ do
         echo "upgrading $NAME"
         docker-compose stop web
         docker-compose up -d
+        docker exec -it ofmhelper_web_1 python manage.py migrate
     else
         echo "$NAME up to date"
     fi
