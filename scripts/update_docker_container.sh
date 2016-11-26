@@ -15,9 +15,8 @@ do
     echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
         echo "upgrading $NAME"
-        docker stop $NAME
-        docker rm -f $NAME
-        docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper
+        docker-compose stop web
+        docker-compose up -d
     else
         echo "$NAME up to date"
     fi
