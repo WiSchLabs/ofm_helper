@@ -136,7 +136,11 @@
     <script>
         $('document').ready( function (){
             function addChecklistItem(item) {
-                $('#checklist_items').append("<li><input class='checklist_item' id='" + item['id'] + "' name='" + item['id'] + "' value='" + item['name'] + "'></li>");
+                $('#checklist_items').append(
+                    "<li id='" + item['id'] + "' >" +
+                    "<input class='checklist_item' name='" + item['id'] + "' value='" + item['name'] + "'>" +
+                    "<span class='delete_checklist_item alert-danger glyphicon glyphicon-remove'></span>" +
+                    "</li>");
             }
 
             $('#new_checklist_item').click( function(event) {
@@ -156,7 +160,9 @@
                         function (data) {
                             $('#checklist_items').html('');
                             data.forEach(addChecklistItem);
-                            $('#collapseChecklistSettings').find('span').html('');
+                            if(!data.isEmptyObject()) {
+                                $('#collapseChecklistSettings').find('span').html('');
+                            }
                         }
                     );
                 }
@@ -164,10 +170,18 @@
 
             $('#checklist_items').on('focusout', '.checklist_item', function() {
                 params = {
-                    checklist_item_id: $(this).attr('id'),
+                    checklist_item_id: $(this).parent('li').attr('id'),
                     checklist_item_name: $(this).val()
                 };
                 $.post("{% url 'core:settings_update_checklist_item' %}", params);
+            });
+
+            $('#checklist_items').on('click', '.delete_checklist_item', function() {
+                params = {
+                    checklist_item_id: $(this).parent('li').attr('id')
+                };
+                $.post("{% url 'core:settings_delete_checklist_item' %}", params);
+                $(this).parent('li').remove();
             });
         })
     </script>

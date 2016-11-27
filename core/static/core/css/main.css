@@ -219,6 +219,15 @@ input.active.focus, input.active:focus, input.focus, input:active.focus, input:a
 
 .clear_filter .alert-danger { background-color: transparent; }
 
+.delete_checklist_item {
+    background-color: transparent;
+    padding: 5px;
+    margin: 0 10px;
+    cursor: default;
+}
+
+.delete_checklist_item:hover { cursor: pointer; }
+
 
 footer.footer {
     width: 100%;
