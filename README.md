@@ -25,35 +25,18 @@
 2. Entapcke das Archiv in ein beliebiges Verzeichnis auf deinem Rechner
 3. Installiere Phantomjs nach C:\Program Files (x86)\phantomjs (enthalten im zip Archiv)
 4. Eventuell musst du die .exe Datei in deinem Virenscanner zu den Ausnahmen hinzufügen
-   - z.B. Avira: Rechtsklibk in der Symbolleiste auf das Logo > Virenschutz verwalten > PC-Sicherheit > Echtzeit-Scanner > Scan > Ausnahmen > Vom Echtzeit-Scanner auszulassende Dateiobjekte 
+   - z.B. Avira: Rechtsklibk in der Symbolleiste auf das Logo > Virenschutz verwalten > PC-Sicherheit > Echtzeit-Scanner > Scan > Ausnahmen > Vom Echtzeit-Scanner auszulassende Dateiobjekte
 5. Falls du eine bestehende Version on OFM Helper updaten willst, kopiere noch die Datenbank (Ordner `ofm_helper/database`) aus dem alten Verzeichnis in das neue
 6. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
 7. Erstelle einen neuen Account mit deinen OFM Logindaten
 
-### Windows / OS X  mit Docker
+### Windows / Linux / OS X (mit Docker)
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
-1. Installiere Kitematic (https://kitematic.com/)
-2. Downloade das ofm_helper Docker image "wischlabs/ofm_helper" (Es startet automatisch einen neuen Container)
-3. Stoppe den laufenden Container
-4. Erstelle auf deinem System innerhalb deines Benutzerordners einen Ordner für die Datenbank (z.B. C:\Users\DeinNutzername\OFM_Helper_Datenbank)
-5. Innerhalb von Kitematic gehe zu Settings -> Volumes
-6. Ändere das Volume zu deinem neu erstellten Datenbankordner
-7. Starte den Container erneut
-8. Klicke auf das Voschaufenster in Kitematic um OFMHelper in deinem Standardbrowser zu öffnen
-9. Erstelle einen neuen Account mit deinen OFM Logindaten
-
-### Linux / OS X
-
-0. Boote ins BIOS / EFI und aktiviere "Virtualization"
-1. Installiere Docker
-2. `docker pull wischlabs/ofm_helper`
-3. `docker create -v /code/database --name dbstore noumia/data /bin/true`
-4. `docker run -d --name ofm_helper --volumes-from dbstore --restart=unless-stopped wischlabs/ofm_helper`
-5. Finde die IP-Addresse des Containers heraus: 
-
-    `OFM_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ofm_helper)`
-6. Öffne die IP auf dem Port 8000 (`$OFM_IP:8000`) in deinem Browser
-7. Erstelle einen neuen Account mit deinen OFM Logindaten
+1. Installiere Docker und docker-compose
+2. Starte die Container mit: `docker-compose up -d`
+3. Migriere die Datenbank zum aktuellen Stand: `docker exec -it ofmhelper_web_1 python manage.py migrate`
+4. Öffne die Addresse: 127.0.0.1 in deinem Browser
+5. Erstelle einen neuen Account mit deinen OFM Logindaten
 
 
