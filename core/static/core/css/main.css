@@ -163,8 +163,7 @@ ul.nav-sub {  padding-left: 10%; }
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(35,145,35,.6);
 }
 
-.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus,
-input.active.focus, input.active:focus, input.focus, input:active.focus, input:active:focus, input:focus{ outline-color: #239123; }
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus { outline-color: #239123; }
 
 /* little pie chart */
 .pie {
@@ -219,11 +218,23 @@ input.active.focus, input.active:focus, input.focus, input:active.focus, input:a
 
 .clear_filter .alert-danger { background-color: transparent; }
 
+#checklist_items { width: 100%; }
+
+.checklist_item {
+    display: inline-block;
+    width: 80%;
+    margin: 5px 5px;
+}
+
+#new_checklist_item { margin: 5px; }
+
 .delete_checklist_item {
     background-color: transparent;
     padding: 5px;
     margin: 0 10px;
     cursor: default;
+    font-size: 2em;
+    vertical-align: middle;
 }
 
 .delete_checklist_item:hover { cursor: pointer; }

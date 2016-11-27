@@ -121,12 +121,15 @@
         <div id="collapseChecklistSettings" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingChecklistSettings">
           <div class="panel-body">
             <span>Du hast noch keine Einträge in deiner täglichen Checkliste.</span>
-              <ul id="checklist_items">
+              <div id="checklist_items">
                 {% if checklist_items|length > 1 %}
                 {% else %}
                 {% endif %}
-              </ul>
-              <a href="#" id="new_checklist_item">neuer Eintrag</a>
+              </div>
+              <a href="#" id="new_checklist_item" class="btn btn-success">
+                  <span class="glyphicon glyphicon-plus "></span>
+                  neuer Eintrag
+              </a>
           </div>
         </div>
       </div>
@@ -137,11 +140,25 @@
         $('document').ready( function (){
             function addChecklistItem(item) {
                 $('#checklist_items').append(
-                    "<li id='" + item['id'] + "' >" +
-                    "<input class='checklist_item' name='" + item['id'] + "' value='" + item['name'] + "'>" +
+                    "<div id='" + item['id'] + "' >" +
+                    "<input type='text' class='form-control checklist_item' name='" + item['id'] + "' value='" + item['name'] + "'>" +
                     "<span class='delete_checklist_item alert-danger glyphicon glyphicon-remove'></span>" +
-                    "</li>");
+                    "</div>");
             }
+
+            $('#headingChecklistSettings').click(function(){
+                if (! $('#collapseChecklistSettings').hasClass('in')) { // area is being opened
+                    $.get("{% url 'core:settings_get_checklist_items' %}",
+                        function (data) {
+                            $('#checklist_items').html('');
+                            data.forEach(addChecklistItem);
+                            if(data.length != 0) {
+                                $('#collapseChecklistSettings').find('span').html('');
+                            }
+                        }
+                    );
+                }
+            });
 
             $('#new_checklist_item').click( function(event) {
                 event.stopPropagation();
@@ -154,34 +171,22 @@
                 );
             });
 
-            $('#headingChecklistSettings').click(function(){
-                if (! $('#collapseChecklistSettings').hasClass('in')) { // area is being opened
-                    $.get("{% url 'core:settings_get_checklist_items' %}",
-                        function (data) {
-                            $('#checklist_items').html('');
-                            data.forEach(addChecklistItem);
-                            if(!data.isEmptyObject()) {
-                                $('#collapseChecklistSettings').find('span').html('');
-                            }
-                        }
-                    );
-                }
-            });
-
             $('#checklist_items').on('focusout', '.checklist_item', function() {
-                params = {
-                    checklist_item_id: $(this).parent('li').attr('id'),
+                var params = {
+                    checklist_item_id: $(this).parent('div').attr('id'),
                     checklist_item_name: $(this).val()
                 };
                 $.post("{% url 'core:settings_update_checklist_item' %}", params);
             });
 
             $('#checklist_items').on('click', '.delete_checklist_item', function() {
-                params = {
-                    checklist_item_id: $(this).parent('li').attr('id')
+                var checklist_item = $(this).parent('div');
+                var params = {
+                    checklist_item_id: checklist_item.attr('id')
                 };
                 $.post("{% url 'core:settings_delete_checklist_item' %}", params);
-                $(this).parent('li').remove();
+                checklist_item.slideToggle();
+                checklist_item.remove();
             });
         })
     </script>
