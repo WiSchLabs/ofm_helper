@@ -777,4 +777,6 @@ class Checklist(models.Model):
 class ChecklistItem(models.Model):
     checklist = models.ForeignKey(Checklist)
     name = models.CharField(max_length=255)
-    last_checked = models.DateField(default=None, blank=True, null=True)
+    last_checked_on_matchday = models.DateField(default=None, blank=True, null=True)
+    to_be_checked_on_matchday = models.ForeignKey(Matchday, blank=True, null=True)
+    to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)

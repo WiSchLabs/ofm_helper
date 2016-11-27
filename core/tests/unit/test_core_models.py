@@ -159,6 +159,8 @@ class CreateCoreModelsTest(TestCase):
         cli = ChecklistItemFactory.create()
         self.assertTrue(cli.checklist is not None)
         self.assertEqual(cli.name, 'Item 1')
-        self.assertTrue(cli.last_checked is None)
+        self.assertTrue(cli.last_checked_on_matchday is None)
+        self.assertTrue(cli.to_be_checked_on_matchday is None)
+        self.assertTrue(cli.to_be_checked_on_matchday_pattern is None)
 
 
