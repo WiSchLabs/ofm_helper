@@ -1,9 +1,15 @@
+from braces.views import CsrfExemptMixin
+from braces.views import JsonRequestResponseMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 
 from core.managers.parser_manager import ParserManager
 from core.managers.site_manager import SiteManager
+from core.models import ChecklistItem, Checklist
 from users.models import OFMUser
 
 MSG_NOT_LOGGED_IN = "Du bist nicht eingeloggt!"
@@ -125,6 +131,74 @@ def settings_view(request):
                 messages.error(request, "Die Daten waren nicht vollständig. Bitte überprüfe die Eingabe.")
 
         return render(request, 'core/account/settings.html')
+    else:
+        messages.error(request, MSG_NOT_LOGGED_IN)
+        return redirect('core:login')
+
+
+@method_decorator(login_required, name='dispatch')
+class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
+
+        checklist_items_json = [_get_checklist_item_in_json(item) for item in checklist_items]
+
+        return self.render_json_response(checklist_items_json)
+
+
+def _get_checklist_item_in_json(checklist_item):
+    checklist_item_json = dict()
+    checklist_item_json['id'] = checklist_item.id
+    checklist_item_json['name'] = checklist_item.name
+    return checklist_item_json
+
+
+@method_decorator(login_required, name='dispatch')
+class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        checklist, _ = Checklist.objects.get_or_create(user=request.user)
+        new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='new Item')
+
+        new_checklist_item_json = _get_checklist_item_in_json(new_checklist_item)
+
+        return self.render_json_response(new_checklist_item_json)
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item_name = request.POST.get('checklist_item_name')
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+        if checklist_item:
+            checklist_item.name = checklist_item_name
+            checklist_item.save()
+            return self.render_json_response({'success': True})
+        return self.render_json_response({'success': False})
+
+
+@method_decorator(login_required, name='dispatch')
+class DeleteChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+        if checklist_item:
+            checklist_item.delete()
+            return self.render_json_response({'success': True})
+        return self.render_json_response({'success': False})
+
+
+def settings_delete_checklist_item_view(request):
+    if request.user.is_authenticated():
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+        if checklist_item:
+            checklist_item.delete()
+        return
     else:
         messages.error(request, MSG_NOT_LOGGED_IN)
         return redirect('core:login')

@@ -9,15 +9,16 @@
     </p>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
+        <div class="panel-heading" role="tab" id="headingAccountData">
           <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccountData" aria-expanded="true" aria-controls="collapseAccountData">
               Registrierungsdaten
             </a>
           </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div id="collapseAccountData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAccountData">
           <div class="panel-body">
             <form id="user_form" method="post" action="{% url 'core:settings' %}">
 
@@ -48,10 +49,11 @@
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingTwo">
+        <div class="panel-heading" role="tab" id="headingOFMData">
           <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOFMData" aria-expanded="false" aria-controls="collapseOFMData">
                 <span class="glyphicon glyphicon-ofm">
                     <img src="{% static 'core/img/OFM_icon.png' %}"/>
                 </span>
@@ -59,7 +61,7 @@
             </a>
           </h4>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div id="collapseOFMData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOFMData">
           <div class="panel-body">
             <form id="user_form" method="post" action="{% url 'core:settings' %}">
 
@@ -92,22 +94,82 @@
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingThree">
+        <div class="panel-heading" role="tab" id="headingParserSettings">
           <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseParserSettings" aria-expanded="false" aria-controls="collapseParserSettings">
               Parser-Einstellung
             </a>
           </h4>
         </div>
-        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+        <div id="collapseParserSettings" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingParserSettings">
           <div class="panel-body">
             <span style="color:darkgray;">Demnächst.</span>
           </div>
         </div>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingChecklistSettings">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseChecklistSettings" aria-expanded="false" aria-controls="collapseChecklistSettings">
+              Checkliste
+            </a>
+          </h4>
+        </div>
+        <div id="collapseChecklistSettings" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingChecklistSettings">
+          <div class="panel-body">
+            <span>Du hast noch keine Einträge in deiner täglichen Checkliste.</span>
+              <ul id="checklist_items">
+                {% if checklist_items|length > 1 %}
+                {% else %}
+                {% endif %}
+              </ul>
+              <a href="#" id="new_checklist_item">neuer Eintrag</a>
+          </div>
+        </div>
+      </div>
+
     </div>
 
+    <script>
+        $('document').ready( function (){
+            function addChecklistItem(item) {
+                $('#checklist_items').append("<li><input class='checklist_item' id='" + item['id'] + "' name='" + item['id'] + "' value='" + item['name'] + "'></li>");
+            }
 
+            $('#new_checklist_item').click( function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+                $.get("{% url 'core:settings_new_checklist_item' %}",
+                    function (data) {
+                        addChecklistItem(data);
+                        $('#collapseChecklistSettings').find('span').html('');
+                    }
+                );
+            });
+
+            $('#headingChecklistSettings').click(function(){
+                if (! $('#collapseChecklistSettings').hasClass('in')) { // area is being opened
+                    $.get("{% url 'core:settings_get_checklist_items' %}",
+                        function (data) {
+                            $('#checklist_items').html('');
+                            data.forEach(addChecklistItem);
+                            $('#collapseChecklistSettings').find('span').html('');
+                        }
+                    );
+                }
+            });
+
+            $('#checklist_items').on('focusout', '.checklist_item', function() {
+                params = {
+                    checklist_item_id: $(this).attr('id'),
+                    checklist_item_name: $(this).val()
+                };
+                $.post("{% url 'core:settings_update_checklist_item' %}", params);
+            });
+        })
+    </script>
 
 {% endblock %}

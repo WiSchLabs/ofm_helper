@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.views.generic.base import TemplateView, RedirectView
 
 from core import views
+from core.views import CreateChecklistItemView, DeleteChecklistItemView, GetChecklistItemsView, UpdateChecklistItemView
 
 app_name = 'core'
 urlpatterns = [
@@ -10,9 +11,14 @@ urlpatterns = [
     url(r'^register/?$', views.register_view, name='register'),
     url(r'^login/?$', views.login_view, name='login'),
     url(r'^account/?$', views.account_view, name='account'),
-    url(r'^settings/?$', views.settings_view, name='settings'),
     url(r'^logout/?$', views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
+
+    url(r'^settings/?$', views.settings_view, name='settings'),
+    url(r'^settings_get_checklist_items/?$', GetChecklistItemsView.as_view(), name='settings_get_checklist_items'),
+    url(r'^settings_new_checklist_item/?$', CreateChecklistItemView.as_view(), name='settings_new_checklist_item'),
+    url(r'^settings_update_checklist_item/?$', UpdateChecklistItemView.as_view(), name='settings_update_checklist_item'),
+    url(r'^settings_delete_checklist_item/?$', DeleteChecklistItemView.as_view(), name='settings_delete_checklist_item'),
 
     url(r'^trigger_parsing/?$', views.trigger_parsing, name='trigger_parsing'),
     url(r'^trigger_matchday_parsing/?$', views.trigger_matchday_parsing, name='trigger_matchday_parsing'),
