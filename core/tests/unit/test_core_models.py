@@ -3,7 +3,7 @@ from django.test import TestCase
 from core.factories.core_factories import SeasonFactory, QuarterFactory, MatchdayFactory, PlayerStatisticsFactory, \
     ContractFactory, PlayerFactory, CountryFactory, FinanceFactory, MatchFactory, MatchStadiumStatisticsFactory, \
     StadiumStandStatisticsFactory, MatchTeamStatisticsFactory, StandLevelFactory, StadiumLevelFactory, \
-    StadiumLevelItemFactory
+    StadiumLevelItemFactory, ChecklistFactory, ChecklistItemFactory
 from core.models import Matchday
 
 
@@ -150,5 +150,15 @@ class CreateCoreModelsTest(TestCase):
         self.assertEqual(sss.visitors, 42)
         self.assertEqual(sss.ticket_price, 55)
         self.assertEqual(sss.condition, 99.42)
+
+    def test_create_checklist(self):
+        cl = ChecklistFactory.create()
+        self.assertTrue(cl.user is not None)
+
+    def test_create_checklist_item(self):
+        cli = ChecklistItemFactory.create()
+        self.assertTrue(cli.checklist is not None)
+        self.assertEqual(cli.name, 'Item 1')
+        self.assertTrue(cli.last_checked is None)
 
 

@@ -1,7 +1,8 @@
 import factory
 
 from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics, MatchTeamStatistics, StandLevel, StadiumLevel, StadiumLevelItem
+    MatchStadiumStatistics, StadiumStandStatistics, MatchTeamStatistics, StandLevel, StadiumLevel, StadiumLevelItem, \
+    Checklist, ChecklistItem
 from users.factories.users_factories import OFMUserFactory
 
 
@@ -182,3 +183,19 @@ class StadiumStandStatisticsFactory(factory.django.DjangoModelFactory):
     visitors = 42
     ticket_price = 55
     condition = 99.42
+
+
+class ChecklistFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Checklist
+
+    user = factory.SubFactory(OFMUserFactory)
+
+
+class ChecklistItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ChecklistItem
+
+    checklist = factory.SubFactory(ChecklistFactory)
+    name = "Item 1"
+    last_checked = None

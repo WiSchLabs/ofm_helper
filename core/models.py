@@ -768,3 +768,13 @@ class AwpBoundaries(Dictionary):
             return 'awp_boundaries_' + str(matchday.season.number) + '_2'
         else:
             return 'awp_boundaries_' + str(matchday.season.number) + '_3'
+
+
+class Checklist(models.Model):
+    user = models.ForeignKey(OFMUser)
+
+
+class ChecklistItem(models.Model):
+    checklist = models.ForeignKey(Checklist)
+    name = models.CharField(max_length=255)
+    last_checked = models.DateField(default=None, blank=True, null=True)

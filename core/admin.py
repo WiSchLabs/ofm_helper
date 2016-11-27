@@ -1,6 +1,6 @@
 from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, Match, \
     MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, StadiumLevelItem, \
-    AwpBoundaries
+    AwpBoundaries, Checklist, ChecklistItem
 from django.contrib import admin
 
 
@@ -110,3 +110,17 @@ class StadiumLevelAdmin(admin.ModelAdmin):
 class StadiumLevelItemAdmin(admin.ModelAdmin):
     list_display = ['current_level', 'value', 'daily_costs']
     search_fields = ['current_level', 'value', 'daily_costs']
+
+
+@admin.register(Checklist)
+class ChecklistAdmin(admin.ModelAdmin):
+    list_filter = ['user']
+    list_display = ['user']
+    search_fields = ['user__username']
+
+
+@admin.register(ChecklistItem)
+class ChecklistItemAdmin(admin.ModelAdmin):
+    list_filter = ['checklist__user', 'name']
+    list_display = ['name']
+    search_fields = ['checklist__user__username', 'name']
