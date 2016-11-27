@@ -218,26 +218,24 @@ ul.nav-sub {  padding-left: 10%; }
 
 .clear_filter .alert-danger { background-color: transparent; }
 
-#checklist_items { width: 100%; }
+.panel-title span.glyphicon { width: 50px; }
 
+#checklist_items { width: 100%; }
 .checklist_item {
     display: inline-block;
     width: 80%;
     margin: 5px 5px;
 }
-
-#new_checklist_item { margin: 5px; }
-
+#add_checklist_item { margin: 5px; }
 .delete_checklist_item {
     background-color: transparent;
     padding: 5px;
     margin: 0 10px;
     cursor: default;
-    font-size: 2em;
+    font-size: 1.5em;
     vertical-align: middle;
 }
-
-.delete_checklist_item:hover { cursor: pointer; }
+    .delete_checklist_item:hover { cursor: pointer; }
 
 
 footer.footer {

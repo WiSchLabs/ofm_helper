@@ -14,7 +14,8 @@
         <div class="panel-heading" role="tab" id="headingAccountData">
           <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAccountData" aria-expanded="true" aria-controls="collapseAccountData">
-              Registrierungsdaten
+                <span class="glyphicon glyphicon-pencil"></span>
+                Registrierungsdaten
             </a>
           </h4>
         </div>
@@ -54,9 +55,7 @@
         <div class="panel-heading" role="tab" id="headingOFMData">
           <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOFMData" aria-expanded="false" aria-controls="collapseOFMData">
-                <span class="glyphicon glyphicon-ofm">
-                    <img src="{% static 'core/img/OFM_icon.png' %}"/>
-                </span>
+                <span class="glyphicon glyphicon-ofm"><img src="{% static 'core/img/OFM_icon.png' %}"/></span>
                 OFM-Zugangsdaten
             </a>
           </h4>
@@ -99,7 +98,8 @@
         <div class="panel-heading" role="tab" id="headingParserSettings">
           <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseParserSettings" aria-expanded="false" aria-controls="collapseParserSettings">
-              Parser-Einstellung
+                <span class="glyphicon glyphicon-download"></span>
+                Parser-Einstellung
             </a>
           </h4>
         </div>
@@ -114,7 +114,8 @@
         <div class="panel-heading" role="tab" id="headingChecklistSettings">
           <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseChecklistSettings" aria-expanded="false" aria-controls="collapseChecklistSettings">
-              Checkliste
+                <span class="glyphicon glyphicon-list"></span>
+                Tägliche Checkliste
             </a>
           </h4>
         </div>
@@ -122,12 +123,9 @@
           <div class="panel-body">
             <span>Du hast noch keine Einträge in deiner täglichen Checkliste.</span>
               <div id="checklist_items">
-                {% if checklist_items|length > 1 %}
-                {% else %}
-                {% endif %}
               </div>
-              <a href="#" id="new_checklist_item" class="btn btn-success">
-                  <span class="glyphicon glyphicon-plus "></span>
+              <a href="#" id="add_checklist_item" class="btn btn-success">
+                  <span class="glyphicon glyphicon-plus"></span>
                   neuer Eintrag
               </a>
           </div>
@@ -140,10 +138,12 @@
         $('document').ready( function (){
             function addChecklistItem(item) {
                 $('#checklist_items').append(
-                    "<div id='" + item['id'] + "' >" +
+                    "<div id='" + item['id'] + "' style='opacity:0;'>" +
                     "<input type='text' class='form-control checklist_item' name='" + item['id'] + "' value='" + item['name'] + "'>" +
-                    "<span class='delete_checklist_item alert-danger glyphicon glyphicon-remove'></span>" +
-                    "</div>");
+                    "<span class='delete_checklist_item alert-danger glyphicon glyphicon-trash'></span>" +
+                    "</div>"
+                );
+                $('#checklist_items').find('.checklist_item').parent('div').animate({opacity:1}, 'fast');
             }
 
             $('#headingChecklistSettings').click(function(){
@@ -160,10 +160,10 @@
                 }
             });
 
-            $('#new_checklist_item').click( function(event) {
+            $('#add_checklist_item').click( function(event) {
                 event.stopPropagation();
                 event.preventDefault();
-                $.get("{% url 'core:settings_new_checklist_item' %}",
+                $.get("{% url 'core:settings_add_checklist_item' %}",
                     function (data) {
                         addChecklistItem(data);
                         $('#collapseChecklistSettings').find('span').html('');
@@ -185,8 +185,10 @@
                     checklist_item_id: checklist_item.attr('id')
                 };
                 $.post("{% url 'core:settings_delete_checklist_item' %}", params);
-                checklist_item.slideToggle();
-                checklist_item.remove();
+                checklist_item.animate({opacity:0, height:0}, 200);
+                setTimeout(function() {
+                    checklist_item.remove();
+                }, 200);
             });
         })
     </script>

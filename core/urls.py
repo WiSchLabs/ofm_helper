@@ -16,7 +16,7 @@ urlpatterns = [
 
     url(r'^settings/?$', views.settings_view, name='settings'),
     url(r'^settings_get_checklist_items/?$', GetChecklistItemsView.as_view(), name='settings_get_checklist_items'),
-    url(r'^settings_new_checklist_item/?$', CreateChecklistItemView.as_view(), name='settings_new_checklist_item'),
+    url(r'^settings_add_checklist_item/?$', CreateChecklistItemView.as_view(), name='settings_add_checklist_item'),
     url(r'^settings_update_checklist_item/?$', UpdateChecklistItemView.as_view(), name='settings_update_checklist_item'),
     url(r'^settings_delete_checklist_item/?$', DeleteChecklistItemView.as_view(), name='settings_delete_checklist_item'),
 
