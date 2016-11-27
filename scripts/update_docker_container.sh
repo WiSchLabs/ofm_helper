@@ -14,10 +14,16 @@ do
     echo "Latest:" $LATEST
     echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
-        echo "upgrading $NAME"
+        echo "Upgrading $NAME"
+
         docker-compose stop web
         docker-compose up -d
+
+        echo "Migrating database"
         docker exec -it ofmhelper_web_1 python manage.py migrate
+
+        echo "Copying static files"
+        docker exec -it ofmhelper_web_1 python manage.py collectstatic
     else
         echo "$NAME up to date"
     fi
