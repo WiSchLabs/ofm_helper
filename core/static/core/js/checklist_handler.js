@@ -85,17 +85,33 @@ $('document').ready( function (){
     });
 
     $('#checklist_items').on('focusout', '.checklist_item_matchday', function() {
+        var matchday_input = $(this).find('input');
+        var matchday_min = matchday_input.attr('min');
+        var matchday_max = matchday_input.attr('max');
+        var matchday = matchday_min;
+        if($.isNumeric(matchday_input.val())) { matchday = +matchday_input.val(); }
+        if (matchday < matchday_min) { matchday = matchday_min; }
+        if (matchday > matchday_max) { matchday = matchday_max; }
+        matchday_input.val(matchday);
         var params = {
             checklist_item_id: $(this).closest('.checklist_item_container').attr('id'),
-            checklist_item_matchday: $(this).find('input').val()
+            checklist_item_matchday: matchday
         };
         $.post("/settings_update_checklist_item", params);
     });
 
     $('#checklist_items').on('focusout', '.checklist_item_matchday_pattern', function() {
+        var matchday_pattern_input = $(this).find('input');
+        var matchday_pattern_min = matchday_pattern_input.attr('min');
+        var matchday_pattern_max = matchday_pattern_input.attr('max');
+        var matchday_pattern = matchday_pattern_min;
+        if($.isNumeric(matchday_pattern_input.val())) { matchday_pattern = +matchday_pattern_input.val(); }
+        if (matchday_pattern < matchday_pattern_min) { matchday_pattern = matchday_pattern_min; }
+        if (matchday_pattern > matchday_pattern_max) { matchday_pattern = matchday_pattern_max; }
+        matchday_pattern_input.val(matchday_pattern);
         var params = {
             checklist_item_id: $(this).closest('.checklist_item_container').attr('id'),
-            checklist_item_matchday_pattern: $(this).find('input').val()
+            checklist_item_matchday_pattern: matchday_pattern
         };
         $.post("/settings_update_checklist_item", params);
     });
