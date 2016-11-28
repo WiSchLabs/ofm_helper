@@ -134,63 +134,6 @@
 
     </div>
 
-    <script>
-        $('document').ready( function (){
-            function addChecklistItem(item) {
-                $('#checklist_items').append(
-                    "<div id='" + item['id'] + "' style='opacity:0;'>" +
-                    "<input type='text' class='form-control checklist_item' name='" + item['id'] + "' value='" + item['name'] + "'>" +
-                    "<span class='delete_checklist_item alert-danger glyphicon glyphicon-trash'></span>" +
-                    "</div>"
-                );
-                $('#checklist_items').find('.checklist_item').parent('div').animate({opacity:1}, 'fast');
-            }
-
-            $('#headingChecklistSettings').click(function(){
-                if (! $('#collapseChecklistSettings').hasClass('in')) { // area is being opened
-                    $.get("{% url 'core:settings_get_checklist_items' %}",
-                        function (data) {
-                            $('#checklist_items').html('');
-                            data.forEach(addChecklistItem);
-                            if(data.length != 0) {
-                                $('#collapseChecklistSettings').find('span').html('');
-                            }
-                        }
-                    );
-                }
-            });
-
-            $('#add_checklist_item').click( function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-                $.get("{% url 'core:settings_add_checklist_item' %}",
-                    function (data) {
-                        addChecklistItem(data);
-                        $('#collapseChecklistSettings').find('span').html('');
-                    }
-                );
-            });
-
-            $('#checklist_items').on('focusout', '.checklist_item', function() {
-                var params = {
-                    checklist_item_id: $(this).parent('div').attr('id'),
-                    checklist_item_name: $(this).val()
-                };
-                $.post("{% url 'core:settings_update_checklist_item' %}", params);
-            });
-
-            $('#checklist_items').on('click', '.delete_checklist_item', function() {
-                var checklist_item = $(this).parent('div');
-                var params = {
-                    checklist_item_id: checklist_item.attr('id')
-                };
-                $.post("{% url 'core:settings_delete_checklist_item' %}", params);
-                checklist_item.animate({opacity:0, height:0}, 200);
-                setTimeout(function() {
-                    checklist_item.remove();
-                }, 200);
-            });
-        })
-    </script>
+    <script src="{% static 'core/js/checklist_handler.js' %}"></script>
 
 {% endblock %}
