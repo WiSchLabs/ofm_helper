@@ -30,7 +30,7 @@
 6. Starte die Anwendung mit dem Doppelklick auf `launchapp.exe`
 7. Erstelle einen neuen Account mit deinen OFM Logindaten
 
-### Windows / Linux / OS X (mit Docker)
+### Windows 10 / Linux / OS X (mit Docker)
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
 1. Installiere Docker und docker-compose
