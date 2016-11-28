@@ -162,5 +162,6 @@ class CreateCoreModelsTest(TestCase):
         self.assertTrue(cli.last_checked_on_matchday is None)
         self.assertTrue(cli.to_be_checked_on_matchday is None)
         self.assertTrue(cli.to_be_checked_on_matchday_pattern is None)
+        self.assertFalse(cli.to_be_checked_if_home_match_tomorrow)
 
 
