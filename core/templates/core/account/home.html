@@ -26,6 +26,11 @@
     <div id="checklist">
     </div>
 
+    <a href="{% url 'core:settings' %}" class="btn btn-success">
+        <span class="glyphicon glyphicon-wrench"></span>
+        Checkliste bearbeiten
+    </a>
+
     <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
     <script>
         function showChecklistItem(item) {

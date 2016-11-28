@@ -153,24 +153,33 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
     def get(self, request, *args, **kwargs):
         current_matchday = Matchday.get_current()
         next_matchday_number = current_matchday.number + 1
-        home_match_tomorrow = Match.objects.filter(user=request.user, matchday__number=next_matchday_number, is_home_match=True)
+        home_match_tomorrow = Match.objects.filter(
+            user=request.user,
+            matchday__season=current_matchday.season,
+            matchday__number=next_matchday_number,
+            is_home_match=True
+        )
         checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
         checklist_items_everyday = checklist_items.filter(
             to_be_checked_on_matchday=None,
             to_be_checked_on_matchday_pattern=None,
             to_be_checked_if_home_match_tomorrow=False
         )
+        filtered_checklist_items = []
+        filtered_checklist_items.extend(checklist_items_everyday)
         checklist_items_this_matchday = checklist_items.filter(
             to_be_checked_on_matchday=current_matchday.number,
             to_be_checked_on_matchday_pattern=None,
             to_be_checked_if_home_match_tomorrow=False
         )
+        filtered_checklist_items.extend(checklist_items_this_matchday)
         if home_match_tomorrow:
             checklist_items_home_match = checklist_items.filter(
                 to_be_checked_on_matchday=None,
                 to_be_checked_on_matchday_pattern=None,
                 to_be_checked_if_home_match_tomorrow=True
             )
+            filtered_checklist_items.extend(checklist_items_home_match)
         if current_matchday.number > 0:
             checklist_items_matchday_pattern_pre = checklist_items.filter(
                 to_be_checked_on_matchday=None,
@@ -180,10 +189,9 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
             checklist_items_matchday_pattern = [c for c
                                                 in checklist_items_matchday_pattern_pre
                                                 if current_matchday.number % c.to_be_checked_on_matchday_pattern == 0]
+            filtered_checklist_items.extend(checklist_items_matchday_pattern)
 
-        # todo correctly join filtered checklist_items
-
-        checklist_items_json = [_get_checklist_item_in_json(item) for item in checklist_items]
+        checklist_items_json = [_get_checklist_item_in_json(item) for item in filtered_checklist_items]
 
         return self.render_json_response(checklist_items_json)
 
