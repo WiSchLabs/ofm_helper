@@ -215,7 +215,7 @@ class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         checklist, _ = Checklist.objects.get_or_create(user=request.user)
-        new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='new Item')
+        new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='Neuer Eintrag')
 
         new_checklist_item_json = _get_checklist_item_in_json(new_checklist_item)
 
@@ -272,18 +272,6 @@ class DeleteChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             checklist_item.delete()
             return self.render_json_response({'success': True})
         return self.render_json_response({'success': False})
-
-
-def settings_delete_checklist_item_view(request):
-    if request.user.is_authenticated():
-        checklist_item_id = request.POST.get('checklist_item_id')
-        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
-        if checklist_item:
-            checklist_item.delete()
-        return
-    else:
-        messages.error(request, MSG_NOT_LOGGED_IN)
-        return redirect('core:login')
 
 
 def logout_view(request):

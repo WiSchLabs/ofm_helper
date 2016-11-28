@@ -44,19 +44,19 @@ class Matchday(models.Model):
 
     @staticmethod
     def get_current():
-        """Get the current matchday.
+        """ Get the current matchday.
 
         """
         matchday = Matchday.objects.all()[0]
-        finances_matchday = Finance.objects.all().order_by('matchday')[0].matchday
-        player_statistics_matchday = PlayerStatistics.objects.all().order_by('matchday')[0].matchday
-        matches_matchday = [m for m in Match.objects.all().order_by('matchday') if not m.is_in_future][0].matchday
-        if finances_matchday.number < matchday.number:
-            matchday = finances_matchday
-        if player_statistics_matchday.number > matchday.number:
-            matchday = player_statistics_matchday
-        if matches_matchday.number > matchday.number:
-            matchday = matches_matchday
+        finances = Finance.objects.all().order_by('matchday')
+        player_statistics = PlayerStatistics.objects.all().order_by('matchday')
+        matches = [m for m in Match.objects.all().order_by('matchday') if not m.is_in_future]
+        if finances.count() > 0 and finances[0].matchday.number < matchday.number:
+            matchday = finances[0].matchday
+        if player_statistics.count() > 0 and player_statistics[0].matchday.number > matchday.number:
+            matchday = player_statistics[0].matchday
+        if len(matches) > 0 and matches[0].matchday.number > matchday.number:
+            matchday = matches[0].matchday
 
         return matchday
 
