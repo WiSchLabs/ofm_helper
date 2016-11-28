@@ -42,6 +42,24 @@ class Matchday(models.Model):
     def __str__(self):
         return "%s/%s" % (self.season.number, self.number)
 
+    @staticmethod
+    def get_current():
+        """Get the current matchday.
+
+        """
+        matchday = Matchday.objects.all()[0]
+        finances_matchday = Finance.objects.all().order_by('matchday')[0].matchday
+        player_statistics_matchday = PlayerStatistics.objects.all().order_by('matchday')[0].matchday
+        matches_matchday = [m for m in Match.objects.all().order_by('matchday') if not m.is_in_future][0].matchday
+        if finances_matchday.number < matchday.number:
+            matchday = finances_matchday
+        if player_statistics_matchday.number > matchday.number:
+            matchday = player_statistics_matchday
+        if matches_matchday.number > matchday.number:
+            matchday = matches_matchday
+
+        return matchday
+
 
 class Country(models.Model):
     class Meta:

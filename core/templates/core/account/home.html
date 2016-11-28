@@ -22,7 +22,40 @@
         <span class="glyphicon glyphicon-chevron-left"></span>
         Die aufbereiteten Daten findest du anschließend in den Statistiken, welche du links im Menü auswählen kannst.
     </p>
+    <h2>Deine Checkliste für diesen Spieltag</h2>
+    <div id="checklist">
+    </div>
 
     <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
+    <script>
+        function showChecklistItem(item) {
+            $('#checklist').append(
+                "<div id='" + item['id'] + "' class='checklist_entry checkbox'>" +
+                    "<label>" +
+                        "<input type='checkbox' class='checklist_check' name='" + item['id'] + "_check' id='" + item['id'] + "_check' value=''>" +                        item['name'] +
+                    "</label>" +
+                "</div>"
+            );
+        }
+
+        $('document').ready( function (){
+            $(function() {
+                $.get("/settings_get_checklist_items_for_today",
+                    function (data) {
+                        $('#checklist').html('');
+                        data.forEach(showChecklistItem);
+                    }
+                );
+            });
+
+            $('#checklist').on('click', '.checklist_entry', function() {
+                var params = {
+                    checklist_item_id: $(this).attr('id'),
+                    checklist_item_checked: true
+                };
+                $.post("/settings_update_checklist_item", params);
+            });
+        });
+    </script>
 
 {% endblock %}
