@@ -155,7 +155,7 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
         next_matchday_number = current_matchday.number + 1
         home_match_tomorrow = Match.objects.filter(
             user=request.user,
-            matchday__season=current_matchday.season,
+            matchday__season__number=current_matchday.season.number,
             matchday__number=next_matchday_number,
             is_home_match=True
         )
@@ -206,6 +206,7 @@ def _get_checklist_item_in_json(checklist_item):
         checklist_item_json['type_matchday'] = checklist_item.to_be_checked_on_matchday
     if checklist_item.to_be_checked_on_matchday_pattern is not None:
         checklist_item_json['type_matchday_pattern'] = checklist_item.to_be_checked_on_matchday_pattern
+    checklist_item_json['checked'] = checklist_item.last_checked_on_matchday == Matchday.get_current()
 
     return checklist_item_json
 
@@ -255,8 +256,10 @@ class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 checklist_item.to_be_checked_on_matchday = None
                 checklist_item.to_be_checked_on_matchday_pattern = None
                 checklist_item.to_be_checked_if_home_match_tomorrow = False
-            elif checklist_item_checked:
+            elif checklist_item_checked == 'true':
                 checklist_item.last_checked_on_matchday = Matchday.get_current()
+            elif checklist_item_checked == 'false':
+                checklist_item.last_checked_on_matchday = None
             checklist_item.save()
             return self.render_json_response({'success': True})
         return self.render_json_response({'success': False})

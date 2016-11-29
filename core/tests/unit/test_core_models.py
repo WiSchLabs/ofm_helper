@@ -5,6 +5,7 @@ from core.factories.core_factories import SeasonFactory, QuarterFactory, Matchda
     StadiumStandStatisticsFactory, MatchTeamStatisticsFactory, StandLevelFactory, StadiumLevelFactory, \
     StadiumLevelItemFactory, ChecklistFactory, ChecklistItemFactory
 from core.models import Matchday
+from users.models import OFMUser
 
 
 class CreateCoreModelsTest(TestCase):
@@ -24,6 +25,39 @@ class CreateCoreModelsTest(TestCase):
         self.assertIsNotNone(m)
         self.assertEquals(m.season.number, 1)
         self.assertEquals(m.number, 0)
+
+    def test_get_current_matchday_default(self):
+        MatchdayFactory.create(number=1)
+        m2 = MatchdayFactory.create(number=5)
+        self.assertEqual(Matchday.get_current(), m2)
+
+    def test_get_current_matchday_from_finances(self):
+        MatchdayFactory.create(number=1)
+        m2 = MatchdayFactory.create(number=5)
+        MatchdayFactory.create(number=15)
+        FinanceFactory.create(matchday=m2)
+        self.assertEqual(Matchday.get_current(), m2)
+
+    def test_get_current_matchday_from_player_statistics(self):
+        MatchdayFactory.create(number=1)
+        m2 = MatchdayFactory.create(number=5)
+        m3 = MatchdayFactory.create(number=7)
+        MatchdayFactory.create(number=15)
+        FinanceFactory.create(matchday=m2)
+        PlayerStatisticsFactory.create(matchday=m3)
+        self.assertEqual(Matchday.get_current(), m3)
+
+    def test_get_current_matchday_from_matches(self):
+        user2 = OFMUser.objects.create_user('second', 'second@ofmhelper.com', 'second', ofm_username="second", ofm_password="second")
+        MatchdayFactory.create(number=1)
+        m2 = MatchdayFactory.create(number=5)
+        m3 = MatchdayFactory.create(number=7)
+        m4 = MatchdayFactory.create(number=9)
+        MatchdayFactory.create(number=15)
+        FinanceFactory.create(matchday=m2, user=user2)
+        PlayerStatisticsFactory.create(matchday=m3)
+        MatchFactory.create(matchday=m4, user=user2)
+        self.assertEqual(Matchday.get_current(), m4)
 
     def test_matchday_order_desc_by_number(self):
         MatchdayFactory.create(number=1)
