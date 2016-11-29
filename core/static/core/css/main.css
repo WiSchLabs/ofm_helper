@@ -34,6 +34,10 @@ body {
     padding-bottom: 10rem;
 }
 
+var { font-style: inherit; }
+
+label { font-weight: inherit !important; }
+
 .overlay {
     background-color: rgba(255,255,255,0.6);
     bottom: 0;
@@ -98,14 +102,17 @@ a { color: #239123; }
 
 ul.nav li span { margin-right: 2rem; }
 
-    ul.nav li span.glyphicon-ofm {
+    ul.nav li .glyphicon-ofm {
         margin-right: 0.5rem;
         position: relative;
         top: -0.3rem;
         left: -0.75em;
     }
 
-span.glyphicon-ofm img { height: 2rem; }
+.glyphicon-ofm img {
+    height: 2rem;
+    vertical-align: top;
+}
 
 ul.nav-sub {  padding-left: 10%; }
 
@@ -220,7 +227,8 @@ ul.nav-sub {  padding-left: 10%; }
 
 .clear_filter .alert-danger { background-color: transparent; }
 
-.panel-title span.glyphicon { width: 50px; }
+.panel-title { font-size: 20px; }
+    .panel-title .glyphicon { width: 50px; }
 
 #checklist_items { width: 100%; }
 .checklist_item_name {
