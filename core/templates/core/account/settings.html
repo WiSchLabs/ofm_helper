@@ -30,7 +30,7 @@
                      making everything look neater. -->
                 <div class="form-group">
                     <label for="username">Benutzername</label>
-                    <input type="email" class="form-control" id="email" placeholder="E-Mail" name="email" value="{{ user.username }}" disabled>
+                    <input type="email" class="form-control" id="username" placeholder="Benurtname" name="username" value="{{ user.username }}" disabled>
                 </div>
                 <div class="form-group">
                     <label for="email">E-Mail</label>
@@ -62,7 +62,7 @@
         </div>
         <div id="collapseOFMData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOFMData">
           <div class="panel-body">
-            <form id="user_form" method="post" action="{% url 'core:settings' %}">
+            <form id="ofm_user_form" method="post" action="{% url 'core:settings' %}">
 
                 {% csrf_token %}
 
