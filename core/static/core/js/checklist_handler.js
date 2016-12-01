@@ -3,6 +3,7 @@ $('document').ready( function (){
         $('#checklist_items').append(
             "<div id='" + item['id'] + "' class='checklist_item_container new' style='opacity:0;'>" +
                 "<input type='text' class='form-control checklist_item_name' name='" + item['id'] + "_name' value='" + item['name'] + "'  maxlength='255'>" +
+                "<span class='invisible checklist_item_saved alert-success glyphicon glyphicon-floppy-saved'></span>" +
                 "<span class='delete_checklist_item alert-danger glyphicon glyphicon-trash'></span>" +
                 "<div class='dropdown checklist_type'>" +
                     "<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>" +
@@ -76,16 +77,28 @@ $('document').ready( function (){
         );
     });
 
-    $('#checklist_items').on('focusout', '.checklist_item_name', function() {
+    function saveChecklistName(elem) {
         var params = {
-            checklist_item_id: $(this).closest('.checklist_item_container').attr('id'),
-            checklist_item_name: $(this).val()
+            checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
+            checklist_item_name: elem.val()
         };
         $.post("/settings_update_checklist_item", params);
+        elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
+    }
+    $('#checklist_items').on('focusout', '.checklist_item_name', function() {
+        saveChecklistName($(this));
+    });
+    $('#checklist_items').on('keyup', '.checklist_item_name', function(event) {
+        if (event.which == 13) {
+            saveChecklistName($(this));
+        }
+    });
+    $('#checklist_items').on('input', '.checklist_item_name', function() {
+        $(this).closest('.checklist_item_container').find('.checklist_item_saved').addClass('invisible');
     });
 
-    $('#checklist_items').on('focusout', '.checklist_item_matchday', function() {
-        var matchday_input = $(this).find('input');
+    function saveChecklistMatchday(elem) {
+        var matchday_input = elem.find('input');
         var matchday_min = matchday_input.attr('min');
         var matchday_max = matchday_input.attr('max');
         var matchday = matchday_min;
@@ -94,14 +107,29 @@ $('document').ready( function (){
         if (matchday > matchday_max) { matchday = matchday_max; }
         matchday_input.val(matchday);
         var params = {
-            checklist_item_id: $(this).closest('.checklist_item_container').attr('id'),
+            checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchday: matchday
         };
         $.post("/settings_update_checklist_item", params);
+        elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
+    }
+    $('#checklist_items').on('focusout', '.checklist_item_matchday', function() {
+        saveChecklistMatchday($(this));
+    });
+    $('#checklist_items').on('click', '.checklist_item_matchday button', function() {
+        saveChecklistMatchdayPattern($(this));
+    });
+    $('#checklist_items').on('keyup', '.checklist_item_matchday', function(event) {
+        if (event.which == 13) {
+            saveChecklistMatchday($(this));
+        }
+    });
+    $('#checklist_items').on('input', '.checklist_item_matchday', function() {
+        $(this).closest('.checklist_item_container').find('.checklist_item_saved').addClass('invisible');
     });
 
-    $('#checklist_items').on('focusout', '.checklist_item_matchday_pattern', function() {
-        var matchday_pattern_input = $(this).find('input');
+    function saveChecklistMatchdayPattern(elem) {
+        var matchday_pattern_input = elem.find('input');
         var matchday_pattern_min = matchday_pattern_input.attr('min');
         var matchday_pattern_max = matchday_pattern_input.attr('max');
         var matchday_pattern = matchday_pattern_min;
@@ -110,10 +138,25 @@ $('document').ready( function (){
         if (matchday_pattern > matchday_pattern_max) { matchday_pattern = matchday_pattern_max; }
         matchday_pattern_input.val(matchday_pattern);
         var params = {
-            checklist_item_id: $(this).closest('.checklist_item_container').attr('id'),
+            checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchday_pattern: matchday_pattern
         };
         $.post("/settings_update_checklist_item", params);
+        elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
+    }
+    $('#checklist_items').on('focusout', '.checklist_item_matchday_pattern', function() {
+        saveChecklistMatchdayPattern($(this));
+    });
+    $('#checklist_items').on('click', '.checklist_item_matchday_pattern button', function() {
+        saveChecklistMatchdayPattern($(this));
+    });
+    $('#checklist_items').on('keyup', '.checklist_item_matchday_pattern', function(event) {
+        if (event.which == 13) {
+            saveChecklistMatchdayPattern($(this));
+        }
+    });
+    $('#checklist_items').on('input', '.checklist_item_matchday_pattern', function() {
+        $(this).closest('.checklist_item_container').find('.checklist_item_saved').addClass('invisible');
     });
 
     $('#checklist_items').on('click', '.delete_checklist_item', function() {

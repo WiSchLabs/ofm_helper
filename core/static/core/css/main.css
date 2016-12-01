@@ -88,10 +88,9 @@ h2 span.glyphicon {
     font-size: 24px !important;
 }
 
-span.glyphicon.glyphicon-plus.alert-success,
-span.glyphicon.glyphicon-minus.alert-danger {
+span.glyphicon.alert-success,
+span.glyphicon.alert-danger {
     background-color: transparent;
-    font-size: 16px;
 }
 
 p { text-align: justify; }
@@ -238,14 +237,23 @@ ul.nav-sub {  padding-left: 10%; }
 }
 #add_checklist_item { margin: 5px; }
 .delete_checklist_item {
-    background-color: transparent;
-    padding: 5px;
-    margin: 0 10px;
     cursor: default;
     font-size: 1.5em;
     vertical-align: middle;
 }
     .delete_checklist_item:hover { cursor: pointer; }
+
+.checklist_item_saved.invisible {
+    opacity: 0;
+    transition: opacity 300ms linear;
+}
+.checklist_item_saved {
+    font-size: 1.5em;
+    top: 5px;
+    right: 35px;
+    opacity: 1;
+    transition: opacity 300ms linear;
+}
 
 #checklist_items .dropdown {
     margin: 0 15px 10px 25px;
