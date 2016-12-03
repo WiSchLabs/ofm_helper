@@ -2,6 +2,7 @@ $('document').ready( function (){
     function addChecklistItem(item) {
         $('#checklist_items').append(
             "<div id='" + item['id'] + "' class='checklist_item_container new' style='opacity:0;'>" +
+                "<span class='checklist_item_priority glyphicon glyphicon-resize-vertical'></span>" +
                 "<input type='text' class='form-control checklist_item_name' name='" + item['id'] + "_name' value='" + item['name'] + "'  maxlength='255'>" +
                 "<span class='invisible checklist_item_saved alert-success glyphicon glyphicon-floppy-saved'></span>" +
                 "<span class='delete_checklist_item alert-danger glyphicon glyphicon-trash'></span>" +
@@ -52,6 +53,7 @@ $('document').ready( function (){
         new_checklist_item.removeClass('new');
 
         new_checklist_item.find('[data-toggle="tooltip"]').tooltip();
+        $( "#checklist_items" ).sortable();
     }
 
     $('#headingChecklistSettings').click(function(){
@@ -73,6 +75,17 @@ $('document').ready( function (){
                 addChecklistItem(data);
             }
         );
+    });
+
+    $('#save_checklist_priority').click( function() {
+        var params = {
+            checklist_priority: $('#checklist_items').sortable("toArray").join(",")
+        };
+        $.post("/settings_update_checklist_priority", params);
+        $('#checklist_items_priority_saved').removeClass('invisible');
+        setTimeout(function() {
+            $('#checklist_items_priority_saved').addClass('invisible');
+        }, 2000);
     });
 
     function saveChecklistName(elem) {

@@ -127,12 +127,15 @@
                   <span class="glyphicon glyphicon-plus"></span>
                   neuer Eintrag
               </a>
+              <button type="submit" id="save_checklist_priority" class="btn btn-success">Reihenfolge speichern</button>
+              <span id="checklist_items_priority_saved" class="invisible alert-success glyphicon glyphicon-floppy-saved"></span>
           </div>
         </div>
       </div>
 
     </div>
 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'core/js/checklist_settings_handler.js' %}"></script>
 
 {% endblock %}

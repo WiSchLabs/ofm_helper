@@ -202,7 +202,8 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
                                                 if current_matchday.number % c.to_be_checked_on_matchday_pattern == 0]
             filtered_checklist_items.extend(checklist_items_matchday_pattern)
 
-        checklist_items_json = [_get_checklist_item_in_json(item) for item in filtered_checklist_items]
+        sorted_checklist_items = sorted(filtered_checklist_items, key=lambda x: x.priority, reverse=False)
+        checklist_items_json = [_get_checklist_item_in_json(item) for item in sorted_checklist_items]
 
         return self.render_json_response(checklist_items_json)
 
@@ -232,6 +233,21 @@ class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         new_checklist_item_json = _get_checklist_item_in_json(new_checklist_item)
 
         return self.render_json_response(new_checklist_item_json)
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateChecklistPriorityView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        checklist_priority = request.POST.get('checklist_priority')
+
+        priority = [int(x) for x in checklist_priority.split(',')]
+        for checklist_item_id in priority:
+            checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+            checklist_item.priority = priority.index(checklist_item_id)
+            checklist_item.save()
+
+        return self.render_json_response({'success': True})
 
 
 @method_decorator(login_required, name='dispatch')

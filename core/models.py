@@ -794,8 +794,12 @@ class Checklist(models.Model):
 
 
 class ChecklistItem(models.Model):
+    class Meta:
+        ordering = ['priority']
+
     checklist = models.ForeignKey(Checklist)
     name = models.CharField(max_length=255)
+    priority = models.IntegerField(default=0)
     last_checked_on_matchday = models.ForeignKey(Matchday, default=None, blank=True, null=True)
     to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255, validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)

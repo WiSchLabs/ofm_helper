@@ -122,5 +122,5 @@ class ChecklistAdmin(admin.ModelAdmin):
 @admin.register(ChecklistItem)
 class ChecklistItemAdmin(admin.ModelAdmin):
     list_filter = ['checklist__user', 'name']
-    list_display = ['name', 'to_be_checked_on_matchdays', 'to_be_checked_on_matchday_pattern', 'to_be_checked_if_home_match_tomorrow']
+    list_display = ['priority', 'name', 'to_be_checked_on_matchdays', 'to_be_checked_on_matchday_pattern', 'to_be_checked_if_home_match_tomorrow']
     search_fields = ['checklist__user__username', 'name']

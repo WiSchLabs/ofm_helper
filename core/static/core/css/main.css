@@ -239,6 +239,7 @@ ul.nav-sub {  padding-left: 10%; }
     width: 80%;
     margin: 5px 5px;
 }
+.checklist_item_container { background-color: rgba(255, 255, 255, 0.5); }
 #add_checklist_item { margin: 5px; }
 .delete_checklist_item {
     cursor: default;
@@ -247,34 +248,44 @@ ul.nav-sub {  padding-left: 10%; }
 }
     .delete_checklist_item:hover { cursor: pointer; }
 
+#checklist_items_priority_saved.invisible,
 .checklist_item_saved.invisible {
     opacity: 0;
     transition: opacity 300ms linear;
 }
+#checklist_items_priority_saved,
 .checklist_item_saved {
     font-size: 1.5em;
-    top: 5px;
-    right: 35px;
     opacity: 1;
+    right: 35px;
+    top: 5px;
     transition: opacity 300ms linear;
 }
+#checklist_items_priority_saved { right:0; }
 
 #checklist_items .dropdown {
-    margin: 0 15px 10px 25px;
     display: inline-flex;
+    margin: 0 15px 10px 25px;
 }
     #checklist_items .dropdown-menu>.active>a,
     .dropdown-menu>.active>a:focus,
-    .dropdown-menu>.active>a:hover
-      { background-color: #239123; }
+    .dropdown-menu>.active>a:hover { background-color: #239123; }
 
 .checklist_item_matchdays,
 .checklist_item_matchday_pattern {
-    width: 50px;
     display: inline-flex;
     margin-left: 15px;
+    width: 50px;
 }
 .checklist_item_matchdays { width: 200px; }
+
+.checklist_item_priority {
+    color: #239123;
+    font-size: 1.3em;
+    vertical-align: middle;
+    width: 20px;
+}
+
 
 #ChecklistBar {
     padding: 0;
