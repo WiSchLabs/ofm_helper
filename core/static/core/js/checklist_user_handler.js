@@ -26,9 +26,9 @@ $('document').ready( function (){
                 $('#ChecklistBar').find('a').append(
                     "<span class='current_matchday'>" +
                         "<span class='glyphicon glyphicon-calendar'></span> " +
-                        data['season_number'] +
-                        "/" +
                         data['matchday_number'] +
+                        "/" +
+                        data['season_number'] +
                     "</span>"
                 );
             }
