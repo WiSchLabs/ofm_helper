@@ -78,10 +78,16 @@ h1 {
     font-weight: bold;
 }
 
-h1 form {
+h1 form,
+h1 #ChecklistContainer {
     display: inline-block;
     float: right;
 }
+h1 #ChecklistContainer {
+    margin-left: 15px;
+    top: 2px;
+}
+
 
 h2 span.glyphicon {
     background-color: transparent;
@@ -270,6 +276,19 @@ ul.nav-sub {  padding-left: 10%; }
     display: inline-flex;
     margin-left: 15px;
 }
+
+#Checklist { min-width: 500px; }
+#Checklist li {
+    cursor: default;
+    padding: 5px;
+    margin: 0;
+}
+    #Checklist li:hover {
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+#Checklist li span.glyphicon { padding: 0 10px; }
+#Checklist li span.glyphicon-check { color: #239123; }
 
 .spinner input { text-align: right; }
 

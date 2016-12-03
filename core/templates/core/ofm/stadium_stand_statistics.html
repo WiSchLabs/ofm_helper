@@ -6,7 +6,10 @@
 
     {% if sector_name %}
 
-        <h1 class="page-header">Saison <var id="title_season">{{ season }}</var>  -  <var id="title_sector">{{ sector_name }}</var>-Tribüne</h1>
+        <h1 class="page-header">
+            Saison <var id="title_season">{{ season }}</var>  -  <var id="title_sector">{{ sector_name }}</var>-Tribüne
+            <span id="ChecklistContainer"></span>
+        </h1>
 
         <div id="table-toolbar">
             <div class="form-inline" role="form">
@@ -39,6 +42,7 @@
             var sector_abbr = $("#sector").val();
         </script>
         <script src="{% static 'core/js/chart_options.js' %}"></script>
+        <script src="{% static 'core/js/checklist_user_handler.js' %}"></script>
 
         <script>
             var stand_chart_options = $.extend( true, {}, chart_options );

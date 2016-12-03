@@ -5,7 +5,8 @@
     {% load staticfiles %}
 
     <h1 class="page-header">
-        Deine Stadionstatistik
+        Stadionstatistik
+        <span id="ChecklistContainer"></span>
         <form class="parseTrigger" action="{% url 'core:trigger_match_parsing' %}" method="get">{% csrf_token %}</form>
     </h1>
 
@@ -98,7 +99,7 @@
 
     <script src="{% static 'core/js/stadium_statistics_request_handler.js' %}"></script>
     <script src="{% static 'core/js/table_formats.js' %}"></script>
-
     <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
+    <script src="{% static 'core/js/checklist_user_handler.js' %}"></script>
 
 {% endblock %}

@@ -5,11 +5,16 @@
     {% load staticfiles %}
     {% load humanize %}
 
-    <h1 class="page-header">{{stadium_stat.match.matchday.season.number}}/{{stadium_stat.match.matchday.number}} &nbsp;
-        {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
-        ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})</h1>
+    <h1 class="page-header">
+        Spieltag {{stadium_stat.match.matchday.season.number}}/{{stadium_stat.match.matchday.number}}
+
+        <span id="ChecklistContainer"></span>
+    </h1>
     <p>
-    <h2>Allgemein</h2>
+        <h2>
+            {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
+            ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})
+        </h2>
         Mannschaftsstärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
         Tägliche Kosten: {{stadium_stat.daily_costs|intcomma}} €
     </p>
@@ -139,5 +144,7 @@
         </tbody>
 
     </table>
+
+    <script src="{% static 'core/js/checklist_user_handler.js' %}"></script>
 
 {% endblock %}
