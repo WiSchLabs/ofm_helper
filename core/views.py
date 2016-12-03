@@ -137,6 +137,17 @@ def settings_view(request):
 
 
 @method_decorator(login_required, name='dispatch')
+class GetCurrentMatchdayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        current_matchday = Matchday.get_current()
+        matchday_json = dict()
+        matchday_json['matchday_number'] = current_matchday.number
+        matchday_json['season_number'] = current_matchday.season.number
+        return self.render_json_response(matchday_json)
+
+
+@method_decorator(login_required, name='dispatch')
 class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     def get(self, request, *args, **kwargs):

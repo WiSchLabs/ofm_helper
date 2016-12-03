@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView, RedirectView
 
 from core import views
 from core.views import CreateChecklistItemView, DeleteChecklistItemView, GetChecklistItemsView, UpdateChecklistItemView, \
-    GetChecklistItemsForTodayView
+    GetChecklistItemsForTodayView, GetCurrentMatchdayView
 
 app_name = 'core'
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^account/?$', views.account_view, name='account'),
     url(r'^logout/?$', views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
+    url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
 
     url(r'^settings/?$', views.settings_view, name='settings'),
     url(r'^settings_get_checklist_items/?$', GetChecklistItemsView.as_view(), name='settings_get_checklist_items'),

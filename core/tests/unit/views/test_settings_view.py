@@ -1,6 +1,9 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
+from core.factories.core_factories import MatchdayFactory
 from users.models import OFMUser
 
 
@@ -82,3 +85,12 @@ class SettingsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/home.html')
         self.assertTrue(response.wsgi_request.user.is_authenticated())
+
+    def test_get_current_matchday(self):
+        MatchdayFactory.create()
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.get(reverse('core:get_current_matchday'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertEquals(returned_json_data['matchday_number'], 0)
+        self.assertEquals(returned_json_data['season_number'], 1)

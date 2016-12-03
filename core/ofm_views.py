@@ -28,6 +28,7 @@ class PlayerStatisticsView(TemplateView):
 
         context = super(PlayerStatisticsView, self).get_context_data(**kwargs)
         context['matchdays'] = matchdays
+        context['players_count'] = Contract.objects.filter(user=self.request.user, sold_on_matchday=None).count()
 
         return context
 

@@ -1,11 +1,11 @@
 function showChecklistItem(item) {
-    $('#Checklist').append(
-        "<li id='" + item['id'] + "' class='checklist_entry checkbox new'>" +
+    $('#ChecklistSubMenu').append(
+        "<li id='" + item['id'] + "' class='checklist_entry new'>" +
             "<span class='checklist_check glyphicon glyphicon-unchecked' id='" + item['id'] + "_check'></span>" +
             item['name'] +
         "</li>"
     );
-    var new_checklist_entry =  $('#Checklist').find('.checklist_entry').filter('.new');
+    var new_checklist_entry =  $('#ChecklistSubMenu').find('.checklist_entry').filter('.new');
     if (item['checked']) {
        new_checklist_entry.find('.checklist_check').removeClass('glyphicon-unchecked');
        new_checklist_entry.find('.checklist_check').addClass('glyphicon-check');
@@ -15,23 +15,27 @@ function showChecklistItem(item) {
 
 $('document').ready( function (){
     $(function() {
-        $('#ChecklistContainer').append(
-            "<div class='btn-group'>" +
-                "<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                    "<span class='glyphicon glyphicon-list'></span> Checkliste <span class='caret'></span>" +
-                "</button>" +
-                "<ul id='Checklist' class='dropdown-menu dropdown-menu-right'></ul>" +
-            "</div>"
-        );
         $.get("/settings_get_checklist_items_for_today",
             function (data) {
-                $('#Checklist').html('');
+                $('#ChecklistSubMenu').html('');
                 data.forEach(showChecklistItem);
+            }
+        );
+        $.get("/get_current_matchday",
+            function (data) {
+                $('#ChecklistBar').find('a').append(
+                    "<span class='current_matchday'>" +
+                        "<span class='glyphicon glyphicon-calendar'></span> " +
+                        data['season_number'] +
+                        "/" +
+                        data['matchday_number'] +
+                    "</span>"
+                );
             }
         );
     });
 
-    $('#ChecklistContainer').on('click', '.checklist_entry', function() {
+    $('#ChecklistSubMenu').on('click', '.checklist_entry', function() {
         var checklistItem = $(this).find('.checklist_check');
         var checklistItemGotChecked = checklistItem.hasClass("glyphicon-unchecked");
         var params = {
@@ -39,7 +43,7 @@ $('document').ready( function (){
             checklist_item_checked: checklistItemGotChecked
         };
         $.post("/settings_update_checklist_item", params);
-        $('#ChecklistContainer').find('.btn-group').addClass('open');
+
         if (checklistItemGotChecked) {
             checklistItem.removeClass('glyphicon-unchecked');
             checklistItem.addClass('glyphicon-check');

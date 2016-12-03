@@ -54,6 +54,9 @@
             <div class="row">
                 <div class="col-md-3">
                     {% include "core/includes/navbar.html" %}
+                    {% if user.is_authenticated and 'ofm' in request.path %}
+                        {% include "core/includes/checklist.html" %}
+                    {% endif %}
                 </div>
 
                 <div class="col-md-9">
