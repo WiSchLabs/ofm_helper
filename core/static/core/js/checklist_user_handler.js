@@ -33,6 +33,16 @@ $('document').ready( function (){
                 );
             }
         );
+        var checklist_open = get_cookie("checklist_open");
+        if (checklist_open == 'true') {
+            setTimeout(function() {
+                $('#ChecklistSubMenu').collapse('show');
+            }, 1000); // wait for data to be loaded
+        }
+    });
+
+    $('#ChecklistBar').on('click', function() {
+        set_cookie('checklist_open', !$('#ChecklistSubMenu').hasClass('in'), 1);
     });
 
     $('#ChecklistSubMenu').on('click', '.checklist_entry', function() {
