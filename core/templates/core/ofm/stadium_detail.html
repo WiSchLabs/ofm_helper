@@ -15,7 +15,7 @@
             {{stadium_stat.match.home_team_statistics.team_name}} - {{stadium_stat.match.guest_team_statistics.team_name}}
             ({{stadium_stat.match.home_team_statistics.score}}:{{stadium_stat.match.guest_team_statistics.score}})
         </h2>
-        Mannschaftsstärke: {{stadium_stat.match.home_team_statistics.strength}} : {{stadium_stat.match.guest_team_statistics.strength}}<br>
+        Mannschaftsstärke: {{ stadium_stat.match.home_team_statistics.strength|floatformat }} : {{ stadium_stat.match.guest_team_statistics.strength|floatformat }}<br>
         Tägliche Kosten: {{stadium_stat.daily_costs|intcomma}} €
     </p>
 
