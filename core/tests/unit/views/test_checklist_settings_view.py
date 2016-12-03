@@ -72,11 +72,11 @@ class ChecklistSettingsTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
         self.assertTrue('name' in returned_json_data[0])
-        self.assertFalse('type_matchday' in returned_json_data[0])
+        self.assertFalse('type_matchdays' in returned_json_data[0])
         self.assertFalse('type_matchday_pattern' in returned_json_data[0])
         self.assertTrue('type_home_match' in returned_json_data[0])
         self.assertEqual(returned_json_data[0]['type_home_match'], True)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday, None)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, True)
 
@@ -84,7 +84,7 @@ class ChecklistSettingsTestCase(TestCase):
         self.client.login(username='temporary', password='temporary')
         response = self.client.post(reverse('core:settings_update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
-                                     'checklist_item_matchday': 4
+                                     'checklist_item_matchdays': '4'
                                      })
         self.assertEqual(response.status_code, 200)
 
@@ -93,11 +93,32 @@ class ChecklistSettingsTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
         self.assertTrue('name' in returned_json_data[0])
-        self.assertTrue('type_matchday' in returned_json_data[0])
+        self.assertTrue('type_matchdays' in returned_json_data[0])
         self.assertFalse('type_matchday_pattern' in returned_json_data[0])
         self.assertFalse('type_home_match' in returned_json_data[0])
-        self.assertEqual(returned_json_data[0]['type_matchday'], 4)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday, 4)
+        self.assertEqual(returned_json_data[0]['type_matchdays'], '4')
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, "4")
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
+
+    def test_update_checklist_item_matchdays(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('core:settings_update_checklist_item'),
+                                    {'checklist_item_id': self.checklist_item.id,
+                                     'checklist_item_matchdays': '3,33'
+                                     })
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('id' in returned_json_data[0])
+        self.assertTrue('name' in returned_json_data[0])
+        self.assertTrue('type_matchdays' in returned_json_data[0])
+        self.assertFalse('type_matchday_pattern' in returned_json_data[0])
+        self.assertFalse('type_home_match' in returned_json_data[0])
+        self.assertEqual(returned_json_data[0]['type_matchdays'], '3,33')
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, "3,33")
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
 
@@ -114,11 +135,11 @@ class ChecklistSettingsTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
         self.assertTrue('name' in returned_json_data[0])
-        self.assertFalse('type_matchday' in returned_json_data[0])
+        self.assertFalse('type_matchdays' in returned_json_data[0])
         self.assertTrue('type_matchday_pattern' in returned_json_data[0])
         self.assertFalse('type_home_match' in returned_json_data[0])
         self.assertEqual(returned_json_data[0]['type_matchday_pattern'], 2)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday, None)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, 2)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
 
@@ -135,10 +156,10 @@ class ChecklistSettingsTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
         self.assertTrue('name' in returned_json_data[0])
-        self.assertFalse('type_matchday' in returned_json_data[0])
+        self.assertFalse('type_matchdays' in returned_json_data[0])
         self.assertFalse('type_matchday_pattern' in returned_json_data[0])
         self.assertFalse('type_home_match' in returned_json_data[0])
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday, None)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
 
@@ -190,11 +211,11 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_get_checklist_items_for_today(self):
         self.client.login(username='temporary', password='temporary')
-        c1 = ChecklistItemFactory.create(checklist=self.checklist, name='on 4th matchday', to_be_checked_on_matchday=4)
+        c1 = ChecklistItemFactory.create(checklist=self.checklist, name='on 4th matchday', to_be_checked_on_matchdays='4')
         c2 = ChecklistItemFactory.create(checklist=self.checklist, name='on every 4th matchday', to_be_checked_on_matchday_pattern=4)
         c3 = ChecklistItemFactory.create(checklist=self.checklist, name='on every 3rd matchday', to_be_checked_on_matchday_pattern=3)
         c4 = ChecklistItemFactory.create(checklist=self.checklist, name='if tomorrow home_match', to_be_checked_if_home_match_tomorrow=True)
-        c5 = ChecklistItemFactory.create(checklist=self.checklist, name='on 6th matchday', to_be_checked_on_matchday=6)
+        c5 = ChecklistItemFactory.create(checklist=self.checklist, name='on 6th matchday', to_be_checked_on_matchdays='6,9')
 
         response = self.client.get(reverse('core:settings_get_checklist_items_for_today'))
 
@@ -213,7 +234,7 @@ class ChecklistSettingsTestCase(TestCase):
         FinanceFactory.create(matchday=self.matchday, user=self.user)
         MatchFactory.create(matchday=matchday2, venue='', is_home_match=True, user=self.user)
         self.client.login(username='temporary', password='temporary')
-        c1 = ChecklistItemFactory.create(checklist=self.checklist, name='on 6th matchday', to_be_checked_on_matchday=6)
+        c1 = ChecklistItemFactory.create(checklist=self.checklist, name='on 6th and 9th matchday', to_be_checked_on_matchdays='6,9')
         c2 = ChecklistItemFactory.create(checklist=self.checklist, name='on every 2nd matchday', to_be_checked_on_matchday_pattern=2)
         c3 = ChecklistItemFactory.create(checklist=self.checklist, name='on every 9th matchday', to_be_checked_on_matchday_pattern=9)
         c4 = ChecklistItemFactory.create(checklist=self.checklist, name='if tomorrow home_match', to_be_checked_if_home_match_tomorrow=True)

@@ -268,12 +268,13 @@ ul.nav-sub {  padding-left: 10%; }
     .dropdown-menu>.active>a:hover
       { background-color: #239123; }
 
-.checklist_item_matchday,
+.checklist_item_matchdays,
 .checklist_item_matchday_pattern {
     width: 50px;
     display: inline-flex;
     margin-left: 15px;
 }
+.checklist_item_matchdays { width: 200px; }
 
 #ChecklistBar {
     padding: 0;
@@ -299,6 +300,14 @@ ul.nav-sub {  padding-left: 10%; }
         #ChecklistSubMenu li span.glyphicon-check { color: #239123; }
 
 .spinner input { text-align: right; }
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 
 .input-group-btn-vertical {
   position: relative;

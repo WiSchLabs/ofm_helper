@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 from django.db.models import Sum
 from django.utils.encoding import smart_str
@@ -796,6 +797,6 @@ class ChecklistItem(models.Model):
     checklist = models.ForeignKey(Checklist)
     name = models.CharField(max_length=255)
     last_checked_on_matchday = models.ForeignKey(Matchday, default=None, blank=True, null=True)
-    to_be_checked_on_matchday = models.IntegerField(blank=True, null=True)
+    to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255, validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)
     to_be_checked_if_home_match_tomorrow = models.BooleanField(default=False)

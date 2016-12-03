@@ -199,6 +199,6 @@ class ChecklistItemFactory(factory.django.DjangoModelFactory):
     checklist = factory.SubFactory(ChecklistFactory)
     name = "Item 1"
     last_checked_on_matchday = None
-    to_be_checked_on_matchday = None
+    to_be_checked_on_matchdays = None
     to_be_checked_on_matchday_pattern = None
     to_be_checked_if_home_match_tomorrow = False

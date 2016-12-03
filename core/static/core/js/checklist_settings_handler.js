@@ -13,20 +13,16 @@ $('document').ready( function (){
                     "<ul class='dropdown-menu'>" +
                         "<li class='everyday'><a href='#'>Jeden Spieltag (inkl. 0.)</a></li>" +
                         "<li class='home_match'><a href='#'>Wenn morgen Heimspiel ist</a></li>" +
-                        "<li class='matchday'><a href='#'>Bestimmter Spieltag</a></li>" +
+                        "<li class='matchdays'><a href='#'>Bestimmte Spieltage</a></li>" +
                         "<li class='matchday_pattern'><a href='#'>Jeden X. Spieltag (exkl. 0.)</a></li>" +
                     "</ul>" +
                 "</div>" +
                 "<span class='current_type'></span>" +
-                "<div class='input-group spinner checklist_item_matchday hide'>" +
-                    "<input class='form-control' type'number' name'" + item['id'] + "_matchday' value='0' min='0' max='34'> " +
-                    "<div class='input-group-btn-vertical'>" +
-                        "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-top'></i></button>" +
-                        "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-bottom'></i></button>" +
-                    "</div>" +
+                "<div class='checklist_item_matchdays hide' data-toggle='tooltip' title='Komma-getrennte List, z.B. 3,6,7'>" +
+                    "<input class='form-control' type='text' name'" + item['id'] + "_matchdays' value='0' min='0' max='34' maxlength='255'> " +
                 "</div>" +
-                "<div class='input-group spinner checklist_item_matchday_pattern hide'>" +
-                    "<input class='form-control' type'number' name'" + item['id'] + "_matchday_pattern' value='1' min='1' max='17'>" +
+                "<div class='input-group spinner checklist_item_matchday_pattern hide' data-toggle='tooltip' title='z.B. 5 heißt: 5, 10, 15, etc.'>" +
+                    "<input class='form-control' type='number' name'" + item['id'] + "_matchday_pattern' value='1' min='1' max='17'>" +
                     "<div class='input-group-btn-vertical'>" +
                         "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-top'></i></button>" +
                         "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-bottom'></i></button>" +
@@ -37,10 +33,10 @@ $('document').ready( function (){
         var new_checklist_item = $('#checklist_items').find('.checklist_item_container').filter('.new');
         var item_types = new_checklist_item.find('.checklist_type li');
         var active_item_type = item_types.filter('.everyday');
-        if (item['type_matchday'] !== undefined) {
-            active_item_type = item_types.filter('.matchday');
-            var matchday_input_container = new_checklist_item.find('.checklist_item_matchday');
-            matchday_input_container.find('input').val(item['type_matchday']);
+        if (item['type_matchdays'] !== undefined) {
+            active_item_type = item_types.filter('.matchdays');
+            var matchday_input_container = new_checklist_item.find('.checklist_item_matchdays');
+            matchday_input_container.find('input').val(item['type_matchdays']);
             matchday_input_container.removeClass('hide');
         }
         if (item['type_matchday_pattern'] !== undefined) {
@@ -54,6 +50,8 @@ $('document').ready( function (){
         new_checklist_item.find('.current_type').html(active_item_type.find('a').html());
         new_checklist_item.animate({opacity:1}, 'fast');
         new_checklist_item.removeClass('new');
+
+        new_checklist_item.find('[data-toggle="tooltip"]').tooltip();
     }
 
     $('#headingChecklistSettings').click(function(){
@@ -97,34 +95,39 @@ $('document').ready( function (){
         $(this).closest('.checklist_item_container').find('.checklist_item_saved').addClass('invisible');
     });
 
-    function saveChecklistMatchday(elem) {
-        var matchday_input = elem.find('input');
-        var matchday_min = matchday_input.attr('min');
-        var matchday_max = matchday_input.attr('max');
-        var matchday = matchday_min;
-        if($.isNumeric(matchday_input.val())) { matchday = +matchday_input.val(); }
-        if (matchday < matchday_min) { matchday = matchday_min; }
-        if (matchday > matchday_max) { matchday = matchday_max; }
-        matchday_input.val(matchday);
+    function saveChecklistMatchdays(elem) {
+        var matchdays_input = elem.find('input');
+        var matchday_min = matchdays_input.attr('min');
+        var matchday_max = matchdays_input.attr('max');
+        var matchdays = new Set();
+        matchdays_input.val().split(",").forEach(function(matchday_val, index, array){
+            var matchday = matchday_min;
+            if($.isNumeric(matchday_val)) { matchday = +matchday_val; }
+            if (matchday < matchday_min) { matchday = matchday_min; }
+            if (matchday > matchday_max) { matchday = matchday_max; }
+            matchdays.add(matchday);
+        });
+        var matchdays_comma_seperated = Array.from(matchdays).join(",");
+        matchdays_input.val(matchdays_comma_seperated);
         var params = {
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
-            checklist_item_matchday: matchday
+            checklist_item_matchdays: matchdays_comma_seperated
         };
         $.post("/settings_update_checklist_item", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
-    $('#checklist_items').on('focusout', '.checklist_item_matchday', function() {
-        saveChecklistMatchday($(this));
+    $('#checklist_items').on('focusout', '.checklist_item_matchdays', function() {
+        saveChecklistMatchdays($(this));
     });
-    $('#checklist_items').on('click', '.checklist_item_matchday button', function() {
-        saveChecklistMatchdayPattern($(this));
+    $('#checklist_items').on('click', '.checklist_item_matchdays button', function() {
+        saveChecklistMatchdays($(this));
     });
-    $('#checklist_items').on('keyup', '.checklist_item_matchday', function(event) {
+    $('#checklist_items').on('keyup', '.checklist_item_matchdays', function(event) {
         if (event.which == 13) {
-            saveChecklistMatchday($(this));
+            saveChecklistMatchdays($(this));
         }
     });
-    $('#checklist_items').on('input', '.checklist_item_matchday', function() {
+    $('#checklist_items').on('input', '.checklist_item_matchdays', function() {
         $(this).closest('.checklist_item_container').find('.checklist_item_saved').addClass('invisible');
     });
 
@@ -181,17 +184,17 @@ $('document').ready( function (){
         var checklist_item_type = checklist_item.find('li').filter('.active');
         checklist_item.find('.current_type').html($(this).html());
 
-        var matchday_input = checklist_item.find('.checklist_item_matchday');
+        var matchdays_input = checklist_item.find('.checklist_item_matchdays');
         var matchday_pattern_input = checklist_item.find('.checklist_item_matchday_pattern');
-        matchday_input.addClass('hide');
+        matchdays_input.addClass('hide');
         matchday_pattern_input.addClass('hide');
 
         var params = {
             checklist_item_id: checklist_item.attr('id')
         };
-        if (checklist_item_type.hasClass('matchday')) {
-            matchday_input.removeClass('hide');
-            params['checklist_item_matchday'] = matchday_input.find('input').val();
+        if (checklist_item_type.hasClass('matchdays')) {
+            matchdays_input.removeClass('hide');
+            params['checklist_item_matchdays'] = matchdays_input.find('input').val();
         }
         else if (checklist_item_type.hasClass('matchday_pattern')) {
             matchday_pattern_input.removeClass('hide');
