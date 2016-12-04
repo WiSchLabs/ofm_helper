@@ -3,7 +3,7 @@ FROM python:3-onbuild
 RUN pip install --no-cache-dir -r docker_requirements.txt
 
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE ofm_helper.settings.prod
+ENV DJANGO_SETTINGS_MODULE ofm_helper.settings.docker
 
 RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
