@@ -37,12 +37,12 @@ class ParserManager:
         site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
         version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
         return version_parser.parse()
-    
+
     def parse_matchday(self, request, site_manager):
         site_manager.jump_to_frame(Constants.HEAD)
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
         return matchday_parser.parse()
-    
+
     def parse_players(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
@@ -54,14 +54,16 @@ class ParserManager:
         if not self.players_already_parsed:
             self.parse_players(request, site_manager)
         site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
-        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
+        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user,
+                                                    self.parsed_matchday)
         return player_stat_parser.parse()
 
     def parse_awp_boundaries(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
-        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
+        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user,
+                                                    self.parsed_matchday)
         return awp_boundaries_parser.parse()
 
     def parse_finances(self, request, site_manager):

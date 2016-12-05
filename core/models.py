@@ -483,6 +483,7 @@ class Match(models.Model):
 class StadiumLevelItem(models.Model):
     class Meta:
         ordering = ['-current_level', '-value', '-daily_costs']
+
     current_level = models.IntegerField(default=0)
     value = models.IntegerField(default=0)
     daily_costs = models.IntegerField(default=0)
@@ -498,7 +499,8 @@ class StadiumLevel(models.Model):
     parking = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_parking")
 
     def __str__(self):
-        return "light: %s / screen: %s / security: %s / parking: %s" % (self.light, self.screen, self.security, self.parking)
+        return "light: %s / screen: %s / security: %s / parking: %s" % (
+            self.light, self.screen, self.security, self.parking)
 
 
 # will only be created, if home match
@@ -514,11 +516,8 @@ class MatchStadiumStatistics(models.Model):
         return reverse('core:ofm:stadium_detail', args=[str(self.id)])
 
     def get_configuration(self):
-        config = {}
-        config['light'] = self.level.light.current_level
-        config['screen'] = self.level.screen.current_level
-        config['security'] = self.level.security.current_level
-        config['parking'] = self.level.parking.current_level
+        config = {'light': self.level.light.current_level, 'screen': self.level.screen.current_level,
+                  'security': self.level.security.current_level, 'parking': self.level.parking.current_level}
 
         north_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='N')
         south_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='S')
@@ -541,11 +540,13 @@ class MatchStadiumStatistics(models.Model):
 
     @property
     def visitors(self):
-        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))['visitors__sum']
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))[
+            'visitors__sum']
 
     @property
     def capacity(self):
-        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))['level__capacity__sum']
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))[
+            'level__capacity__sum']
 
     @property
     def earnings(self):
@@ -556,7 +557,8 @@ class MatchStadiumStatistics(models.Model):
 
     @property
     def daily_costs(self):
-        return self.level.light.daily_costs + self.level.screen.daily_costs + self.level.security.daily_costs + self.level.parking.daily_costs
+        return self.level.light.daily_costs + self.level.screen.daily_costs + \
+               self.level.security.daily_costs + self.level.parking.daily_costs
 
     def __str__(self):
         return "%s (%s)" % (self.match.venue, self.match.matchday)
@@ -774,7 +776,7 @@ class AwpBoundaries(Dictionary):
         except Dictionary.DoesNotExist:
             awp_boundaries = AwpBoundaries.get_or_create_from_matchday(matchday)
             for i in range(26):
-                awp_boundaries[i+1] = 0
+                awp_boundaries[i + 1] = 0
         return awp_boundaries
 
     @staticmethod
@@ -801,6 +803,7 @@ class ChecklistItem(models.Model):
     name = models.CharField(max_length=255)
     priority = models.IntegerField(default=0)
     last_checked_on_matchday = models.ForeignKey(Matchday, default=None, blank=True, null=True)
-    to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255, validators=[validate_comma_separated_integer_list])
+    to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255,
+                                                  validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)
     to_be_checked_if_home_match_tomorrow = models.BooleanField(default=False)

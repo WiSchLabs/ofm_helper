@@ -9,5 +9,3 @@ class CreateOFMUserModelsTest(TestCase):
         self.assertIsNotNone(u)
         self.assertEqual(u.username, 'test')
         self.assertEqual(u.password, '1234')
-
-

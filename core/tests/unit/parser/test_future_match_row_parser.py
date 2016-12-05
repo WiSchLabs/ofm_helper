@@ -64,4 +64,3 @@ class FutureMatchRowParserTest(TestCase):
         self.assertEquals(match_stat2.home_team_statistics.strength, '61')
         self.assertEquals(match_stat2.guest_team_statistics.strength, '29')
         self.assertEquals(2, MatchTeamStatistics.objects.all().count())
-

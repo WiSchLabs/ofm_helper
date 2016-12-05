@@ -11,8 +11,10 @@ from users.models import OFMUser
 class OFMStadiumStandStatisticsViewTestCase(TestCase):
     def setUp(self):
         self.matchday = MatchdayFactory.create()
-        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice', ofm_username='alice', ofm_password='alice')
-        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob', ofm_password='bob')
+        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice',
+                                                 ofm_username='alice', ofm_password='alice')
+        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob',
+                                                 ofm_password='bob')
         self.match = MatchFactory.create(user=self.user1)
         self.stadium_stat = MatchStadiumStatisticsFactory.create(match=self.match)
         self.north_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='N')
@@ -49,5 +51,3 @@ class OFMStadiumStandStatisticsViewTestCase(TestCase):
         self.assertTrue('data' in returned_json_data['series'][0])
         self.assertTrue('categories' in returned_json_data)
         self.assertTrue('yAxis' in returned_json_data)
-
-

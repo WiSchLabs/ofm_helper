@@ -31,12 +31,12 @@ class FutureMatchRowParser(BaseParser):
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
 
         home_team = row.find_all('td')[1].get_text().strip()
-        home_team_name = home_team[0:home_team.find('(')-1]
-        home_team_strength = home_team[home_team.find('(')+1:home_team.find(')')]
+        home_team_name = home_team[0:home_team.find('(') - 1]
+        home_team_strength = home_team[home_team.find('(') + 1:home_team.find(')')]
 
         guest_team = row.find_all('td')[3].get_text().strip()
-        guest_team_name = guest_team[0:guest_team.find('(')-1]
-        guest_team_strength = guest_team[guest_team.find('(')+1:guest_team.find(')')]
+        guest_team_name = guest_team[0:guest_team.find('(') - 1]
+        guest_team_strength = guest_team[guest_team.find('(') + 1:guest_team.find(')')]
 
         existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 

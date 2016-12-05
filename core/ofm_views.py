@@ -12,11 +12,11 @@ from core.models import Player, Contract, PlayerStatistics, Finance, Matchday, M
 
 
 def _validate_filtered_field(field):
-        if len(field) > 1:
-            raise MultipleObjectsReturned
-        elif field:
-            field = field[0]
-        return field
+    if len(field) > 1:
+        raise MultipleObjectsReturned
+    elif field:
+        field = field[0]
+    return field
 
 
 @method_decorator(login_required, name='dispatch')
@@ -35,7 +35,6 @@ class PlayerStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
         players = [contract.player for contract in contracts]
@@ -51,13 +50,16 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         player_statistics_tuples = []
         for player in players:
             newer_player_statistics, older_player_statistics = self._get_statistics_from_player_and_matchday(player,
-                                                                            newer_matchday_season, newer_matchday,
-                                                                            older_matchday_season, older_matchday)
+                                                                                                             newer_matchday_season,
+                                                                                                             newer_matchday,
+                                                                                                             older_matchday_season,
+                                                                                                             older_matchday)
             if newer_player_statistics and (older_player_statistics or not diff_mode_enabled):
                 player_statistics_tuples.append((newer_player_statistics, older_player_statistics))
 
-        player_statistics_json = [self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
-                                  for (newer_player_statistics, older_player_statistics) in player_statistics_tuples]
+        player_statistics_json = [
+            self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
+            for (newer_player_statistics, older_player_statistics) in player_statistics_tuples]
 
         return self.render_json_response(player_statistics_json)
 
@@ -65,14 +67,20 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
                                                  newer_matchday_season, newer_matchday,
                                                  older_matchday_season, older_matchday):
 
-        newer_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
-        older_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
+        newer_player_statistics = PlayerStatistics.objects.filter(player=player,
+                                                                  matchday__season__number=newer_matchday_season,
+                                                                  matchday__number=newer_matchday)
+        older_player_statistics = PlayerStatistics.objects.filter(player=player,
+                                                                  matchday__season__number=older_matchday_season,
+                                                                  matchday__number=older_matchday)
 
         newer_player_statistics = _validate_filtered_field(newer_player_statistics)
         older_player_statistics = _validate_filtered_field(older_player_statistics)
 
         if not newer_player_statistics:
-            newer_player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by('matchday')[0]
+            newer_player_statistics = \
+                PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by(
+                    'matchday')[0]
 
         return newer_player_statistics, older_player_statistics
 
@@ -109,7 +117,8 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         statistic_diff['position'] = newer_player_statistics.player.position
         statistic_diff['age'] = newer_player_statistics.age
         statistic_diff['strength'] = strength
-        statistic_diff['name'] = '<a href="%s">%s</a>' % (newer_player_statistics.player.get_absolute_url(), newer_player_statistics.player.name)
+        statistic_diff['name'] = '<a href="%s">%s</a>' % (
+            newer_player_statistics.player.get_absolute_url(), newer_player_statistics.player.name)
         statistic_diff['ep'] = ep
         statistic_diff['tp'] = tp
         statistic_diff['awp'] = awp
@@ -160,7 +169,6 @@ class PlayerDetailView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
@@ -206,15 +214,17 @@ class FinanceDataView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
-        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=Matchday.objects.all()[0].season.number)
+        newer_matchday_season = self.request.GET.get('newer_matchday_season',
+                                                     default=Matchday.objects.all()[0].season.number)
         newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
         older_matchday_season = self.request.GET.get('older_matchday_season')
         older_matchday = self.request.GET.get('older_matchday')
 
-        newer_finances = Finance.objects.filter(user=request.user, matchday__season__number=newer_matchday_season, matchday__number=newer_matchday)
-        older_finances = Finance.objects.filter(user=request.user, matchday__season__number=older_matchday_season, matchday__number=older_matchday)
+        newer_finances = Finance.objects.filter(user=request.user, matchday__season__number=newer_matchday_season,
+                                                matchday__number=newer_matchday)
+        older_finances = Finance.objects.filter(user=request.user, matchday__season__number=older_matchday_season,
+                                                matchday__number=older_matchday)
 
         newer_finances = _validate_filtered_field(newer_finances)
         older_finances = _validate_filtered_field(older_finances)
@@ -280,7 +290,8 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         expenses_player_salaries = -newer_finances.expenses_player_salaries
         if older_finances:
-            expenses_player_salaries = -(newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries)
+            expenses_player_salaries = -(
+                newer_finances.expenses_player_salaries - older_finances.expenses_player_salaries)
 
         expenses_stadium = -newer_finances.expenses_stadium
         if older_finances:
@@ -358,7 +369,6 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class FinanceBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
@@ -377,7 +387,6 @@ class FinanceBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
@@ -409,18 +418,20 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             matchdays.append(data_source[0].matchday.number)
 
         for idx, entry in enumerate(data_source):
-            if idx+1 < data_source.count():
-                income_visitors_league.append(data_source[idx+1].income_visitors_league - data_source[idx].income_visitors_league)
-                income_sponsoring.append(data_source[idx+1].income_sponsoring - data_source[idx].income_sponsoring)
-                income_cup.append(data_source[idx+1].income_cup - data_source[idx].income_cup)
-                income_interests.append(data_source[idx+1].income_interests - data_source[idx].income_interests)
-                income_loan.append(data_source[idx+1].income_loan - data_source[idx].income_loan)
-                income_transfer.append(data_source[idx+1].income_transfer - data_source[idx].income_transfer)
-                income_visitors_friendlies.append(data_source[idx+1].income_visitors_friendlies - data_source[idx].income_visitors_friendlies)
-                income_friendlies.append(data_source[idx+1].income_friendlies - data_source[idx].income_friendlies)
-                income_funcup.append(data_source[idx+1].income_funcup - data_source[idx].income_funcup)
-                income_betting.append(data_source[idx+1].income_betting - data_source[idx].income_betting)
-                matchdays.append(data_source[idx+1].matchday.number)
+            if idx + 1 < data_source.count():
+                income_visitors_league.append(
+                    data_source[idx + 1].income_visitors_league - data_source[idx].income_visitors_league)
+                income_sponsoring.append(data_source[idx + 1].income_sponsoring - data_source[idx].income_sponsoring)
+                income_cup.append(data_source[idx + 1].income_cup - data_source[idx].income_cup)
+                income_interests.append(data_source[idx + 1].income_interests - data_source[idx].income_interests)
+                income_loan.append(data_source[idx + 1].income_loan - data_source[idx].income_loan)
+                income_transfer.append(data_source[idx + 1].income_transfer - data_source[idx].income_transfer)
+                income_visitors_friendlies.append(
+                    data_source[idx + 1].income_visitors_friendlies - data_source[idx].income_visitors_friendlies)
+                income_friendlies.append(data_source[idx + 1].income_friendlies - data_source[idx].income_friendlies)
+                income_funcup.append(data_source[idx + 1].income_funcup - data_source[idx].income_funcup)
+                income_betting.append(data_source[idx + 1].income_betting - data_source[idx].income_betting)
+                matchdays.append(data_source[idx + 1].matchday.number)
 
         series = []
         if sum(income_visitors_league) is not 0:
@@ -454,7 +465,6 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
@@ -486,18 +496,21 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             matchdays.append(data_source[0].matchday.number)
 
         for idx, entry in enumerate(data_source):
-            if idx+1 < data_source.count():
-                expenses_player_salaries.append(data_source[idx].expenses_player_salaries - data_source[idx+1].expenses_player_salaries)
-                expenses_stadium.append(data_source[idx].expenses_stadium - data_source[idx+1].expenses_stadium)
-                expenses_youth.append(data_source[idx].expenses_youth - data_source[idx+1].expenses_youth)
-                expenses_interests.append(data_source[idx].expenses_interests - data_source[idx+1].expenses_interests)
-                expenses_trainings.append(data_source[idx].expenses_trainings - data_source[idx+1].expenses_trainings)
-                expenses_transfer.append(data_source[idx].expenses_transfer - data_source[idx+1].expenses_transfer)
-                expenses_compensation.append(data_source[idx].expenses_compensation - data_source[idx+1].expenses_compensation)
-                expenses_friendlies.append(data_source[idx].expenses_friendlies - data_source[idx+1].expenses_friendlies)
-                expenses_funcup.append(data_source[idx].expenses_funcup - data_source[idx+1].expenses_funcup)
-                expenses_betting.append(data_source[idx].expenses_betting - data_source[idx+1].expenses_betting)
-                matchdays.append(data_source[idx+1].matchday.number)
+            if idx + 1 < data_source.count():
+                expenses_player_salaries.append(
+                    data_source[idx].expenses_player_salaries - data_source[idx + 1].expenses_player_salaries)
+                expenses_stadium.append(data_source[idx].expenses_stadium - data_source[idx + 1].expenses_stadium)
+                expenses_youth.append(data_source[idx].expenses_youth - data_source[idx + 1].expenses_youth)
+                expenses_interests.append(data_source[idx].expenses_interests - data_source[idx + 1].expenses_interests)
+                expenses_trainings.append(data_source[idx].expenses_trainings - data_source[idx + 1].expenses_trainings)
+                expenses_transfer.append(data_source[idx].expenses_transfer - data_source[idx + 1].expenses_transfer)
+                expenses_compensation.append(
+                    data_source[idx].expenses_compensation - data_source[idx + 1].expenses_compensation)
+                expenses_friendlies.append(
+                    data_source[idx].expenses_friendlies - data_source[idx + 1].expenses_friendlies)
+                expenses_funcup.append(data_source[idx].expenses_funcup - data_source[idx + 1].expenses_funcup)
+                expenses_betting.append(data_source[idx].expenses_betting - data_source[idx + 1].expenses_betting)
+                matchdays.append(data_source[idx + 1].matchday.number)
 
         series = []
         if sum(expenses_player_salaries) is not 0:
@@ -546,7 +559,6 @@ class MatchesView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         season = self.request.GET.get('season', default=Matchday.objects.all()[0].season.number)
         matches = Match.objects.filter(user=self.request.user, matchday__season__number=season)
@@ -617,13 +629,15 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class MatchesSummaryJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season = Matchday.objects.all()[0].season
         season_number = self.request.GET.get('season_number', current_season.number)
-        matches_won = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_won])
-        matches_draw = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_draw])
-        matches_lost = len([match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_lost])
+        matches_won = len(
+            [match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_won])
+        matches_draw = len(
+            [match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_draw])
+        matches_lost = len(
+            [match for match in Match.objects.filter(matchday__season__number=season_number) if match.is_lost])
 
         json = {
             "matches_won": matches_won,
@@ -645,12 +659,15 @@ class StadiumStatisticsView(TemplateView):
         seasons = set(m.season.number for m in matchdays)
 
         tolerance = 5
-        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
+        if self.request.COOKIES.get('slider_min') and \
+            self.request.COOKIES.get('slider_max') and \
+            self.request.COOKIES.get('tolerance'):
             slider_min = self.request.COOKIES['slider_min']
             slider_max = self.request.COOKIES['slider_max']
             tolerance = self.request.COOKIES['tolerance']
         elif Match.objects.count() > 0:
-            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]  # latest home match
+            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[
+                0]  # latest home match
             slider_min = int(min(match.home_team_statistics.strength, match.guest_team_statistics.strength))
             slider_max = int(max(match.home_team_statistics.strength, match.guest_team_statistics.strength))
         else:
@@ -674,11 +691,11 @@ class StadiumStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         harmonic_strength = 150
         tolerance = 5
-        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max') and self.request.COOKIES.get('tolerance'):
+        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get(
+            'slider_max') and self.request.COOKIES.get('tolerance'):
             slider_min = int(self.request.COOKIES['slider_min'])
             slider_max = int(self.request.COOKIES['slider_max'])
             tolerance = int(self.request.COOKIES['tolerance'])
@@ -727,12 +744,14 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         match_stadium_stat = dict()
         match_stadium_stat['season'] = stadium_stat.match.matchday.season.number
-        match_stadium_stat['matchday'] = "<a href='" + stadium_stat.get_absolute_url() + "'>" + str(stadium_stat.match.matchday.number) + "</a>"
+        match_stadium_stat['matchday'] = "<a href='" + stadium_stat.get_absolute_url() + "'>" + str(
+            stadium_stat.match.matchday.number) + "</a>"
         if stadium_stat.visitors and stadium_stat.capacity:
             match_stadium_stat['visitors'] = stadium_stat.visitors
             match_stadium_stat['capacity'] = stadium_stat.capacity
             match_stadium_stat['earnings'] = stadium_stat.earnings
-            match_stadium_stat['workload'] = locale.format("%.2f", stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
+            match_stadium_stat['workload'] = locale.format("%.2f",
+                                                           stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
         else:
             # all stadium stands were under construction during match
             match_stadium_stat['visitors'] = 0
@@ -752,10 +771,15 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['guest_strength'] = locale.format("%.1f", guest_strength)
         harmonic_strength = 2 * home_strength * guest_strength / (home_strength + guest_strength)
         match_stadium_stat['harmonic_strength'] = locale.format("%.1f", harmonic_strength)
-        match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
-        match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
-        match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(stadium_stat.level.security.value) + " &euro;)   " + str(stadium_stat.level.security.daily_costs) + " &euro;"
-        match_stadium_stat['parking_level'] = str(stadium_stat.level.parking.current_level) + " (" + str(stadium_stat.level.parking.value) + " &euro;)   " + str(stadium_stat.level.parking.daily_costs) + " &euro;"
+        match_stadium_stat['light_level'] = str(stadium_stat.level.light.current_level) + " (" + str(
+            stadium_stat.level.light.value) + " &euro;)   " + str(stadium_stat.level.light.daily_costs) + " &euro;"
+        match_stadium_stat['screen_level'] = str(stadium_stat.level.screen.current_level) + " (" + str(
+            stadium_stat.level.screen.value) + " &euro;)   " + str(stadium_stat.level.screen.daily_costs) + " &euro;"
+        match_stadium_stat['security_level'] = str(stadium_stat.level.security.current_level) + " (" + str(
+            stadium_stat.level.security.value) + " &euro;)   " + str(
+            stadium_stat.level.security.daily_costs) + " &euro;"
+        match_stadium_stat['parking_level'] = str(stadium_stat.level.parking.current_level) + " (" + str(
+            stadium_stat.level.parking.value) + " &euro;)   " + str(stadium_stat.level.parking.daily_costs) + " &euro;"
 
         return match_stadium_stat
 
@@ -804,7 +828,8 @@ class StadiumStandStatisticsView(TemplateView):
 
         seasons = []
         sectors = []
-        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user).order_by('stadium_statistics__match__matchday')
+        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user).order_by(
+            'stadium_statistics__match__matchday')
         for stat in statistics:
             if stat.stadium_statistics.match.matchday.season not in seasons:
                 seasons.append(stat.stadium_statistics.match.matchday.season)
@@ -824,7 +849,6 @@ class StadiumStandStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
@@ -852,7 +876,7 @@ class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin,
                 "yAxis": 1
             }, {
                 "name": 'Gemittelte Stärke der Mannschaften',
-                 "data": [float("{0:.2f}".format(s.stadium_statistics.match.harmonic_strength)) for s in statistics],
+                "data": [float("{0:.2f}".format(s.stadium_statistics.match.harmonic_strength)) for s in statistics],
                 "yAxis": 1
             }],
             "categories": [s.stadium_statistics.match.matchday.number for s in statistics],

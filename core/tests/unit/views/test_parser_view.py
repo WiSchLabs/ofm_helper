@@ -14,7 +14,7 @@ TESTDATA_PATH = 'core/tests/assets'
 class ParserViewTest(TestCase):
     def setUp(self):
         MatchdayFactory.create(season__number=100, number=1)
-        
+
         self.user = OFMUser.objects.create_user('name', '', 'pass', ofm_username='name', ofm_password='pass')
         self.client.login(username='name', password='pass')
 
@@ -42,7 +42,8 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.PlayersParser')
     @patch('core.managers.parser_manager.PlayerStatisticsParser')
-    def test_player_statistics_parser_view(self, matchday_parser_mock, player_parser_mock, site_manager_mock, player_statistics_parser_mock):
+    def test_player_statistics_parser_view(self, matchday_parser_mock, player_parser_mock, site_manager_mock,
+                                           player_statistics_parser_mock):
         response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
         self.assertEqual(response.status_code, 302)
 
@@ -99,4 +100,3 @@ class ParserViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
-
