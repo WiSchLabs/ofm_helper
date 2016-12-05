@@ -2,9 +2,9 @@ import os
 
 from django.test import TestCase
 
-from core.factories.core_factories import MatchFactory, StadiumLevelItemFactory, StadiumLevelFactory, \
+from core.factories.core_factories import MatchFactory, StadiumLevelFactory, \
     MatchStadiumStatisticsFactory, MatchdayFactory
-from core.models import MatchStadiumStatistics, StadiumLevel, StadiumLevelItem, Match
+from core.models import MatchStadiumStatistics, StadiumLevel, StadiumLevelItem
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
 from users.factories.users_factories import OFMUserFactory
 

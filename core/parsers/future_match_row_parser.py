@@ -1,6 +1,5 @@
 import logging
 
-from bs4 import BeautifulSoup
 from django.core.exceptions import MultipleObjectsReturned
 
 from core.models import Matchday, Match, MatchTeamStatistics

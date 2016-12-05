@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory, ChecklistItemFactory, ChecklistFactory, MatchFactory, \
-    FinanceFactory, MatchTeamStatisticsFactory
-from core.models import ChecklistItem, Matchday, Match
+    FinanceFactory
+from core.models import ChecklistItem
 from users.models import OFMUser
 
 

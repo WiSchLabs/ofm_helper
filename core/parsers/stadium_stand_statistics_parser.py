@@ -2,7 +2,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from core.models import Match, MatchStadiumStatistics, StadiumStandStatistics, StandLevel
+from core.models import MatchStadiumStatistics, StadiumStandStatistics, StandLevel
 from core.parsers.base_parser import BaseParser
 
 logger = logging.getLogger(__name__)

@@ -1,10 +1,7 @@
-import json
-
-from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory, MatchFactory, \
-    MatchStadiumStatisticsFactory, StadiumStandStatisticsFactory
-from core.models import Contract
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+
+from core.factories.core_factories import MatchdayFactory, MatchFactory, \
+    MatchStadiumStatisticsFactory, StadiumStandStatisticsFactory
 from users.models import OFMUser
 
 
