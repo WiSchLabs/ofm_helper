@@ -97,7 +97,10 @@ span.glyphicon.alert-danger {
 
 p { text-align: justify; }
 
-a { color: #239123; }
+a {
+    color: #239123;
+    cursor: pointer;
+}
 
     a:focus, a:hover, a:active { color: #1b6f1b; }
 
