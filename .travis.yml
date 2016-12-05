@@ -12,9 +12,10 @@ install:
 script:
 - "./manage.py migrate"
 - coverage run --branch --source . manage.py test
-- py.test --mccabe -m mccabe
 - py.test --flakes
 - py.test --pep8
+- py.test --mccabe -m mccabe
+- py.test --pylint -m pylint --ignore=core/migrations --ignore=users/migrations --ignore=manage.py
 notifications:
   email:
     recipients:
