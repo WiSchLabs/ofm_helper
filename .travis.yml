@@ -12,6 +12,7 @@ install:
 script:
 - "./manage.py migrate"
 - coverage run --branch --source . manage.py test
+- py.test --mccabe -m mccabe
 notifications:
   email:
     recipients:
