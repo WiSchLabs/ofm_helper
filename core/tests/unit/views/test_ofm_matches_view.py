@@ -11,8 +11,20 @@ class OFMMatchesViewTestCase(TestCase):
     def setUp(self):
         self.matchday = MatchdayFactory.create()
         self.second_matchday = MatchdayFactory.create(number=1)
-        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice', ofm_username='alice', ofm_password='alice')
-        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob', ofm_password='bob')
+        self.user1 = OFMUser.objects.create_user(
+            username='alice',
+            email='alice@ofmhelper.com',
+            password='alice',
+            ofm_username='alice',
+            ofm_password='alice'
+        )
+        self.user2 = OFMUser.objects.create_user(
+            username='bob',
+            email='bob@ofmhelper.com',
+            password='bob',
+            ofm_username='bob',
+            ofm_password='bob'
+        )
         MatchFactory.create(user=self.user1)
         self.client.login(username='alice', password='alice')
 

@@ -33,7 +33,11 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertTrue('stadium_configurations' in response.context_data)
 
     def test_user_can_see_his_latest_stadium_statistics_when_given_no_season(self):
-        match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=150, guest_team_statistics__strength=150)
+        match2 = MatchFactory.create(
+            user=self.user,
+            home_team_statistics__strength=150,
+            guest_team_statistics__strength=150
+        )
         stadium_stat = MatchStadiumStatisticsFactory.create(match=match2)
         StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='N')
         StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='S')
@@ -68,7 +72,11 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.assertEqual(returned_json_data[0]['venue'], self.match.venue)
 
     def test_get_two_different_matches_with_same_harmonic_strength(self):
-        match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150)
+        match2 = MatchFactory.create(
+            user=self.user,
+            home_team_statistics__strength=30,
+            guest_team_statistics__strength=150
+        )
         MatchStadiumStatisticsFactory.create(match=match2)
 
         options = {
@@ -114,7 +122,12 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
 
     def test_default_values_from_last_match_for_strength_slider(self):
         matchday = MatchdayFactory.create(number=2)
-        match2 = MatchFactory.create(user=self.user, home_team_statistics__strength=30, guest_team_statistics__strength=150, matchday=matchday)
+        match2 = MatchFactory.create(
+            user=self.user,
+            home_team_statistics__strength=30,
+            guest_team_statistics__strength=150,
+            matchday=matchday
+        )
         MatchStadiumStatisticsFactory.create(match=match2)
 
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))

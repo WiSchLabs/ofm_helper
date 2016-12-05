@@ -9,7 +9,13 @@ from users.models import OFMUser
 
 class SettingsTestCase(TestCase):
     def setUp(self):
-        self.user = OFMUser.objects.create_user('temporary', 'temporary@ofmhelper.com', 'temporary', ofm_username="tmp", ofm_password="temp")
+        self.user = OFMUser.objects.create_user(
+            username='temporary',
+            email='temporary@ofmhelper.com',
+            password='temporary',
+            ofm_username="tmp",
+            ofm_password="temp"
+        )
 
     def test_view_account_settings_when_logged_in(self):
         self.client.login(username='temporary', password='temporary')

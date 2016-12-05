@@ -39,10 +39,14 @@ class StadiumStatisticsParser(BaseParser):
         security_row = stadium_items[2]
         parking_row = stadium_items[3]
 
-        is_light_under_construction = light_row.find_all('td')[1].img is not None and 'underconst' in light_row.find_all('td')[1].img['src']
-        is_screen_under_construction = screen_row.find_all('td')[1].img is not None and 'underconst' in screen_row.find_all('td')[1].img['src']
-        is_security_under_construction = security_row.find_all('td')[1].img is not None and 'underconst' in security_row.find_all('td')[1].img['src']
-        is_parking_under_construction = parking_row.find_all('td')[1].img is not None and 'underconst' in parking_row.find_all('td')[1].img['src']
+        is_light_under_construction = \
+            light_row.find_all('td')[1].img is not None and 'underconst' in light_row.find_all('td')[1].img['src']
+        is_screen_under_construction = \
+            screen_row.find_all('td')[1].img is not None and 'underconst' in screen_row.find_all('td')[1].img['src']
+        is_security_under_construction = \
+            security_row.find_all('td')[1].img is not None and 'underconst' in security_row.find_all('td')[1].img['src']
+        is_parking_under_construction = \
+            parking_row.find_all('td')[1].img is not None and 'underconst' in parking_row.find_all('td')[1].img['src']
 
         if is_light_under_construction and last_stadium_level:
             light = last_stadium_level.light

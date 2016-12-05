@@ -96,7 +96,7 @@ class PlayerStatisticsParser(BaseParser):
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
-            contract, success = Contract.objects.get_or_create(
+            contract, _ = Contract.objects.get_or_create(
                 player=player,
                 user=self.user,
                 bought_on_matchday=self.matchday

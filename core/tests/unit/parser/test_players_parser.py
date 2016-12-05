@@ -32,7 +32,11 @@ class PlayersParserTest(TestCase):
         self.assertEqual('Frankreich', str(self.first_player.nationality))
 
     def test_parsed_player_has_contract_with_user(self):
-        self.assertEqual(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))
+        self.assertEqual(1, len(Contract.objects.filter(
+            player=self.first_player,
+            user=self.user,
+            sold_on_matchday=None
+        )))
 
     def test_sold_player_gets_according_attribute(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'players_one_player_sold.html'), encoding='utf8')

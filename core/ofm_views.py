@@ -49,17 +49,18 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         player_statistics_tuples = []
         for player in players:
-            newer_player_statistics, older_player_statistics = self._get_statistics_from_player_and_matchday(player,
-                                                                                                             newer_matchday_season,
-                                                                                                             newer_matchday,
-                                                                                                             older_matchday_season,
-                                                                                                             older_matchday)
+            newer_player_statistics, older_player_statistics = self._get_statistics_from_player_and_matchday(
+                player,
+                newer_matchday_season, newer_matchday,
+                older_matchday_season, older_matchday
+            )
             if newer_player_statistics and (older_player_statistics or not diff_mode_enabled):
                 player_statistics_tuples.append((newer_player_statistics, older_player_statistics))
 
         player_statistics_json = [
             self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
-            for (newer_player_statistics, older_player_statistics) in player_statistics_tuples]
+            for (newer_player_statistics, older_player_statistics) in player_statistics_tuples
+        ]
 
         return self.render_json_response(player_statistics_json)
 
@@ -67,20 +68,25 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
                                                  newer_matchday_season, newer_matchday,
                                                  older_matchday_season, older_matchday):
 
-        newer_player_statistics = PlayerStatistics.objects.filter(player=player,
-                                                                  matchday__season__number=newer_matchday_season,
-                                                                  matchday__number=newer_matchday)
-        older_player_statistics = PlayerStatistics.objects.filter(player=player,
-                                                                  matchday__season__number=older_matchday_season,
-                                                                  matchday__number=older_matchday)
+        newer_player_statistics = PlayerStatistics.objects.filter(
+            player=player,
+            matchday__season__number=newer_matchday_season,
+            matchday__number=newer_matchday
+        )
+        older_player_statistics = PlayerStatistics.objects.filter(
+            player=player,
+            matchday__season__number=older_matchday_season,
+            matchday__number=older_matchday
+        )
 
         newer_player_statistics = _validate_filtered_field(newer_player_statistics)
         older_player_statistics = _validate_filtered_field(older_player_statistics)
 
         if not newer_player_statistics:
-            newer_player_statistics = \
-                PlayerStatistics.objects.filter(player=player, matchday__season__number=newer_matchday_season).order_by(
-                    'matchday')[0]
+            newer_player_statistics = PlayerStatistics.objects.filter(
+                player=player,
+                matchday__season__number=newer_matchday_season
+            ).order_by('matchday')[0]
 
         return newer_player_statistics, older_player_statistics
 
@@ -117,8 +123,8 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         statistic_diff['position'] = newer_player_statistics.player.position
         statistic_diff['age'] = newer_player_statistics.age
         statistic_diff['strength'] = strength
-        statistic_diff['name'] = '<a href="%s">%s</a>' % (
-            newer_player_statistics.player.get_absolute_url(), newer_player_statistics.player.name)
+        statistic_diff['name'] = '<a href="%s">%s</a>' % (newer_player_statistics.player.get_absolute_url(),
+                                                          newer_player_statistics.player.name)
         statistic_diff['ep'] = ep
         statistic_diff['tp'] = tp
         statistic_diff['awp'] = awp
@@ -221,10 +227,16 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         older_matchday_season = self.request.GET.get('older_matchday_season')
         older_matchday = self.request.GET.get('older_matchday')
 
-        newer_finances = Finance.objects.filter(user=request.user, matchday__season__number=newer_matchday_season,
-                                                matchday__number=newer_matchday)
-        older_finances = Finance.objects.filter(user=request.user, matchday__season__number=older_matchday_season,
-                                                matchday__number=older_matchday)
+        newer_finances = Finance.objects.filter(
+            user=request.user,
+            matchday__season__number=newer_matchday_season,
+            matchday__number=newer_matchday
+        )
+        older_finances = Finance.objects.filter(
+            user=request.user,
+            matchday__season__number=older_matchday_season,
+            matchday__number=older_matchday
+        )
 
         newer_finances = _validate_filtered_field(newer_finances)
         older_finances = _validate_filtered_field(older_finances)
@@ -666,8 +678,8 @@ class StadiumStatisticsView(TemplateView):
             slider_max = self.request.COOKIES['slider_max']
             tolerance = self.request.COOKIES['tolerance']
         elif Match.objects.count() > 0:
-            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[
-                0]  # latest home match
+            # latest home match
+            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]
             slider_min = int(min(match.home_team_statistics.strength, match.guest_team_statistics.strength))
             slider_max = int(max(match.home_team_statistics.strength, match.guest_team_statistics.strength))
         else:
@@ -694,8 +706,9 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
     def get(self, request, *args, **kwargs):
         harmonic_strength = 150
         tolerance = 5
-        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get(
-            'slider_max') and self.request.COOKIES.get('tolerance'):
+        if self.request.COOKIES.get('slider_min') and \
+            self.request.COOKIES.get('slider_max') and \
+            self.request.COOKIES.get('tolerance'):
             slider_min = int(self.request.COOKIES['slider_min'])
             slider_max = int(self.request.COOKIES['slider_max'])
             tolerance = int(self.request.COOKIES['tolerance'])
@@ -822,14 +835,17 @@ class StadiumStandStatisticsView(TemplateView):
         current_season_number = Matchday.objects.all()[0].season.number
         sector = self.request.GET.get('sector', 'N')
         season_number = self.request.GET.get('season', current_season_number)
-        queryset = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
-                                                         stadium_statistics__match__matchday__season__number=season_number,
-                                                         sector=sector)
+        queryset = StadiumStandStatistics.objects.filter(
+            stadium_statistics__match__user=self.request.user,
+            stadium_statistics__match__matchday__season__number=season_number,
+            sector=sector
+        )
 
         seasons = []
         sectors = []
-        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user).order_by(
-            'stadium_statistics__match__matchday')
+        statistics = StadiumStandStatistics.objects.filter(
+            stadium_statistics__match__user=self.request.user
+        ).order_by('stadium_statistics__match__matchday')
         for stat in statistics:
             if stat.stadium_statistics.match.matchday.season not in seasons:
                 seasons.append(stat.stadium_statistics.match.matchday.season)
@@ -853,9 +869,11 @@ class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin,
         current_season_number = Matchday.objects.all()[0].season.number
         season_number = self.request.GET.get('season_number', default=current_season_number)
         sector = self.request.GET.get('sector', 'N')
-        statistics = StadiumStandStatistics.objects.filter(stadium_statistics__match__user=self.request.user,
-                                                           stadium_statistics__match__matchday__season__number=season_number,
-                                                           sector=sector)
+        statistics = StadiumStandStatistics.objects.filter(
+            stadium_statistics__match__user=self.request.user,
+            stadium_statistics__match__matchday__season__number=season_number,
+            sector=sector
+        )
 
         chart_json = {
             "series": [{

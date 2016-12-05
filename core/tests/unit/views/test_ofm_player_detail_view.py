@@ -12,12 +12,26 @@ class OFMPlayerDetailViewTestCase(TestCase):
     def setUp(self):
         self.player = PlayerFactory.create()
         self.matchday = MatchdayFactory.create()
-        self.user1 = OFMUser.objects.create_user('alice', 'alice@ofmhelper.com', 'alice', ofm_username='alice',
-                                                 ofm_password='alice')
-        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob',
-                                                 ofm_password='bob')
-        Contract.objects.create(user=self.user1, player=self.player, bought_on_matchday=self.matchday,
-                                sold_on_matchday=None)
+        self.user1 = OFMUser.objects.create_user(
+            username='alice',
+            email='alice@ofmhelper.com',
+            password='alice',
+            ofm_username='alice',
+            ofm_password='alice'
+        )
+        self.user2 = OFMUser.objects.create_user(
+            username='bob',
+            email='bob@ofmhelper.com',
+            password='bob',
+            ofm_username='bob',
+            ofm_password='bob'
+        )
+        Contract.objects.create(
+            user=self.user1,
+            player=self.player,
+            bought_on_matchday=self.matchday,
+            sold_on_matchday=None
+        )
         self.client.login(username='alice', password='alice')
 
     def test_user_can_see_his_players(self):
@@ -77,8 +91,12 @@ class OFMPlayerDetailViewTestCase(TestCase):
 
     def test_player_chart_shows_reached_but_not_promoted_awp_boundary(self):
         PlayerStatisticsFactory.create(player=self.player, matchday=self.matchday, strength=2, awp=2800)
-        PlayerStatisticsFactory.create(player=self.player, matchday=MatchdayFactory.create(number=1), strength=2,
-                                       awp=3500)
+        PlayerStatisticsFactory.create(
+            player=self.player,
+            matchday=MatchdayFactory.create(number=1),
+            strength=2,
+            awp=3500
+        )
 
         awp_boundaries = AwpBoundaries.get_or_create_from_matchday(self.matchday)
         awp_boundaries[2] = 2000

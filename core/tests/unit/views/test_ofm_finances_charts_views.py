@@ -11,11 +11,21 @@ class OFMFinancesViewTestCase(TestCase):
     def setUp(self):
         self.matchday = MatchdayFactory.create()
         self.next_matchday = MatchdayFactory.create(number=1)
-        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice',
-                                                 ofm_username='alice', ofm_password='alice')
+        self.user1 = OFMUser.objects.create_user(
+            username='alice',
+            email='alice@ofmhelper.com',
+            password='alice',
+            ofm_username='alice',
+            ofm_password='alice'
+        )
         self.finances = FinanceFactory.create(user=self.user1, matchday=self.matchday)
-        self.next_finances = FinanceFactory.create(user=self.user1, matchday=self.next_matchday, balance=2000,
-                                                   income_visitors_league=200, expenses_player_salaries=200)
+        self.next_finances = FinanceFactory.create(
+            user=self.user1,
+            matchday=self.next_matchday,
+            balance=2000,
+            income_visitors_league=200,
+            expenses_player_salaries=200
+        )
         self.client.login(username='alice', password='alice')
 
     def test_finance_balance_chart_json(self):

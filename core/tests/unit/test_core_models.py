@@ -48,8 +48,13 @@ class CreateCoreModelsTest(TestCase):
         self.assertEqual(Matchday.get_current(), m3)
 
     def test_get_current_matchday_from_matches(self):
-        user2 = OFMUser.objects.create_user('second', 'second@ofmhelper.com', 'second', ofm_username="second",
-                                            ofm_password="second")
+        user2 = OFMUser.objects.create_user(
+            username='second',
+            email='second@ofmhelper.com',
+            password='second',
+            ofm_username="second",
+            ofm_password="second"
+        )
         MatchdayFactory.create(number=1)
         m2 = MatchdayFactory.create(number=5)
         m3 = MatchdayFactory.create(number=7)
