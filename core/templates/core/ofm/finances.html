@@ -21,7 +21,7 @@
                             {% with len|stringformat:"s" as len_str %}
                                 {% with "0:"|add:len_str as slicinator %}
                                     {% for m in matchdays|slice:slicinator %}
-                                        <option value="{{ m.season.number }}/{{ m.number }}">{{ m.season.number }} / {{ m.number }} &nbsp;</option>
+                                        <option value="{{ m.season.number }}/{{ m.number }}">{{ m.number }} / {{ m.season.number }}&nbsp;</option>
                                     {% endfor %}
                                 {% endwith %}
                             {% endwith %}
@@ -34,7 +34,7 @@
                                 {% with len|stringformat:"s" as len_str %}
                                     {% with "1:"|add:len_str as slicinator %}
                                         {% for m in matchdays|slice:slicinator %}
-                                            <option value="{{ m.season.number }}/{{ m.number }}">{{ m.season.number }} / {{ m.number }} &nbsp;</option>
+                                            <option value="{{ m.season.number }}/{{ m.number }}">{{ m.number }} / {{ m.season.number }}&nbsp;</option>
                                         {% endfor %}
                                     {% endwith %}
                                 {% endwith %}

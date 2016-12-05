@@ -27,7 +27,7 @@ $('document').ready( function (){
                     "<span class='current_matchday'>" +
                         "<span class='glyphicon glyphicon-calendar'></span> " +
                         data['matchday_number'] +
-                        "/" +
+                        " / " +
                         data['season_number'] +
                     "</span>"
                 );
