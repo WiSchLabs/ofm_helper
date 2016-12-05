@@ -2,7 +2,7 @@ $('document').ready( function (){
     function addChecklistItem(item) {
         $('#checklist_items').append(
             "<div id='" + item['id'] + "' class='checklist_item_container new' style='opacity:0;'>" +
-                "<span class='checklist_item_priority glyphicon glyphicon-resize-vertical'></span>" +
+                "<span class='checklist_item_priority_handle glyphicon glyphicon-resize-vertical'></span>" +
                 "<input type='text' class='form-control checklist_item_name' name='" + item['id'] + "_name' value='" + item['name'] + "'  maxlength='255'>" +
                 "<span class='invisible checklist_item_saved alert-success glyphicon glyphicon-floppy-saved'></span>" +
                 "<span class='delete_checklist_item alert-danger glyphicon glyphicon-trash'></span>" +

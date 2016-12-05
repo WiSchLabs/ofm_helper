@@ -242,11 +242,10 @@ ul.nav-sub {  padding-left: 10%; }
 .checklist_item_container { background-color: rgba(255, 255, 255, 0.5); }
 #add_checklist_item { margin: 5px; }
 .delete_checklist_item {
-    cursor: default;
+    cursor: pointer;
     font-size: 1.5em;
     vertical-align: middle;
 }
-    .delete_checklist_item:hover { cursor: pointer; }
 
 #checklist_items_priority_saved.invisible,
 .checklist_item_saved.invisible {
@@ -279,7 +278,8 @@ ul.nav-sub {  padding-left: 10%; }
 }
 .checklist_item_matchdays { width: 200px; }
 
-.checklist_item_priority {
+.checklist_item_priority_handle {
+    cursor: move;
     color: #239123;
     font-size: 1.3em;
     vertical-align: middle;
@@ -300,13 +300,10 @@ ul.nav-sub {  padding-left: 10%; }
 
 #ChecklistSubMenu { padding: 0 10px 10px 20px; }
     #ChecklistSubMenu li {
-        cursor: default;
+        cursor: pointer;
         padding: 2px 2px 2px 5px;
     }
-        #ChecklistSubMenu li:hover {
-            background-color: #f5f5f5;
-            cursor: pointer;
-        }
+        #ChecklistSubMenu li:hover { background-color: #f5f5f5; }
         #ChecklistSubMenu li span.glyphicon { margin-right: 15px; }
         #ChecklistSubMenu li span.glyphicon-check { color: #239123; }
 
