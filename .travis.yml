@@ -13,6 +13,8 @@ script:
 - "./manage.py migrate"
 - coverage run --branch --source . manage.py test
 - py.test --mccabe -m mccabe
+- py.test --flakes
+- py.test --pep8
 notifications:
   email:
     recipients:

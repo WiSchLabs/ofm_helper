@@ -2,3 +2,5 @@ pyvirtualdisplay
 pytest
 pytest-django
 pytest-mccabe
+pytest-flakes
+pytest-pep8
