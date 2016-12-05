@@ -120,11 +120,12 @@ $('document').ready( function (){
             if (matchday > matchday_max) { matchday = matchday_max; }
             matchdays.add(matchday);
         });
-        var matchdays_comma_seperated = Array.from(matchdays).join(",");
-        matchdays_input.val(matchdays_comma_seperated);
+        var sorted_matchdays = Array.from(matchdays).sort(function(a, b){return a-b});
+        var comma_separated_matchdays = sorted_matchdays.join(",");
+        matchdays_input.val(comma_separated_matchdays);
         var params = {
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
-            checklist_item_matchdays: matchdays_comma_seperated
+            checklist_item_matchdays: comma_separated_matchdays
         };
         $.post("/settings_update_checklist_item", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
