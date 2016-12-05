@@ -27,18 +27,18 @@ class OFMFinancesViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:finance_overview'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(self.next_matchday, response.context_data['matchdays'][0])
-        self.assertEquals(self.matchday, response.context_data['matchdays'][1])
+        self.assertEqual(self.next_matchday, response.context_data['matchdays'][0])
+        self.assertEqual(self.matchday, response.context_data['matchdays'][1])
 
     def test_user_can_see_his_latest_finances_when_given_no_matchday(self):
         response = self.client.get(reverse('core:ofm:finances_json'))
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['account_balance'], 2000)
-        self.assertEquals(returned_json_data[0]['income_visitors_league'], 200)
-        self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -200)
+        self.assertEqual(len(returned_json_data), 1)
+        self.assertEqual(returned_json_data[0]['account_balance'], 2000)
+        self.assertEqual(returned_json_data[0]['income_visitors_league'], 200)
+        self.assertEqual(returned_json_data[0]['expenses_player_salaries'], -200)
 
     def test_user_can_see_his_finances_diff_when_given_both_matchdays(self):
         third_matchday = MatchdayFactory.create(number=self.matchday.number + 2)
@@ -54,13 +54,13 @@ class OFMFinancesViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['account_balance'], 2500)
-        self.assertEquals(returned_json_data[0]['balance'], 150)
-        self.assertEquals(returned_json_data[0]['sum_income'], 400)
-        self.assertEquals(returned_json_data[0]['sum_expenses'], -250)
-        self.assertEquals(returned_json_data[0]['income_visitors_league'], 150)
-        self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -150)
+        self.assertEqual(len(returned_json_data), 1)
+        self.assertEqual(returned_json_data[0]['account_balance'], 2500)
+        self.assertEqual(returned_json_data[0]['balance'], 150)
+        self.assertEqual(returned_json_data[0]['sum_income'], 400)
+        self.assertEqual(returned_json_data[0]['sum_expenses'], -250)
+        self.assertEqual(returned_json_data[0]['income_visitors_league'], 150)
+        self.assertEqual(returned_json_data[0]['expenses_player_salaries'], -150)
 
     def test_user_can_see_his_finances_diff_when_given_only_newer_matchday(self):
         third_matchday = MatchdayFactory.create(number=self.matchday.number + 2)
@@ -74,10 +74,10 @@ class OFMFinancesViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
-        self.assertEquals(returned_json_data[0]['account_balance'], 2500)
-        self.assertEquals(returned_json_data[0]['balance'], 0)
-        self.assertEquals(returned_json_data[0]['sum_income'], 250)
-        self.assertEquals(returned_json_data[0]['sum_expenses'], -250)
-        self.assertEquals(returned_json_data[0]['income_visitors_league'], 250)
-        self.assertEquals(returned_json_data[0]['expenses_player_salaries'], -250)
+        self.assertEqual(len(returned_json_data), 1)
+        self.assertEqual(returned_json_data[0]['account_balance'], 2500)
+        self.assertEqual(returned_json_data[0]['balance'], 0)
+        self.assertEqual(returned_json_data[0]['sum_income'], 250)
+        self.assertEqual(returned_json_data[0]['sum_expenses'], -250)
+        self.assertEqual(returned_json_data[0]['income_visitors_league'], 250)
+        self.assertEqual(returned_json_data[0]['expenses_player_salaries'], -250)

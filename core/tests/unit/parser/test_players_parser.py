@@ -20,19 +20,19 @@ class PlayersParserTest(TestCase):
         self.first_player = self.player_list[0]
 
     def test_players_parser(self):
-        self.assertEquals(type(self.first_player), Player)
-        self.assertEquals(20, len(self.player_list))
-        self.assertEquals(20, Player.objects.all().count())
+        self.assertEqual(type(self.first_player), Player)
+        self.assertEqual(20, len(self.player_list))
+        self.assertEqual(20, Player.objects.all().count())
 
     def test_parsed_player_contains_all_fields(self):
-        self.assertEquals('Igor Vernon', self.first_player.name)
-        self.assertEquals('TW', self.first_player.position)
-        self.assertEquals(163739266, self.first_player.id)
-        self.assertEquals(29, self.matchday.season.number - self.first_player.birth_season.number)
-        self.assertEquals('Frankreich', str(self.first_player.nationality))
+        self.assertEqual('Igor Vernon', self.first_player.name)
+        self.assertEqual('TW', self.first_player.position)
+        self.assertEqual(163739266, self.first_player.id)
+        self.assertEqual(29, self.matchday.season.number - self.first_player.birth_season.number)
+        self.assertEqual('Frankreich', str(self.first_player.nationality))
 
     def test_parsed_player_has_contract_with_user(self):
-        self.assertEquals(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))
+        self.assertEqual(1, len(Contract.objects.filter(player=self.first_player, user=self.user, sold_on_matchday=None)))
 
     def test_sold_player_gets_according_attribute(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'players_one_player_sold.html'), encoding='utf8')
@@ -42,5 +42,5 @@ class PlayersParserTest(TestCase):
 
         sold_players = [c.player for c in Contract.objects.filter(sold_on_matchday__isnull=False)]
 
-        self.assertEquals(1, len(sold_players))
-        self.assertEquals("Estaníslão Euklidio", sold_players[0].name)
+        self.assertEqual(1, len(sold_players))
+        self.assertEqual("Estaníslão Euklidio", sold_players[0].name)

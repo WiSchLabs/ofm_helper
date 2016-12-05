@@ -92,5 +92,5 @@ class SettingsTestCase(TestCase):
         response = self.client.get(reverse('core:get_current_matchday'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(returned_json_data['matchday_number'], 0)
-        self.assertEquals(returned_json_data['season_number'], 1)
+        self.assertEqual(returned_json_data['matchday_number'], 0)
+        self.assertEqual(returned_json_data['season_number'], 1)

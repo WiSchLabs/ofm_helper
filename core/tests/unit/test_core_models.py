@@ -12,19 +12,19 @@ class CreateCoreModelsTest(TestCase):
     def test_create_season(self):
         s = SeasonFactory.create(number=2)
         self.assertIsNotNone(s)
-        self.assertEquals(s.number, 2)
+        self.assertEqual(s.number, 2)
 
     def test_create_quarter(self):
         q = QuarterFactory.create()
         self.assertIsNotNone(q)
-        self.assertEquals(q.season.number, 1)
-        self.assertEquals(q.quarter, 1)
+        self.assertEqual(q.season.number, 1)
+        self.assertEqual(q.quarter, 1)
 
     def test_create_matchday(self):
         m = MatchdayFactory.create()
         self.assertIsNotNone(m)
-        self.assertEquals(m.season.number, 1)
-        self.assertEquals(m.number, 0)
+        self.assertEqual(m.season.number, 1)
+        self.assertEqual(m.number, 0)
 
     def test_get_current_matchday_default(self):
         MatchdayFactory.create(number=1)
@@ -63,39 +63,39 @@ class CreateCoreModelsTest(TestCase):
     def test_matchday_order_desc_by_number(self):
         MatchdayFactory.create(number=1)
         MatchdayFactory.create(number=2)
-        self.assertEquals(Matchday.objects.all()[0].number, 2)
+        self.assertEqual(Matchday.objects.all()[0].number, 2)
 
     def test_matchday_order_desc_by_season(self):
         s = SeasonFactory.create(number=2)
         MatchdayFactory.create()
         MatchdayFactory.create(season=s)
-        self.assertEquals(Matchday.objects.all()[0].season.number, 2)
+        self.assertEqual(Matchday.objects.all()[0].season.number, 2)
 
     def test_create_player_statistics(self):
         st = PlayerStatisticsFactory.create()
-        self.assertEquals(st.ep, 2)
-        self.assertEquals(st.tp, 5)
-        self.assertEquals(st.awp, 3)
-        self.assertEquals(st.strength, 1)
-        self.assertEquals(st.freshness, 4)
-        self.assertEquals(st.games_in_season, 0)
-        self.assertEquals(st.goals_in_season, 0)
-        self.assertEquals(st.won_tacklings_in_season, 0)
-        self.assertEquals(st.lost_tacklings_in_season, 0)
-        self.assertEquals(st.won_friendly_tacklings_in_season, 0)
-        self.assertEquals(st.lost_friendly_tacklings_in_season, 0)
-        self.assertEquals(st.yellow_cards_in_season, 0)
-        self.assertEquals(st.red_cards_in_season, 0)
-        self.assertEquals(st.equity, 0)
+        self.assertEqual(st.ep, 2)
+        self.assertEqual(st.tp, 5)
+        self.assertEqual(st.awp, 3)
+        self.assertEqual(st.strength, 1)
+        self.assertEqual(st.freshness, 4)
+        self.assertEqual(st.games_in_season, 0)
+        self.assertEqual(st.goals_in_season, 0)
+        self.assertEqual(st.won_tacklings_in_season, 0)
+        self.assertEqual(st.lost_tacklings_in_season, 0)
+        self.assertEqual(st.won_friendly_tacklings_in_season, 0)
+        self.assertEqual(st.lost_friendly_tacklings_in_season, 0)
+        self.assertEqual(st.yellow_cards_in_season, 0)
+        self.assertEqual(st.red_cards_in_season, 0)
+        self.assertEqual(st.equity, 0)
 
     def test_create_player(self):
         c = CountryFactory.create()
         p = PlayerFactory.create(position=1, name='tw1', nationality=c)
         self.assertIsNotNone(p)
-        self.assertEquals(p.position, 1)
-        self.assertEquals(p.name, 'tw1')
+        self.assertEqual(p.position, 1)
+        self.assertEqual(p.name, 'tw1')
         self.assertTrue(p.nationality is not None)
-        self.assertEquals(p.birth_season.number, 1)
+        self.assertEqual(p.birth_season.number, 1)
 
     def test_create_contract(self):
         c = ContractFactory.create()
