@@ -1,8 +1,9 @@
+import logging
+
 from bs4 import BeautifulSoup
 
 from core.models import Matchday, Season
 from core.parsers.base_parser import BaseParser
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,6 @@ class MatchdayParser(BaseParser):
 
         matchday.season.save()
         matchday.save()
-        logger.debug('===== Matchday parsed: %s ' % matchday)
+        logger.debug('===== Matchday parsed: {} '.format(matchday))
 
         return matchday
