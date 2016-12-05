@@ -51,7 +51,7 @@ class FinancesParser(BaseParser):
         expenses_funcup = self._int_from_money(finance_values[12].find_all('td')[11].div.get_text())
         expenses_betting = self._int_from_money(finance_values[13].find_all('td')[11].div.get_text())
 
-        finances, success = Finance.objects.get_or_create(
+        finances, _ = Finance.objects.get_or_create(
             user=self.user,
             matchday=self.matchday,
         )

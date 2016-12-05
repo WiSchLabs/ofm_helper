@@ -16,11 +16,11 @@ class MatchdayParser(BaseParser):
         matchday_number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[0].get_text())
         matchday_season_number = int(soup.body.find_all('div')[1].div.find_all('p')[2].find_all('span')[1].get_text())
 
-        season, season_creation_success = Season.objects.get_or_create(
+        season, _ = Season.objects.get_or_create(
             number=matchday_season_number,
         )
 
-        matchday, matchday_creation_success = Matchday.objects.get_or_create(
+        matchday, _ = Matchday.objects.get_or_create(
             number=matchday_number,
             season=season,
         )

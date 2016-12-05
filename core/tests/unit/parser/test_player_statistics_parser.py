@@ -18,9 +18,7 @@ class PlayerStatisticsParserTest(TestCase):
 
         country_choices = dict(Country._meta.get_field('country').choices)
         country_no_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
-        nationality_greece, success = Country.objects.get_or_create(country=country_no_greece)
-
-        self.assertTrue(success)
+        nationality_greece, _ = Country.objects.get_or_create(country=country_no_greece)
 
         self.player = Player.objects.create(id='159883060', position='TW', name='Chrístos Tsigas', birth_season=season, nationality=nationality_greece)
         self.player = Player.objects.create(id='160195494', position='LV', name='Irwin O\'Canny', birth_season=season, nationality=nationality_greece)

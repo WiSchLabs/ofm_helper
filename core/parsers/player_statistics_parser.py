@@ -57,7 +57,7 @@ class PlayerStatisticsParser(BaseParser):
 
         player = self._parse_player(player_stat_values)
 
-        parsed_player_stat, success = PlayerStatistics.objects.get_or_create(
+        parsed_player_stat, _ = PlayerStatistics.objects.get_or_create(
             matchday=self.matchday,
             player=player
         )

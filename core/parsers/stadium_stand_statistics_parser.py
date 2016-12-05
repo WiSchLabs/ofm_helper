@@ -48,12 +48,12 @@ class StadiumStandStatisticsParser(BaseParser):
             condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',', '.').replace('%', '')
         ticket_price = stand_data.find_all('tr')[6].find_all('select')[0].find('option', selected=True).get('value')
 
-        stand_level, success = StandLevel.objects.get_or_create(
+        stand_level, _ = StandLevel.objects.get_or_create(
             capacity=capacity,
             has_roof=has_roof,
             has_seats=has_seats
         )
-        stadium_stand_stat, success = StadiumStandStatistics.objects.get_or_create(
+        stadium_stand_stat, _ = StadiumStandStatistics.objects.get_or_create(
             stadium_statistics=self.match_stadium_stat,
             sector=sector,
             visitors=visitors,

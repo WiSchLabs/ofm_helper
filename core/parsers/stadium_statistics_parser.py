@@ -64,14 +64,14 @@ class StadiumStatisticsParser(BaseParser):
         else:
             parking = self._create_stadium_level_item_from_row(parking_row)
 
-        stadium_level, success = StadiumLevel.objects.get_or_create(
+        stadium_level, _ = StadiumLevel.objects.get_or_create(
             light=light,
             screen=screen,
             security=security,
             parking=parking
         )
 
-        match_stadium_stat, success = MatchStadiumStatistics.objects.get_or_create(
+        match_stadium_stat, _ = MatchStadiumStatistics.objects.get_or_create(
             match=self.match,
             level=stadium_level
         )
@@ -83,7 +83,7 @@ class StadiumStatisticsParser(BaseParser):
         value = self.strip_euro_sign(row.find_all('td')[4].span.get_text().replace('.', '').strip())
         daily_costs = self.strip_euro_sign(row.find_all('td')[5].span.get_text().replace('.', '').strip())
 
-        stadium_level_item, success = StadiumLevelItem.objects.get_or_create(
+        stadium_level_item, _ = StadiumLevelItem.objects.get_or_create(
             current_level=level,
             value=value,
             daily_costs=daily_costs
