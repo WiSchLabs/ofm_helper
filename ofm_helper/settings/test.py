@@ -6,4 +6,4 @@ USE_DISPLAY_FOR_AWS = True
 
 ALLOWED_HOSTS = ['*']
 
-LOGGING['loggers']['django']['handlers'] = ['file']
+LOGGING['loggers']['django']['handlers'] = ['console']
