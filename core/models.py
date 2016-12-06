@@ -781,11 +781,11 @@ class AwpBoundaries(Dictionary):
 
     @staticmethod
     def _name_from_matchday(matchday):
-        if Constants.QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY:
+        if Constants.Quarters.FOURTH_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.Quarters.FIRST_QUARTER_LEVELP_UP_DAY:
             return 'awp_boundaries_' + str(matchday.season.number) + '_0'
-        elif Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY:
+        elif Constants.Quarters.FIRST_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.Quarters.SECOND_QUARTER_LEVELP_UP_DAY:
             return 'awp_boundaries_' + str(matchday.season.number) + '_1'
-        elif Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY:
+        elif Constants.Quarters.SECOND_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.Quarters.THIRD_QUARTER_LEVELP_UP_DAY:
             return 'awp_boundaries_' + str(matchday.season.number) + '_2'
         else:
             return 'awp_boundaries_' + str(matchday.season.number) + '_3'
