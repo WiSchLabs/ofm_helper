@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 class StadiumStandStatisticsParser(BaseParser):
     def __init__(self, html_source, user, match):
+        super(StadiumStandStatisticsParser, self).__init__()
         self.html_source = html_source
         self.user = user
-
         self.match_stadium_stat = MatchStadiumStatistics.objects.filter(match=match)[0]
 
     def parse(self):

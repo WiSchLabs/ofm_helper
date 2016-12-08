@@ -12,6 +12,7 @@ MULTIVALUE_SEPARATOR = '/'
 
 class PlayerStatisticsParser(BaseParser):
     def __init__(self, html_source, user, matchday):
+        super(PlayerStatisticsParser, self).__init__()
         self.html_source = html_source
         self.user = user
         self.matchday = matchday

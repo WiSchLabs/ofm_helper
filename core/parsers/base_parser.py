@@ -1,4 +1,10 @@
+import abc
+
+
 class BaseParser:
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
     def __init__(self):
         self.html_source = ''
 

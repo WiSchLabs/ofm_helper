@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 class OfmHelperVersionParser(BaseParser):
     def __init__(self, html_source):
+        super(OfmHelperVersionParser, self).__init__()
         self.html_source = html_source
 
     def parse(self):

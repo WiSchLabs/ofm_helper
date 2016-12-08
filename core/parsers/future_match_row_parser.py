@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class FutureMatchRowParser(BaseParser):
     def __init__(self, html_source, user):
+        super(FutureMatchRowParser, self).__init__()
         self.html_source = html_source
         self.user = user
 

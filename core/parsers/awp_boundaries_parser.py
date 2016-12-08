@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class AwpBoundariesParser(BaseParser):
     def __init__(self, html_source, user, matchday):
+        super(AwpBoundariesParser, self).__init__()
         self.html_source = html_source
         self.user = user
         self.matchday = matchday

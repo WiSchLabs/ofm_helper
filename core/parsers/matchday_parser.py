@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class MatchdayParser(BaseParser):
     def __init__(self, html_source):
+        super(MatchdayParser, self).__init__()
         self.html_source = html_source
 
     def parse(self):
