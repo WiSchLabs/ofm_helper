@@ -62,7 +62,7 @@ class PlayerStatisticsParser(BaseParser):
             matchday=self.matchday,
             player=player
         )
-        logger.debug('===== PlayerStatistics parsed: %s' % parsed_player_stat)
+        logger.debug('===== PlayerStatistics parsed: %s', parsed_player_stat)
 
         parsed_player_stat.strength = strength
         parsed_player_stat.games_in_season = games_in_season

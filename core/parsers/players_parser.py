@@ -52,7 +52,7 @@ class PlayersParser(BaseParser):
         player.name = name
         player.save()
 
-        logger.debug('===== Player parsed: %s' % player.name)
+        logger.debug('===== Player parsed: %s', player.name)
 
         self._create_contract(player)
         logger.debug('===== Contract created.')

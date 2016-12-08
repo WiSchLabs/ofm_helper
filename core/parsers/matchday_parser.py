@@ -29,6 +29,6 @@ class MatchdayParser(BaseParser):
 
         matchday.season.save()
         matchday.save()
-        logger.debug('===== Matchday parsed: {} '.format(matchday))
+        logger.debug('===== Matchday parsed: %s', matchday)
 
         return matchday

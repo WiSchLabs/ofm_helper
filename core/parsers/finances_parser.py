@@ -56,7 +56,7 @@ class FinancesParser(BaseParser):
             user=self.user,
             matchday=self.matchday,
         )
-        logger.debug('===== Finance parsed: %s' % finances)
+        logger.debug('===== Finance parsed: %s', finances)
 
         finances.balance = balance
         finances.income_visitors_league = income_visitors_league
