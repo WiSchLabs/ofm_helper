@@ -97,10 +97,10 @@ class Constants:
         SEARCH_PLAYER = 'http://www.onlinefussballmanager.de/statistics/search_spieler.php'
 
     class Quarters:
-        FIRST_QUARTER_LEVELP_UP_DAY = 9
-        SECOND_QUARTER_LEVELP_UP_DAY = 18
-        THIRD_QUARTER_LEVELP_UP_DAY = 27
-        FOURTH_QUARTER_LEVELP_UP_DAY = 0
+        FIRST_QUARTER_LEVEL_UP_DAY = 9
+        SECOND_QUARTER_LEVEL_UP_DAY = 18
+        THIRD_QUARTER_LEVEL_UP_DAY = 27
+        FOURTH_QUARTER_LEVEL_UP_DAY = 0
 
     class GitHub:
         LATEST_RELEASE = 'https://github.com/WiSchLabs/ofm_helper/releases/latest'

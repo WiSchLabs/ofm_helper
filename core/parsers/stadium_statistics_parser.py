@@ -29,7 +29,8 @@ class StadiumStatisticsParser(BaseParser):
         last_stadium_level = None
         if last_home_matches.count() > 0:
             # only consider matches statistics BEFORE current match
-            last_home_matches = [match for match in last_home_matches if match.matchday.number <= self.match.matchday.number]
+            last_home_matches = [match for match in last_home_matches if
+                                 match.matchday.number <= self.match.matchday.number]
             last_home_match = last_home_matches[0]
             last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
 

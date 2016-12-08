@@ -60,7 +60,7 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         player_statistics_json = [
             self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
             for (newer_player_statistics, older_player_statistics) in player_statistics_tuples
-        ]
+            ]
 
         return self.render_json_response(player_statistics_json)
 

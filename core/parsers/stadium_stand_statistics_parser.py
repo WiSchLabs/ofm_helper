@@ -45,7 +45,9 @@ class StadiumStandStatisticsParser(BaseParser):
         condition = 100
         if 'Stadionzustand' in stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[0].get_text():
             # the condition during match is only known, if the stand is NOT set under construction AFTER the game
-            condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',', '.').replace('%', '')
+            condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',',
+                                                                                                              '.').replace(
+                '%', '')
         ticket_price = stand_data.find_all('tr')[6].find_all('select')[0].find('option', selected=True).get('value')
 
         stand_level, _ = StandLevel.objects.get_or_create(

@@ -90,7 +90,8 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(returned_json_data[0]['type_home_match'], True)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, True)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow,
+                         True)
 
     def test_update_checklist_item_matchday(self):
         self.client.login(username='temporary', password='temporary')
@@ -111,7 +112,8 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(returned_json_data[0]['type_matchdays'], '4')
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, "4")
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow,
+                         False)
 
     def test_update_checklist_item_matchdays(self):
         self.client.login(username='temporary', password='temporary')
@@ -132,7 +134,8 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(returned_json_data[0]['type_matchdays'], '3,33')
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, "3,33")
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow,
+                         False)
 
     def test_update_checklist_item_matchday_pattern(self):
         self.client.login(username='temporary', password='temporary')
@@ -153,7 +156,8 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(returned_json_data[0]['type_matchday_pattern'], 2)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, 2)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow,
+                         False)
 
     def test_update_checklist_item_everyday(self):
         self.client.login(username='temporary', password='temporary')
@@ -173,7 +177,8 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertFalse('type_home_match' in returned_json_data[0])
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchdays, None)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_on_matchday_pattern, None)
-        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow, False)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).to_be_checked_if_home_match_tomorrow,
+                         False)
 
     def test_update_checklist_item_checked(self):
         self.client.login(username='temporary', password='temporary')

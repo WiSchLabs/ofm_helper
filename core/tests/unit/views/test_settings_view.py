@@ -59,7 +59,8 @@ class SettingsTestCase(TestCase):
 
     def test_change_ofm_password(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings'), {'ofm_password': 'Zillertal', 'ofm_password2': 'Zillertal'})
+        response = self.client.post(reverse('core:settings'),
+                                    {'ofm_password': 'Zillertal', 'ofm_password2': 'Zillertal'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/settings.html')
         self.assertTrue(response.wsgi_request.user.is_authenticated())

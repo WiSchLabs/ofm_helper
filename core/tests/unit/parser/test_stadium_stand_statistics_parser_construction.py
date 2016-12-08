@@ -12,7 +12,8 @@ TESTDATA_PATH = 'core/tests/assets'
 
 class StadiumStandStatisticsParserTest(TestCase):
     def setUp(self):
-        testdata = open(os.path.join(TESTDATA_PATH, 'stadium_overview_special_construction_and_repair.html'), encoding='utf8')
+        testdata = open(os.path.join(TESTDATA_PATH, 'stadium_overview_special_construction_and_repair.html'),
+                        encoding='utf8')
         self.user = OFMUserFactory.create(username='IsaacAsimov')
         self.match = MatchFactory.create(user=self.user)
         MatchStadiumStatisticsFactory.create(match=self.match)

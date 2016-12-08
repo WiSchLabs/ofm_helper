@@ -138,7 +138,6 @@ def settings_view(request):
 
 @method_decorator(login_required, name='dispatch')
 class GetCurrentMatchdayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_matchday = Matchday.get_current()
         matchday_json = dict()
@@ -149,7 +148,6 @@ class GetCurrentMatchdayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
 
@@ -160,7 +158,6 @@ class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         current_matchday = Matchday.get_current()
         next_matchday_number = current_matchday.number + 1
@@ -183,7 +180,9 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
             to_be_checked_on_matchday_pattern=None,
             to_be_checked_if_home_match_tomorrow=False
         )
-        filtered_checklist_items.extend([c for c in checklist_items_this_matchday if current_matchday.number in [int(x) for x in c.to_be_checked_on_matchdays.split(',')]])
+        filtered_checklist_items.extend([c for c in checklist_items_this_matchday if
+                                         current_matchday.number in [int(x) for x in
+                                                                     c.to_be_checked_on_matchdays.split(',')]])
         if home_match_tomorrow:
             checklist_items_home_match = checklist_items.filter(
                 to_be_checked_on_matchdays=None,
@@ -225,7 +224,6 @@ def _get_checklist_item_in_json(checklist_item):
 
 @method_decorator(login_required, name='dispatch')
 class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def get(self, request, *args, **kwargs):
         checklist, _ = Checklist.objects.get_or_create(user=request.user)
         new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='Neuer Eintrag')
@@ -237,7 +235,6 @@ class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistPriorityView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def post(self, request, *args, **kwargs):
         checklist_priority = request.POST.get('checklist_priority')
 
@@ -252,7 +249,6 @@ class UpdateChecklistPriorityView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def post(self, request, *args, **kwargs):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_name = request.POST.get('checklist_item_name')
@@ -294,7 +290,6 @@ class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class DeleteChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-
     def post(self, request, *args, **kwargs):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
@@ -332,7 +327,8 @@ def trigger_parsing(request):
             with open('version', 'r') as version_file:
                 own_version = version_file.read().replace('\n', '')
             if own_version != "null" and own_version != remote_version:
-                messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (remote_version, own_version))
+                messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (
+                remote_version, own_version))
         except IOError:
             pass
 
