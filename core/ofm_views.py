@@ -286,7 +286,8 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         income_visitors_friendlies = newer_finances.income_visitors_friendlies
         if older_finances:
-            income_visitors_friendlies = newer_finances.income_visitors_friendlies - older_finances.income_visitors_friendlies
+            income_visitors_friendlies = newer_finances.income_visitors_friendlies - \
+                                         older_finances.income_visitors_friendlies
 
         income_friendlies = newer_finances.income_friendlies
         if older_finances:
@@ -764,7 +765,8 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['capacity'] = stadium_stat.capacity
             match_stadium_stat['earnings'] = stadium_stat.earnings
             match_stadium_stat['workload'] = locale.format("%.2f",
-                                                           stadium_stat.visitors / stadium_stat.capacity * 100) + " &#37;"
+                                                           stadium_stat.visitors /
+                                                           stadium_stat.capacity * 100) + " &#37;"
         else:
             # all stadium stands were under construction during match
             match_stadium_stat['visitors'] = 0
