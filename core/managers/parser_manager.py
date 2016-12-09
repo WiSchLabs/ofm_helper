@@ -104,11 +104,9 @@ class ParserManager:
                 return match
         elif "-:-" in match_result:
             # match is scheduled, but did not take place yet
-            match_parser = FutureMatchRowParser(row, request.user)
-            return match_parser.parse()
+            return FutureMatchRowParser(row, request.user).parse()
         else:
-            match_parser = WonByDefaultMatchRowParser(row, request.user)
-            return match_parser.parse()
+            return WonByDefaultMatchRowParser(row, request.user).parse()
 
     def _parse_stadium_statistics(self, request, site_manager, match):
         site_manager.jump_to_frame(Constants.Stadium.ENVIRONMENT)
