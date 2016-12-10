@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.views.generic.base import TemplateView, RedirectView
 
 from core import views
+
 from core.views import CreateChecklistItemView, DeleteChecklistItemView, GetChecklistItemsView, \
     UpdateChecklistItemView, GetChecklistItemsForTodayView, GetCurrentMatchdayView, UpdateChecklistPriorityView
 

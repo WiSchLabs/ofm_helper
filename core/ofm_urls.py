@@ -1,9 +1,11 @@
 from django.conf.urls import url
 
-from core.ofm_views import PlayerDetailView, PlayerStatisticsView, PlayerStatisticsAsJsonView, FinanceDataView, \
-    FinancesAsJsonView, MatchesView, MatchesAsJsonView, StadiumStatisticsView, StadiumStatisticsAsJsonView, \
-    StadiumDetailView, StadiumStandStatisticsView, FinanceIncomeChartView, FinanceExpensesChartView, \
-    FinanceBalanceChartView, PlayerChartView, MatchesSummaryJsonView, StadiumStandStatisticsChartView
+from core.rename_me_views.stadium_views import StadiumStatisticsView, StadiumStatisticsAsJsonView, StadiumDetailView, \
+    StadiumStandStatisticsView, StadiumStandStatisticsChartView
+from core.rename_me_views.match_views import MatchesView, MatchesAsJsonView, MatchesSummaryJsonView
+from core.rename_me_views.finance_views import FinanceDataView, FinancesAsJsonView, FinanceBalanceChartView, \
+    FinanceIncomeChartView, FinanceExpensesChartView
+from core.rename_me_views.player_views import PlayerStatisticsView, PlayerStatisticsAsJsonView, PlayerDetailView, PlayerChartView
 
 app_name = 'ofm'
 urlpatterns = [
