@@ -16,9 +16,9 @@ class PlayerStatisticsParserTest(TestCase):
         user = OFMUserFactory.create()
         season = SeasonFactory.create()
 
-        country_choices = dict(Country._meta.get_field('country').choices)
-        country_no_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
-        nationality_greece, _ = Country.objects.get_or_create(country=country_no_greece)
+        country_choices = Country.get_choices()
+        country_iso_greece = list(country_choices.keys())[list(country_choices.values()).index('Griechenland')]
+        nationality_greece, _ = Country.objects.get_or_create(country=country_iso_greece)
 
         self.player = Player.objects.create(
             id='159883060',

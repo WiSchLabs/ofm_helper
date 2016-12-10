@@ -119,6 +119,7 @@ class CreateCoreModelsTest(TestCase):
         self.assertTrue(f.matchday is not None)
 
         self.assertEqual(f.balance, 1000)
+
         self.assertEqual(f.income_visitors_league, 100)
         self.assertEqual(f.income_sponsoring, 0)
         self.assertEqual(f.income_cup, 0)
@@ -129,6 +130,7 @@ class CreateCoreModelsTest(TestCase):
         self.assertEqual(f.income_friendlies, 0)
         self.assertEqual(f.income_funcup, 0)
         self.assertEqual(f.income_betting, 0)
+
         self.assertEqual(f.expenses_player_salaries, 100)
         self.assertEqual(f.expenses_stadium, 0)
         self.assertEqual(f.expenses_youth, 0)
