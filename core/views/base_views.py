@@ -14,5 +14,3 @@ class GetCurrentMatchdayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         matchday_json['matchday_number'] = current_matchday.number
         matchday_json['season_number'] = current_matchday.season.number
         return self.render_json_response(matchday_json)
-
-
