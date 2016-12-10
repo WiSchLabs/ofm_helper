@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from core.localizations.messages import MSG_NOT_LOGGED_IN
+from core.localization.messages import MSG_NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
 from core.managers.site_manager import SiteManager
 
@@ -19,8 +19,7 @@ def trigger_parsing(request):
             with open('version', 'r') as version_file:
                 own_version = version_file.read().replace('\n', '')
             if own_version != "null" and own_version != remote_version:
-                messages.info(request, "Es ist eine neuere Version von OFM Helper verfügbar: %s. Du nutzt noch: %s." % (
-                remote_version, own_version))
+                messages.info(request, NEWER_OFM_VERSION_AVAILABLE % (remote_version, own_version))
         except IOError:
             pass
 

@@ -1,23 +1,25 @@
 from django.conf.urls import url, include
 from django.views.generic.base import TemplateView, RedirectView
 
+import core.views.account_views
+import core.views.settings_views
 import core.views.trigger_parsing_views
-from core.views import base_views
-from core.views.base_views import CreateChecklistItemView, DeleteChecklistItemView, GetChecklistItemsView, \
-    UpdateChecklistItemView, GetChecklistItemsForTodayView, GetCurrentMatchdayView, UpdateChecklistPriorityView
+from core.views.base_views import GetCurrentMatchdayView
+from core.views.checklist_views import GetChecklistItemsView, GetChecklistItemsForTodayView, CreateChecklistItemView, \
+    UpdateChecklistPriorityView, UpdateChecklistItemView, DeleteChecklistItemView
 
 app_name = 'core'
 urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/core/img/OFM_favicon.png', permanent=True)),
     url(r'^$', TemplateView.as_view(template_name='core/home.html'), name='home'),
-    url(r'^register/?$', base_views.register_view, name='register'),
-    url(r'^login/?$', base_views.login_view, name='login'),
-    url(r'^account/?$', base_views.account_view, name='account'),
-    url(r'^logout/?$', base_views.logout_view, name='logout'),
+    url(r'^register/?$', core.views.account_views.register_view, name='register'),
+    url(r'^login/?$', core.views.account_views.login_view, name='login'),
+    url(r'^account/?$', core.views.account_views.account_view, name='account'),
+    url(r'^logout/?$', core.views.account_views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
     url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
 
-    url(r'^settings/?$', base_views.settings_view, name='settings'),
+    url(r'^settings/?$', core.views.settings_views.settings_view, name='settings'),
     url(r'^settings_get_checklist_items/?$', GetChecklistItemsView.as_view(), name='settings_get_checklist_items'),
     url(r'^settings_get_checklist_items_for_today/?$', GetChecklistItemsForTodayView.as_view(),
         name='settings_get_checklist_items_for_today'),
