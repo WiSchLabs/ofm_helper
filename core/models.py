@@ -276,6 +276,10 @@ class Country(models.Model):
     def get_iso(self):
         return self.country
 
+    @staticmethod
+    def get_choices():
+        return dict(Country._meta.get_field('country').choices)
+
 
 class League(models.Model):
     LEAGUES = (
@@ -297,7 +301,7 @@ class League(models.Model):
     country = models.ForeignKey(Country)
 
     def __str__(self):
-        return "%s %s (%s)" % (self.LEAGUES[self.league][1], self.relay, self.country)
+        return "%s %s (%s)" % (self.LEAGUES[self.league][1], self.relay, self.country)  # pylint: disable=invalid-sequence-index
 
 
 class Player(models.Model):
