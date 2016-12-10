@@ -25,9 +25,10 @@ class WonByDefaultMatchRowParser(BaseParser):
         """
 
         # we assume to have parsed the season beforehand (with the matchday)
-        season = Matchday.objects.all()[0].season
-        matchday_number = row.find_all('td')[0].get_text().replace('\n', '')
-        matchday, _ = Matchday.objects.get_or_create(season=season, number=matchday_number)
+        matchday, _ = Matchday.objects.get_or_create(
+            season=Matchday.objects.all()[0].season,
+            number=row.find_all('td')[0].get_text().replace('\n', '')
+        )
 
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
 

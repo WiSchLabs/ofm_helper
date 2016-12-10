@@ -41,31 +41,22 @@ class StadiumStatisticsParser(BaseParser):
         security_row = stadium_items[2]
         parking_row = stadium_items[3]
 
-        is_light_under_construction = \
-            light_row.find_all('td')[1].img is not None and 'underconst' in light_row.find_all('td')[1].img['src']
-        is_screen_under_construction = \
-            screen_row.find_all('td')[1].img is not None and 'underconst' in screen_row.find_all('td')[1].img['src']
-        is_security_under_construction = \
-            security_row.find_all('td')[1].img is not None and 'underconst' in security_row.find_all('td')[1].img['src']
-        is_parking_under_construction = \
-            parking_row.find_all('td')[1].img is not None and 'underconst' in parking_row.find_all('td')[1].img['src']
-
-        if is_light_under_construction and last_stadium_level:
+        if StadiumStatisticsParser._is_under_construction(light_row) and last_stadium_level:
             light = last_stadium_level.light
         else:
             light = self._create_stadium_level_item_from_row(light_row)
 
-        if is_screen_under_construction and last_stadium_level:
+        if StadiumStatisticsParser._is_under_construction(screen_row) and last_stadium_level:
             screen = last_stadium_level.screen
         else:
             screen = self._create_stadium_level_item_from_row(screen_row)
 
-        if is_security_under_construction and last_stadium_level:
+        if StadiumStatisticsParser._is_under_construction(security_row) and last_stadium_level:
             security = last_stadium_level.security
         else:
             security = self._create_stadium_level_item_from_row(security_row)
 
-        if is_parking_under_construction and last_stadium_level:
+        if StadiumStatisticsParser._is_under_construction(parking_row) and last_stadium_level:
             parking = last_stadium_level.parking
         else:
             parking = self._create_stadium_level_item_from_row(parking_row)
@@ -84,15 +75,16 @@ class StadiumStatisticsParser(BaseParser):
 
         return match_stadium_stat
 
-    def _create_stadium_level_item_from_row(self, row):
-        level = row.find_all('td')[2].span.get_text()
-        value = self.strip_euro_sign(row.find_all('td')[4].span.get_text().replace('.', '').strip())
-        daily_costs = self.strip_euro_sign(row.find_all('td')[5].span.get_text().replace('.', '').strip())
+    @staticmethod
+    def _is_under_construction(stadium_attribute):
+        return stadium_attribute.find_all('td')[1].img is not None and \
+               'underconst' in stadium_attribute.find_all('td')[1].img['src']
 
+    def _create_stadium_level_item_from_row(self, row):
         stadium_level_item, _ = StadiumLevelItem.objects.get_or_create(
-            current_level=level,
-            value=value,
-            daily_costs=daily_costs
+            current_level=row.find_all('td')[2].span.get_text(),
+            value=self.strip_euro_sign(row.find_all('td')[4].span.get_text().replace('.', '').strip()),
+            daily_costs=self.strip_euro_sign(row.find_all('td')[5].span.get_text().replace('.', '').strip())
         )
 
         return stadium_level_item
