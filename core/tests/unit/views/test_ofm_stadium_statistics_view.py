@@ -18,10 +18,10 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         self.match = MatchFactory.create(user=self.user)
 
         self.stadium_stat = MatchStadiumStatisticsFactory.create(match=self.match)
-        self.north_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='N')
-        self.south_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='S')
-        self.west_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='W')
-        self.east_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='O')
+        StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='N')
+        StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='S')
+        StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='W')
+        StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='O')
 
     def test_user_can_see_table(self):
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
@@ -154,10 +154,10 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         light_level = StadiumLevelItemFactory(current_level=1)
         level = StadiumLevelFactory.create(light=light_level)
         stadium_stat_2 = MatchStadiumStatisticsFactory.create(match=match2, level=level)
-        self.north_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='N')
-        self.south_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='S')
-        self.west_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='W')
-        self.east_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='O')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='N')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='S')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='W')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='O')
 
         options = {
             'harmonic_strength': 50,
