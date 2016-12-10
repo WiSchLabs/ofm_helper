@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView
 
 from core.models import Matchday, Contract, PlayerStatistics, AwpBoundaries, Player
-from core.rename_me_views.view_utils import validate_filtered_field
+from core.views.view_utils import validate_filtered_field
 
 
 @method_decorator(login_required, name='dispatch')
