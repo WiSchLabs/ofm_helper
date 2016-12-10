@@ -104,10 +104,12 @@ class PlayerStatisticsParser(BaseParser):
             )
         return contract
 
-    def _get_value_from_multivalue_table_cell(self, field, index):
+    @staticmethod
+    def _get_value_from_multivalue_table_cell(field, index):
         return field.get_text().split(MULTIVALUE_SEPARATOR)[index].strip()
 
-    def _get_ep_tp_value_from_table_cell(self, field):
+    @staticmethod
+    def _get_ep_tp_value_from_table_cell(field):
         return field.get_text().strip('\n').split('\n')[0].strip('\n').strip('\t').replace('.', '')
 
     def _get_equity_value_from_table_cell(self, field):

@@ -160,11 +160,10 @@ class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     def get(self, request, *args, **kwargs):
         current_matchday = Matchday.get_current()
-        next_matchday_number = current_matchday.number + 1
         home_match_tomorrow = Match.objects.filter(
             user=request.user,
             matchday__season__number=current_matchday.season.number,
-            matchday__number=next_matchday_number,
+            matchday__number=current_matchday.number + 1,
             is_home_match=True
         )
         checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)

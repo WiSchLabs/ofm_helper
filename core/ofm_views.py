@@ -39,9 +39,8 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
         players = [contract.player for contract in contracts]
         current_matchday = Matchday.objects.all()[0]
-        current_season = current_matchday.season
 
-        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=current_season.number)
+        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=current_matchday.season.number)
         newer_matchday = self.request.GET.get('newer_matchday', default=current_matchday.number)
         older_matchday_season = self.request.GET.get('older_matchday_season')
         older_matchday = self.request.GET.get('older_matchday')
@@ -60,11 +59,12 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
         player_statistics_json = [
             self._get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics)
             for (newer_player_statistics, older_player_statistics) in player_statistics_tuples
-            ]
+        ]
 
         return self.render_json_response(player_statistics_json)
 
-    def _get_statistics_from_player_and_matchday(self, player,
+    @staticmethod
+    def _get_statistics_from_player_and_matchday(player,
                                                  newer_matchday_season, newer_matchday,
                                                  older_matchday_season, older_matchday):
 
@@ -90,7 +90,8 @@ class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         return newer_player_statistics, older_player_statistics
 
-    def _get_player_statistics_diff_in_json(self, newer_player_statistics, older_player_statistics):
+    @staticmethod
+    def _get_player_statistics_diff_in_json(newer_player_statistics, older_player_statistics):
         """
         Args:
             newer_player_statistics: newer statistic
@@ -245,12 +246,9 @@ class FinancesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         return self.render_json_response(finances_json)
 
-    def _get_finances_diff_in_json(self, newer_finances, older_finances):
+    @staticmethod
+    def _get_finances_diff_in_json(newer_finances, older_finances):
         """
-        Args:
-            newer_finances: newer finances
-            older_finances: older finances
-
         Returns:
             A dictionary of finance data. If older_finances is None newer_finances is returned
         """
@@ -430,7 +428,7 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             income_betting.append(data_source[0].income_betting)
             matchdays.append(data_source[0].matchday.number)
 
-        for idx, entry in enumerate(data_source):
+        for idx, _ in enumerate(data_source):
             if idx + 1 < data_source.count():
                 income_visitors_league.append(
                     data_source[idx + 1].income_visitors_league - data_source[idx].income_visitors_league)
@@ -508,7 +506,7 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             expenses_betting.append(-data_source[0].expenses_betting)
             matchdays.append(data_source[0].matchday.number)
 
-        for idx, entry in enumerate(data_source):
+        for idx, _ in enumerate(data_source):
             if idx + 1 < data_source.count():
                 expenses_player_salaries.append(
                     data_source[idx].expenses_player_salaries - data_source[idx + 1].expenses_player_salaries)
@@ -580,11 +578,9 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         return self.render_json_response(match_json)
 
-    def _get_match_in_json(self, match):
+    @staticmethod
+    def _get_match_in_json(match):
         """
-        Args:
-            match: Match
-
         Returns:
             A dictionary of match data.
         """
@@ -746,11 +742,9 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         return self.render_json_response(stadium_statistics_json)
 
-    def _get_stadium_statistics_in_json(self, stadium_stat):
+    @staticmethod
+    def _get_stadium_statistics_in_json(stadium_stat):
         """
-        Args:
-            stadium_stat: MatchStadiumStatistics
-
         Returns:
             A dictionary of stadium statistics data.
         """

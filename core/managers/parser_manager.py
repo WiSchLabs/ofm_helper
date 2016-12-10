@@ -33,12 +33,14 @@ class ParserManager:
         self.parsed_matchday = None
         self.players_already_parsed = False
 
-    def parse_ofm_version(self, site_manager):
+    @staticmethod
+    def parse_ofm_version(site_manager):
         site_manager.jump_to_frame(Constants.GitHub.LATEST_RELEASE)
         version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
         return version_parser.parse()
 
-    def parse_matchday(self, request, site_manager):
+    @staticmethod
+    def parse_matchday(request, site_manager):
         site_manager.jump_to_frame(Constants.HEAD)
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
         return matchday_parser.parse()
@@ -108,7 +110,8 @@ class ParserManager:
         else:
             return WonByDefaultMatchRowParser(row, request.user).parse()
 
-    def _parse_stadium_statistics(self, request, site_manager, match):
+    @staticmethod
+    def _parse_stadium_statistics(request, site_manager, match):
         site_manager.jump_to_frame(Constants.Stadium.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_statistics_parser.parse()
