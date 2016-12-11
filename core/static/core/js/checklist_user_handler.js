@@ -15,7 +15,7 @@ function showChecklistItem(item) {
 
 $('document').ready( function (){
     $(function() {
-        $.get("/settings_get_checklist_items_for_today",
+        $.get("/checklist/get_checklist_items_for_today",
             function (data) {
                 $('#ChecklistSubMenu').html('');
                 data.forEach(showChecklistItem);
@@ -52,7 +52,7 @@ $('document').ready( function (){
             checklist_item_id: $(this).attr('id'),
             checklist_item_checked: checklistItemGotChecked
         };
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item", params);
 
         if (checklistItemGotChecked) {
             checklistItem.removeClass('glyphicon-unchecked');

@@ -58,7 +58,7 @@ $('document').ready( function (){
 
     $('#headingChecklistSettings').click(function(){
         if (! $('#collapseChecklistSettings').hasClass('in')) { // area is being opened
-            $.get("/settings_get_checklist_items",
+            $.get("/checklist/get_checklist_items",
                 function (data) {
                     $('#checklist_items').html('');
                     data.forEach(addChecklistItem);
@@ -70,7 +70,7 @@ $('document').ready( function (){
     $('#add_checklist_item').click( function(event) {
         event.stopPropagation();
         event.preventDefault();
-        $.get("/settings_add_checklist_item",
+        $.get("/checklist/add_checklist_item",
             function (data) {
                 addChecklistItem(data);
             }
@@ -81,7 +81,7 @@ $('document').ready( function (){
         var params = {
             checklist_priority: $('#checklist_items').sortable("toArray").join(",")
         };
-        $.post("/settings_update_checklist_priority", params);
+        $.post("/checklist/update_checklist_priority", params);
         $('#checklist_items_priority_saved').removeClass('invisible');
         setTimeout(function() {
             $('#checklist_items_priority_saved').addClass('invisible');
@@ -93,7 +93,7 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_name: elem.val()
         };
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_name', function() {
@@ -126,7 +126,7 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchdays: matchdays_comma_seperated
         };
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_matchdays', function() {
@@ -157,7 +157,7 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchday_pattern: matchday_pattern
         };
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_matchday_pattern', function() {
@@ -180,7 +180,7 @@ $('document').ready( function (){
         var params = {
             checklist_item_id: checklist_item.attr('id')
         };
-        $.post("/settings_delete_checklist_item", params);
+        $.post("/checklist/delete_checklist_item", params);
         checklist_item.animate({opacity:0, height:0}, 200);
         setTimeout(function() {
             checklist_item.remove();
@@ -220,7 +220,7 @@ $('document').ready( function (){
             params['checklist_item_everyday'] = true;
         }
 
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item", params);
     });
 
 

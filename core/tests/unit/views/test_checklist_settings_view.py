@@ -33,7 +33,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_get_checklist_items(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEqual(len(returned_json_data), 1)
@@ -45,7 +45,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_create_standard_checklist_item(self):
         self.client.login(username='second', password='second')
-        response = self.client.get(reverse('core:settings_add_checklist_item'))
+        response = self.client.get(reverse('core:checklist:add_checklist_item'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data)
@@ -57,13 +57,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_name(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_name': 'do even more unit tests'
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -73,13 +73,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_home_match(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_home_match': True
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -95,13 +95,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchday(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchdays': '4'
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -117,13 +117,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchdays(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchdays': '3,33'
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -139,13 +139,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchday_pattern(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchday_pattern': 2
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -161,13 +161,13 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_everyday(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_everyday': True
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -182,14 +182,14 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_checked(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_checked': 'true'
                                      })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).last_checked_on_matchday, self.matchday)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -199,14 +199,14 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_unchecked(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_checked': 'false'
                                      })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).last_checked_on_matchday, None)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data[0])
@@ -216,12 +216,12 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_delete_checklist_item(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:settings_delete_checklist_item'),
+        response = self.client.post(reverse('core:checklist:delete_checklist_item'),
                                     {'checklist_item_id': self.checklist_item.id
                                      })
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('core:settings_get_checklist_items'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEqual(len(returned_json_data), 0)
@@ -254,7 +254,7 @@ class ChecklistSettingsTestCase(TestCase):
             to_be_checked_on_matchdays='6,9'
         )
 
-        response = self.client.get(reverse('core:settings_get_checklist_items_for_today'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
@@ -292,7 +292,7 @@ class ChecklistSettingsTestCase(TestCase):
             to_be_checked_if_home_match_tomorrow=True
         )
 
-        response = self.client.get(reverse('core:settings_get_checklist_items_for_today'))
+        response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
