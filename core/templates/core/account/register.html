@@ -6,9 +6,9 @@
     <h1>Registrierung</h1>
 
     {% if registered %}
-        <strong>Vielen Dank für die Registrierung!</strong> <a href="{% url 'core:login' %}">Hier geht's zum Login</a>.
+        <strong>Vielen Dank für die Registrierung!</strong> <a href="{% url 'core:account:login' %}">Hier geht's zum Login</a>.
     {% else %}
-        <form id="user_form" method="post" action="{% url 'core:register' %}">
+        <form id="user_form" method="post" action="{% url 'core:account:register' %}">
 
             {% csrf_token %}
 
@@ -63,7 +63,7 @@
         </form>
         <br><br>
         <p>
-            Du hast bereits einen Account bei uns? <a href="{% url 'core:login' %}">Hier geht's zum Login</a>.
+            Du hast bereits einen Account bei uns? <a href="{% url 'core:account:login' %}">Hier geht's zum Login</a>.
         </p>
     {% endif %}
 {% endblock %}

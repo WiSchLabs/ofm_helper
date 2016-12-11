@@ -6,24 +6,24 @@
     <div class="well bs-sidebar" id="sidebar">
         <ul class="nav nav-pills nav-stacked">
             <li>
-                <a href="{% url 'core:home' %}">
+                <a href="{% url 'core:account:home' %}">
                     <span class="glyphicon glyphicon-home"></span> Home
                 </a>
             </li>
     {% if not user.is_authenticated %}
             <li>
-                <a href="{% url 'core:register' %}">
+                <a href="{% url 'core:account:register' %}">
                     <span class="glyphicon glyphicon-pencil"></span> Registrieren
                 </a>
             </li>
             <li>
-                <a href="{% url 'core:login' %}">
+                <a href="{% url 'core:account:login' %}">
                     <span class="glyphicon glyphicon-log-in"></span> Login
                 </a>
             </li>
     {% else %}
             <li>
-                <a href="{% url 'core:account' %}">
+                <a href="{% url 'core:account:home' %}">
                     <span class="glyphicon glyphicon-user"></span> Mein Account
                 </a>
             </li>
@@ -66,13 +66,13 @@
             {% endif %}
 
             <li>
-                <a href="{% url 'core:settings' %}">
+                <a href="{% url 'core:account:settings' %}">
                     <span class="glyphicon glyphicon-cog"></span> Einstellungen
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'core:logout' %}">
+                <a href="{% url 'core:account:logout' %}">
                     <span class="glyphicon glyphicon-log-out"></span> Logout
                 </a>
             </li>

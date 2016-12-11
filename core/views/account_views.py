@@ -24,23 +24,23 @@ def register_view(request):
 
         if OFMUser.objects.filter(email=email).exists():
             messages.error(request, EMAIL_ALREADY_EXISTS)
-            return redirect('core:register')
+            return redirect('core:account:register')
 
         if OFMUser.objects.filter(username=username).exists():
             messages.error(request, USERNAME_ALREADY_EXISTS)
-            return redirect('core:register')
+            return redirect('core:account:register')
 
         if password != password2:
             messages.error(request, PASSWORDS_UNEQUAL)
-            return redirect('core:register')
+            return redirect('core:account:register')
 
         if OFMUser.objects.filter(ofm_username=ofm_username).exists():
             messages.error(request, OFM_USERNAME_ALREADY_EXISTS)
-            return redirect('core:register')
+            return redirect('core:account:register')
 
         if ofm_password != ofm_password2:
             messages.error(request, OFM_PASSWORDS_UNEQUAL)
-            return redirect('core:register')
+            return redirect('core:account:register')
 
         OFMUser.objects.create_user(
             username=username,
@@ -51,7 +51,7 @@ def register_view(request):
         )
 
         messages.success(request, ACCOUNT_CREATED)
-        return redirect('core:login')
+        return redirect('core:account:login')
 
     else:
         return render(request, 'core/account/register.html')
@@ -69,10 +69,10 @@ def login_view(request):
                 return render(request, 'core/account/home.html')
             else:
                 messages.error(request, LOGIN_IMPOSSIBLE_ACCOUNT_IS_DEACTIVATED)
-                return redirect('core:login')
+                return redirect('core:account:login')
         else:
             messages.error(request, USERNAME_OR_PASSWORD_INVALID)
-            return redirect('core:login')
+            return redirect('core:account:login')
     else:
         if request.user.is_authenticated():
             return render(request, 'core/account/home.html')
@@ -92,4 +92,4 @@ def account_view(request):
         return render(request, 'core/account/home.html')
     else:
         messages.error(request, NOT_LOGGED_IN)
-        return redirect('core:login')
+        return redirect('core:account:login')

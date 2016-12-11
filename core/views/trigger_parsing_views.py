@@ -28,10 +28,10 @@ def trigger_parsing(request):
         return redirect('core:ofm:player_statistics')
     else:
         messages.error(request, NOT_LOGGED_IN)
-        return redirect('core:login')
+        return redirect('core:account:login')
 
 
-def trigger_single_parsing(request, parsing_function, redirect_to='core:account'):
+def trigger_single_parsing(request, parsing_function, redirect_to='core:account:home'):
     if request.user.is_authenticated():
         site_manager = SiteManager(request.user)
         site_manager.login()
@@ -39,7 +39,7 @@ def trigger_single_parsing(request, parsing_function, redirect_to='core:account'
         return redirect(redirect_to)
     else:
         messages.error(request, NOT_LOGGED_IN)
-        return redirect('core:login')
+        return redirect('core:account:login')
 
 
 def trigger_matchday_parsing(request):

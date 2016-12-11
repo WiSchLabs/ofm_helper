@@ -24,7 +24,7 @@ def _handle_account_data_change(request, email, password, password2):
 def _handle_ofm_data_change(request, ofm_password, ofm_password2):
     if ofm_password != ofm_password2:
         messages.error(request, OFM_PASSWORDS_UNEQUAL)
-        return redirect('core:register')
+        return redirect('core:account:settings')
 
     request.user.ofm_password = ofm_password
     request.user.save()
@@ -50,4 +50,4 @@ def settings_view(request):
         return render(request, 'core/account/settings.html')
     else:
         messages.error(request, NOT_LOGGED_IN)
-        return redirect('core:login')
+        return redirect('core:account:login')
