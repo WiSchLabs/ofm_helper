@@ -10,7 +10,7 @@
         Willkommen in deinem persönlichen Bereich.
     </p>
     <br>
-    <form action="{% url 'core:trigger_parsing' %}" method="get">
+    <form action="{% url 'core:trigger:trigger_parsing' %}" method="get">
         {% csrf_token %}
 
         Um die neuesten Daten von OFM zu laden klicke hier:

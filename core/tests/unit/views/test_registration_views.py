@@ -6,8 +6,13 @@ from users.models import OFMUser
 
 class RegistrationTestCase(TestCase):
     def setUp(self):
-        OFMUser.objects.create_user('temporary', 'temporary@ofmhelper.com', 'temporary', ofm_username='ofm',
-                                    ofm_password='ofm')
+        OFMUser.objects.create_user(
+            username='temporary',
+            email='temporary@ofmhelper.com',
+            password='temporary',
+            ofm_username='ofm',
+            ofm_password='ofm'
+        )
 
     def test_register_new_account(self):
         response = self.client.post(reverse('core:register'),

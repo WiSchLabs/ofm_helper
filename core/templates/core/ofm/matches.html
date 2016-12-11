@@ -6,7 +6,7 @@
 
     <h1 class="page-header">
         Spielplan
-        <form class="parseTrigger" action="{% url 'core:trigger_match_parsing' %}" method="get">{% csrf_token %}</form>
+        <form class="parseTrigger" action="{% url 'core:trigger:trigger_match_parsing' %}" method="get">{% csrf_token %}</form>
     </h1>
 
     <p id="matches_summary">

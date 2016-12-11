@@ -21,7 +21,7 @@ class ParserViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.SiteManager')
     @patch('core.managers.parser_manager.MatchdayParser')
     def test_matchday_parser_view(self, site_manager_mock, matchday_parser_mock):
-        response = self.client.get(reverse('core:trigger_matchday_parsing'))
+        response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -31,7 +31,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.PlayersParser')
     def test_player_parser_view(self, matchday_parser_mock, site_manager_mock, players_parser_mock):
-        response = self.client.get(reverse('core:trigger_players_parsing'))
+        response = self.client.get(reverse('core:trigger:trigger_players_parsing'))
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -44,7 +44,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.PlayerStatisticsParser')
     def test_player_statistics_parser_view(self, matchday_parser_mock, player_parser_mock, site_manager_mock,
                                            player_statistics_parser_mock):
-        response = self.client.get(reverse('core:trigger_player_statistics_parsing'))
+        response = self.client.get(reverse('core:trigger:trigger_player_statistics_parsing'))
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -56,7 +56,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.MatchdayParser')
     @patch('core.managers.parser_manager.FinancesParser')
     def test_finances_parser_view(self, matchday_parser_mock, site_manager_mock, finances_parser_mock):
-        response = self.client.get(reverse('core:trigger_finances_parsing'))
+        response = self.client.get(reverse('core:trigger:trigger_finances_parsing'))
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -72,7 +72,7 @@ class ParserViewTest(TestCase):
                 site_manager_instance_mock = site_manager_mock.return_value
                 site_manager_instance_mock.browser.page_source = match_schedule_html
 
-                response = self.client.get(reverse('core:trigger_match_parsing'))
+                response = self.client.get(reverse('core:trigger:trigger_match_parsing'))
                 self.assertEqual(response.status_code, 302)
 
                 assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
@@ -89,7 +89,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,
                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):  # noqa
-        response = self.client.get(reverse('core:trigger_parsing'))
+        response = self.client.get(reverse('core:trigger:trigger_parsing'))
 
         self.assertEqual(response.status_code, 302)
         assert site_manager_mock.called
