@@ -21,7 +21,7 @@ $('document').ready( function (){
                 data.forEach(showChecklistItem);
             }
         );
-        $.get("/get_current_matchday",
+        $.get("/ofm/get_current_matchday",
             function (data) {
                 $('#ChecklistBar').find('a').append(
                     "<span class='current_matchday'>" +

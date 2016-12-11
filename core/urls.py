@@ -1,12 +1,12 @@
-from django.conf.urls import url, include
-from django.views.generic.base import TemplateView, RedirectView
+from django.conf.urls import include, url
+from django.views.generic.base import RedirectView, TemplateView
 
 import core.views.account_views
 import core.views.settings_views
 import core.views.trigger_parsing_views
-from core.views.base_views import GetCurrentMatchdayView
-from core.views.checklist_views import GetChecklistItemsView, GetChecklistItemsForTodayView, CreateChecklistItemView, \
-    UpdateChecklistPriorityView, UpdateChecklistItemView, DeleteChecklistItemView
+from core.views.checklist_views import CreateChecklistItemView, DeleteChecklistItemView, \
+                                       GetChecklistItemsForTodayView, GetChecklistItemsView, \
+                                       UpdateChecklistItemView, UpdateChecklistPriorityView
 
 app_name = 'core'
 urlpatterns = [
@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^account/?$', core.views.account_views.account_view, name='account'),
     url(r'^logout/?$', core.views.account_views.logout_view, name='logout'),
     url(r'^ofm/', include('core.ofm_urls'), name='ofm'),
-    url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
 
     url(r'^settings/?$', core.views.settings_views.settings_view,
         name='settings'),

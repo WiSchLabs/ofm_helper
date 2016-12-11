@@ -96,7 +96,7 @@ class SettingsTestCase(TestCase):
     def test_get_current_matchday(self):
         MatchdayFactory.create()
         self.client.login(username='temporary', password='temporary')
-        response = self.client.get(reverse('core:get_current_matchday'))
+        response = self.client.get(reverse('core:ofm:get_current_matchday'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertEqual(returned_json_data['matchday_number'], 0)
