@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-from core.localization.messages import MSG_PASSWORDS_UNEQUAL, MSG_SETTINGS_SAVED, MSG_OFM_PASSWORDS_UNEQUAL, \
-    MSG_NOT_LOGGED_IN
+from core.localization.messages import PASSWORDS_UNEQUAL, SETTINGS_SAVED, OFM_PASSWORDS_UNEQUAL, \
+    NOT_LOGGED_IN
 from users.models import OFMUser
 
 
@@ -14,21 +14,21 @@ def _handle_account_data_change(request, email, password, password2):
         request.user.email = email
     if password and password2:
         if password != password2:
-            messages.error(request, MSG_PASSWORDS_UNEQUAL)
+            messages.error(request, PASSWORDS_UNEQUAL)
             return
         request.user.set_password(password)
     request.user.save()
-    messages.success(request, MSG_SETTINGS_SAVED)
+    messages.success(request, SETTINGS_SAVED)
 
 
 def _handle_ofm_data_change(request, ofm_password, ofm_password2):
     if ofm_password != ofm_password2:
-        messages.error(request, MSG_OFM_PASSWORDS_UNEQUAL)
+        messages.error(request, OFM_PASSWORDS_UNEQUAL)
         return redirect('core:register')
 
     request.user.ofm_password = ofm_password
     request.user.save()
-    messages.success(request, MSG_SETTINGS_SAVED)
+    messages.success(request, SETTINGS_SAVED)
 
 
 def settings_view(request):
@@ -49,5 +49,5 @@ def settings_view(request):
 
         return render(request, 'core/account/settings.html')
     else:
-        messages.error(request, MSG_NOT_LOGGED_IN)
+        messages.error(request, NOT_LOGGED_IN)
         return redirect('core:login')

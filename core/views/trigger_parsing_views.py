@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from core.localization.messages import MSG_NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
+from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
 from core.managers.site_manager import SiteManager
 
@@ -27,7 +27,7 @@ def trigger_parsing(request):
 
         return redirect('core:ofm:player_statistics')
     else:
-        messages.error(request, MSG_NOT_LOGGED_IN)
+        messages.error(request, NOT_LOGGED_IN)
         return redirect('core:login')
 
 
@@ -38,7 +38,7 @@ def trigger_single_parsing(request, parsing_function, redirect_to='core:account'
         parsing_function(request, site_manager)
         return redirect(redirect_to)
     else:
-        messages.error(request, MSG_NOT_LOGGED_IN)
+        messages.error(request, NOT_LOGGED_IN)
         return redirect('core:login')
 
 
