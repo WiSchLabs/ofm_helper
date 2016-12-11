@@ -6,8 +6,8 @@ from core.views.ofm.finance_views import FinanceBalanceChartView, FinanceDataVie
 from core.views.ofm.match_views import MatchesAsJsonView, MatchesSummaryJsonView, MatchesView
 from core.views.ofm.player_views import PlayerChartView, PlayerDetailView, PlayerStatisticsAsJsonView, \
                                         PlayerStatisticsView
-from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, StadiumStandStatisticsView, \
-                                         StadiumStatisticsAsJsonView, StadiumStatisticsView
+from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, \
+                                         StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
 
 app_name = 'ofm'
 urlpatterns = [
