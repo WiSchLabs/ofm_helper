@@ -9,7 +9,7 @@ class OFMStadiumDetailsViewTestCase(TestCase):
     def setUp(self):
         MatchdayFactory.create()
         MatchdayFactory.create(number=1)
-        user1 = OFMUser.objects.create_user(
+        self.user1 = OFMUser.objects.create_user(
             username='alice',
             email='alice@ofmhelper.com',
             password='alice',
@@ -23,7 +23,7 @@ class OFMStadiumDetailsViewTestCase(TestCase):
             ofm_username='bob',
             ofm_password='bob'
         )
-        match = MatchFactory.create(user=user1)
+        match = MatchFactory.create(user=self.user1)
         self.stadium_stat = MatchStadiumStatisticsFactory.create(match=match)
         StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='N')
         StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='S')
@@ -35,10 +35,10 @@ class OFMStadiumDetailsViewTestCase(TestCase):
         response = self.client.get('/ofm/stadium/' + str(self.stadium_stat.id))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('stadium_stat' in response.context_data)
-        self.assertTrue('north_stand' in response.context_data)
-        self.assertTrue('south_stand' in response.context_data)
-        self.assertTrue('west_stand' in response.context_data)
-        self.assertTrue('east_stand' in response.context_data)
+        self.assertTrue(response.context_data['north_stand'] is not None)
+        self.assertTrue(response.context_data['south_stand'] is not None)
+        self.assertTrue(response.context_data['west_stand'] is not None)
+        self.assertTrue(response.context_data['east_stand'] is not None)
 
     def test_user_cannot_see_other_users_data(self):
         self.client.login(username='bob', password='bob')
@@ -49,3 +49,17 @@ class OFMStadiumDetailsViewTestCase(TestCase):
         self.assertFalse('south_stand' in response.context_data)
         self.assertFalse('west_stand' in response.context_data)
         self.assertFalse('east_stand' in response.context_data)
+
+    def test_stadium_data_if_one_stand_not_used(self):
+        MatchdayFactory.create(number=2)
+        match = MatchFactory.create(user=self.user1)
+        stadium_stat_2 = MatchStadiumStatisticsFactory.create(match=match)
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='N')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='S')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat_2, sector='W')
+        response = self.client.get('/ofm/stadium/' + str(stadium_stat_2.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context_data['north_stand'] is not None)
+        self.assertTrue(response.context_data['south_stand'] is not None)
+        self.assertTrue(response.context_data['west_stand'] is not None)
+        self.assertTrue(response.context_data['east_stand'] is None)

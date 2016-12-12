@@ -156,10 +156,10 @@ class StadiumDetailView(DetailView):
         context = super(StadiumDetailView, self).get_context_data(**kwargs)
 
         if self.get_object():
-            context['north_stand'] = self._get_stand_sector('N')
-            context['south_stand'] = self._get_stand_sector('S')
-            context['west_stand'] = self._get_stand_sector('W')
-            context['east_stand'] = self._get_stand_sector('O')
+            context['north_stand'] = self._get_stand_by_sector('N')
+            context['south_stand'] = self._get_stand_by_sector('S')
+            context['west_stand'] = self._get_stand_by_sector('W')
+            context['east_stand'] = self._get_stand_by_sector('O')
 
         return context
 
@@ -168,8 +168,9 @@ class StadiumDetailView(DetailView):
         matches = Match.objects.filter(user=self.request.user, stadium_statistics=stadium_stat)
         return stadium_stat if matches.count() > 0 else None
 
-    def _get_stand_sector(self, sector):
-        return StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector=sector)
+    def _get_stand_by_sector(self, sector):
+        stand_statistics = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector=sector)
+        return stand_statistics[0] if stand_statistics.count() > 0 else None
 
 
 @method_decorator(login_required, name='dispatch')
