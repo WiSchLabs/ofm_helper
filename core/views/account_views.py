@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
+from core.forms.registration_form import RegistrationForm
 from core.localization.messages import PASSWORDS_UNEQUAL, OFM_PASSWORDS_UNEQUAL, NOT_LOGGED_IN, \
     OFM_USERNAME_ALREADY_EXISTS, USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS, ALREADY_LOGGED_IN, \
     ACCOUNT_CREATED, LOGGED_OUT, USERNAME_OR_PASSWORD_INVALID, LOGIN_IMPOSSIBLE_ACCOUNT_IS_DEACTIVATED, \
@@ -9,52 +12,40 @@ from core.localization.messages import PASSWORDS_UNEQUAL, OFM_PASSWORDS_UNEQUAL,
 from users.models import OFMUser
 
 
-def register_view(request):
-    if request.user.is_authenticated():
-        messages.error(request, ALREADY_LOGGED_IN)
-        return render(request, 'core/account/home.html')
-    if request.POST:
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
-        ofm_username = request.POST.get('ofm_username')
-        ofm_password = request.POST.get('ofm_password')
-        ofm_password2 = request.POST.get('ofm_password2')
+class OFMUserCreate(CreateView):
+    form_class = RegistrationForm
+    success_url = reverse_lazy('core:account:login')
+    template_name = 'core/account/register.html'
 
-        if OFMUser.objects.filter(email=email).exists():
-            messages.error(request, EMAIL_ALREADY_EXISTS)
-            return redirect('core:account:register')
+    def form_valid(self, form):
+        if self.request.user.is_authenticated():
+            messages.error(self.request, ALREADY_LOGGED_IN)
+            return render(self.request, 'core/account/home.html')
 
-        if OFMUser.objects.filter(username=username).exists():
-            messages.error(request, USERNAME_ALREADY_EXISTS)
-            return redirect('core:account:register')
+        if self.is_registration_form_invalid(form):
+            return super(OFMUserCreate, self).form_invalid(form)
 
-        if password != password2:
-            messages.error(request, PASSWORDS_UNEQUAL)
-            return redirect('core:account:register')
+        messages.success(self.request, ACCOUNT_CREATED)
+        return super(OFMUserCreate, self).form_valid(form)
 
-        if OFMUser.objects.filter(ofm_username=ofm_username).exists():
-            messages.error(request, OFM_USERNAME_ALREADY_EXISTS)
-            return redirect('core:account:register')
-
-        if ofm_password != ofm_password2:
-            messages.error(request, OFM_PASSWORDS_UNEQUAL)
-            return redirect('core:account:register')
-
-        OFMUser.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            ofm_username=ofm_username,
-            ofm_password=ofm_password,
-        )
-
-        messages.success(request, ACCOUNT_CREATED)
-        return redirect('core:account:login')
-
-    else:
-        return render(request, 'core/account/register.html')
+    def is_registration_form_invalid(self, form):
+        form_invalid = False
+        if OFMUser.objects.filter(username=form.data['username']).exists():
+            messages.error(self.request, USERNAME_ALREADY_EXISTS)
+            form_invalid = True
+        if OFMUser.objects.filter(email=form.data['email']).exists():
+            messages.error(self.request, EMAIL_ALREADY_EXISTS)
+            form_invalid = True
+        if form.data['password'] != form.data['password2']:
+            messages.error(self.request, PASSWORDS_UNEQUAL)
+            form_invalid = True
+        if OFMUser.objects.filter(ofm_username=form.data['ofm_username']).exists():
+            messages.error(self.request, OFM_USERNAME_ALREADY_EXISTS)
+            form_invalid = True
+        if form.data['ofm_password'] != form.data['ofm_password2']:
+            messages.error(self.request, OFM_PASSWORDS_UNEQUAL)
+            form_invalid = True
+        return form_invalid
 
 
 def login_view(request):
