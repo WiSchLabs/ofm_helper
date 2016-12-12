@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.urls import reverse_lazy
 
 from users.models import OFMUser
 
