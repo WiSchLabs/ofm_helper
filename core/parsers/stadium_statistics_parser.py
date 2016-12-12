@@ -30,16 +30,11 @@ class StadiumStatisticsParser(BaseParser):
         last_stadium_level = None
         if last_home_matches.count() > 0:
             # only consider matches statistics BEFORE current match
-            last_home_matches = [match for match in last_home_matches if
-                                 match.matchday.number <= self.match.matchday.number]
-            last_home_match = last_home_matches[0]
+            last_home_match = [match for match in last_home_matches if
+                               match.matchday.number <= self.match.matchday.number][0]
             last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
 
-        stadium_items = soup.find('table', id='stadiumExtra').tbody.find_all('tr')
-        light_row = stadium_items[0]
-        screen_row = stadium_items[1]
-        security_row = stadium_items[2]
-        parking_row = stadium_items[3]
+        light_row, screen_row, security_row, parking_row = self._get_stadium_items(soup)
 
         if self._is_under_construction(light_row) and last_stadium_level:
             light = last_stadium_level.light
@@ -74,6 +69,11 @@ class StadiumStatisticsParser(BaseParser):
         )
 
         return match_stadium_stat
+
+    @staticmethod
+    def _get_stadium_items(soup):
+        items = soup.find('table', id='stadiumExtra').tbody.find_all('tr')
+        return items[0], items[1], items[2], items[3]
 
     @staticmethod
     def _is_under_construction(stadium_attribute):
