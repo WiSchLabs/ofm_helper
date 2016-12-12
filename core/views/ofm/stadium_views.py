@@ -150,21 +150,16 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 class StadiumDetailView(DetailView):
     context_object_name = 'stadium_stat'
     template_name = 'core/ofm/stadium_detail.html'
-    queryset = MatchStadiumStatistics.objects.all()
+    model = MatchStadiumStatistics
 
     def get_context_data(self, **kwargs):
         context = super(StadiumDetailView, self).get_context_data(**kwargs)
 
         if self.get_object():
-            north_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='N')
-            south_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='S')
-            west_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='W')
-            east_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self.get_object(), sector='O')
-
-            context['north_stand'] = north_stand[0] if north_stand.count() > 0 else None
-            context['south_stand'] = south_stand[0] if south_stand.count() > 0 else None
-            context['west_stand'] = west_stand[0] if west_stand.count() > 0 else None
-            context['east_stand'] = east_stand[0] if east_stand.count() > 0 else None
+            context['north_stand'] = self._get_stand_sector('N')
+            context['south_stand'] = self._get_stand_sector('S')
+            context['west_stand'] = self._get_stand_sector('W')
+            context['east_stand'] = self._get_stand_sector('O')
 
         return context
 
@@ -172,6 +167,9 @@ class StadiumDetailView(DetailView):
         stadium_stat = super(StadiumDetailView, self).get_object()
         matches = Match.objects.filter(user=self.request.user, stadium_statistics=stadium_stat)
         return stadium_stat if matches.count() > 0 else None
+
+    def _get_stand_sector(self, sector):
+        return StadiumStandStatistics.objects.get(stadium_statistics=self.get_object(), sector=sector)
 
 
 @method_decorator(login_required, name='dispatch')
