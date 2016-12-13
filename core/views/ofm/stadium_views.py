@@ -9,6 +9,13 @@ from django.views.generic import TemplateView, DetailView
 
 from core.models import Matchday, Match, MatchStadiumStatistics, StadiumStandStatistics
 
+HTML_PERCENT_SIGN = " &#37;"
+
+DEFAULT_SLIDER_MIN = 100
+DEFAULT_SLIDER_MAX = 150
+DEFAULT_TOLERANCE = 5
+DEFAULT_HARMONIC_STRENGTH = 150
+
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStatisticsView(TemplateView):
@@ -17,60 +24,68 @@ class StadiumStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(StadiumStatisticsView, self).get_context_data(**kwargs)
 
+        self._add_seasons_to_context(context)
+        self._add_slider_values_to_context(context)
+        self._add_stadium_configurations_to_context(context)
+
+        return context
+
+    @staticmethod
+    def _add_seasons_to_context(context):
         matchdays = Matchday.objects.filter(matches__isnull=False).distinct()
         seasons = set(m.season.number for m in matchdays)
+        context['seasons'] = sorted(seasons, reverse=True)
 
-        tolerance = 5
-        if self.request.COOKIES.get('slider_min') and \
-            self.request.COOKIES.get('slider_max') and \
-            self.request.COOKIES.get('tolerance'):
-            slider_min = self.request.COOKIES['slider_min']
-            slider_max = self.request.COOKIES['slider_max']
-            tolerance = self.request.COOKIES['tolerance']
-        elif Match.objects.count() > 0:
-            # latest home match
-            match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]
-            slider_min = int(min(match.home_team_statistics.strength, match.guest_team_statistics.strength))
-            slider_max = int(max(match.home_team_statistics.strength, match.guest_team_statistics.strength))
-        else:
-            slider_min = 100
-            slider_max = 150
+    def _add_slider_values_to_context(self, context):
+        slider_min, slider_max, tolerance = self._get_slider_values()
+        context['slider_min'] = slider_min
+        context['slider_max'] = slider_max
+        context['tolerance'] = tolerance
 
+    @staticmethod
+    def _add_stadium_configurations_to_context(context):
         unique_stadium_configurations = []
         stadium_configurations = [s.get_configuration() for s in MatchStadiumStatistics.objects.all()]
         for s in stadium_configurations:
             if s not in unique_stadium_configurations:
                 unique_stadium_configurations.append(s)
-
-        context['seasons'] = sorted(seasons, reverse=True)
-        context['slider_min'] = slider_min
-        context['slider_max'] = slider_max
-        context['tolerance'] = tolerance
         context['stadium_configurations'] = reversed(unique_stadium_configurations)
 
-        return context
+    def _get_slider_values(self):
+        slider_min = DEFAULT_SLIDER_MIN
+        slider_max = DEFAULT_SLIDER_MAX
+        tolerance = DEFAULT_TOLERANCE
+
+        if Match.objects.count() > 0:
+            slider_min, slider_max = self._get_strength_slider_values_from_last_match()
+
+        if self.request.COOKIES.get('slider_min') \
+                and self.request.COOKIES.get('slider_max') \
+                and self.request.COOKIES.get('tolerance'):
+            slider_min, slider_max, tolerance = self._get_slider_values_from_cookies()
+
+        return slider_min, slider_max, tolerance
+
+    def _get_strength_slider_values_from_last_match(self):
+        match = Match.objects.filter(user=self.request.user, is_home_match=True).order_by('matchday')[0]
+        slider_min = int(min(match.home_team_statistics.strength, match.guest_team_statistics.strength))
+        slider_max = int(max(match.home_team_statistics.strength, match.guest_team_statistics.strength))
+        return slider_min, slider_max
+
+    def _get_slider_values_from_cookies(self):
+        return (int(self.request.COOKIES['slider_min']),
+                int(self.request.COOKIES['slider_max']),
+                int(self.request.COOKIES['tolerance']))
 
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     def get(self, request, *args, **kwargs):
-        harmonic_strength = 150
-        tolerance = 5
-        if self.request.COOKIES.get('slider_min') and \
-            self.request.COOKIES.get('slider_max') and \
-            self.request.COOKIES.get('tolerance'):
-            slider_min = int(self.request.COOKIES['slider_min'])
-            slider_max = int(self.request.COOKIES['slider_max'])
-            tolerance = int(self.request.COOKIES['tolerance'])
-            harmonic_strength = round(2 * slider_min * slider_max / (slider_min + slider_max))
-        harmonic_strength = self.request.GET.get('harmonic_strength', default=harmonic_strength)
-        tolerance = self.request.GET.get('tolerance', default=tolerance)
 
-        try:
-            harmonic_strength = int(harmonic_strength)
-            tolerance = int(tolerance)
-        except TypeError:
-            pass
+        harmonic_strength = self._get_harmonic_strength()
+        tolerance = self._get_tolerance()
+
+        print(harmonic_strength, tolerance)
 
         matches = Match.objects.filter(user=self.request.user).order_by('matchday')
         filtered_matches = [match for match in matches if
@@ -95,6 +110,34 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
         return self.render_json_response(stadium_statistics_json)
 
+    def _get_harmonic_strength(self):
+        harmonic_strength = DEFAULT_HARMONIC_STRENGTH
+        if self.request.COOKIES.get('slider_min') and self.request.COOKIES.get('slider_max'):
+            harmonic_strength = self._get_harmonic_strength_from_cookies()
+        if self.request.GET.get('harmonic_strength'):
+            harmonic_strength = int(self.request.GET['harmonic_strength'])
+        return harmonic_strength
+
+    def _get_tolerance(self):
+        tolerance = DEFAULT_TOLERANCE
+        if self.request.COOKIES.get('tolerance'):
+            tolerance = self._get_tolerance_from_cookies()
+        return tolerance
+
+    def _get_harmonic_strength_from_cookies(self):
+        slider_min = int(self.request.COOKIES['slider_min'])
+        slider_max = int(self.request.COOKIES['slider_max'])
+        return self._harmonic_strength(slider_min, slider_max)
+
+    def _get_tolerance_from_cookies(self):
+        if self.request.COOKIES.get('tolerance'):
+            tolerance = int(self.request.COOKIES['tolerance'])
+        return tolerance
+
+    @staticmethod
+    def _harmonic_strength(slider_min, slider_max):
+        return round(2 * slider_min * slider_max / (slider_min + slider_max))
+
     @staticmethod
     def _get_stadium_statistics_in_json(stadium_stat):
         """
@@ -113,7 +156,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             match_stadium_stat['earnings'] = stadium_stat.earnings
             match_stadium_stat['workload'] = locale.format("%.2f",
                                                            stadium_stat.visitors /
-                                                           stadium_stat.capacity * 100) + " &#37;"
+                                                           stadium_stat.capacity * 100) + HTML_PERCENT_SIGN
         else:
             # all stadium stands were under construction during match
             match_stadium_stat['visitors'] = 0

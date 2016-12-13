@@ -144,9 +144,9 @@ class OFMStadiumStatisticsViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:stadium_statistics_overview'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data['slider_min'], '13')
-        self.assertEqual(response.context_data['slider_max'], '37')
-        self.assertEqual(response.context_data['tolerance'], '42')
+        self.assertEqual(response.context_data['slider_min'], 13)
+        self.assertEqual(response.context_data['slider_max'], 37)
+        self.assertEqual(response.context_data['tolerance'], 42)
 
     def test_user_can_filter_for_stadium_configuration(self):
         matchday = MatchdayFactory.create(number=2)
