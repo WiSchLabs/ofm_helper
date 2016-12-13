@@ -85,8 +85,6 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
         harmonic_strength = self._get_harmonic_strength()
         tolerance = self._get_tolerance()
 
-        print(harmonic_strength, tolerance)
-
         matches = Match.objects.filter(user=self.request.user).order_by('matchday')
         filtered_matches = [match for match in matches if
                             harmonic_strength - tolerance <= match.harmonic_strength <= harmonic_strength + tolerance]
