@@ -120,31 +120,37 @@ class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
 
         if checklist_item:
-            if checklist_item_name:
-                checklist_item.name = checklist_item_name
-            elif checklist_item_matchdays:
-                checklist_item.to_be_checked_on_matchdays = checklist_item_matchdays
-                checklist_item.to_be_checked_on_matchday_pattern = None
-                checklist_item.to_be_checked_if_home_match_tomorrow = False
-            elif checklist_item_matchday_pattern:
-                checklist_item.to_be_checked_on_matchdays = None
-                checklist_item.to_be_checked_on_matchday_pattern = checklist_item_matchday_pattern
-                checklist_item.to_be_checked_if_home_match_tomorrow = False
-            elif checklist_item_home_match:
-                checklist_item.to_be_checked_on_matchdays = None
-                checklist_item.to_be_checked_on_matchday_pattern = None
-                checklist_item.to_be_checked_if_home_match_tomorrow = True
-            elif checklist_item_everyday:
-                checklist_item.to_be_checked_on_matchdays = None
-                checklist_item.to_be_checked_on_matchday_pattern = None
-                checklist_item.to_be_checked_if_home_match_tomorrow = False
-            elif checklist_item_checked == 'true':
-                checklist_item.last_checked_on_matchday = Matchday.get_current()
-            elif checklist_item_checked == 'false':
-                checklist_item.last_checked_on_matchday = None
-            checklist_item.save()
+            self._handle_checklist_item_update(checklist_item, checklist_item_checked, checklist_item_everyday,
+                                               checklist_item_home_match, checklist_item_matchday_pattern,
+                                               checklist_item_matchdays, checklist_item_name)
             return self.render_json_response({'success': True})
         return self.render_json_response({'success': False})
+
+    def _handle_checklist_item_update(self, checklist_item, checklist_item_checked, checklist_item_everyday,
+                                      checklist_item_home_match, checklist_item_matchday_pattern,
+                                      checklist_item_matchdays, checklist_item_name):
+        if checklist_item_name:
+            checklist_item.name = checklist_item_name
+        elif checklist_item_matchdays:
+            self._update_checklist_item_condition(checklist_item, checklist_item_matchdays, None, False)
+        elif checklist_item_matchday_pattern:
+            self._update_checklist_item_condition(checklist_item, None, checklist_item_matchday_pattern, False)
+        elif checklist_item_home_match:
+            self._update_checklist_item_condition(checklist_item, None, None, True)
+        elif checklist_item_everyday:
+            self._update_checklist_item_condition(checklist_item, None, None, False)
+        elif checklist_item_checked == 'true':
+            checklist_item.last_checked_on_matchday = Matchday.get_current()
+        elif checklist_item_checked == 'false':
+            checklist_item.last_checked_on_matchday = None
+        checklist_item.save()
+
+    @staticmethod
+    def _update_checklist_item_condition(checklist_item, checklist_item_matchdays, checklist_item_matchday_pattern,
+                                         checklist_item_home_match_tomorrow):
+        checklist_item.to_be_checked_on_matchdays = checklist_item_matchdays
+        checklist_item.to_be_checked_on_matchday_pattern = checklist_item_matchday_pattern
+        checklist_item.to_be_checked_if_home_match_tomorrow = checklist_item_home_match_tomorrow
 
 
 @method_decorator(login_required, name='dispatch')
