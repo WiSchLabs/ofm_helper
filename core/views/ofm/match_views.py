@@ -42,42 +42,17 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         """
         locale.setlocale(locale.LC_ALL, '')
 
-        if match.is_home_match:
-            home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
-            guest_team_name = match.guest_team_statistics.team_name
-            if hasattr(match, 'stadium_statistics'):
-                venue = "<a href='" + match.stadium_statistics.get_absolute_url() + "'>" + match.venue + "</a>"
-            else:
-                venue = match.venue
-        else:
-            home_team_name = match.home_team_statistics.team_name
-            guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
-            venue = match.venue
-
-        result_score = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
-        if match.is_in_future:
-            result = "<span class='match_scheduled alert-info'>-:-</span>"
-        elif match.is_won:
-            result = "<span class='match_won alert-success'>" + result_score + "</span>"
-        elif match.is_draw:
-            result = "<span class='match_draw alert-warning'>" + result_score + "</span>"
-        else:
-            result = "<span class='match_lost alert-danger'>" + result_score + "</span>"
+        guest_team_name, home_team_name = MatchesAsJsonView._get_formatted_team_names(match)
+        venue = MatchesAsJsonView._get_formatted_venue(match)
+        result = MatchesAsJsonView._get_formatted_score(match)
+        guest_team_strength, home_team_strength = MatchesAsJsonView._get_formatted_team_strengths(match)
 
         match_stat = dict()
         match_stat['home_team'] = home_team_name
         match_stat['guest_team'] = guest_team_name
         match_stat['result'] = result
-        home_strength = match.home_team_statistics.strength
-        if home_strength == int(home_strength):
-            match_stat['home_strength'] = int(home_strength)
-        else:
-            match_stat['home_strength'] = locale.format("%.1f", home_strength)
-        guest_strength = match.guest_team_statistics.strength
-        if guest_strength == int(guest_strength):
-            match_stat['guest_strength'] = int(guest_strength)
-        else:
-            match_stat['guest_strength'] = locale.format("%.1f", guest_strength)
+        match_stat['home_strength'] = home_team_strength
+        match_stat['guest_strength'] = guest_team_strength
         match_stat['home_ball_possession'] = locale.format("%.1f", match.home_team_statistics.ball_possession) + " %"
         match_stat['guest_ball_possession'] = locale.format("%.1f", match.guest_team_statistics.ball_possession) + " %"
         match_stat['home_chances'] = match.home_team_statistics.chances
@@ -90,6 +65,56 @@ class MatchesAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         match_stat['matchday'] = match.matchday.number
 
         return match_stat
+
+    @staticmethod
+    def _get_formatted_team_strengths(match):
+        home_strength = match.home_team_statistics.strength
+        guest_strength = match.guest_team_statistics.strength
+
+        if home_strength == int(home_strength):
+            home_team_strength = int(home_strength)
+        else:
+            home_team_strength = locale.format("%.1f", home_strength)
+        if guest_strength == int(guest_strength):
+            guest_team_strength = int(guest_strength)
+        else:
+            guest_team_strength = locale.format("%.1f", guest_strength)
+
+        return guest_team_strength, home_team_strength
+
+    @staticmethod
+    def _get_formatted_team_names(match):
+        if match.is_home_match:
+            home_team_name = "<span class='users-team'>" + match.home_team_statistics.team_name + "</span>"
+            guest_team_name = match.guest_team_statistics.team_name
+        else:
+            home_team_name = match.home_team_statistics.team_name
+            guest_team_name = "<span class='users-team'>" + match.guest_team_statistics.team_name + "</span>"
+        return guest_team_name, home_team_name
+
+    @staticmethod
+    def _get_formatted_venue(match):
+        if match.is_home_match:
+            if hasattr(match, 'stadium_statistics'):
+                venue = "<a href='" + match.stadium_statistics.get_absolute_url() + "'>" + match.venue + "</a>"
+            else:
+                venue = match.venue
+        else:
+            venue = match.venue
+        return venue
+
+    @staticmethod
+    def _get_formatted_score(match):
+        result_score = str(match.home_team_statistics.score) + ":" + str(match.guest_team_statistics.score)
+        if match.is_in_future:
+            result = "<span class='match_scheduled alert-info'>-:-</span>"
+        elif match.is_won:
+            result = "<span class='match_won alert-success'>" + result_score + "</span>"
+        elif match.is_draw:
+            result = "<span class='match_draw alert-warning'>" + result_score + "</span>"
+        else:
+            result = "<span class='match_lost alert-danger'>" + result_score + "</span>"
+        return result
 
 
 @method_decorator(login_required, name='dispatch')
