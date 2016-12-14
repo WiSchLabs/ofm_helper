@@ -41,7 +41,7 @@
 
     `wget https://raw.githubusercontent.com/WiSchLabs/ofm_helper/master/docker-compose.yml`
 3. Starte die Container mit: `docker-compose up -d`
-4. Migriere die Datenbank zum aktuellen Stand: `docker exec -it ofmhelper_web_1 python manage.py migrate`
+4. Migriere die Datenbank zum aktuellen Stand: `docker exec -it ofmhelper_django_1 python manage.py migrate`
 5. Öffne die Addresse: 127.0.0.1 in deinem Browser
 6. Erstelle einen neuen Account mit deinen OFM Logindaten
 
