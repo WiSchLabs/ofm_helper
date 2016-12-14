@@ -65,7 +65,7 @@
     und das Update-Script herunterladen:
     
     `wget https://raw.githubusercontent.com/WiSchLabs/ofm_helper/master/scripts/update_docker_container.sh`
-3.  und ausführen mit:
+2.  und ausführen mit:
 
     `chmod +x update_docker_container.sh && ./update_docker_container.sh`
 
