@@ -34,9 +34,39 @@
 
 0. Boote ins BIOS / EFI und aktiviere "Virtualization"
 1. Installiere Docker und docker-compose
-2. Starte die Container mit: `docker-compose up -d`
-3. Migriere die Datenbank zum aktuellen Stand: `docker exec -it ofmhelper_web_1 python manage.py migrate`
-4. Öffne die Addresse: 127.0.0.1 in deinem Browser
-5. Erstelle einen neuen Account mit deinen OFM Logindaten
+2. a) Installiere entweder git und clone das repo: 
+
+    `git clone https://github.com/WiSchLabs/ofm_helper.git && cd ofm_helper`, oder
+2. b) Lade nur das docker compose file herunter: 
+
+    `wget https://raw.githubusercontent.com/WiSchLabs/ofm_helper/master/docker-compose.yml`
+3. Starte die Container mit: `docker-compose up -d`
+4. Migriere die Datenbank zum aktuellen Stand: `docker exec -it ofmhelper_web_1 python manage.py migrate`
+5. Öffne die Addresse: 127.0.0.1 in deinem Browser
+6. Erstelle einen neuen Account mit deinen OFM Logindaten
+
+## Update 
+
+### Windows
+1. Kopiere dir deine lokale Datenbank-Datei (database/db.sqlite3) an einen sicheren Ort. 
+2. Lade das [aktuelle Release](https://github.com/WiSchLabs/ofm_helper/releases/latest) herunter und entpacke es.
+3. Überschreibe die Datenbank-Datei mit deiner Sicherung.
+
+## Windows 10 / Linux / OS X (mit Docker)
+
+
+1. a) Entweder das repo updaten:
+
+    `cd ofm_helper && git pull`, oder
+1. b) Das compose file erneuern: 
+
+    `wget https://raw.githubusercontent.com/WiSchLabs/ofm_helper/master/docker-compose.yml`
+     
+    und das Update-Script herunterladen:
+    
+    `wget https://raw.githubusercontent.com/WiSchLabs/ofm_helper/master/scripts/update_docker_container.sh`
+3.  und ausführen mit:
+
+    `chmod +x update_docker_container.sh && ./update_docker_container.sh`
 
 
