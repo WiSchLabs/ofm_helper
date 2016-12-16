@@ -1,4 +1,4 @@
-from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
+from braces.views import JSONResponseMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -7,7 +7,7 @@ from core.models import ChecklistItem, Matchday, Match, Checklist
 
 
 @method_decorator(login_required, name='dispatch')
-class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class GetChecklistItemsView(JSONResponseMixin, View):
     def get(self, request, *args, **kwargs):
         checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
 
@@ -17,7 +17,7 @@ class GetChecklistItemsView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class GetChecklistItemsForTodayView(JSONResponseMixin, View):
     def get(self, request, *args, **kwargs):
         current_matchday = Matchday.get_current()
         home_match_tomorrow = Match.objects.filter(
@@ -66,23 +66,8 @@ class GetChecklistItemsForTodayView(CsrfExemptMixin, JsonRequestResponseMixin, V
         return self.render_json_response(checklist_items_json)
 
 
-def _get_checklist_item_in_json(checklist_item):
-    checklist_item_json = dict()
-    checklist_item_json['id'] = checklist_item.id
-    checklist_item_json['name'] = checklist_item.name
-    if checklist_item.to_be_checked_if_home_match_tomorrow:
-        checklist_item_json['type_home_match'] = checklist_item.to_be_checked_if_home_match_tomorrow
-    if checklist_item.to_be_checked_on_matchdays is not None:
-        checklist_item_json['type_matchdays'] = checklist_item.to_be_checked_on_matchdays
-    if checklist_item.to_be_checked_on_matchday_pattern is not None:
-        checklist_item_json['type_matchday_pattern'] = checklist_item.to_be_checked_on_matchday_pattern
-    checklist_item_json['checked'] = checklist_item.last_checked_on_matchday == Matchday.get_current()
-
-    return checklist_item_json
-
-
 @method_decorator(login_required, name='dispatch')
-class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class CreateChecklistItemView(JSONResponseMixin, View):
     def get(self, request, *args, **kwargs):
         checklist, _ = Checklist.objects.get_or_create(user=request.user)
         new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='Neuer Eintrag')
@@ -93,7 +78,7 @@ class CreateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistPriorityView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class UpdateChecklistPriorityView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
         checklist_priority = request.POST.get('checklist_priority')
 
@@ -107,7 +92,7 @@ class UpdateChecklistPriorityView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class UpdateChecklistItemView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_name = request.POST.get('checklist_item_name')
@@ -154,7 +139,7 @@ class UpdateChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class DeleteChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+class DeleteChecklistItemView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
@@ -162,3 +147,18 @@ class DeleteChecklistItemView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             checklist_item.delete()
             return self.render_json_response({'success': True})
         return self.render_json_response({'success': False})
+
+
+def _get_checklist_item_in_json(checklist_item):
+    checklist_item_json = dict()
+    checklist_item_json['id'] = checklist_item.id
+    checklist_item_json['name'] = checklist_item.name
+    if checklist_item.to_be_checked_if_home_match_tomorrow:
+        checklist_item_json['type_home_match'] = checklist_item.to_be_checked_if_home_match_tomorrow
+    if checklist_item.to_be_checked_on_matchdays is not None:
+        checklist_item_json['type_matchdays'] = checklist_item.to_be_checked_on_matchdays
+    if checklist_item.to_be_checked_on_matchday_pattern is not None:
+        checklist_item_json['type_matchday_pattern'] = checklist_item.to_be_checked_on_matchday_pattern
+    checklist_item_json['checked'] = checklist_item.last_checked_on_matchday == Matchday.get_current()
+
+    return checklist_item_json
