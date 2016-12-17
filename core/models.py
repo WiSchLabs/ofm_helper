@@ -428,26 +428,26 @@ class Finance(models.Model, IterMixin):
 
     def diff(self, ot_finance):
         f = Finance()
-        f.income_visitors_league = math.abs(self.income_visitors_league - ot_finance.income_visitors_league)
-        f.income_sponsoring = math.abs(self.income_sponsoring - ot_finance.income_sponsoring)
-        f.income_cup = math.abs(self.income_cup - ot_finance.income_cup)
-        f.income_interests = math.abs(self.income_interests - ot_finance.income_interests)
-        f.income_loan = math.abs(self.income_loan - ot_finance.income_loan)
-        f.income_transfer = math.abs(self.income_transfer - ot_finance.income_transfer)
-        f.income_visitors_friendlies = math.abs(self.income_visitors_friendlies - ot_finance.income_visitors_friendlies)
-        f.income_funcup = math.abs(self.income_funcup - ot_finance.income_funcup)
-        f.income_betting = math.abs(self.income_betting - ot_finance.income_betting)
+        f.income_visitors_league = self.income_visitors_league - ot_finance.income_visitors_league
+        f.income_sponsoring = self.income_sponsoring - ot_finance.income_sponsoring
+        f.income_cup = self.income_cup - ot_finance.income_cup
+        f.income_interests = self.income_interests - ot_finance.income_interests
+        f.income_loan = self.income_loan - ot_finance.income_loan
+        f.income_transfer = self.income_transfer - ot_finance.income_transfer
+        f.income_visitors_friendlies = self.income_visitors_friendlies - ot_finance.income_visitors_friendlies
+        f.income_funcup = self.income_funcup - ot_finance.income_funcup
+        f.income_betting = self.income_betting - ot_finance.income_betting
 
-        f.expenses_player_salaries = math.abs(self.expenses_player_salaries - ot_finance.expenses_player_salaries)
-        f.expenses_stadium = math.abs(self.expenses_stadium - ot_finance.expenses_stadium)
-        f.expenses_youth = math.abs(self.expenses_youth - ot_finance.expenses_youth)
-        f.expenses_interests = math.abs(self.expenses_interests - ot_finance.expenses_interests)
-        f.expenses_trainings = math.abs(self.expenses_trainings - ot_finance.expenses_trainings)
-        f.expenses_transfer = math.abs(self.expenses_transfer - ot_finance.expenses_transfer)
-        f.expenses_compensation = math.abs(self.expenses_compensation - ot_finance.expenses_compensation)
-        f.expenses_friendlies = math.abs(self.expenses_friendlies - ot_finance.expenses_friendlies)
-        f.expenses_funcup = math.abs(self.expenses_funcup - ot_finance.expenses_funcup)
-        f.expenses_betting = math.abs(self.expenses_betting - ot_finance.expenses_betting)
+        f.expenses_player_salaries = self.expenses_player_salaries - ot_finance.expenses_player_salaries
+        f.expenses_stadium = self.expenses_stadium - ot_finance.expenses_stadium
+        f.expenses_youth = self.expenses_youth - ot_finance.expenses_youth
+        f.expenses_interests = self.expenses_interests - ot_finance.expenses_interests
+        f.expenses_trainings = self.expenses_trainings - ot_finance.expenses_trainings
+        f.expenses_transfer = self.expenses_transfer - ot_finance.expenses_transfer
+        f.expenses_compensation = self.expenses_compensation - ot_finance.expenses_compensation
+        f.expenses_friendlies = self.expenses_friendlies - ot_finance.expenses_friendlies
+        f.expenses_funcup = self.expenses_funcup - ot_finance.expenses_funcup
+        f.expenses_betting = self.expenses_betting - ot_finance.expenses_betting
         return f
 
     def income(self):
