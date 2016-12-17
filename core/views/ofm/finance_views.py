@@ -23,12 +23,12 @@ class FinanceDataView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class FinancesAsJsonView(CsrfExemptMixin, JSONResponseMixin, View):
-    def get(self, request, *args, **kwargs):
-        newer_matchday_season = self.request.GET.get('newer_matchday_season',
+    def get(self, request):
+        newer_matchday_season = request.GET.get('newer_matchday_season',
                                                      default=Matchday.objects.all()[0].season.number)
-        newer_matchday = self.request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
-        older_matchday_season = self.request.GET.get('older_matchday_season')
-        older_matchday = self.request.GET.get('older_matchday')
+        newer_matchday = request.GET.get('newer_matchday', default=Matchday.objects.all()[0].number)
+        older_matchday_season = request.GET.get('older_matchday_season')
+        older_matchday = request.GET.get('older_matchday')
 
         newer_finances = Finance.objects.filter(
             user=request.user,
@@ -74,10 +74,10 @@ class FinancesAsJsonView(CsrfExemptMixin, JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class FinanceBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         current_season_number = Matchday.objects.all()[0].season.number
-        season_number = self.request.GET.get('season_number', default=current_season_number)
-        data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
+        season_number = request.GET.get('season_number', default=current_season_number)
+        data_source = Finance.objects.filter(user=request.user, matchday__season__number=season_number)
 
         chart_json = {
             "series": [{
@@ -92,156 +92,92 @@ class FinanceBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
-        current_season_number = Matchday.objects.all()[0].season.number
-        season_number = self.request.GET.get('season_number', default=current_season_number)
-        data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
-
-        income_visitors_league = []
-        income_sponsoring = []
-        income_cup = []
-        income_interests = []
-        income_loan = []
-        income_transfer = []
-        income_visitors_friendlies = []
-        income_friendlies = []
-        income_funcup = []
-        income_betting = []
-        matchdays = []
-
-        if len(data_source) >= 1:
-            income_visitors_league.append(data_source[0].income_visitors_league)
-            income_sponsoring.append(data_source[0].income_sponsoring)
-            income_cup.append(data_source[0].income_cup)
-            income_interests.append(data_source[0].income_interests)
-            income_loan.append(data_source[0].income_loan)
-            income_transfer.append(data_source[0].income_transfer)
-            income_visitors_friendlies.append(data_source[0].income_visitors_friendlies)
-            income_friendlies.append(data_source[0].income_friendlies)
-            income_funcup.append(data_source[0].income_funcup)
-            income_betting.append(data_source[0].income_betting)
-            matchdays.append(data_source[0].matchday.number)
-
-        for idx, _ in enumerate(data_source):
-            if idx + 1 < data_source.count():
-                income_visitors_league.append(
-                    data_source[idx + 1].income_visitors_league - data_source[idx].income_visitors_league)
-                income_sponsoring.append(data_source[idx + 1].income_sponsoring - data_source[idx].income_sponsoring)
-                income_cup.append(data_source[idx + 1].income_cup - data_source[idx].income_cup)
-                income_interests.append(data_source[idx + 1].income_interests - data_source[idx].income_interests)
-                income_loan.append(data_source[idx + 1].income_loan - data_source[idx].income_loan)
-                income_transfer.append(data_source[idx + 1].income_transfer - data_source[idx].income_transfer)
-                income_visitors_friendlies.append(
-                    data_source[idx + 1].income_visitors_friendlies - data_source[idx].income_visitors_friendlies)
-                income_friendlies.append(data_source[idx + 1].income_friendlies - data_source[idx].income_friendlies)
-                income_funcup.append(data_source[idx + 1].income_funcup - data_source[idx].income_funcup)
-                income_betting.append(data_source[idx + 1].income_betting - data_source[idx].income_betting)
-                matchdays.append(data_source[idx + 1].matchday.number)
-
-        series = []
-        if sum(income_visitors_league) is not 0:
-            series.append({"name": 'Ticketeinnahmen Liga', "data": income_visitors_league})
-        if sum(income_sponsoring) is not 0:
-            series.append({"name": 'Sponsor', "data": income_sponsoring})
-        if sum(income_cup) is not 0:
-            series.append({"name": 'Pokal', "data": income_cup})
-        if sum(income_interests) is not 0:
-            series.append({"name": 'Zinsen', "data": income_interests})
-        if sum(income_loan) is not 0:
-            series.append({"name": 'Kredite', "data": income_loan})
-        if sum(income_transfer) is not 0:
-            series.append({"name": 'Spielertransfers', "data": income_transfer})
-        if sum(income_visitors_friendlies) is not 0:
-            series.append({"name": 'Ticketeinnahmen Freundschaftsspiele', "data": income_visitors_friendlies})
-        if sum(income_friendlies) is not 0:
-            series.append({"name": 'Freundschaftsspiele', "data": income_friendlies})
-        if sum(income_funcup) is not 0:
-            series.append({"name": 'Fun-Cup', "data": income_funcup})
-        if sum(income_betting) is not 0:
-            series.append({"name": 'Wetten', "data": income_betting})
-
-        chart_json = {
-            "series": series,
-            "categories": matchdays
-        }
-
+    def get(self, request):
+        chart_json = _get_chart_json(request, self.create_income_series)
         return self.render_json_response(chart_json)
+
+    @staticmethod
+    def create_income_series(diffs):
+        income_visitors_league = [diff.income_visitors_league for diff in diffs]
+        income_sponsoring = [diff.income_sponsoring for diff in diffs]
+        income_cup = [diff.income_cup for diff in diffs]
+        income_interests = [diff.income_interests for diff in diffs]
+        income_loan = [diff.income_loan for diff in diffs]
+        income_transfer = [diff.income_transfer for diff in diffs]
+        income_visitors_friendlies = [diff.income_visitors_friendlies for diff in diffs]
+        income_friendlies = [diff.income_friendlies for diff in diffs]
+        income_funcup = [diff.income_funcup for diff in diffs]
+        income_betting = [diff.income_betting for diff in diffs]
+
+        series = [_get_finance_attribute_json('Ticketeinnahmen Liga', income_visitors_league),
+                  _get_finance_attribute_json('Sponsor', income_sponsoring),
+                  _get_finance_attribute_json('Pokal', income_cup),
+                  _get_finance_attribute_json('Zinsen', income_interests),
+                  _get_finance_attribute_json('Kredite', income_loan),
+                  _get_finance_attribute_json('Spielertransfers', income_transfer),
+                  _get_finance_attribute_json('Ticketeinnahmen Freundschaftsspiele', income_visitors_friendlies),
+                  _get_finance_attribute_json('Freundschaftsspiele', income_friendlies),
+                  _get_finance_attribute_json('Fun-Cup', income_funcup),
+                  _get_finance_attribute_json('Wetten', income_betting)]
+        return series
 
 
 @method_decorator(login_required, name='dispatch')
 class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
-        current_season_number = Matchday.objects.all()[0].season.number
-        season_number = self.request.GET.get('season_number', default=current_season_number)
-        data_source = Finance.objects.filter(user=self.request.user, matchday__season__number=season_number)
-
-        expenses_player_salaries = []
-        expenses_stadium = []
-        expenses_youth = []
-        expenses_interests = []
-        expenses_trainings = []
-        expenses_transfer = []
-        expenses_compensation = []
-        expenses_friendlies = []
-        expenses_funcup = []
-        expenses_betting = []
-        matchdays = []
-
-        if len(data_source) >= 1:
-            expenses_player_salaries.append(-data_source[0].expenses_player_salaries)
-            expenses_stadium.append(-data_source[0].expenses_stadium)
-            expenses_youth.append(-data_source[0].expenses_youth)
-            expenses_interests.append(-data_source[0].expenses_interests)
-            expenses_trainings.append(-data_source[0].expenses_trainings)
-            expenses_transfer.append(-data_source[0].expenses_transfer)
-            expenses_compensation.append(-data_source[0].expenses_compensation)
-            expenses_friendlies.append(-data_source[0].expenses_friendlies)
-            expenses_funcup.append(-data_source[0].expenses_funcup)
-            expenses_betting.append(-data_source[0].expenses_betting)
-            matchdays.append(data_source[0].matchday.number)
-
-        for idx, _ in enumerate(data_source):
-            if idx + 1 < data_source.count():
-                expenses_player_salaries.append(
-                    data_source[idx].expenses_player_salaries - data_source[idx + 1].expenses_player_salaries)
-                expenses_stadium.append(data_source[idx].expenses_stadium - data_source[idx + 1].expenses_stadium)
-                expenses_youth.append(data_source[idx].expenses_youth - data_source[idx + 1].expenses_youth)
-                expenses_interests.append(data_source[idx].expenses_interests - data_source[idx + 1].expenses_interests)
-                expenses_trainings.append(data_source[idx].expenses_trainings - data_source[idx + 1].expenses_trainings)
-                expenses_transfer.append(data_source[idx].expenses_transfer - data_source[idx + 1].expenses_transfer)
-                expenses_compensation.append(
-                    data_source[idx].expenses_compensation - data_source[idx + 1].expenses_compensation)
-                expenses_friendlies.append(
-                    data_source[idx].expenses_friendlies - data_source[idx + 1].expenses_friendlies)
-                expenses_funcup.append(data_source[idx].expenses_funcup - data_source[idx + 1].expenses_funcup)
-                expenses_betting.append(data_source[idx].expenses_betting - data_source[idx + 1].expenses_betting)
-                matchdays.append(data_source[idx + 1].matchday.number)
-
-        series = []
-        if sum(expenses_player_salaries) is not 0:
-            series.append({"name": 'Spielergehalt', "data": expenses_player_salaries})
-        if sum(expenses_stadium) is not 0:
-            series.append({"name": 'Stadion', "data": expenses_stadium})
-        if sum(expenses_youth) is not 0:
-            series.append({"name": u'Jugendförderung', "data": expenses_youth})
-        if sum(expenses_interests) is not 0:
-            series.append({"name": 'Zinsen', "data": expenses_interests})
-        if sum(expenses_trainings) is not 0:
-            series.append({"name": 'Training', "data": expenses_trainings})
-        if sum(expenses_transfer) is not 0:
-            series.append({"name": 'Spielertransfers', "data": expenses_transfer})
-        if sum(expenses_compensation) is not 0:
-            series.append({"name": 'Abfindungen', "data": expenses_compensation})
-        if sum(expenses_friendlies) is not 0:
-            series.append({"name": 'Freundschaftsspiele', "data": expenses_friendlies})
-        if sum(expenses_funcup) is not 0:
-            series.append({"name": 'Fun-Cup', "data": expenses_funcup})
-        if sum(expenses_betting) is not 0:
-            series.append({"name": 'Wetten', "data": expenses_betting})
-
-        chart_json = {
-            "series": series,
-            "categories": matchdays
-        }
-
+    def get(self, request):
+        chart_json = _get_chart_json(request, self.create_expenses_series)
         return self.render_json_response(chart_json)
+
+    @staticmethod
+    def create_expenses_series(diffs):
+        expenses_player_salaries = [diff.expenses_player_salaries for diff in diffs]
+        expenses_stadium = [diff.expenses_stadium for diff in diffs]
+        expenses_youth = [diff.expenses_youth for diff in diffs]
+        expenses_interests = [diff.expenses_interests for diff in diffs]
+        expenses_trainings = [diff.expenses_trainings for diff in diffs]
+        expenses_transfer = [diff.expenses_transfer for diff in diffs]
+        expenses_compensation = [diff.expenses_compensation for diff in diffs]
+        expenses_friendlies = [diff.expenses_friendlies for diff in diffs]
+        expenses_funcup = [diff.expenses_funcup for diff in diffs]
+        expenses_betting = [diff.expenses_betting for diff in diffs]
+
+        series = [_get_finance_attribute_json('Spielergehalt', expenses_player_salaries),
+                  _get_finance_attribute_json('Stadion', expenses_stadium),
+                  _get_finance_attribute_json(u'Jugendförderung', expenses_youth),
+                  _get_finance_attribute_json('Zinsen', expenses_interests),
+                  _get_finance_attribute_json('Training', expenses_trainings),
+                  _get_finance_attribute_json('Spielertransfers', expenses_transfer),
+                  _get_finance_attribute_json('Abfindungen', expenses_compensation),
+                  _get_finance_attribute_json('Freundschaftsspiele', expenses_friendlies),
+                  _get_finance_attribute_json('Fun-Cup', expenses_funcup),
+                  _get_finance_attribute_json('Wetten', expenses_betting)]
+        return series
+
+
+def _get_chart_json(request, finance_method):
+    current_season_number = Matchday.objects.all()[0].season.number
+    season_number = request.GET.get('season_number', default=current_season_number)
+    finances_this_season = Finance.objects.filter(user=request.user, matchday__season__number=season_number)
+    diffs = []
+    matchdays = []
+    if len(finances_this_season) >= 1:
+        first_finance_diff = finances_this_season[0].diff(Finance())
+
+        diffs.append(first_finance_diff)
+        matchdays.append(finances_this_season[0].matchday.number)
+    for idx, _ in enumerate(finances_this_season):
+        if idx + 1 < finances_this_season.count():
+            diffs.append(finances_this_season[idx].diff(finances_this_season[idx + 1]))
+            matchdays.append(finances_this_season[idx + 1].matchday.number)
+    series = finance_method(diffs)
+    chart_json = {
+        "series": series,
+        "categories": matchdays
+    }
+    return chart_json
+
+
+def _get_finance_attribute_json(name, finance_data):
+    if sum(finance_data) is not 0:
+        return {"name": name, "data": finance_data}
+    return {}
