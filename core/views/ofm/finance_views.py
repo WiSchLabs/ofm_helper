@@ -58,7 +58,7 @@ class FinancesAsJsonView(CsrfExemptMixin, JSONResponseMixin, View):
         if not newer_finances:
             newer_finances = Finance.objects.all().order_by('matchday')[0]
 
-        finances_diff = newer_finances
+        finances_diff = newer_finances.diff(Finance())
         if older_finances:
             finances_diff = newer_finances.diff(older_finances)
 
