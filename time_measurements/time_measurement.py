@@ -3,8 +3,6 @@ import os
 import re
 import statistics
 import time
-from os import listdir
-from os.path import isfile, join
 
 FILE_ENDING_RESULT = '.result'
 FILE_ENDING_SUMMARIZED = '.summarized'
@@ -69,8 +67,8 @@ def export_results_as_csv():
 
 def _get_results_from_files():
     results_map = {}
-    result_files = [f for f in listdir(RESULTS_FOLDER)
-                    if isfile(join(RESULTS_FOLDER, f)) and re.match(r'.*' + FILE_ENDING_RESULT, f)]
+    result_files = [f for f in os.listdir(RESULTS_FOLDER)
+                    if os.path.isfile(os.path.join(RESULTS_FOLDER, f)) and re.match(r'.*' + FILE_ENDING_RESULT, f)]
 
     for f in result_files:
         _read_results_from_file_to_map(f, results_map)
