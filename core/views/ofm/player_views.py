@@ -24,15 +24,15 @@ class PlayerStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class PlayerStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
-        contracts = Contract.objects.filter(user=self.request.user, sold_on_matchday=None)
+    def get(self, request):
+        contracts = Contract.objects.filter(user=request.user, sold_on_matchday=None)
         players = [contract.player for contract in contracts]
         current_matchday = Matchday.objects.all()[0]
 
-        newer_matchday_season = self.request.GET.get('newer_matchday_season', default=current_matchday.season.number)
-        newer_matchday = self.request.GET.get('newer_matchday', default=current_matchday.number)
-        older_matchday_season = self.request.GET.get('older_matchday_season')
-        older_matchday = self.request.GET.get('older_matchday')
+        newer_matchday_season = request.GET.get('newer_matchday_season', default=current_matchday.season.number)
+        newer_matchday = request.GET.get('newer_matchday', default=current_matchday.number)
+        older_matchday_season = request.GET.get('older_matchday_season')
+        older_matchday = request.GET.get('older_matchday')
         diff_mode_enabled = older_matchday and older_matchday_season
 
         player_statistics_tuples = []
@@ -165,10 +165,10 @@ class PlayerDetailView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class PlayerChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         current_season_number = Matchday.objects.all()[0].season.number
-        season_number = self.request.GET.get('season_number', default=current_season_number)
-        player_id = self.request.GET.get('player_id')
+        season_number = request.GET.get('season_number', default=current_season_number)
+        player_id = request.GET.get('player_id')
         player = Player.objects.filter(id=player_id)
         player_statistics = PlayerStatistics.objects.filter(player=player, matchday__season__number=season_number)
         awps = [player_stat.awp for player_stat in player_statistics]

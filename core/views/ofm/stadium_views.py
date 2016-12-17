@@ -80,12 +80,12 @@ class StadiumStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
 
         harmonic_strength = self._get_harmonic_strength()
         tolerance = self._get_tolerance()
 
-        matches = Match.objects.filter(user=self.request.user).order_by('matchday')
+        matches = Match.objects.filter(user=request.user).order_by('matchday')
         filtered_matches = [match for match in matches if
                             harmonic_strength - tolerance <= match.harmonic_strength <= harmonic_strength + tolerance]
 
@@ -95,7 +95,7 @@ class StadiumStatisticsAsJsonView(CsrfExemptMixin, JsonRequestResponseMixin, Vie
             if stat.count() > 0:
                 stadium_statistics.append(stat[0])
 
-        stadium_configuration_filter = self.request.GET.get('configuration_filter')
+        stadium_configuration_filter = request.GET.get('configuration_filter')
         filtered_stadium_stats = []
         if stadium_configuration_filter:
             for stat in stadium_statistics:
@@ -254,12 +254,12 @@ class StadiumStandStatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class StadiumStandStatisticsChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         current_season_number = Matchday.objects.all()[0].season.number
-        season_number = self.request.GET.get('season_number', default=current_season_number)
-        sector = self.request.GET.get('sector', 'N')
+        season_number = request.GET.get('season_number', default=current_season_number)
+        sector = request.GET.get('sector', 'N')
         statistics = StadiumStandStatistics.objects.filter(
-            stadium_statistics__match__user=self.request.user,
+            stadium_statistics__match__user=request.user,
             stadium_statistics__match__matchday__season__number=season_number,
             sector=sector
         )

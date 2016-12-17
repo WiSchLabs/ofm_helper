@@ -8,7 +8,7 @@ from core.models import Matchday
 
 @method_decorator(login_required, name='dispatch')
 class GetCurrentMatchdayView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         current_matchday = Matchday.get_current()
         matchday_json = dict()
         matchday_json['matchday_number'] = current_matchday.number
