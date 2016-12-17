@@ -138,27 +138,18 @@ class UpdateChecklistItemConditionView(JSONResponseMixin, View):
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
 
         if checklist_item:
-            self._handle_checklist_item_update(checklist_item, checklist_item_everyday, checklist_item_home_match,
-                                               checklist_item_matchday_pattern, checklist_item_matchdays)
+            if checklist_item_matchdays:
+                self._update_checklist_item_condition(checklist_item, checklist_item_matchdays, None, False)
+            elif checklist_item_matchday_pattern:
+                self._update_checklist_item_condition(checklist_item, None, checklist_item_matchday_pattern, False)
+            elif checklist_item_home_match:
+                self._update_checklist_item_condition(checklist_item, None, None, True)
+            elif checklist_item_everyday:
+                self._update_checklist_item_condition(checklist_item, None, None, False)
+            checklist_item.save()
             return self.render_json_response({'success': True})
 
         return self.render_json_response({'success': False})
-
-    def _handle_checklist_item_update(self,
-                                      checklist_item,
-                                      checklist_item_everyday,
-                                      checklist_item_home_match,
-                                      checklist_item_matchday_pattern,
-                                      checklist_item_matchdays):
-        if checklist_item_matchdays:
-            self._update_checklist_item_condition(checklist_item, checklist_item_matchdays, None, False)
-        elif checklist_item_matchday_pattern:
-            self._update_checklist_item_condition(checklist_item, None, checklist_item_matchday_pattern, False)
-        elif checklist_item_home_match:
-            self._update_checklist_item_condition(checklist_item, None, None, True)
-        elif checklist_item_everyday:
-            self._update_checklist_item_condition(checklist_item, None, None, False)
-        checklist_item.save()
 
     @staticmethod
     def _update_checklist_item_condition(checklist_item, checklist_item_matchdays, checklist_item_matchday_pattern,
