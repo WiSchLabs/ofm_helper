@@ -158,23 +158,27 @@ def _get_chart_json(request, finance_method):
     current_season_number = Matchday.objects.all()[0].season.number
     season_number = request.GET.get('season_number', default=current_season_number)
     finances_this_season = Finance.objects.filter(user=request.user, matchday__season__number=season_number)
+
+    chart_json = {
+        "series": finance_method(_get_finance_diffs(finances_this_season)),
+        "categories": _get_matchdays_from_existing_finances(finances_this_season)
+    }
+    return chart_json
+
+
+def _get_finance_diffs(finances_this_season):
     diffs = []
-    matchdays = []
     if len(finances_this_season) >= 1:
         first_finance_diff = finances_this_season[0].diff(Finance())
-
         diffs.append(first_finance_diff)
-        matchdays.append(finances_this_season[0].matchday.number)
     for idx, _ in enumerate(finances_this_season):
         if idx + 1 < finances_this_season.count():
             diffs.append(finances_this_season[idx].diff(finances_this_season[idx + 1]))
-            matchdays.append(finances_this_season[idx + 1].matchday.number)
-    series = finance_method(diffs)
-    chart_json = {
-        "series": series,
-        "categories": matchdays
-    }
-    return chart_json
+    return diffs
+
+
+def _get_matchdays_from_existing_finances(finances_this_season):
+    return [finance.matchday.number for finance in finances_this_season]
 
 
 def _get_finance_attribute_json(name, finance_data):
