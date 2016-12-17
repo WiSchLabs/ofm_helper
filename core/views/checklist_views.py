@@ -8,7 +8,7 @@ from core.models import ChecklistItem, Matchday, Match, Checklist
 
 @method_decorator(login_required, name='dispatch')
 class GetChecklistItemsView(JSONResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
 
         checklist_items_json = [_get_checklist_item_in_json(item) for item in checklist_items]
@@ -18,7 +18,7 @@ class GetChecklistItemsView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class GetChecklistItemsForTodayView(JSONResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         current_matchday = Matchday.get_current()
         home_match_tomorrow = Match.objects.filter(
             user=request.user,
@@ -68,7 +68,7 @@ class GetChecklistItemsForTodayView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class CreateChecklistItemView(JSONResponseMixin, View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         checklist, _ = Checklist.objects.get_or_create(user=request.user)
         new_checklist_item = ChecklistItem.objects.create(checklist=checklist, name='Neuer Eintrag')
 
@@ -79,7 +79,7 @@ class CreateChecklistItemView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistPriorityView(JSONResponseMixin, View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         checklist_priority = request.POST.get('checklist_priority')
 
         priority = [int(x) for x in checklist_priority.split(',')]
@@ -93,7 +93,7 @@ class UpdateChecklistPriorityView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistItemNameView(JSONResponseMixin, View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_name = request.POST.get('checklist_item_name')
 
@@ -109,7 +109,7 @@ class UpdateChecklistItemNameView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistItemStatusView(JSONResponseMixin, View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_checked = request.POST.get('checklist_item_checked')
 
@@ -128,7 +128,7 @@ class UpdateChecklistItemStatusView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateChecklistItemConditionView(JSONResponseMixin, View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_matchdays = request.POST.get('checklist_item_matchdays')
         checklist_item_matchday_pattern = request.POST.get('checklist_item_matchday_pattern')
@@ -144,8 +144,11 @@ class UpdateChecklistItemConditionView(JSONResponseMixin, View):
 
         return self.render_json_response({'success': False})
 
-    def _handle_checklist_item_update(self, checklist_item, checklist_item_everyday,
-                                      checklist_item_home_match, checklist_item_matchday_pattern,
+    def _handle_checklist_item_update(self,
+                                      checklist_item,
+                                      checklist_item_everyday,
+                                      checklist_item_home_match,
+                                      checklist_item_matchday_pattern,
                                       checklist_item_matchdays):
         if checklist_item_matchdays:
             self._update_checklist_item_condition(checklist_item, checklist_item_matchdays, None, False)
@@ -167,7 +170,7 @@ class UpdateChecklistItemConditionView(JSONResponseMixin, View):
 
 @method_decorator(login_required, name='dispatch')
 class DeleteChecklistItemView(JSONResponseMixin, View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
         if checklist_item:
