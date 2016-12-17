@@ -127,7 +127,6 @@ $('document').ready( function (){
             checklist_item_matchdays: matchdays_comma_seperated
         };
         $.post("/checklist/update_checklist_item_condition", params);
-        console.log(params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_matchdays', function() {

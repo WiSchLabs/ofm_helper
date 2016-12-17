@@ -134,11 +134,6 @@ class UpdateChecklistItemConditionView(JSONResponseMixin, View):
         checklist_item_matchday_pattern = request.POST.get('checklist_item_matchday_pattern')
         checklist_item_home_match = request.POST.get('checklist_item_home_match')
         checklist_item_everyday = request.POST.get('checklist_item_everyday')
-        print(checklist_item_id)
-        print(checklist_item_matchdays)
-        print(checklist_item_matchday_pattern)
-        print(checklist_item_home_match)
-        print(checklist_item_everyday)
 
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
 
