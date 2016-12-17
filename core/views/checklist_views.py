@@ -92,31 +92,67 @@ class UpdateChecklistPriorityView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistItemView(JSONResponseMixin, View):
+class UpdateChecklistItemNameView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_name = request.POST.get('checklist_item_name')
-        checklist_item_matchdays = request.POST.get('checklist_item_matchdays')
-        checklist_item_matchday_pattern = request.POST.get('checklist_item_matchday_pattern')
-        checklist_item_home_match = request.POST.get('checklist_item_home_match')
-        checklist_item_everyday = request.POST.get('checklist_item_everyday')
+
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+
+        if checklist_item:
+            checklist_item.name = checklist_item_name
+            checklist_item.save()
+            return self.render_json_response({'success': True})
+
+        return self.render_json_response({'success': False})
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateChecklistItemStatusView(JSONResponseMixin, View):
+    def post(self, request, *args, **kwargs):
+        checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_checked = request.POST.get('checklist_item_checked')
 
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
 
         if checklist_item:
-            self._handle_checklist_item_update(checklist_item, checklist_item_checked, checklist_item_everyday,
-                                               checklist_item_home_match, checklist_item_matchday_pattern,
-                                               checklist_item_matchdays, checklist_item_name)
+            if checklist_item_checked == 'true':
+                checklist_item.last_checked_on_matchday = Matchday.get_current()
+            elif checklist_item_checked == 'false':
+                checklist_item.last_checked_on_matchday = None
+            checklist_item.save()
             return self.render_json_response({'success': True})
+
         return self.render_json_response({'success': False})
 
-    def _handle_checklist_item_update(self, checklist_item, checklist_item_checked, checklist_item_everyday,
+
+@method_decorator(login_required, name='dispatch')
+class UpdateChecklistItemConditionView(JSONResponseMixin, View):
+    def post(self, request, *args, **kwargs):
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item_matchdays = request.POST.get('checklist_item_matchdays')
+        checklist_item_matchday_pattern = request.POST.get('checklist_item_matchday_pattern')
+        checklist_item_home_match = request.POST.get('checklist_item_home_match')
+        checklist_item_everyday = request.POST.get('checklist_item_everyday')
+        print(checklist_item_id)
+        print(checklist_item_matchdays)
+        print(checklist_item_matchday_pattern)
+        print(checklist_item_home_match)
+        print(checklist_item_everyday)
+
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+
+        if checklist_item:
+            self._handle_checklist_item_update(checklist_item, checklist_item_everyday, checklist_item_home_match,
+                                               checklist_item_matchday_pattern, checklist_item_matchdays)
+            return self.render_json_response({'success': True})
+
+        return self.render_json_response({'success': False})
+
+    def _handle_checklist_item_update(self, checklist_item, checklist_item_everyday,
                                       checklist_item_home_match, checklist_item_matchday_pattern,
-                                      checklist_item_matchdays, checklist_item_name):
-        if checklist_item_name:
-            checklist_item.name = checklist_item_name
-        elif checklist_item_matchdays:
+                                      checklist_item_matchdays):
+        if checklist_item_matchdays:
             self._update_checklist_item_condition(checklist_item, checklist_item_matchdays, None, False)
         elif checklist_item_matchday_pattern:
             self._update_checklist_item_condition(checklist_item, None, checklist_item_matchday_pattern, False)
@@ -124,10 +160,6 @@ class UpdateChecklistItemView(JSONResponseMixin, View):
             self._update_checklist_item_condition(checklist_item, None, None, True)
         elif checklist_item_everyday:
             self._update_checklist_item_condition(checklist_item, None, None, False)
-        elif checklist_item_checked == 'true':
-            checklist_item.last_checked_on_matchday = Matchday.get_current()
-        elif checklist_item_checked == 'false':
-            checklist_item.last_checked_on_matchday = None
         checklist_item.save()
 
     @staticmethod

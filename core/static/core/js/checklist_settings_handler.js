@@ -93,7 +93,7 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_name: elem.val()
         };
-        $.post("/checklist/update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_name", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_name', function() {
@@ -126,7 +126,8 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchdays: matchdays_comma_seperated
         };
-        $.post("/checklist/update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_condition", params);
+        console.log(params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_matchdays', function() {
@@ -157,7 +158,7 @@ $('document').ready( function (){
             checklist_item_id: elem.closest('.checklist_item_container').attr('id'),
             checklist_item_matchday_pattern: matchday_pattern
         };
-        $.post("/checklist/update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_condition", params);
         elem.closest('.checklist_item_container').find('.checklist_item_saved').removeClass('invisible');
     }
     $('#checklist_items').on('focusout', '.checklist_item_matchday_pattern', function() {
@@ -220,7 +221,7 @@ $('document').ready( function (){
             params['checklist_item_everyday'] = true;
         }
 
-        $.post("/checklist/update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_condition", params);
     });
 
 

@@ -57,7 +57,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_name(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_name'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_name': 'do even more unit tests'
                                      })
@@ -73,7 +73,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_home_match(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_home_match': True
                                      })
@@ -95,7 +95,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchday(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchdays': '4'
                                      })
@@ -117,7 +117,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchdays(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchdays': '3,33'
                                      })
@@ -139,7 +139,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_matchday_pattern(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_matchday_pattern': 2
                                      })
@@ -161,7 +161,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_everyday(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_everyday': True
                                      })
@@ -182,7 +182,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_checked(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_status'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_checked': 'true'
                                      })
@@ -199,7 +199,7 @@ class ChecklistSettingsTestCase(TestCase):
 
     def test_update_checklist_item_unchecked(self):
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('core:checklist:update_checklist_item'),
+        response = self.client.post(reverse('core:checklist:update_checklist_item_status'),
                                     {'checklist_item_id': self.checklist_item.id,
                                      'checklist_item_checked': 'false'
                                      })

@@ -52,7 +52,7 @@ $('document').ready( function (){
             checklist_item_id: $(this).attr('id'),
             checklist_item_checked: checklistItemGotChecked
         };
-        $.post("/checklist/update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_status", params);
 
         if (checklistItemGotChecked) {
             checklistItem.removeClass('glyphicon-unchecked');
