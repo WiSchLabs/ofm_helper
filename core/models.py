@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import math
+from collections import Counter
+
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
@@ -381,7 +384,14 @@ class Contract(models.Model):
         return "%s: %s" % (self.user.username, self.player.name)
 
 
-class Finance(models.Model):
+class IterMixin(object):
+    def __iter__(self):
+        for attr, value in self.__dict__.items():
+            if not attr.startswith('_'):
+                yield attr, value
+
+
+class Finance(models.Model, IterMixin):
     class Meta:
         ordering = ['user', '-matchday']
         unique_together = (('user', 'matchday'),)
@@ -415,6 +425,40 @@ class Finance(models.Model):
 
     def __str__(self):
         return "%s (%s): %s" % (self.user.username, self.matchday, self.balance)
+
+    def diff(self, ot_finance):
+        f = Finance()
+        f.income_visitors_league = math.abs(self.income_visitors_league - ot_finance.income_visitors_league)
+        f.income_sponsoring = math.abs(self.income_sponsoring - ot_finance.income_sponsoring)
+        f.income_cup = math.abs(self.income_cup - ot_finance.income_cup)
+        f.income_interests = math.abs(self.income_interests - ot_finance.income_interests)
+        f.income_loan = math.abs(self.income_loan - ot_finance.income_loan)
+        f.income_transfer = math.abs(self.income_transfer - ot_finance.income_transfer)
+        f.income_visitors_friendlies = math.abs(self.income_visitors_friendlies - ot_finance.income_visitors_friendlies)
+        f.income_funcup = math.abs(self.income_funcup - ot_finance.income_funcup)
+        f.income_betting = math.abs(self.income_betting - ot_finance.income_betting)
+
+        f.expenses_player_salaries = math.abs(self.expenses_player_salaries - ot_finance.expenses_player_salaries)
+        f.expenses_stadium = math.abs(self.expenses_stadium - ot_finance.expenses_stadium)
+        f.expenses_youth = math.abs(self.expenses_youth - ot_finance.expenses_youth)
+        f.expenses_interests = math.abs(self.expenses_interests - ot_finance.expenses_interests)
+        f.expenses_trainings = math.abs(self.expenses_trainings - ot_finance.expenses_trainings)
+        f.expenses_transfer = math.abs(self.expenses_transfer - ot_finance.expenses_transfer)
+        f.expenses_compensation = math.abs(self.expenses_compensation - ot_finance.expenses_compensation)
+        f.expenses_friendlies = math.abs(self.expenses_friendlies - ot_finance.expenses_friendlies)
+        f.expenses_funcup = math.abs(self.expenses_funcup - ot_finance.expenses_funcup)
+        f.expenses_betting = math.abs(self.expenses_betting - ot_finance.expenses_betting)
+        return f
+
+    def income(self):
+        my_finances_dict = Counter(dict(self))
+        incomes = [value for key, value in my_finances_dict.items() if key.startswith('income')]
+        return sum(incomes)
+
+    def expenses(self):
+        my_finances_dict = Counter(dict(self))
+        incomes = [value for key, value in my_finances_dict.items() if key.startswith('expenses')]
+        return sum(incomes)
 
 
 class MatchTeamStatistics(models.Model):
