@@ -32,7 +32,6 @@ class MatchParser(BaseParser):
         matchday_number = soup.find_all('tbody')[2].find_all('b')[0].get_text().split(',')[1].split('.')[0].strip()
         matchday, _ = Matchday.objects.get_or_create(season=season, number=matchday_number)
 
-        venue = soup.find_all('em')[1].get_text()
         match_result = soup.find_all('table')[5].find_all('tr')[0].find_all('td')[3].div.font.get_text()
         home_team_score = match_result.split(':')[0]
         guest_team_score = match_result.split(':')[1]
@@ -107,6 +106,6 @@ class MatchParser(BaseParser):
         else:
             raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
 
-        match.venue = venue
+        match.venue = soup.find_all('em')[1].get_text()
         match.save()
         return match
