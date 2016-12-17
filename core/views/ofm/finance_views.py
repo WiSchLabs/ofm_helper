@@ -72,20 +72,6 @@ class FinancesAsJsonView(CsrfExemptMixin, JSONResponseMixin, View):
         return [finances_diff_dict]
 
 
-class Income(object):
-    def __init__(self):
-        self.visitors_league = 0
-        self.sponsoring = 0
-        self.cup = 0
-        self.interests = 0
-        self.loan = 0
-        self.transfer = 0
-        self.visitors_friendlies = 0
-        self.friendlies = 0
-        self.funcup = 0
-        self.betting = 0
-
-
 @method_decorator(login_required, name='dispatch')
 class FinanceBalanceChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     def get(self, request, *args, **kwargs):
