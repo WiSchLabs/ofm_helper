@@ -52,7 +52,7 @@
 2. Lade das [aktuelle Release](https://github.com/WiSchLabs/ofm_helper/releases/latest) herunter und entpacke es.
 3. Überschreibe die Datenbank-Datei mit deiner Sicherung.
 
-## Windows 10 / Linux / OS X (mit Docker)
+### Windows 10 / Linux / OS X (mit Docker)
 
 
 1. a) Entweder das repo updaten:
