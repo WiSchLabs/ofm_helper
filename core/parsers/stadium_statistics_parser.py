@@ -26,35 +26,31 @@ class StadiumStatisticsParser(BaseParser):
         :rtype: MatchStadiumStatistics
         """
 
-        last_home_matches = Match.objects.filter(user=self.user, stadium_statistics__isnull=False).order_by('matchday')
         last_stadium_level = None
-        if last_home_matches.count() > 0:
+        if self._has_home_matches():
             # only consider matches statistics BEFORE current match
-            last_home_match = [match for match in last_home_matches if
+            last_home_match = [match for match in (self._last_home_matches()) if
                                match.matchday.number <= self.match.matchday.number][0]
-            last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
+            last_stadium_level = self._last_stadium_level(last_home_match)
 
         light_row, screen_row, security_row, parking_row = self._get_stadium_items(soup)
 
+        light = self._create_stadium_level_item_from_row(light_row)
+        screen = self._create_stadium_level_item_from_row(screen_row)
+        security = self._create_stadium_level_item_from_row(security_row)
+        parking = self._create_stadium_level_item_from_row(parking_row)
+
         if self._is_under_construction(light_row) and last_stadium_level:
             light = last_stadium_level.light
-        else:
-            light = self._create_stadium_level_item_from_row(light_row)
 
         if self._is_under_construction(screen_row) and last_stadium_level:
             screen = last_stadium_level.screen
-        else:
-            screen = self._create_stadium_level_item_from_row(screen_row)
 
         if self._is_under_construction(security_row) and last_stadium_level:
             security = last_stadium_level.security
-        else:
-            security = self._create_stadium_level_item_from_row(security_row)
 
         if self._is_under_construction(parking_row) and last_stadium_level:
             parking = last_stadium_level.parking
-        else:
-            parking = self._create_stadium_level_item_from_row(parking_row)
 
         stadium_level, _ = StadiumLevel.objects.get_or_create(
             light=light,
@@ -69,6 +65,22 @@ class StadiumStatisticsParser(BaseParser):
         )
 
         return match_stadium_stat
+
+    @staticmethod
+    def _has_last_stadium_level(last_home_match):
+        return MatchStadiumStatistics.objects.filter(match=last_home_match).count > 0
+
+    @staticmethod
+    def _last_stadium_level(last_home_match):
+        last_stadium_level = MatchStadiumStatistics.objects.filter(match=last_home_match)[0].level
+        return last_stadium_level
+
+    def _has_home_matches(self):
+        return Match.objects.filter(user=self.user, stadium_statistics__isnull=False).count() > 0
+
+    def _last_home_matches(self):
+        last_home_matches = Match.objects.filter(user=self.user, stadium_statistics__isnull=False).order_by('matchday')
+        return last_home_matches
 
     @staticmethod
     def _get_stadium_items(soup):

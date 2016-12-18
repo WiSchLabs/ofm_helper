@@ -32,26 +32,13 @@ class MatchParser(BaseParser):
         matchday_number = soup.find_all('tbody')[2].find_all('b')[0].get_text().split(',')[1].split('.')[0].strip()
         matchday, _ = Matchday.objects.get_or_create(season=season, number=matchday_number)
 
-        match_result = soup.find_all('table')[5].find_all('tr')[0].find_all('td')[3].div.font.get_text()
-        home_team_score = match_result.split(':')[0]
-        guest_team_score = match_result.split(':')[1]
-        home_team_name = soup.find_all('td', class_='erganz')[0].get_text().strip()
-        guest_team_name = soup.find_all('td', class_='erganz')[1].get_text().strip()
-        strength = soup.find_all('table')[5].find_all('tr')[5].find_all('b')
-        home_team_strength = strength[0].get_text().split(':')[1].strip()
-        guest_team_strength = strength[1].get_text().split(':')[1].strip()
-        ball_possesions = soup.find_all('table')[5].find_all('tr')[6].find_all('b')
-        home_team_ball_possession = ball_possesions[0].get_text().replace(',', '.').replace('%', '').strip()
-        guest_team_ball_possession = ball_possesions[1].get_text().replace(',', '.').replace('%', '').strip()
-        chances = soup.find_all('table')[5].find_all('tr')[7].find_all('b')
-        home_team_chances = chances[0].get_text().strip()
-        guest_team_chances = chances[1].get_text().strip()
-        yellow_cards = soup.find_all('table')[5].find_all('tr')[8].find_all('b')
-        home_team_yellow_cards = yellow_cards[0].get_text().strip()
-        guest_team_yellow_cards = yellow_cards[1].get_text().strip()
-        red_cards = soup.find_all('table')[5].find_all('tr')[9].find_all('b')
-        home_team_red_cards = red_cards[0].get_text().strip()
-        guest_team_red_cards = red_cards[1].get_text().strip()
+        home_team_score, guest_team_score = self._get_scores(soup)
+        home_team_name, guest_team_name = self._get_names(soup)
+        home_team_strength, guest_team_strength = self._get_strengths(soup)
+        home_team_ball_possession, guest_team_ball_possession = self._get_ball_posessions(soup)
+        home_team_chances, guest_team_chances = self._get_team_chances(soup)
+        home_team_yellow_cards, guest_team_yellow_cards = self._get_yellow_cards(soup)
+        home_team_red_cards, guest_team_red_cards = self._get_red_cards(soup)
 
         existing_match = Match.objects.filter(matchday=matchday, user=self.user)
 
@@ -109,3 +96,51 @@ class MatchParser(BaseParser):
         match.venue = soup.find_all('em')[1].get_text()
         match.save()
         return match
+
+    @staticmethod
+    def _get_red_cards(soup):
+        red_cards = soup.find_all('table')[5].find_all('tr')[9].find_all('b')
+        home_team_red_cards = red_cards[0].get_text().strip()
+        guest_team_red_cards = red_cards[1].get_text().strip()
+        return home_team_red_cards, guest_team_red_cards
+
+    @staticmethod
+    def _get_yellow_cards(soup):
+        yellow_cards = soup.find_all('table')[5].find_all('tr')[8].find_all('b')
+        home_team_yellow_cards = yellow_cards[0].get_text().strip()
+        guest_team_yellow_cards = yellow_cards[1].get_text().strip()
+        return home_team_yellow_cards, guest_team_yellow_cards
+
+    @staticmethod
+    def _get_team_chances(soup):
+        chances = soup.find_all('table')[5].find_all('tr')[7].find_all('b')
+        home_team_chances = chances[0].get_text().strip()
+        guest_team_chances = chances[1].get_text().strip()
+        return home_team_chances, guest_team_chances
+
+    @staticmethod
+    def _get_ball_posessions(soup):
+        ball_possesions = soup.find_all('table')[5].find_all('tr')[6].find_all('b')
+        home_team_ball_possession = ball_possesions[0].get_text().replace(',', '.').replace('%', '').strip()
+        guest_team_ball_possession = ball_possesions[1].get_text().replace(',', '.').replace('%', '').strip()
+        return home_team_ball_possession, guest_team_ball_possession
+
+    @staticmethod
+    def _get_strengths(soup):
+        strength = soup.find_all('table')[5].find_all('tr')[5].find_all('b')
+        home_team_strength = strength[0].get_text().split(':')[1].strip()
+        guest_team_strength = strength[1].get_text().split(':')[1].strip()
+        return home_team_strength, guest_team_strength
+
+    @staticmethod
+    def _get_names(soup):
+        home_team_name = soup.find_all('td', class_='erganz')[0].get_text().strip()
+        guest_team_name = soup.find_all('td', class_='erganz')[1].get_text().strip()
+        return home_team_name, guest_team_name
+
+    @staticmethod
+    def _get_scores(soup):
+        match_result = soup.find_all('table')[5].find_all('tr')[0].find_all('td')[3].div.font.get_text()
+        home_team_score = match_result.split(':')[0]
+        guest_team_score = match_result.split(':')[1]
+        return home_team_score, guest_team_score
