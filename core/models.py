@@ -390,7 +390,7 @@ class IterMixin(object):
                 yield attr, value
 
 
-class Finance(models.Model, IterMixin):
+class Finance(models.Model, IterMixin):  # pylint: disable=too-many-instance-attributes
     class Meta:
         ordering = ['user', '-matchday']
         unique_together = (('user', 'matchday'),)
