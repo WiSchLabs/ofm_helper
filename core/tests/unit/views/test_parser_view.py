@@ -87,7 +87,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
-    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock, # pylint: disable=too-many-arguments
+    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
 
