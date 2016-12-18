@@ -20,7 +20,7 @@ class MatchParser(BaseParser):
         soup = BeautifulSoup(self.html_source, "html.parser")
         return self.parse_html(soup)
 
-    def parse_html(self, soup):
+    def parse_html(self, soup): #pylint: disable=too-many-locals
         """
         :param soup: BeautifulSoup of match page
         :return: parsed match
