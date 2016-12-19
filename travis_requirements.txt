@@ -1,1 +1,7 @@
-pyvirtualdisplay==0.2
+pyvirtualdisplay
+pytest
+pytest-django
+pytest-mccabe
+pytest-flakes
+pytest-pep8
+pytest-pylint

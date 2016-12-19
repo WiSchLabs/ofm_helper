@@ -1,24 +1,36 @@
 import json
 
-from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory, MatchFactory, \
-    MatchStadiumStatisticsFactory, StadiumStandStatisticsFactory
-from core.models import Contract
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+
+from core.factories.core_factories import MatchdayFactory, MatchFactory, \
+    MatchStadiumStatisticsFactory, StadiumStandStatisticsFactory
 from users.models import OFMUser
 
 
 class OFMStadiumStandStatisticsViewTestCase(TestCase):
     def setUp(self):
-        self.matchday = MatchdayFactory.create()
-        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice', ofm_username='alice', ofm_password='alice')
-        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob', ofm_password='bob')
-        self.match = MatchFactory.create(user=self.user1)
-        self.stadium_stat = MatchStadiumStatisticsFactory.create(match=self.match)
-        self.north_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='N')
-        self.south_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='S')
-        self.west_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='W')
-        self.east_stand_stat = StadiumStandStatisticsFactory.create(stadium_statistics=self.stadium_stat, sector='O')
+        MatchdayFactory.create()
+        user1 = OFMUser.objects.create_user(
+            username='alice',
+            email='alice@ofmhelper.com',
+            password='alice',
+            ofm_username='alice',
+            ofm_password='alice'
+        )
+        OFMUser.objects.create_user(
+            username='bob',
+            email='bob@ofmhelper.com',
+            password='bob',
+            ofm_username='bob',
+            ofm_password='bob'
+        )
+        match = MatchFactory.create(user=user1)
+        stadium_stat = MatchStadiumStatisticsFactory.create(match=match)
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='N')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='S')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='W')
+        StadiumStandStatisticsFactory.create(stadium_statistics=stadium_stat, sector='O')
         self.client.login(username='alice', password='alice')
 
     def test_user_can_see_his_data(self):
@@ -41,13 +53,11 @@ class OFMStadiumStandStatisticsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('series' in returned_json_data)
-        self.assertEquals('Kapazität', returned_json_data['series'][0]['name'])
-        self.assertEquals('Zuschauer', returned_json_data['series'][1]['name'])
-        self.assertEquals('Ticketpreis', returned_json_data['series'][2]['name'])
-        self.assertEquals('Zustand', returned_json_data['series'][3]['name'])
-        self.assertEquals('Gemittelte Stärke der Mannschaften', returned_json_data['series'][4]['name'])
+        self.assertEqual('Kapazität', returned_json_data['series'][0]['name'])
+        self.assertEqual('Zuschauer', returned_json_data['series'][1]['name'])
+        self.assertEqual('Ticketpreis', returned_json_data['series'][2]['name'])
+        self.assertEqual('Zustand', returned_json_data['series'][3]['name'])
+        self.assertEqual('Gemittelte Stärke der Mannschaften', returned_json_data['series'][4]['name'])
         self.assertTrue('data' in returned_json_data['series'][0])
         self.assertTrue('categories' in returned_json_data)
         self.assertTrue('yAxis' in returned_json_data)
-
-

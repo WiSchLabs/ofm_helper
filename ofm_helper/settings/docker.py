@@ -6,14 +6,14 @@ ALLOWED_HOSTS = ['*']
 
 # DB
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'postgres',
-         'USER': 'postgres',
-         'HOST': 'db',
-         'PORT': 5432,
-     }
- }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
+}
 
 # CACHING
 CACHE_HOST = 'redis'

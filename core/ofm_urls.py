@@ -1,9 +1,13 @@
 from django.conf.urls import url
 
-from core.ofm_views import PlayerDetailView, PlayerStatisticsView, PlayerStatisticsAsJsonView, FinanceDataView, \
-    FinancesAsJsonView, MatchesView, MatchesAsJsonView, StadiumStatisticsView, StadiumStatisticsAsJsonView, \
-    StadiumDetailView, StadiumStandStatisticsView, FinanceIncomeChartView, FinanceExpensesChartView, \
-    FinanceBalanceChartView, PlayerChartView, MatchesSummaryJsonView, StadiumStandStatisticsChartView
+from core.views.ofm.base_views import GetCurrentMatchdayView
+from core.views.ofm.finance_views import FinanceBalanceChartView, FinanceDataView, FinanceExpensesChartView, \
+                                         FinanceIncomeChartView, FinancesAsJsonView
+from core.views.ofm.match_views import MatchesAsJsonView, MatchesSummaryJsonView, MatchesView
+from core.views.ofm.player_views import PlayerChartView, PlayerDetailView, PlayerStatisticsAsJsonView, \
+                                        PlayerStatisticsView
+from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, \
+                                         StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
 
 app_name = 'ofm'
 urlpatterns = [
@@ -26,5 +30,8 @@ urlpatterns = [
     url(r'^stadium_statistics_json/?$', StadiumStatisticsAsJsonView.as_view(), name='stadium_statistics_overview_json'),
     url(r'^stadium/(?P<pk>[0-9]+)/?$', StadiumDetailView.as_view(), name='stadium_detail'),
     url(r'^stadium_stand/?$', StadiumStandStatisticsView.as_view(), name='stadium_stand_statistics'),
-    url(r'^stadium_stand_chart_json/?$', StadiumStandStatisticsChartView.as_view(), name='stadium_stand_statistics_chart_json'),
+    url(r'^stadium_stand_chart_json/?$', StadiumStandStatisticsChartView.as_view(),
+        name='stadium_stand_statistics_chart_json'),
+
+    url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
 ]

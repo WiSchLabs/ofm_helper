@@ -1,6 +1,6 @@
-from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, StadiumLevelItem, \
-    AwpBoundaries, Checklist, ChecklistItem
+from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, \
+    Match, MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, \
+    StadiumLevelItem, AwpBoundaries, Checklist, ChecklistItem
 from django.contrib import admin
 
 
@@ -122,5 +122,6 @@ class ChecklistAdmin(admin.ModelAdmin):
 @admin.register(ChecklistItem)
 class ChecklistItemAdmin(admin.ModelAdmin):
     list_filter = ['checklist__user', 'name']
-    list_display = ['priority', 'name', 'to_be_checked_on_matchdays', 'to_be_checked_on_matchday_pattern', 'to_be_checked_if_home_match_tomorrow']
+    list_display = ['priority', 'name', 'to_be_checked_on_matchdays', 'to_be_checked_on_matchday_pattern',
+                    'to_be_checked_if_home_match_tomorrow']
     search_fields = ['checklist__user__username', 'name']

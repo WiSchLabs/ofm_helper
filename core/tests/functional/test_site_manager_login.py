@@ -9,7 +9,7 @@ from core.web.ofm_page_constants import Constants
 from users.models import OFMUser
 
 
-@skip("Can't test this anymore :(")
+@skip
 class LoginTest(unittest.TestCase):
     def setUp(self):
         self.site_manager = SiteManager()

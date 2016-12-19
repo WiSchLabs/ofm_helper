@@ -11,8 +11,20 @@ class OFMMatchesViewTestCase(TestCase):
     def setUp(self):
         self.matchday = MatchdayFactory.create()
         self.second_matchday = MatchdayFactory.create(number=1)
-        self.user1 = OFMUser.objects.create_user(username='alice', email='alice@ofmhelper.com', password='alice', ofm_username='alice', ofm_password='alice')
-        self.user2 = OFMUser.objects.create_user('bob', 'bob@ofmhelper.com', 'bob', ofm_username='bob', ofm_password='bob')
+        self.user1 = OFMUser.objects.create_user(
+            username='alice',
+            email='alice@ofmhelper.com',
+            password='alice',
+            ofm_username='alice',
+            ofm_password='alice'
+        )
+        self.user2 = OFMUser.objects.create_user(
+            username='bob',
+            email='bob@ofmhelper.com',
+            password='bob',
+            ofm_username='bob',
+            ofm_password='bob'
+        )
         MatchFactory.create(user=self.user1)
         self.client.login(username='alice', password='alice')
 
@@ -26,7 +38,7 @@ class OFMMatchesViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(len(returned_json_data), 1)
+        self.assertEqual(len(returned_json_data), 1)
 
         self.assertTrue('Springfield Isotopes' in returned_json_data[0]['home_team'])
         self.assertTrue('Springfield Isotopes' in returned_json_data[0]['guest_team'])
@@ -37,6 +49,6 @@ class OFMMatchesViewTestCase(TestCase):
         response = self.client.get(reverse('core:ofm:matches_summary_json'))
         self.assertEqual(response.status_code, 200)
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        self.assertEquals(0, returned_json_data['matches_won'])
-        self.assertEquals(1, returned_json_data['matches_draw'])
-        self.assertEquals(0, returned_json_data['matches_lost'])
+        self.assertEqual(0, returned_json_data['matches_won'])
+        self.assertEqual(1, returned_json_data['matches_draw'])
+        self.assertEqual(0, returned_json_data['matches_lost'])

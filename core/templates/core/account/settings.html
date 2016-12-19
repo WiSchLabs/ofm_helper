@@ -21,7 +21,7 @@
         </div>
         <div id="collapseAccountData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAccountData">
           <div class="panel-body">
-            <form id="user_form" method="post" action="{% url 'core:settings' %}">
+            <form id="user_form" method="post" action="{% url 'core:account:settings' %}">
 
                 {% csrf_token %}
 
@@ -62,7 +62,7 @@
         </div>
         <div id="collapseOFMData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOFMData">
           <div class="panel-body">
-            <form id="ofm_user_form" method="post" action="{% url 'core:settings' %}">
+            <form id="ofm_user_form" method="post" action="{% url 'core:account:settings' %}">
 
                 {% csrf_token %}
 

@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1 class="page-header">Login</h1>
-    <form method="post" action="{% url 'core:login' %}">
+    <form method="post" action="{% url 'core:account:login' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="username">Benutzername</label>
@@ -17,6 +17,6 @@
     </form>
     <br><br>
     <p>
-        Du hast noch keinen Account? <a href="{% url 'core:register' %}">Hier kannst du dich registrieren</a>.
+        Du hast noch keinen Account? <a href="{% url 'core:account:register' %}">Hier kannst du dich registrieren</a>.
     </p>
 {% endblock %}

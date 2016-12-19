@@ -2,9 +2,9 @@ import os
 
 from django.test import TestCase
 
-from core.factories.core_factories import MatchFactory, StadiumLevelItemFactory, StadiumLevelFactory, \
+from core.factories.core_factories import MatchFactory, StadiumLevelFactory, \
     MatchStadiumStatisticsFactory, MatchdayFactory
-from core.models import MatchStadiumStatistics, StadiumLevel, StadiumLevelItem, Match
+from core.models import MatchStadiumStatistics, StadiumLevel, StadiumLevelItem
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
 from users.factories.users_factories import OFMUserFactory
 
@@ -22,19 +22,19 @@ class StadiumStatisticsParserTest(TestCase):
 
     def test_stadium_environment_parser_contains_correct_types(self):
         stadium_stat = self.parser.parse()
-        self.assertEquals(type(stadium_stat), MatchStadiumStatistics)
-        self.assertEquals(stadium_stat.match, self.match2)
-        self.assertEquals(type(stadium_stat.level), StadiumLevel)
-        self.assertEquals(type(stadium_stat.level.light), StadiumLevelItem)
-        self.assertEquals(type(stadium_stat.level.screen), StadiumLevelItem)
-        self.assertEquals(type(stadium_stat.level.security), StadiumLevelItem)
-        self.assertEquals(type(stadium_stat.level.parking), StadiumLevelItem)
+        self.assertEqual(type(stadium_stat), MatchStadiumStatistics)
+        self.assertEqual(stadium_stat.match, self.match2)
+        self.assertEqual(type(stadium_stat.level), StadiumLevel)
+        self.assertEqual(type(stadium_stat.level.light), StadiumLevelItem)
+        self.assertEqual(type(stadium_stat.level.screen), StadiumLevelItem)
+        self.assertEqual(type(stadium_stat.level.security), StadiumLevelItem)
+        self.assertEqual(type(stadium_stat.level.parking), StadiumLevelItem)
 
     def test_stadium_environment_parser_contains_correct_light_data(self):
         stadium_stat = self.parser.parse()
-        self.assertEquals(stadium_stat.level.light.current_level, '1')
-        self.assertEquals(stadium_stat.level.light.value, '20')
-        self.assertEquals(stadium_stat.level.light.daily_costs, '10')
+        self.assertEqual(stadium_stat.level.light.current_level, '1')
+        self.assertEqual(stadium_stat.level.light.value, '20')
+        self.assertEqual(stadium_stat.level.light.daily_costs, '10')
 
     def test_stadium_environment_parser_takes_old_screen_data_while_in_construction_if_older_stat_exists(self):
         matchday1 = MatchdayFactory.create(number=1)
@@ -43,24 +43,24 @@ class StadiumStatisticsParserTest(TestCase):
         MatchStadiumStatisticsFactory.create(match=match1, level=last_level)
         stadium_stat = self.parser.parse()
 
-        self.assertEquals(stadium_stat.level.screen.current_level, 0)
-        self.assertEquals(stadium_stat.level.screen.value, 0)
-        self.assertEquals(stadium_stat.level.screen.daily_costs, 0)
+        self.assertEqual(stadium_stat.level.screen.current_level, 0)
+        self.assertEqual(stadium_stat.level.screen.value, 0)
+        self.assertEqual(stadium_stat.level.screen.daily_costs, 0)
 
     def test_stadium_environment_parser_takes_new_screen_data_while_in_construction_but_no_older_stat_exists(self):
         stadium_stat = self.parser.parse()
-        self.assertEquals(stadium_stat.level.screen.current_level, '1')
-        self.assertEquals(stadium_stat.level.screen.value, '500000')
-        self.assertEquals(stadium_stat.level.screen.daily_costs, '7500')
+        self.assertEqual(stadium_stat.level.screen.current_level, '1')
+        self.assertEqual(stadium_stat.level.screen.value, '500000')
+        self.assertEqual(stadium_stat.level.screen.daily_costs, '7500')
 
     def test_stadium_environment_parser_contains_correct_security_data(self):
         stadium_stat = self.parser.parse()
-        self.assertEquals(stadium_stat.level.security.current_level, '2')
-        self.assertEquals(stadium_stat.level.security.value, '2000')
-        self.assertEquals(stadium_stat.level.security.daily_costs, '150')
+        self.assertEqual(stadium_stat.level.security.current_level, '2')
+        self.assertEqual(stadium_stat.level.security.value, '2000')
+        self.assertEqual(stadium_stat.level.security.daily_costs, '150')
 
     def test_stadium_environment_parser_contains_correct_parking_data(self):
         stadium_stat = self.parser.parse()
-        self.assertEquals(stadium_stat.level.parking.current_level, '3')
-        self.assertEquals(stadium_stat.level.parking.value, '42')
-        self.assertEquals(stadium_stat.level.parking.daily_costs, '42')
+        self.assertEqual(stadium_stat.level.parking.current_level, '3')
+        self.assertEqual(stadium_stat.level.parking.value, '42')
+        self.assertEqual(stadium_stat.level.parking.daily_costs, '42')

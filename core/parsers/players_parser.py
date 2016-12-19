@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class PlayersParser(BaseParser):
     def __init__(self, html_source, user, matchday):
+        super(PlayersParser, self).__init__()
         self.html_source = html_source
         self.user = user
         self.matchday = matchday
@@ -36,22 +37,22 @@ class PlayersParser(BaseParser):
         name = player_values[6].a.get_text().replace('\n', '').replace('\t', '').strip(' ')
         position = player_values[5].find_all('span')[1].get_text()
         age = int(player_values[7].get_text())
-        birth_season, success = Season.objects.get_or_create(number=self.matchday.season.number - age)
+        birth_season, _ = Season.objects.get_or_create(number=self.matchday.season.number - age)
 
         displayed_country = player_values[8].get_text().replace('\n', '').replace('\t', '').strip(' ')
         country_name = ''.join([i for i in displayed_country if not i.isdigit()])
-        country_choices = dict(Country._meta.get_field('country').choices)
+        country_choices = Country.get_choices()
         country_no = list(country_choices.keys())[list(country_choices.values()).index(country_name)]
-        nationality, success = Country.objects.get_or_create(country=country_no)
+        nationality, _ = Country.objects.get_or_create(country=country_no)
 
-        player, success = Player.objects.get_or_create(id=int(ofm_id),
+        player, _ = Player.objects.get_or_create(id=int(ofm_id),
                                                        birth_season=birth_season,
                                                        nationality=nationality,
                                                        position=position)
         player.name = name
         player.save()
 
-        logger.debug('===== Player parsed: %s' % player.name)
+        logger.debug('===== Player parsed: %s', player.name)
 
         self._create_contract(player)
         logger.debug('===== Contract created.')
@@ -64,7 +65,7 @@ class PlayersParser(BaseParser):
         if existing_contracts.count() > 0:
             contract = existing_contracts[0]
         else:
-            contract, success = Contract.objects.get_or_create(
+            contract, _ = Contract.objects.get_or_create(
                 player=player,
                 user=self.user,
                 bought_on_matchday=self.matchday

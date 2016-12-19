@@ -33,48 +33,52 @@ class ParserManager:
         self.parsed_matchday = None
         self.players_already_parsed = False
 
-    def parse_ofm_version(self, site_manager):
-        site_manager.jump_to_frame(Constants.GITHUB.LATEST_RELEASE)
+    @staticmethod
+    def parse_ofm_version(site_manager):
+        site_manager.jump_to_frame(Constants.GitHub.LATEST_RELEASE)
         version_parser = OfmHelperVersionParser(site_manager.browser.page_source)
         return version_parser.parse()
-    
-    def parse_matchday(self, request, site_manager):
+
+    @staticmethod
+    def parse_matchday(request, site_manager):
         site_manager.jump_to_frame(Constants.HEAD)
         matchday_parser = MatchdayParser(site_manager.browser.page_source)
         return matchday_parser.parse()
-    
+
     def parse_players(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
-        site_manager.jump_to_frame(Constants.TEAM.PLAYERS)
+        site_manager.jump_to_frame(Constants.Team.PLAYERS)
         players_parser = PlayersParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return players_parser.parse()
 
     def parse_player_statistics(self, request, site_manager):
         if not self.players_already_parsed:
             self.parse_players(request, site_manager)
-        site_manager.jump_to_frame(Constants.TEAM.PLAYER_STATISTICS)
-        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
+        site_manager.jump_to_frame(Constants.Team.PLAYER_STATISTICS)
+        player_stat_parser = PlayerStatisticsParser(site_manager.browser.page_source, request.user,
+                                                    self.parsed_matchday)
         return player_stat_parser.parse()
 
     def parse_awp_boundaries(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
         site_manager.jump_to_frame(Constants.AWP_BOUNDARIES)
-        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
+        awp_boundaries_parser = AwpBoundariesParser(site_manager.browser.page_source, request.user,
+                                                    self.parsed_matchday)
         return awp_boundaries_parser.parse()
 
     def parse_finances(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
-        site_manager.jump_to_frame(Constants.FINANCES.OVERVIEW)
+        site_manager.jump_to_frame(Constants.Finances.OVERVIEW)
         finances_parser = FinancesParser(site_manager.browser.page_source, request.user, self.parsed_matchday)
         return finances_parser.parse()
 
     def parse_all_matches(self, request, site_manager):
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(request, site_manager)
-        site_manager.jump_to_frame(Constants.LEAGUE.MATCH_SCHEDULE)
+        site_manager.jump_to_frame(Constants.League.MATCH_SCHEDULE)
         soup = BeautifulSoup(site_manager.browser.page_source, "html.parser")
 
         rows = soup.find(id='table_head').find_all('tr')
@@ -102,17 +106,16 @@ class ParserManager:
                 return match
         elif "-:-" in match_result:
             # match is scheduled, but did not take place yet
-            match_parser = FutureMatchRowParser(row, request.user)
-            return match_parser.parse()
+            return FutureMatchRowParser(row, request.user).parse()
         else:
-            match_parser = WonByDefaultMatchRowParser(row, request.user)
-            return match_parser.parse()
+            return WonByDefaultMatchRowParser(row, request.user).parse()
 
-    def _parse_stadium_statistics(self, request, site_manager, match):
-        site_manager.jump_to_frame(Constants.STADIUM.ENVIRONMENT)
+    @staticmethod
+    def _parse_stadium_statistics(request, site_manager, match):
+        site_manager.jump_to_frame(Constants.Stadium.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_statistics_parser.parse()
 
-        site_manager.jump_to_frame(Constants.STADIUM.OVERVIEW)
+        site_manager.jump_to_frame(Constants.Stadium.OVERVIEW)
         stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source, request.user, match)
         stadium_stand_stat_parser.parse()

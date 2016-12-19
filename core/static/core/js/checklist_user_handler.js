@@ -15,13 +15,13 @@ function showChecklistItem(item) {
 
 $('document').ready( function (){
     $(function() {
-        $.get("/settings_get_checklist_items_for_today",
+        $.get("/checklist/get_checklist_items_for_today",
             function (data) {
                 $('#ChecklistSubMenu').html('');
                 data.forEach(showChecklistItem);
             }
         );
-        $.get("/get_current_matchday",
+        $.get("/ofm/get_current_matchday",
             function (data) {
                 $('#ChecklistBar').find('a').append(
                     "<span class='current_matchday'>" +
@@ -52,7 +52,7 @@ $('document').ready( function (){
             checklist_item_id: $(this).attr('id'),
             checklist_item_checked: checklistItemGotChecked
         };
-        $.post("/settings_update_checklist_item", params);
+        $.post("/checklist/update_checklist_item_status", params);
 
         if (checklistItemGotChecked) {
             checklistItem.removeClass('glyphicon-unchecked');

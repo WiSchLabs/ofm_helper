@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from collections import Counter
+
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
@@ -276,6 +278,10 @@ class Country(models.Model):
     def get_iso(self):
         return self.country
 
+    @staticmethod
+    def get_choices():
+        return dict(Country._meta.get_field('country').choices)
+
 
 class League(models.Model):
     LEAGUES = (
@@ -297,7 +303,7 @@ class League(models.Model):
     country = models.ForeignKey(Country)
 
     def __str__(self):
-        return "%s %s (%s)" % (self.LEAGUES[self.league][1], self.relay, self.country)
+        return "%s %s (%s)" % (self.LEAGUES[self.league][1], self.relay, self.country)  # pylint: disable=invalid-sequence-index
 
 
 class Player(models.Model):
@@ -377,7 +383,14 @@ class Contract(models.Model):
         return "%s: %s" % (self.user.username, self.player.name)
 
 
-class Finance(models.Model):
+class IterMixin(object):
+    def __iter__(self):
+        for attr, value in self.__dict__.items():
+            if not attr.startswith('_'):
+                yield attr, value
+
+
+class Finance(models.Model, IterMixin):  # pylint: disable=too-many-instance-attributes
     class Meta:
         ordering = ['user', '-matchday']
         unique_together = (('user', 'matchday'),)
@@ -411,6 +424,40 @@ class Finance(models.Model):
 
     def __str__(self):
         return "%s (%s): %s" % (self.user.username, self.matchday, self.balance)
+
+    def diff(self, ot_finance):
+        f = Finance()
+        f.income_visitors_league = abs(self.income_visitors_league - ot_finance.income_visitors_league)
+        f.income_sponsoring = abs(self.income_sponsoring - ot_finance.income_sponsoring)
+        f.income_cup = abs(self.income_cup - ot_finance.income_cup)
+        f.income_interests = abs(self.income_interests - ot_finance.income_interests)
+        f.income_loan = abs(self.income_loan - ot_finance.income_loan)
+        f.income_transfer = abs(self.income_transfer - ot_finance.income_transfer)
+        f.income_visitors_friendlies = abs(self.income_visitors_friendlies - ot_finance.income_visitors_friendlies)
+        f.income_funcup = abs(self.income_funcup - ot_finance.income_funcup)
+        f.income_betting = abs(self.income_betting - ot_finance.income_betting)
+
+        f.expenses_player_salaries = -abs(self.expenses_player_salaries - ot_finance.expenses_player_salaries)
+        f.expenses_stadium = -abs(self.expenses_stadium - ot_finance.expenses_stadium)
+        f.expenses_youth = -abs(self.expenses_youth - ot_finance.expenses_youth)
+        f.expenses_interests = -abs(self.expenses_interests - ot_finance.expenses_interests)
+        f.expenses_trainings = -abs(self.expenses_trainings - ot_finance.expenses_trainings)
+        f.expenses_transfer = -abs(self.expenses_transfer - ot_finance.expenses_transfer)
+        f.expenses_compensation = -abs(self.expenses_compensation - ot_finance.expenses_compensation)
+        f.expenses_friendlies = -abs(self.expenses_friendlies - ot_finance.expenses_friendlies)
+        f.expenses_funcup = -abs(self.expenses_funcup - ot_finance.expenses_funcup)
+        f.expenses_betting = -abs(self.expenses_betting - ot_finance.expenses_betting)
+        return f
+
+    def income(self):
+        my_finances_dict = Counter(dict(self))
+        incomes = [value for key, value in my_finances_dict.items() if key.startswith('income')]
+        return sum(incomes)
+
+    def expenses(self):
+        my_finances_dict = Counter(dict(self))
+        incomes = [value for key, value in my_finances_dict.items() if key.startswith('expenses')]
+        return sum(incomes)
 
 
 class MatchTeamStatistics(models.Model):
@@ -483,6 +530,7 @@ class Match(models.Model):
 class StadiumLevelItem(models.Model):
     class Meta:
         ordering = ['-current_level', '-value', '-daily_costs']
+
     current_level = models.IntegerField(default=0)
     value = models.IntegerField(default=0)
     daily_costs = models.IntegerField(default=0)
@@ -498,7 +546,8 @@ class StadiumLevel(models.Model):
     parking = models.ForeignKey(StadiumLevelItem, related_name="stadium_levels_parking")
 
     def __str__(self):
-        return "light: %s / screen: %s / security: %s / parking: %s" % (self.light, self.screen, self.security, self.parking)
+        return "light: %s / screen: %s / security: %s / parking: %s" % (
+            self.light, self.screen, self.security, self.parking)
 
 
 # will only be created, if home match
@@ -514,11 +563,8 @@ class MatchStadiumStatistics(models.Model):
         return reverse('core:ofm:stadium_detail', args=[str(self.id)])
 
     def get_configuration(self):
-        config = {}
-        config['light'] = self.level.light.current_level
-        config['screen'] = self.level.screen.current_level
-        config['security'] = self.level.security.current_level
-        config['parking'] = self.level.parking.current_level
+        config = {'light': self.level.light.current_level, 'screen': self.level.screen.current_level,
+                  'security': self.level.security.current_level, 'parking': self.level.parking.current_level}
 
         north_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='N')
         south_stand = StadiumStandStatistics.objects.filter(stadium_statistics=self, sector='S')
@@ -541,11 +587,13 @@ class MatchStadiumStatistics(models.Model):
 
     @property
     def visitors(self):
-        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))['visitors__sum']
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('visitors'))[
+            'visitors__sum']
 
     @property
     def capacity(self):
-        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))['level__capacity__sum']
+        return StadiumStandStatistics.objects.filter(stadium_statistics=self).aggregate(Sum('level__capacity'))[
+            'level__capacity__sum']
 
     @property
     def earnings(self):
@@ -556,7 +604,8 @@ class MatchStadiumStatistics(models.Model):
 
     @property
     def daily_costs(self):
-        return self.level.light.daily_costs + self.level.screen.daily_costs + self.level.security.daily_costs + self.level.parking.daily_costs
+        return self.level.light.daily_costs + self.level.screen.daily_costs + \
+               self.level.security.daily_costs + self.level.parking.daily_costs
 
     def __str__(self):
         return "%s (%s)" % (self.match.venue, self.match.matchday)
@@ -774,16 +823,16 @@ class AwpBoundaries(Dictionary):
         except Dictionary.DoesNotExist:
             awp_boundaries = AwpBoundaries.get_or_create_from_matchday(matchday)
             for i in range(26):
-                awp_boundaries[i+1] = 0
+                awp_boundaries[i + 1] = 0
         return awp_boundaries
 
     @staticmethod
     def _name_from_matchday(matchday):
-        if Constants.QUARTERS.FOURTH_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY:
+        if Constants.Quarters.FOURTH_QUARTER_LEVEL_UP_DAY <= matchday.number < Constants.Quarters.FIRST_QUARTER_LEVEL_UP_DAY:  # pylint: disable=line-too-long
             return 'awp_boundaries_' + str(matchday.season.number) + '_0'
-        elif Constants.QUARTERS.FIRST_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY:
+        elif Constants.Quarters.FIRST_QUARTER_LEVEL_UP_DAY <= matchday.number < Constants.Quarters.SECOND_QUARTER_LEVEL_UP_DAY:  # pylint: disable=line-too-long
             return 'awp_boundaries_' + str(matchday.season.number) + '_1'
-        elif Constants.QUARTERS.SECOND_QUARTER_LEVELP_UP_DAY <= matchday.number < Constants.QUARTERS.THIRD_QUARTER_LEVELP_UP_DAY:
+        elif Constants.Quarters.SECOND_QUARTER_LEVEL_UP_DAY <= matchday.number < Constants.Quarters.THIRD_QUARTER_LEVEL_UP_DAY:  # pylint: disable=line-too-long
             return 'awp_boundaries_' + str(matchday.season.number) + '_2'
         else:
             return 'awp_boundaries_' + str(matchday.season.number) + '_3'
@@ -801,6 +850,7 @@ class ChecklistItem(models.Model):
     name = models.CharField(max_length=255)
     priority = models.IntegerField(default=0)
     last_checked_on_matchday = models.ForeignKey(Matchday, default=None, blank=True, null=True)
-    to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255, validators=[validate_comma_separated_integer_list])
+    to_be_checked_on_matchdays = models.CharField(blank=True, null=True, max_length=255,
+                                                  validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)
     to_be_checked_if_home_match_tomorrow = models.BooleanField(default=False)

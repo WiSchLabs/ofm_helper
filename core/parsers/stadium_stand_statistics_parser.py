@@ -2,7 +2,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from core.models import Match, MatchStadiumStatistics, StadiumStandStatistics, StandLevel
+from core.models import MatchStadiumStatistics, StadiumStandStatistics, StandLevel
 from core.parsers.base_parser import BaseParser
 
 logger = logging.getLogger(__name__)
@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 class StadiumStandStatisticsParser(BaseParser):
     def __init__(self, html_source, user, match):
+        super(StadiumStandStatisticsParser, self).__init__()
         self.html_source = html_source
         self.user = user
-
         self.match_stadium_stat = MatchStadiumStatistics.objects.filter(match=match)[0]
 
     def parse(self):
@@ -45,15 +45,18 @@ class StadiumStandStatisticsParser(BaseParser):
         condition = 100
         if 'Stadionzustand' in stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[0].get_text():
             # the condition during match is only known, if the stand is NOT set under construction AFTER the game
-            condition = stand_data.find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text().replace(',', '.').replace('%', '')
+            condition = stand_data\
+                            .find_all('tr')[2].find_all('td')[0].find_all('span')[1].get_text()\
+                            .replace(',', '.')\
+                            .replace('%', '')
         ticket_price = stand_data.find_all('tr')[6].find_all('select')[0].find('option', selected=True).get('value')
 
-        stand_level, success = StandLevel.objects.get_or_create(
+        stand_level, _ = StandLevel.objects.get_or_create(
             capacity=capacity,
             has_roof=has_roof,
             has_seats=has_seats
         )
-        stadium_stand_stat, success = StadiumStandStatistics.objects.get_or_create(
+        stadium_stand_stat, _ = StadiumStandStatistics.objects.get_or_create(
             stadium_statistics=self.match_stadium_stat,
             sector=sector,
             visitors=visitors,

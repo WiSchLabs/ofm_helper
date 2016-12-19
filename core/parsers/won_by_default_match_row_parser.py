@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class WonByDefaultMatchRowParser(BaseParser):
     def __init__(self, html_source, user):
+        super(WonByDefaultMatchRowParser, self).__init__()
         self.html_source = html_source
         self.user = user
 
@@ -24,28 +25,23 @@ class WonByDefaultMatchRowParser(BaseParser):
         """
 
         # we assume to have parsed the season beforehand (with the matchday)
-        season = Matchday.objects.all()[0].season
-        matchday_number = row.find_all('td')[0].get_text().replace('\n', '')
-        matchday, success = Matchday.objects.get_or_create(season=season, number=matchday_number)
+        matchday, _ = Matchday.objects.get_or_create(
+            season=Matchday.objects.all()[0].season,
+            number=row.find_all('td')[0].get_text().replace('\n', '')
+        )
 
-        is_home_match = "black" in row.find_all('td')[1].a.get('class')
-
-        match_result = row.find_all('span', class_='erganz')[0].find_parent('tr').get_text().strip()
-        home_team_score = match_result.split(':')[0].strip()
-        guest_team_score = match_result.split(':')[1].strip()
+        guest_team_score, home_team_score = self._get_team_scores(row)
 
         home_team = row.find_all('td')[1].get_text().strip()
-        home_team_name = home_team[0:home_team.find('(')-1]
-        home_team_strength = home_team[home_team.find('(')+1:home_team.find(')')]
+        home_team_name = home_team[0:home_team.find('(') - 1]
+        home_team_strength = home_team[home_team.find('(') + 1:home_team.find(')')]
 
         guest_team = row.find_all('td')[3].get_text().strip()
-        guest_team_name = guest_team[0:guest_team.find('(')-1]
-        guest_team_strength = guest_team[guest_team.find('(')+1:guest_team.find(')')]
+        guest_team_name = guest_team[0:guest_team.find('(') - 1]
+        guest_team_strength = guest_team[guest_team.find('(') + 1:guest_team.find(')')]
 
-        existing_match = Match.objects.filter(matchday=matchday, user=self.user)
-
-        if len(existing_match) == 1:
-            match = existing_match[0]
+        if len(self._existing_matches(matchday)) == 1:
+            match = self._existing_matches(matchday)[0]
 
             match.home_team_statistics.score = home_team_score
             match.home_team_statistics.team_name = home_team_name
@@ -56,7 +52,7 @@ class WonByDefaultMatchRowParser(BaseParser):
             match.guest_team_statistics.team_name = guest_team_name
             match.guest_team_statistics.strength = guest_team_strength
             match.guest_team_statistics.save()
-        elif len(existing_match) == 0:
+        elif not self._has_existing_matches(matchday):
             home_team_stat = MatchTeamStatistics.objects.create(
                 score=home_team_score,
                 team_name=home_team_name,
@@ -79,7 +75,7 @@ class WonByDefaultMatchRowParser(BaseParser):
 
             match = Match.objects.create(
                 matchday=matchday,
-                is_home_match=is_home_match,
+                is_home_match=self._is_home_match(row),
                 user=self.user,
                 home_team_statistics=home_team_stat,
                 guest_team_statistics=guest_team_stat
@@ -87,3 +83,20 @@ class WonByDefaultMatchRowParser(BaseParser):
         else:
             raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
         return match
+
+    def _has_existing_matches(self, matchday):
+        return self._existing_matches(matchday).count() > 0
+
+    def _existing_matches(self, matchday):
+        return Match.objects.filter(matchday=matchday, user=self.user)
+
+    @staticmethod
+    def _get_team_scores(row):
+        match_result = row.find_all('span', class_='erganz')[0].find_parent('tr').get_text().strip()
+        home_team_score = match_result.split(':')[0].strip()
+        guest_team_score = match_result.split(':')[1].strip()
+        return guest_team_score, home_team_score
+
+    @staticmethod
+    def _is_home_match(row):
+        return "black" in row.find_all('td')[1].a.get('class')

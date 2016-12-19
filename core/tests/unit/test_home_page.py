@@ -7,13 +7,13 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register_page(self):
-        response = self.client.get('/register')
+        response = self.client.get('/account/register')
         self.assertEqual(response.status_code, 200)
 
     def test_login_page(self):
-        response = self.client.get('/login')
+        response = self.client.get('/account/login')
         self.assertEqual(response.status_code, 200)
 
     def test_account_page(self):
         response = self.client.get('/account')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 301)
