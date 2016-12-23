@@ -10,6 +10,7 @@ from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisti
                                          StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
 
 app_name = 'ofm'
+
 urlpatterns = [
     url(r'^player_statistics/?$', PlayerStatisticsView.as_view(), name='player_statistics'),
     url(r'^player_statistics_json/?$', PlayerStatisticsAsJsonView.as_view(), name='player_statistics_json'),

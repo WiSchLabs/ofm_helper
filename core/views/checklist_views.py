@@ -1,3 +1,4 @@
+from braces.views import CsrfExemptMixin
 from braces.views import JSONResponseMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -78,7 +79,7 @@ class CreateChecklistItemView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistPriorityView(JSONResponseMixin, View):
+class UpdateChecklistPriorityView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_priority = request.POST.get('checklist_priority')
 
@@ -92,7 +93,7 @@ class UpdateChecklistPriorityView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistItemNameView(JSONResponseMixin, View):
+class UpdateChecklistItemNameView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_name = request.POST.get('checklist_item_name')
@@ -108,7 +109,7 @@ class UpdateChecklistItemNameView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistItemStatusView(JSONResponseMixin, View):
+class UpdateChecklistItemStatusView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_checked = request.POST.get('checklist_item_checked')
@@ -127,7 +128,7 @@ class UpdateChecklistItemStatusView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class UpdateChecklistItemConditionView(JSONResponseMixin, View):
+class UpdateChecklistItemConditionView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item_matchdays = request.POST.get('checklist_item_matchdays')
@@ -160,7 +161,7 @@ class UpdateChecklistItemConditionView(JSONResponseMixin, View):
 
 
 @method_decorator(login_required, name='dispatch')
-class DeleteChecklistItemView(JSONResponseMixin, View):
+class DeleteChecklistItemView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
