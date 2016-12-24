@@ -1,9 +1,6 @@
 import factory
 
-from core.models import Season, Quarter, Matchday, Player, PlayerStatistics, Contract, Country, Finance, Match, \
-    MatchStadiumStatistics, StadiumStandStatistics, MatchTeamStatistics, StandLevel, StadiumLevel, StadiumLevelItem, \
-    Checklist, ChecklistItem, ParsingSetting
-from users.factories.users_factories import OFMUserFactory
+from core.models import Season, Quarter, Matchday
 
 
 class SeasonFactory(factory.django.DjangoModelFactory):
