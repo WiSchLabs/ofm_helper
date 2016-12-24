@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 import core
-from core.factories.core_factories import MatchdayFactory
+from core.factories.core_factories import MatchdayFactory, ParsingSettingFactory
+from core.models import ParsingSetting
 from users.models import OFMUser
 
 TESTDATA_PATH = 'core/tests/assets'
@@ -83,54 +84,6 @@ class ParserViewTest(TestCase):
                 assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
                 assert core.managers.parser_manager.MatchParser.return_value.parse.called
                 assert parse_stadium_statistics_mock.called
-
-    @patch('core.views.trigger_parsing_views.SiteManager')
-    @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.managers.parser_manager.ParserManager.parse_players')
-    @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
-    @patch('core.managers.parser_manager.ParserManager.parse_finances')
-    @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
-    @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
-    @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
-    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
-                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
-        response = self.client.get(reverse('core:trigger:trigger_parsing'))
-
-        self.assertEqual(response.status_code, 302)
-
-        assert site_manager_mock.called
-        assert parse_matchday_mock.called
-        assert parse_players_mock.called
-        assert parse_player_statistics_mock.called
-        assert parse_finances_mock.called
-        assert parse_all_matches_mock.called
-        assert parse_awp_mock.called
-        assert parse_version_mock.called
-
-    @patch('core.views.trigger_parsing_views.SiteManager')
-    @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.managers.parser_manager.ParserManager.parse_players')
-    @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
-    @patch('core.managers.parser_manager.ParserManager.parse_finances')
-    @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
-    @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
-    @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
-    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
-                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
-        self.client.get(reverse('core:account:logout'))
-        response = self.client.get(reverse('core:trigger:trigger_parsing'))
-
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('core:account:login'))
-
-        assert not site_manager_mock.called
-        assert not parse_matchday_mock.called
-        assert not parse_players_mock.called
-        assert not parse_player_statistics_mock.called
-        assert not parse_finances_mock.called
-        assert not parse_all_matches_mock.called
-        assert not parse_awp_mock.called
-        assert not parse_version_mock.called
 
     @patch('core.views.trigger_parsing_views.SiteManager')
     @patch('core.managers.parser_manager.MatchdayParser')

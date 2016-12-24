@@ -839,7 +839,7 @@ class AwpBoundaries(Dictionary):
 
 
 class Checklist(models.Model):
-    user = models.ForeignKey(OFMUser)
+    user = models.OneToOneField(OFMUser)
 
 
 class ChecklistItem(models.Model):
@@ -854,3 +854,13 @@ class ChecklistItem(models.Model):
                                                   validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)
     to_be_checked_if_home_match_tomorrow = models.BooleanField(default=False)
+
+
+class ParsingSetting(models.Model):
+    user = models.OneToOneField(OFMUser)
+    parsing_chain_includes_player_statistics = models.BooleanField(default=True)
+    parsing_chain_includes_awp_boundaries = models.BooleanField(default=True)
+    parsing_chain_includes_finances = models.BooleanField(default=True)
+    parsing_chain_includes_matches = models.BooleanField(default=True)
+    parsing_chain_includes_match_details = models.BooleanField(default=False)
+    parsing_chain_includes_stadium_details = models.BooleanField(default=False)
