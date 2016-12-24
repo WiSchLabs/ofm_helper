@@ -100,7 +100,6 @@ class ParserManager:
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
         is_current_matchday = int(row.find_all('td')[0].get_text()) == self.parsed_matchday.number
-        parsing_setting, _ = ParsingSetting.objects.get_or_create(user=request.user)
 
         if match_report_image and parse_match_details:
             # match took place and should be parsed in detail
