@@ -17,7 +17,7 @@ class RegistrationTestCase(TestCase):
     def test_register_new_account(self):
         response = self.client.post(reverse('core:account:register'),
                                     {'username': 'new', 'password': '1234', 'password2': '1234',
-                                     'email': 'new@ofmhelper.com',
+                                     'email': 'new@ofmhelper.de',
                                      'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'def'})
         matching_users = OFMUser.objects.filter(username='new')
 
@@ -26,18 +26,20 @@ class RegistrationTestCase(TestCase):
         self.assertFalse(response.wsgi_request.user.is_authenticated())
         self.assertEqual(matching_users.count(), 1)
         self.assertNotEqual(matching_users[0].password, '1234')
-        self.assertEqual(matching_users[0].email, 'new@ofmhelper.com')
+        self.assertEqual(matching_users[0].email, 'new@ofmhelper.de')
         self.assertEqual(matching_users[0].ofm_username, 'abc')
         self.assertEqual(matching_users[0].ofm_password, 'def')
 
     def test_register_with_existing_username(self):
+        self.assertEqual(OFMUser.objects.filter(username='temporary').count(), 1)
         response = self.client.post(reverse('core:account:register'),
                                     {'username': 'temporary', 'password': '1234', 'password2': '1234',
                                      'email': 'new@ofmhelper.com',
-                                     'ofm_username': 'abc', 'ofm_password': 'def', 'ofm_password2': 'def'})
+                                     'ofm_username': 'abcdef', 'ofm_password': 'abcdef', 'ofm_password2': 'abcdef'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'core/account/register.html')
         self.assertFalse(response.wsgi_request.user.is_authenticated())
+        self.assertEqual(OFMUser.objects.filter(username='temporary').count(), 1)
 
     def test_register_with_unmatching_passwords(self):
         response = self.client.post(reverse('core:account:register'),

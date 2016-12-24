@@ -214,6 +214,18 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue('checked' in returned_json_data[0])
         self.assertEqual(returned_json_data[0]['checked'], False)
 
+    def test_update_checklist_priority(self):
+        second_item = ChecklistItemFactory.create(checklist=self.checklist, name='do better unit tests')
+        third_item = ChecklistItemFactory.create(checklist=self.checklist, name='do comprehensible unit tests')
+        self.client.login(username='temporary', password='temporary')
+        new_priority = ",".join([str(third_item.id), str(self.checklist_item.id), str(second_item.id)])
+        response = self.client.post(reverse('core:checklist:update_checklist_priority'),
+                                    {'checklist_priority': new_priority})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ChecklistItem.objects.get(id=third_item.id).priority, 0)
+        self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).priority, 1)
+        self.assertEqual(ChecklistItem.objects.get(id=second_item.id).priority, 2)
+
     def test_delete_checklist_item(self):
         self.client.login(username='temporary', password='temporary')
         response = self.client.post(reverse('core:checklist:delete_checklist_item'),
