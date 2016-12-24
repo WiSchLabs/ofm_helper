@@ -5,8 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 import core
-from core.factories.core_factories import MatchdayFactory, ParsingSettingFactory
-from core.models import ParsingSetting
+from core.factories.core_factories import MatchdayFactory
 from users.models import OFMUser
 
 TESTDATA_PATH = 'core/tests/assets'
