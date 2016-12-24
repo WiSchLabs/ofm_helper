@@ -95,11 +95,12 @@ class ParserManager:
             if row.has_attr("class"):  # exclude table header
                 self._parse_single_match(request, site_manager, row, parse_match_details, parse_stadium_details)
 
-    def _parse_single_match(self, request, site_manager, row, parse_match_details, parse_stadium_details):
+    def _parse_single_match(self, request, site_manager, row, parse_match_details, parse_stadium_details):  # pylint: disable=too-many-arguments
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
         match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
         is_current_matchday = int(row.find_all('td')[0].get_text()) == self.parsed_matchday.number
+        parsing_setting, _ = ParsingSetting.objects.get_or_create(user=request.user)
 
         if match_report_image and parse_match_details:
             # match took place and should be parsed in detail
