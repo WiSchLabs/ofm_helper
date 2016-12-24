@@ -1,4 +1,5 @@
 $('document').ready( function (){
+
     function addChecklistItem(item) {
         $('#checklist_items').append(
             "<div id='" + item['id'] + "' class='checklist_item_container new' style='opacity:0;'>" +
@@ -246,4 +247,4 @@ $('document').ready( function (){
         });
     })
 
-})
+});
