@@ -22,6 +22,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.MatchdayParser')
     def test_matchday_parser_view(self, site_manager_mock, matchday_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
+
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -32,6 +33,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.PlayersParser')
     def test_player_parser_view(self, matchday_parser_mock, site_manager_mock, players_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_players_parsing'))
+
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -45,6 +47,7 @@ class ParserViewTest(TestCase):
     def test_player_statistics_parser_view(self, matchday_parser_mock, player_parser_mock, site_manager_mock,
                                            player_statistics_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_player_statistics_parsing'))
+
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -57,6 +60,7 @@ class ParserViewTest(TestCase):
     @patch('core.managers.parser_manager.FinancesParser')
     def test_finances_parser_view(self, matchday_parser_mock, site_manager_mock, finances_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_finances_parsing'))
+
         self.assertEqual(response.status_code, 302)
 
         assert core.views.trigger_parsing_views.SiteManager.called
@@ -73,6 +77,7 @@ class ParserViewTest(TestCase):
                 site_manager_instance_mock.browser.page_source = match_schedule_html
 
                 response = self.client.get(reverse('core:trigger:trigger_match_parsing'))
+
                 self.assertEqual(response.status_code, 302)
 
                 assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
@@ -92,6 +97,7 @@ class ParserViewTest(TestCase):
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
 
         self.assertEqual(response.status_code, 302)
+
         assert site_manager_mock.called
         assert parse_matchday_mock.called
         assert parse_players_mock.called
@@ -102,10 +108,36 @@ class ParserViewTest(TestCase):
         assert parse_version_mock.called
 
     @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.managers.parser_manager.ParserManager.parse_matchday')
+    @patch('core.managers.parser_manager.ParserManager.parse_players')
+    @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
+    @patch('core.managers.parser_manager.ParserManager.parse_finances')
+    @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
+    @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
+    @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
+    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
+                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+        self.client.get(reverse('core:account:logout'))
+        response = self.client.get(reverse('core:trigger:trigger_parsing'))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('core:account:login'))
+
+        assert not site_manager_mock.called
+        assert not parse_matchday_mock.called
+        assert not parse_players_mock.called
+        assert not parse_player_statistics_mock.called
+        assert not parse_finances_mock.called
+        assert not parse_all_matches_mock.called
+        assert not parse_awp_mock.called
+        assert not parse_version_mock.called
+
+    @patch('core.views.trigger_parsing_views.SiteManager')
     @patch('core.managers.parser_manager.MatchdayParser')
     def test_matchday_parser_view_not_callable_if_not_logged_in(self, site_manager_mock, matchday_parser_mock):
         self.client.get(reverse('core:account:logout'))
         response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
+
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('core:account:login'))
 
