@@ -3,7 +3,6 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from core.factories.core_factories import MatchdayFactory
 from users.models import OFMUser
 
 

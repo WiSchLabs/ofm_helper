@@ -1,11 +1,9 @@
-import os
 from unittest.mock import patch
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-import core
-from core.factories.core_factories import MatchdayFactory, ParsingSettingFactory
+from core.factories.core_factories import MatchdayFactory
 from core.models import ParsingSetting
 from users.models import OFMUser
 

@@ -1,5 +1,3 @@
-from collections import Counter
-
 from braces.views import CsrfExemptMixin
 from braces.views import JSONResponseMixin
 from django.contrib import messages
