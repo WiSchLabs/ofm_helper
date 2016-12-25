@@ -98,6 +98,13 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
                 request.POST.get('parsing_stadium_details',
                                  default=parsing_setting.parsing_chain_includes_stadium_details))
 
+        if not parsing_matches:
+            parsing_match_details = False
+            parsing_stadium_details = False
+
+        if not parsing_match_details:
+            parsing_stadium_details = False
+
         parsing_setting.parsing_chain_includes_player_statistics = parsing_player_statistics
         parsing_setting.parsing_chain_includes_awp_boundaries = parsing_awp_boundaries
         parsing_setting.parsing_chain_includes_finances = parsing_finances

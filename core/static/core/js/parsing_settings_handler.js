@@ -1,11 +1,35 @@
 function addParsingSettingItem(name, value, id) {
-    var css_class = value ? "check" : "unchecked";
     $('#ParsingSettings').append(
         "<li id='" + id + "' class='parsing_setting_item'>" +
-            "<span id='" + id + "' class='parsing_setting_check glyphicon glyphicon-" + css_class + "'></span>" +
+            "<span class='parsing_setting_check glyphicon glyphicon-unchecked'></span>" +
             name +
         "</li>"
     );
+    var new_item = findCheckboxByItemId(id);
+    if (value) { checkItem(new_item); }
+}
+
+function findCheckboxByItemId(id) {
+    return $('#'+id).find('.parsing_setting_check');
+}
+
+function checkItem(item) {
+    item.addClass('glyphicon-check');
+    item.removeClass('glyphicon-unchecked');
+}
+
+function uncheckItem(item) {
+    item.removeClass('glyphicon-check');
+    item.addClass('glyphicon-unchecked');
+}
+
+function disableItem(item) {
+    uncheckItem(item);
+    item.parent('li').addClass('disabled');
+}
+
+function enableItem(item) {
+    item.parent('li').removeClass('disabled');
 }
 
 $('document').ready( function (){
@@ -21,12 +45,26 @@ $('document').ready( function (){
                     addParsingSettingItem("Alle Spiele", data['parsing_matches'], 'parsing_matches');
                     addParsingSettingItem("Ligaspiel-Details", data['parsing_match_details'], 'parsing_match_details');
                     addParsingSettingItem("Stadiondaten bei Heimspielen", data['parsing_stadium_details'], 'parsing_stadium_details');
+
+
+                    findCheckboxByItemId('parsing_match_details').addClass('subitem');
+                    findCheckboxByItemId('parsing_stadium_details').addClass('sub-subitem');
+
+                    if (!data['parsing_matches']) {
+                        disableItem(findCheckboxByItemId('parsing_match_details'));
+                    }
+                    if (!data['parsing_match_details']) {
+                        disableItem(findCheckboxByItemId('parsing_stadium_details'));
+                    }
                 }
             );
         }
     });
 
     $('#ParsingSettings').on('click', '.parsing_setting_item', function() {
+        if ($(this).hasClass("disabled")) {
+            return
+        }
         var parsingSettingItem = $(this).find('.parsing_setting_check');
         var parsingSettingGotChecked = parsingSettingItem.hasClass("glyphicon-unchecked");
         var parsingSettingItemName = $(this).attr('id');
@@ -35,12 +73,24 @@ $('document').ready( function (){
         $.post("/account/update_parsing_setting_item_status", params);
 
         if (parsingSettingGotChecked) {
-            parsingSettingItem.removeClass('glyphicon-unchecked');
-            parsingSettingItem.addClass('glyphicon-check');
+            checkItem(parsingSettingItem);
         } else {
-            parsingSettingItem.addClass('glyphicon-unchecked');
-            parsingSettingItem.removeClass('glyphicon-check');
+            uncheckItem(parsingSettingItem);
         }
+
+        if ($(this).attr('id') == "parsing_matches" && parsingSettingGotChecked) {
+            enableItem(findCheckboxByItemId('parsing_match_details'));
+        } else if ($(this).attr('id') == "parsing_matches" && !parsingSettingGotChecked) {
+            disableItem(findCheckboxByItemId('parsing_match_details'));
+            disableItem(findCheckboxByItemId('parsing_stadium_details'));
+        }
+
+        if ($(this).attr('id') == "parsing_match_details" && parsingSettingGotChecked) {
+            enableItem(findCheckboxByItemId('parsing_stadium_details'));
+        } else if ($(this).attr('id') == "parsing_match_details" && !parsingSettingGotChecked) {
+            disableItem(findCheckboxByItemId('parsing_stadium_details'));
+        }
+
     });
 
 });
