@@ -1,0 +1,35 @@
+version: "2"
+
+services:
+  django:
+    build: .
+    volumes:
+      - /usr/src/app/staticfiles
+    restart: unless-stopped
+
+  nginx:
+    image: wischlabs/ofm_nginx
+    ports:
+      - "8080:80"
+    volumes_from:
+      - django
+    restart: unless-stopped
+
+  db:
+    image: postgres
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data/
+
+  redis:
+    image: redis
+    volumes:
+      - redisdata_dev:/data
+
+  phantomjs:
+    image: wernight/phantomjs
+    entrypoint: phantomjs
+    command: "--webdriver=8910"
+
+volumes:
+  pgdata_dev:
+  redisdata_dev:
