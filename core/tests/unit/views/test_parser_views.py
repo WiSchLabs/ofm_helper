@@ -68,9 +68,10 @@ class ParserViewTest(TestCase):
         assert core.managers.parser_manager.FinancesParser.return_value.parse.called
 
     @patch('core.managers.parser_manager.MatchdayParser')
-    @patch('core.managers.parser_manager.MatchParser')
+    @patch('core.managers.parser_manager.MatchDetailsParser')
     @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
-    def test_match_parser_view(self, matchday_parser_mock, match_parser_mock, parse_stadium_statistics_mock):
+    def test_match_details_parser_view(self, matchday_parser_mock, match_details_parser_mock,
+                                       parse_stadium_statistics_mock):
         with open(os.path.join(TESTDATA_PATH, 'match_schedule.html'), encoding='utf8') as match_schedule_html:
             with patch('core.views.trigger_parsing_views.SiteManager') as site_manager_mock:
                 site_manager_instance_mock = site_manager_mock.return_value
@@ -81,7 +82,7 @@ class ParserViewTest(TestCase):
                 self.assertEqual(response.status_code, 302)
 
                 assert core.managers.parser_manager.MatchdayParser.return_value.parse.called
-                assert core.managers.parser_manager.MatchParser.return_value.parse.called
+                assert core.managers.parser_manager.MatchDetailsParser.return_value.parse.called
                 assert parse_stadium_statistics_mock.called
 
     @patch('core.views.trigger_parsing_views.SiteManager')

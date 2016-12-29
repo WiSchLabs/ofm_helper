@@ -4,14 +4,14 @@ from core.models import ParsingSetting
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.future_match_row_parser import FutureMatchRowParser
-from core.parsers.match_parser import MatchParser
+from core.parsers.match_details_parser import MatchDetailsParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.parsers.won_by_default_match_row_parser import WonByDefaultMatchRowParser
+from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.web.ofm_page_constants import Constants
 
 
@@ -106,19 +106,20 @@ class ParserManager:
             link_to_match = match_report_image[0].find_parent('a')['href']
             if "spielbericht" in link_to_match:
                 site_manager.jump_to_frame(Constants.BASE + link_to_match)
-                match_parser = MatchParser(site_manager.browser.page_source, request.user, is_home_match)
-                match = match_parser.parse()
+                match_details_parser = MatchDetailsParser(site_manager.browser.page_source, request.user, is_home_match)
+                match = match_details_parser.parse()
 
                 if is_home_match and is_current_matchday and parse_stadium_details:
                     self._parse_stadium_statistics(request, site_manager, match)
 
                 return match
-        elif ("-:-" in match_result) or (match_report_image and not parse_match_details):
+        elif "-:-" in match_result:
             # match is scheduled, but did not take place yet
-            # or match details should not be parsed
             return FutureMatchRowParser(row, request.user).parse()
         else:
-            return WonByDefaultMatchRowParser(row, request.user).parse()
+            # match was won by default
+            # or match details should not be parsed
+            return BasicMatchRowParser(row, request.user).parse()
 
     @staticmethod
     def _parse_stadium_statistics(request, site_manager, match):

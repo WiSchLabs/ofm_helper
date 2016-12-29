@@ -4,22 +4,22 @@ from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
 from core.models import Match, MatchTeamStatistics
-from core.parsers.match_parser import MatchParser
+from core.parsers.match_details_parser import MatchDetailsParser
 from users.factories.users_factories import OFMUserFactory
 
 TESTDATA_PATH = 'core/tests/assets'
 
 
-class MatchParserTest(TestCase):
+class MatchDetailsParserTest(TestCase):
     def setUp(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'home_match.html'), encoding='utf8')
         MatchdayFactory.create(number=1)
         self.user = OFMUserFactory.create()
 
-        parser = MatchParser(testdata, self.user, True)
+        parser = MatchDetailsParser(testdata, self.user, True)
         self.match_stat = parser.parse()
 
-    def test_match_parser_general_informations(self):
+    def test_match_details_parser_general_informations(self):
         self.assertEqual(type(self.match_stat), Match)
         self.assertEqual(self.match_stat.matchday.number, '8')
         self.assertEqual(self.match_stat.user, self.user)
@@ -50,7 +50,7 @@ class MatchParserTest(TestCase):
     def test_match_gets_updated_on_parsing_again(self):
         testdata = open(os.path.join(TESTDATA_PATH, 'home_match_2.html'), encoding='utf8')
 
-        parser = MatchParser(testdata, self.user, True)
+        parser = MatchDetailsParser(testdata, self.user, True)
         match_stat2 = parser.parse()
 
         self.assertEqual(self.match_stat.id, match_stat2.id)

@@ -8,9 +8,9 @@ from core.parsers.base_parser import BaseParser
 logger = logging.getLogger(__name__)
 
 
-class WonByDefaultMatchRowParser(BaseParser):
+class BasicMatchRowParser(BaseParser):
     def __init__(self, html_source, user):
-        super(WonByDefaultMatchRowParser, self).__init__()
+        super(BasicMatchRowParser, self).__init__()
         self.html_source = html_source
         self.user = user
 
@@ -57,7 +57,7 @@ class WonByDefaultMatchRowParser(BaseParser):
                 score=home_team_score,
                 team_name=home_team_name,
                 strength=home_team_strength,
-                ball_possession=100,
+                ball_possession=0,
                 chances=0,
                 yellow_cards=0,
                 red_cards=0

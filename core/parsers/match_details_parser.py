@@ -9,9 +9,9 @@ from core.parsers.base_parser import BaseParser
 logger = logging.getLogger(__name__)
 
 
-class MatchParser(BaseParser):
+class MatchDetailsParser(BaseParser):
     def __init__(self, html_source, user, is_home_match):
-        super(MatchParser, self).__init__()
+        super(MatchDetailsParser, self).__init__()
         self.html_source = html_source
         self.user = user
         self.is_home_match = is_home_match
