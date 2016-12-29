@@ -82,6 +82,7 @@ class BasicMatchRowParser(BaseParser):
             )
         else:
             raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
+
         return match
 
     def _has_existing_matches(self, matchday):
@@ -95,7 +96,9 @@ class BasicMatchRowParser(BaseParser):
         match_result = row.find_all('span', class_='erganz')[0].find_parent('tr').get_text().strip()
         home_team_score = match_result.split(':')[0].strip()
         guest_team_score = match_result.split(':')[1].strip()
-        return guest_team_score, home_team_score
+        if home_team_score == "-" and guest_team_score == "-":
+            return 0, 0
+        return int(guest_team_score), int(home_team_score)
 
     @staticmethod
     def _is_home_match(row):

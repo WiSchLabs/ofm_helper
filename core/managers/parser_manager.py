@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from core.models import ParsingSetting
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.finances_parser import FinancesParser
-from core.parsers.future_match_row_parser import FutureMatchRowParser
 from core.parsers.match_details_parser import MatchDetailsParser
 from core.parsers.matchday_parser import MatchdayParser
 from core.parsers.ofm_helper_version_parser import OfmHelperVersionParser
@@ -98,7 +97,6 @@ class ParserManager:
     def _parse_single_match(self, request, site_manager, row, parse_match_details, parse_stadium_details):  # pylint: disable=too-many-arguments
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
-        match_result = row.find('table').find_all('tr')[0].get_text().replace('\n', '').strip()
         is_current_matchday = int(row.find_all('td')[0].get_text()) == self.parsed_matchday.number
 
         if match_report_image and parse_match_details:
@@ -113,12 +111,10 @@ class ParserManager:
                     self._parse_stadium_statistics(request, site_manager, match)
 
                 return match
-        elif "-:-" in match_result:
-            # match is scheduled, but did not take place yet
-            return FutureMatchRowParser(row, request.user).parse()
         else:
             # match was won by default
             # or match details should not be parsed
+            # or match is scheduled, but did not take place yet
             return BasicMatchRowParser(row, request.user).parse()
 
     @staticmethod

@@ -32,7 +32,7 @@ class WonByDefaultMatchRowParserTest(TestCase):
 
     def test_match_home_team_statistics(self):
         self.assertEqual(type(self.match_stat.home_team_statistics), MatchTeamStatistics)
-        self.assertEqual(self.match_stat.home_team_statistics.score, '3')
+        self.assertEqual(self.match_stat.home_team_statistics.score, 3)
         self.assertEqual(self.match_stat.home_team_statistics.team_name, 'BSC Wittenau')
         self.assertEqual(self.match_stat.home_team_statistics.strength, '58')
         self.assertEqual(self.match_stat.home_team_statistics.ball_possession, 0)
@@ -42,7 +42,7 @@ class WonByDefaultMatchRowParserTest(TestCase):
 
     def test_match_guest_team_statistics(self):
         self.assertEqual(type(self.match_stat.guest_team_statistics), MatchTeamStatistics)
-        self.assertEqual(self.match_stat.guest_team_statistics.score, '0')
+        self.assertEqual(self.match_stat.guest_team_statistics.score, 0)
         self.assertEqual(self.match_stat.guest_team_statistics.team_name, 'NicNock')
         self.assertEqual(self.match_stat.guest_team_statistics.strength, '0')
         self.assertEqual(self.match_stat.guest_team_statistics.ball_possession, 0)
