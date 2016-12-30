@@ -100,3 +100,14 @@ class ParserViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
+
+    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.managers.parser_manager.MatchdayParser')
+    def test_matchday_parser_view_not_callable_if_not_logged_in(self, site_manager_mock, matchday_parser_mock):
+        self.client.get(reverse('core:account:logout'))
+        response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('core:account:login'))
+
+        assert not core.views.trigger_parsing_views.SiteManager.called
+        assert not core.managers.parser_manager.MatchdayParser.return_value.parse.called

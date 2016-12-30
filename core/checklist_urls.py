@@ -7,7 +7,6 @@ from core.views.checklist_views import CreateChecklistItemView, DeleteChecklistI
 
 app_name = 'checklist'
 
-
 urlpatterns = [
     url(r'^get_checklist_items/?$', GetChecklistItemsView.as_view(),
         name='get_checklist_items'),
