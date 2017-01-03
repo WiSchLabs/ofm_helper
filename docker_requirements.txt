@@ -6,3 +6,6 @@ psycopg2
 
 # redis backend
 django-redis
+
+# asynchronous url calls for gunicorn (no timeout)
+eventlet
