@@ -8,6 +8,7 @@ ENV DJANGO_SETTINGS_MODULE ofm_helper.settings.docker
 RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 COPY .ssh/* /root/.ssh/
+RUN chmod 700 /root/.ssh/id_rsa
 
 # put current release into version file
 RUN git fetch --tags
