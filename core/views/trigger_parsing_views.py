@@ -12,7 +12,7 @@ def trigger_parsing(request):
         site_manager.login()
 
         pm = ParserManager()
-        pm.parse_all_ofm_data(request, site_manager)
+        pm.parse_all_ofm_data(site_manager)
 
         remote_version = pm.parse_ofm_version(site_manager)
         try:
@@ -35,7 +35,7 @@ def trigger_single_parsing(request, parsing_function, redirect_to='core:account:
     if request.user.is_authenticated():
         site_manager = SiteManager(request.user)
         site_manager.login()
-        parsing_function(request, site_manager)
+        parsing_function(site_manager)
         return redirect(redirect_to)
     else:
         messages.error(request, NOT_LOGGED_IN)

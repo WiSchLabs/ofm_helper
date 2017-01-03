@@ -14,7 +14,13 @@ class ParserChainViewTest(TestCase):
     def setUp(self):
         MatchdayFactory.create(season__number=100, number=1)
 
-        self.user = OFMUser.objects.create_user('name', '', 'pass', ofm_username='name', ofm_password='pass')
+        self.user = OFMUser.objects.create_user(
+            username='name',
+            email='',
+            password='pass',
+            ofm_username='name',
+            ofm_password='pass'
+        )
         self.client.login(username='name', password='pass')
 
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
@@ -27,6 +33,8 @@ class ParserChainViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.SiteManager')
     def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
 
         self.assertEqual(response.status_code, 302)
@@ -52,6 +60,8 @@ class ParserChainViewTest(TestCase):
                                                         parse_players_mock, parse_player_statistics_mock,
                                                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
                                                         parse_version_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
         parsing_setting.parsing_chain_includes_player_statistics = False
         parsing_setting.parsing_chain_includes_awp_boundaries = True
@@ -84,6 +94,8 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_finances(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                parse_player_statistics_mock, parse_finances_mock,
                                                parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
         parsing_setting.parsing_chain_includes_player_statistics = True
         parsing_setting.parsing_chain_includes_awp_boundaries = True
@@ -118,6 +130,8 @@ class ParserChainViewTest(TestCase):
                                               parse_player_statistics_mock, parse_finances_mock,
                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
                                               parse_stadium_statistics_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
         parsing_setting.parsing_chain_includes_player_statistics = True
         parsing_setting.parsing_chain_includes_awp_boundaries = True
@@ -151,6 +165,8 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_awp_boundaries(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                      parse_player_statistics_mock, parse_finances_mock,
                                                      parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
         parsing_setting.parsing_chain_includes_player_statistics = True
         parsing_setting.parsing_chain_includes_awp_boundaries = False
@@ -185,6 +201,8 @@ class ParserChainViewTest(TestCase):
                                                          parse_players_mock, parse_player_statistics_mock,
                                                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
                                                          parse_version_mock, parse_stadium_statistics_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
         parsing_setting.parsing_chain_includes_player_statistics = True
         parsing_setting.parsing_chain_includes_awp_boundaries = True
@@ -218,6 +236,8 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_not_callable_if_logged_out(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                     parse_player_statistics_mock, parse_finances_mock,
                                                     parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
         self.client.get(reverse('core:account:logout'))
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
 
