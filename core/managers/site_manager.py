@@ -10,6 +10,7 @@ from core.web.ofm_page_constants import Constants
 
 class SiteManager:
     def __init__(self, user=None):
+        self.user = user
 
         if settings.PHANTOMJS_REMOTE:
             self.browser = webdriver.Remote(command_executor='http://{}:8910'.format(settings.PHANTOMJS_HOST),
@@ -19,9 +20,9 @@ class SiteManager:
 
         self._handle_aws_display_bug()
 
-        if user:
-            self._login_user = user.ofm_username
-            self._login_password = user.ofm_password
+        if self.user:
+            self._login_user = self.user.ofm_username
+            self._login_password = self.user.ofm_password
         else:
             self._login_user = os.environ('OFM_USERNAME')
             self._login_password = os.environ('OFM_PASSWORD')
