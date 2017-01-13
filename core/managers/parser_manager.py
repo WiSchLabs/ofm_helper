@@ -32,9 +32,7 @@ class ParserManager:
         if parsing_setting.parsing_chain_includes_finances:
             self.parse_finances(site_manager)
         if parsing_setting.parsing_chain_includes_matches:
-            self.parse_all_matches(site_manager,
-                                   parsing_setting.parsing_chain_includes_match_details,
-                                   parsing_setting.parsing_chain_includes_stadium_details)
+            self.parse_all_matches(site_manager, parsing_setting)
 
         self.reset_parsing_flags()
 
@@ -84,7 +82,8 @@ class ParserManager:
         finances_parser = FinancesParser(site_manager.browser.page_source, site_manager.user, self.parsed_matchday)
         return finances_parser.parse()
 
-    def parse_all_matches(self, site_manager, parse_match_details=True, parse_stadium_details=True):
+    def parse_all_matches(self, site_manager, parsing_setting=None):
+
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(site_manager)
         site_manager.jump_to_frame(Constants.League.MATCH_SCHEDULE)
@@ -93,13 +92,13 @@ class ParserManager:
         rows = soup.find(id='table_head').find_all('tr')
         for row in rows:
             if row.has_attr("class"):  # exclude table header
-                self._parse_single_match(site_manager, row, parse_match_details, parse_stadium_details)
+                self._parse_single_match(site_manager, row, parsing_setting)
 
-    def _parse_single_match(self, site_manager, row, parse_match_details, parse_stadium_details):
+    def _parse_single_match(self, site_manager, row, parsing_setting):
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
 
-        if match_report_image and parse_match_details:
+        if match_report_image and parsing_setting and parsing_setting.parsing_chain_includes_match_details:
             # match took place and should be parsed in detail
             link_to_match = match_report_image[0].find_parent('a')['href']
             if "spielbericht" in link_to_match:
@@ -108,7 +107,8 @@ class ParserManager:
                                                           site_manager.user, is_home_match)
                 match = match_details_parser.parse()
 
-                if is_home_match and self._is_current_matchday(row) and parse_stadium_details:
+                if is_home_match and self._is_current_matchday(row) and \
+                    parsing_setting and parsing_setting.parsing_chain_includes_stadium_details:
                     self._parse_stadium_statistics(site_manager, match)
 
                 return match
