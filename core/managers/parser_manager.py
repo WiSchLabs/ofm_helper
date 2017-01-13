@@ -98,7 +98,7 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
 
-        if match_report_image and parsing_setting and parsing_setting.parsing_chain_includes_match_details:
+        if match_report_image and (not parsing_setting or parsing_setting.parsing_chain_includes_match_details):
             # match took place and should be parsed in detail
             link_to_match = match_report_image[0].find_parent('a')['href']
             if "spielbericht" in link_to_match:
@@ -108,7 +108,7 @@ class ParserManager:
                 match = match_details_parser.parse()
 
                 if is_home_match and self._is_current_matchday(row) and \
-                    parsing_setting and parsing_setting.parsing_chain_includes_stadium_details:
+                   not (parsing_setting or parsing_setting.parsing_chain_includes_stadium_details):
                     self._parse_stadium_statistics(site_manager, match)
 
                 return match
