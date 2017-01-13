@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from core.factories.core_factories import ChecklistFactory, ChecklistItemFactory, FinanceFactory
+from core.factories.core_factories import ChecklistFactory, ChecklistItemFactory, FinanceFactory, ParsingSettingFactory
 
 
 class CoreModelFactoriesTest(TestCase):
@@ -45,3 +45,13 @@ class CoreModelFactoriesTest(TestCase):
         self.assertTrue(cli.to_be_checked_on_matchdays is None)
         self.assertTrue(cli.to_be_checked_on_matchday_pattern is None)
         self.assertFalse(cli.to_be_checked_if_home_match_tomorrow)
+
+    def test_create_parsing_setting(self):
+        ps = ParsingSettingFactory.create()
+        self.assertTrue(ps.user is not None)
+        self.assertTrue(ps.parsing_chain_includes_player_statistics)
+        self.assertTrue(ps.parsing_chain_includes_awp_boundaries)
+        self.assertTrue(ps.parsing_chain_includes_finances)
+        self.assertTrue(ps.parsing_chain_includes_matches)
+        self.assertFalse(ps.parsing_chain_includes_match_details)
+        self.assertFalse(ps.parsing_chain_includes_stadium_details)

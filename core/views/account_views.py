@@ -26,14 +26,8 @@ class OFMUserCreate(CreateView):
         if self.is_registration_form_invalid(form):
             return super(OFMUserCreate, self).form_invalid(form)
 
-        user = OFMUser.objects.create_user(username=form.cleaned_data['username'],
-                                           email=form.cleaned_data['email'],
-                                           password=form.cleaned_data['password'],
-                                           ofm_username=form.cleaned_data['ofm_username'],
-                                           ofm_password=form.cleaned_data['ofm_password'])
-        user.save()
-
         messages.success(self.request, ACCOUNT_CREATED)
+        form.save()
         return HttpResponseRedirect(self.success_url)
 
     def is_registration_form_invalid(self, form):

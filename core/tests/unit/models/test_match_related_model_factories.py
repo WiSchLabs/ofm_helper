@@ -1,8 +1,9 @@
 from django.test import TestCase
 
-from core.factories.core_factories import MatchFactory, MatchStadiumStatisticsFactory, MatchTeamStatisticsFactory, \
-                                          StadiumLevelFactory, StadiumLevelItemFactory, \
-                                          StadiumStandStatisticsFactory, StandLevelFactory
+from core.factories.match_related_core_factories import MatchFactory, MatchStadiumStatisticsFactory, \
+                                                        MatchTeamStatisticsFactory, StadiumLevelFactory, \
+                                                        StadiumLevelItemFactory, StadiumStandStatisticsFactory, \
+                                                        StandLevelFactory
 
 
 class CreateCoreModelsTest(TestCase):

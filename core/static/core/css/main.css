@@ -310,6 +310,22 @@ ul.nav-sub {  padding-left: 10%; }
         #ChecklistSubMenu li span.glyphicon { margin-right: 15px; }
         #ChecklistSubMenu li span.glyphicon-check { color: #239123; }
 
+#ParsingSettings { list-style: none; }
+    #ParsingSettings li {
+        cursor: pointer;
+        padding: 2px 2px 2px 5px;
+    }
+        #ParsingSettings li:hover { background-color: #f5f5f5; }
+        #ParsingSettings li span.glyphicon { margin-right: 15px; }
+        #ParsingSettings li span.glyphicon-check { color: #239123; }
+        #ParsingSettings li span.subitem { margin-left: 25px; }
+        #ParsingSettings li span.sub-subitem { margin-left: 50px; }
+        #ParsingSettings li.disabled {
+            cursor: default;
+            color: darkgray;
+        }
+
+
 .spinner input { text-align: right; }
 input[type='number'] {
     -moz-appearance:textfield;

@@ -1,5 +1,7 @@
 import os
-from core.factories.core_factories import MatchdayFactory, SeasonFactory
+
+from core.factories.matchday_related_core_factories import MatchdayFactory
+from core.factories.matchday_related_core_factories import SeasonFactory
 from core.models import PlayerStatistics, Player, Matchday, Contract, Country
 from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from django.test import TestCase

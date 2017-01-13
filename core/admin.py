@@ -1,30 +1,30 @@
 from core.models import Season, Quarter, Country, Matchday, League, Player, PlayerStatistics, Contract, Finance, \
     Match, MatchStadiumStatistics, StadiumStandStatistics, StandLevel, StadiumLevel, MatchTeamStatistics, \
-    StadiumLevelItem, AwpBoundaries, Checklist, ChecklistItem
+    StadiumLevelItem, AwpBoundaries, Checklist, ChecklistItem, ParsingSetting
 from django.contrib import admin
 
 
 @admin.register(Season)
 class SeasonAdmin(admin.ModelAdmin):
-    list_display = ['number', ]
-    search_fields = ['number', ]
+    list_display = ['number']
+    search_fields = ['number']
 
 
 @admin.register(Quarter)
 class QuarterAdmin(admin.ModelAdmin):
     list_filter = ['quarter']
-    list_display = ['season', 'quarter', ]
+    list_display = ['season', 'quarter']
 
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ['country', ]
-    search_fields = ['country', ]
+    list_display = ['country']
+    search_fields = ['country']
 
 
 @admin.register(Matchday)
 class MatchdayAdmin(admin.ModelAdmin):
-    list_display = ['season', 'number', ]
+    list_display = ['season', 'number']
 
 
 @admin.register(League)
@@ -122,6 +122,22 @@ class ChecklistAdmin(admin.ModelAdmin):
 @admin.register(ChecklistItem)
 class ChecklistItemAdmin(admin.ModelAdmin):
     list_filter = ['checklist__user', 'name']
-    list_display = ['priority', 'name', 'to_be_checked_on_matchdays', 'to_be_checked_on_matchday_pattern',
+    list_display = ['priority',
+                    'name',
+                    'to_be_checked_on_matchdays',
+                    'to_be_checked_on_matchday_pattern',
                     'to_be_checked_if_home_match_tomorrow']
     search_fields = ['checklist__user__username', 'name']
+
+
+@admin.register(ParsingSetting)
+class ParsingSettingAdmin(admin.ModelAdmin):
+    list_filter = ['user']
+    list_display = ['user',
+                    'parsing_chain_includes_player_statistics',
+                    'parsing_chain_includes_awp_boundaries',
+                    'parsing_chain_includes_finances',
+                    'parsing_chain_includes_matches',
+                    'parsing_chain_includes_match_details',
+                    'parsing_chain_includes_stadium_details']
+    search_fields = ['user__username']

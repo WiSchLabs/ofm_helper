@@ -8,9 +8,9 @@ from core.parsers.base_parser import BaseParser
 logger = logging.getLogger(__name__)
 
 
-class FutureMatchRowParser(BaseParser):
+class BasicMatchRowParser(BaseParser):
     def __init__(self, html_source, user):
-        super(FutureMatchRowParser, self).__init__()
+        super(BasicMatchRowParser, self).__init__()
         self.html_source = html_source
         self.user = user
 
@@ -30,7 +30,7 @@ class FutureMatchRowParser(BaseParser):
             number=row.find_all('td')[0].get_text().replace('\n', '')
         )
 
-        is_home_match = "black" in row.find_all('td')[1].a.get('class')
+        guest_team_score, home_team_score = self._get_team_scores(row)
 
         home_team = row.find_all('td')[1].get_text().strip()
         home_team_name = home_team[0:home_team.find('(') - 1]
@@ -40,20 +40,21 @@ class FutureMatchRowParser(BaseParser):
         guest_team_name = guest_team[0:guest_team.find('(') - 1]
         guest_team_strength = guest_team[guest_team.find('(') + 1:guest_team.find(')')]
 
-        existing_match = Match.objects.filter(matchday=matchday, user=self.user)
+        if len(self._existing_matches(matchday)) == 1:
+            match = self._existing_matches(matchday)[0]
 
-        if len(existing_match) == 1:
-            match = existing_match[0]
-
+            match.home_team_statistics.score = home_team_score
             match.home_team_statistics.team_name = home_team_name
             match.home_team_statistics.strength = home_team_strength
             match.home_team_statistics.save()
 
+            match.guest_team_statistics.score = guest_team_score
             match.guest_team_statistics.team_name = guest_team_name
             match.guest_team_statistics.strength = guest_team_strength
             match.guest_team_statistics.save()
-        elif len(existing_match) == 0:
+        elif not self._has_existing_matches(matchday):
             home_team_stat = MatchTeamStatistics.objects.create(
+                score=home_team_score,
                 team_name=home_team_name,
                 strength=home_team_strength,
                 ball_possession=0,
@@ -63,6 +64,7 @@ class FutureMatchRowParser(BaseParser):
             )
 
             guest_team_stat = MatchTeamStatistics.objects.create(
+                score=guest_team_score,
                 team_name=guest_team_name,
                 strength=guest_team_strength,
                 ball_possession=0,
@@ -73,7 +75,7 @@ class FutureMatchRowParser(BaseParser):
 
             match = Match.objects.create(
                 matchday=matchday,
-                is_home_match=is_home_match,
+                is_home_match=self._is_home_match(row),
                 user=self.user,
                 home_team_statistics=home_team_stat,
                 guest_team_statistics=guest_team_stat
@@ -82,3 +84,22 @@ class FutureMatchRowParser(BaseParser):
             raise MultipleObjectsReturned('There are multiple games on matchday: {}'.format(matchday))
 
         return match
+
+    def _has_existing_matches(self, matchday):
+        return self._existing_matches(matchday).count() > 0
+
+    def _existing_matches(self, matchday):
+        return Match.objects.filter(matchday=matchday, user=self.user)
+
+    @staticmethod
+    def _get_team_scores(row):
+        match_result = row.find_all('span', class_='erganz')[0].find_parent('tr').get_text().strip()
+        home_team_score = match_result.split(':')[0].strip()
+        guest_team_score = match_result.split(':')[1].strip()
+        if home_team_score == "-" and guest_team_score == "-":
+            return 0, 0
+        return int(guest_team_score), int(home_team_score)
+
+    @staticmethod
+    def _is_home_match(row):
+        return "black" in row.find_all('td')[1].a.get('class')

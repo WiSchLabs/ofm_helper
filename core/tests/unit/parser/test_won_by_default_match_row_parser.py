@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
 from core.models import Match, MatchTeamStatistics
-from core.parsers.won_by_default_match_row_parser import WonByDefaultMatchRowParser
+from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from users.factories.users_factories import OFMUserFactory
 
 TESTDATA_PATH = 'core/tests/assets'
@@ -19,7 +19,7 @@ class WonByDefaultMatchRowParserTest(TestCase):
 
         soup = BeautifulSoup(testdata, "html.parser")
 
-        self.parser = WonByDefaultMatchRowParser(soup, self.user)
+        self.parser = BasicMatchRowParser(soup, self.user)
         self.match_stat = self.parser.parse()
 
     def test_match_parser_general_informations(self):
@@ -32,17 +32,17 @@ class WonByDefaultMatchRowParserTest(TestCase):
 
     def test_match_home_team_statistics(self):
         self.assertEqual(type(self.match_stat.home_team_statistics), MatchTeamStatistics)
-        self.assertEqual(self.match_stat.home_team_statistics.score, '3')
+        self.assertEqual(self.match_stat.home_team_statistics.score, 3)
         self.assertEqual(self.match_stat.home_team_statistics.team_name, 'BSC Wittenau')
         self.assertEqual(self.match_stat.home_team_statistics.strength, '58')
-        self.assertEqual(self.match_stat.home_team_statistics.ball_possession, 100)
+        self.assertEqual(self.match_stat.home_team_statistics.ball_possession, 0)
         self.assertEqual(self.match_stat.home_team_statistics.chances, 0)
         self.assertEqual(self.match_stat.home_team_statistics.yellow_cards, 0)
         self.assertEqual(self.match_stat.home_team_statistics.red_cards, 0)
 
     def test_match_guest_team_statistics(self):
         self.assertEqual(type(self.match_stat.guest_team_statistics), MatchTeamStatistics)
-        self.assertEqual(self.match_stat.guest_team_statistics.score, '0')
+        self.assertEqual(self.match_stat.guest_team_statistics.score, 0)
         self.assertEqual(self.match_stat.guest_team_statistics.team_name, 'NicNock')
         self.assertEqual(self.match_stat.guest_team_statistics.strength, '0')
         self.assertEqual(self.match_stat.guest_team_statistics.ball_possession, 0)
@@ -55,7 +55,7 @@ class WonByDefaultMatchRowParserTest(TestCase):
 
         soup = BeautifulSoup(testdata, "html.parser")
 
-        self.parser = WonByDefaultMatchRowParser(soup, self.user)
+        self.parser = BasicMatchRowParser(soup, self.user)
         match_stat2 = self.parser.parse()
 
         self.assertEqual(self.match_stat.id, match_stat2.id)

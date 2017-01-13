@@ -3,8 +3,8 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from core.factories.core_factories import MatchdayFactory, ChecklistItemFactory, ChecklistFactory, MatchFactory, \
-    FinanceFactory
+from core.factories.core_factories import MatchdayFactory, ChecklistItemFactory, ChecklistFactory, FinanceFactory
+from core.factories.match_related_core_factories import MatchFactory
 from core.models import ChecklistItem
 from users.models import OFMUser
 

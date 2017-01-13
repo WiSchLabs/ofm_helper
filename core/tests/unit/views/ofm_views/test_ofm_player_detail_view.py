@@ -3,7 +3,8 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from core.factories.core_factories import MatchdayFactory, PlayerFactory, PlayerStatisticsFactory
+from core.factories.matchday_related_core_factories import MatchdayFactory
+from core.factories.player_related_core_factories import PlayerFactory, PlayerStatisticsFactory
 from core.models import Contract, AwpBoundaries
 from users.models import OFMUser
 

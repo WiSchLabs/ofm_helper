@@ -14,6 +14,7 @@ function showChecklistItem(item) {
 }
 
 $('document').ready( function (){
+
     $(function() {
         $.get("/checklist/get_checklist_items_for_today",
             function (data) {
@@ -62,4 +63,5 @@ $('document').ready( function (){
             checklistItem.removeClass('glyphicon-check');
         }
     });
+
 });

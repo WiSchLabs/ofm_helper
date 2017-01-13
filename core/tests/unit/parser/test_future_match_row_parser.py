@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from core.factories.core_factories import MatchdayFactory
 from core.models import Match, MatchTeamStatistics
-from core.parsers.future_match_row_parser import FutureMatchRowParser
+from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from users.factories.users_factories import OFMUserFactory
 
 TESTDATA_PATH = 'core/tests/assets'
@@ -19,7 +19,7 @@ class FutureMatchRowParserTest(TestCase):
 
         soup = BeautifulSoup(testdata, "html.parser")
 
-        parser = FutureMatchRowParser(soup, self.user)
+        parser = BasicMatchRowParser(soup, self.user)
         self.match_stat = parser.parse()
 
     def test_match_parser_general_informations(self):
@@ -55,7 +55,7 @@ class FutureMatchRowParserTest(TestCase):
 
         soup = BeautifulSoup(testdata, "html.parser")
 
-        parser = FutureMatchRowParser(soup, self.user)
+        parser = BasicMatchRowParser(soup, self.user)
         match_stat2 = parser.parse()
 
         self.assertEqual(self.match_stat.id, match_stat2.id)

@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from core.factories.core_factories import ContractFactory, CountryFactory, PlayerStatisticsFactory, PlayerFactory
+from core.factories.player_related_core_factories import ContractFactory, CountryFactory, PlayerFactory, \
+                                                         PlayerStatisticsFactory
 
 
 class CreateCoreModelsTest(TestCase):

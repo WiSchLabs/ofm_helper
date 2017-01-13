@@ -1,8 +1,13 @@
+from braces.views import CsrfExemptMixin
+from braces.views import JSONResponseMixin
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
+from django.views import View
 
-from core.localization.messages import PASSWORDS_UNEQUAL, SETTINGS_SAVED, OFM_PASSWORDS_UNEQUAL, \
-    NOT_LOGGED_IN
+from core.localization.messages import PASSWORDS_UNEQUAL, SETTINGS_SAVED, OFM_PASSWORDS_UNEQUAL, NOT_LOGGED_IN
+from core.models import ParsingSetting
 from users.models import OFMUser
 
 
@@ -51,3 +56,70 @@ def settings_view(request):
     else:
         messages.error(request, NOT_LOGGED_IN)
         return redirect('core:account:login')
+
+
+@method_decorator(login_required, name='dispatch')
+class GetParsingSettingsView(JSONResponseMixin, View):
+    def get(self, request):
+        parsing_setting, _ = ParsingSetting.objects.get_or_create(user=request.user)
+
+        settings_dict = dict()
+        settings_dict['parsing_player_statistics'] = parsing_setting.parsing_chain_includes_player_statistics
+        settings_dict['parsing_awp_boundaries'] = parsing_setting.parsing_chain_includes_awp_boundaries
+        settings_dict['parsing_finances'] = parsing_setting.parsing_chain_includes_finances
+        settings_dict['parsing_matches'] = parsing_setting.parsing_chain_includes_matches
+        settings_dict['parsing_match_details'] = parsing_setting.parsing_chain_includes_match_details
+        settings_dict['parsing_stadium_details'] = parsing_setting.parsing_chain_includes_stadium_details
+
+        return self.render_json_response(settings_dict)
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, View):
+    def post(self, request):
+        parsing_setting, _ = ParsingSetting.objects.get_or_create(user=request.user)
+
+        parsing_player_statistics = self._validate_boolean(
+                request.POST.get('parsing_player_statistics',
+                                 default=parsing_setting.parsing_chain_includes_player_statistics))
+        parsing_awp_boundaries = self._validate_boolean(
+                request.POST.get('parsing_awp_boundaries',
+                                 default=parsing_setting.parsing_chain_includes_awp_boundaries))
+        parsing_finances = self._validate_boolean(
+                request.POST.get('parsing_finances',
+                                 default=parsing_setting.parsing_chain_includes_finances))
+        parsing_matches = self._validate_boolean(
+                request.POST.get('parsing_matches',
+                                 default=parsing_setting.parsing_chain_includes_matches))
+        parsing_match_details = self._validate_boolean(
+                request.POST.get('parsing_match_details',
+                                 default=parsing_setting.parsing_chain_includes_match_details))
+        parsing_stadium_details = self._validate_boolean(
+                request.POST.get('parsing_stadium_details',
+                                 default=parsing_setting.parsing_chain_includes_stadium_details))
+
+        if not parsing_matches:
+            parsing_match_details = False
+            parsing_stadium_details = False
+
+        if not parsing_match_details:
+            parsing_stadium_details = False
+
+        parsing_setting.parsing_chain_includes_player_statistics = parsing_player_statistics
+        parsing_setting.parsing_chain_includes_awp_boundaries = parsing_awp_boundaries
+        parsing_setting.parsing_chain_includes_finances = parsing_finances
+        parsing_setting.parsing_chain_includes_matches = parsing_matches
+        parsing_setting.parsing_chain_includes_match_details = parsing_match_details
+        parsing_setting.parsing_chain_includes_stadium_details = parsing_stadium_details
+        parsing_setting.save()
+
+        return self.render_json_response({'success': True})
+
+    @staticmethod
+    def _validate_boolean(value):
+        if value == 'true':
+            return True
+        elif value == 'false':
+            return False
+        else:
+            return value

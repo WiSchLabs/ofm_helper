@@ -1,7 +1,9 @@
 from django.test import TestCase
 
-from core.factories.core_factories import FinanceFactory, MatchdayFactory, MatchFactory, \
-                                          PlayerStatisticsFactory, QuarterFactory, SeasonFactory
+from core.factories.core_factories import FinanceFactory
+from core.factories.match_related_core_factories import MatchFactory
+from core.factories.matchday_related_core_factories import MatchdayFactory, QuarterFactory, SeasonFactory
+from core.factories.player_related_core_factories import PlayerStatisticsFactory
 from core.models import Matchday
 from users.models import OFMUser
 
