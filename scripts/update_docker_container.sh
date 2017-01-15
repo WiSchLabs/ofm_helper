@@ -16,7 +16,7 @@ do
     if [ "$RUNNING" != "$LATEST" ];then
         echo "Upgrading $NAME"
 
-        docker-compose stop web
+        docker-compose stop django
         docker-compose up -d
 
         echo "Migrating database"
