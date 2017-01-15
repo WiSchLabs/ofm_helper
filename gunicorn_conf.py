@@ -5,3 +5,4 @@ reload = True
 
 workers = 2 * cpu_count() + 1
 worker_class = 'eventlet'
+threads = 2 * cpu_count()
