@@ -302,6 +302,36 @@ class ChecklistSettingsTestCase(TestCase):
             name='on 6th matchday',
             to_be_checked_on_matchdays='6,9'
         )
+        c6 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on 6th matchday',
+            to_be_checked_on_matchdays='6,9',
+            is_inversed=True
+        )
+        c7 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on 9th matchday',
+            to_be_checked_on_matchdays='9',
+            is_inversed=True
+        )
+        c8 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on every 6th matchday',
+            to_be_checked_on_matchday_pattern=6,
+            is_inversed=True
+        )
+        c9 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on every 9th matchday',
+            to_be_checked_on_matchday_pattern=9,
+            is_inversed=True
+        )
+        c10 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='if not tomorrow home_match',
+            to_be_checked_if_home_match_tomorrow=True,
+            is_inversed=True
+        )
 
         response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
@@ -314,6 +344,11 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue(c3.id in returned_checklist_item_ids)
         self.assertTrue(c4.id not in returned_checklist_item_ids)
         self.assertTrue(c5.id in returned_checklist_item_ids)
+        self.assertTrue(c6.id not in returned_checklist_item_ids)
+        self.assertTrue(c7.id in returned_checklist_item_ids)
+        self.assertTrue(c8.id not in returned_checklist_item_ids)
+        self.assertTrue(c9.id in returned_checklist_item_ids)
+        self.assertTrue(c10.id in returned_checklist_item_ids)
 
     def test_get_checklist_items_for_today_if_tomorrow_home_match(self):
         matchday2 = MatchdayFactory.create(number=7)
@@ -340,6 +375,12 @@ class ChecklistSettingsTestCase(TestCase):
             name='if tomorrow home_match',
             to_be_checked_if_home_match_tomorrow=True
         )
+        c5 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='if not tomorrow home_match',
+            to_be_checked_if_home_match_tomorrow=True,
+            is_inversed=True
+        )
 
         response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
@@ -351,3 +392,4 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue(c2.id in returned_checklist_item_ids)
         self.assertTrue(c3.id not in returned_checklist_item_ids)
         self.assertTrue(c4.id in returned_checklist_item_ids)
+        self.assertTrue(c5.id not in returned_checklist_item_ids)
