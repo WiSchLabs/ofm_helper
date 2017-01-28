@@ -22,3 +22,13 @@ function get_cookie(cname) {
     }
     return "";
 }
+
+function checkItem(item) {
+    item.addClass('glyphicon-check');
+    item.removeClass('glyphicon-unchecked');
+}
+
+function uncheckItem(item) {
+    item.removeClass('glyphicon-check');
+    item.addClass('glyphicon-unchecked');
+}

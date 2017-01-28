@@ -53,10 +53,11 @@ $('document').ready( function (){
         }
         if (item['type_home_match']) { active_item_type = item_types.filter('.home_match'); }
         active_item_type.addClass('active');
-        if (item['is_inversed']) {
-            new_checklist_item.find('.checklist_item_inversion').removeClass('glyphicon-unchecked');
-            new_checklist_item.find('.checklist_item_inversion').addClass('glyphicon-check');
-        }
+
+        var checklist_item_inversion = new_checklist_item.find('.checklist_item_inversion');
+        if (item_types.filter('.everyday').hasClass('active')) { checklist_item_inversion.parent().addClass('hide'); }
+        if (item['is_inversed']) { checkItem(checklist_item_inversion); }
+
         new_checklist_item.find('.current_type').html(active_item_type.find('a').html());
         new_checklist_item.animate({opacity:1}, 'fast');
         new_checklist_item.removeClass('new');
@@ -197,6 +198,7 @@ $('document').ready( function (){
         }, 200);
     });
 
+    /* change checklist item condition */
     $('#checklist_items').on('click', '.checklist_type a', function(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -211,6 +213,9 @@ $('document').ready( function (){
         var matchday_pattern_input = checklist_item.find('.checklist_item_matchday_pattern');
         matchdays_input.addClass('hide');
         matchday_pattern_input.addClass('hide');
+
+        var checklist_item_inversion = checklist_item.find('.checklist_item_inversion');
+            checklist_item_inversion.parent().removeClass('hide');
 
         var params = {
             checklist_item_id: checklist_item.attr('id')
@@ -228,6 +233,7 @@ $('document').ready( function (){
         }
         else {
             params['checklist_item_everyday'] = true;
+            checklist_item_inversion.parent().addClass('hide');
         }
 
         $.post("/checklist/update_checklist_item_condition", params);
