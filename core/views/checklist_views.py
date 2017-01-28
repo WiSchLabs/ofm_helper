@@ -63,9 +63,9 @@ class GetChecklistItemsForTodayView(JSONResponseMixin, View):
         checklist_items_this_matchday = [c for c
                                          in checklist_items_this_matchday
                                          if xor(
-                                            current_matchday.number in
-                                            [int(x) for x in c.to_be_checked_on_matchdays.split(',')],
-                                            c.is_inversed
+                                                current_matchday.number in
+                                                [int(x) for x in c.to_be_checked_on_matchdays.split(',')],
+                                                c.is_inversed
                                          )]
         return checklist_items_this_matchday
 
