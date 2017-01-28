@@ -169,7 +169,7 @@ class UpdateChecklistItemConditionInversionView(CsrfExemptMixin, JSONResponseMix
         checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
 
         if checklist_item:
-            checklist_item.is_inversed = checklist_item_inversion
+            checklist_item.is_inversed = _validate_boolean(checklist_item_inversion)
             checklist_item.save()
             return self.render_json_response({'success': True})
 
@@ -201,3 +201,12 @@ def _get_checklist_item_in_json(checklist_item):
     checklist_item_json['is_inversed'] = checklist_item.is_inversed
 
     return checklist_item_json
+
+
+def _validate_boolean(value):
+    if value == 'true':
+        return True
+    elif value == 'false':
+        return False
+    else:
+        return value
