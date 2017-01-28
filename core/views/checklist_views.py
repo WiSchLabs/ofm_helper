@@ -62,9 +62,11 @@ class GetChecklistItemsForTodayView(JSONResponseMixin, View):
         )
         checklist_items_this_matchday = [c for c
                                          in checklist_items_this_matchday
-                                         if bool(current_matchday.number in
-                                                 [int(x) for x in c.to_be_checked_on_matchdays.split(',')])
-                                         ^ bool(c.is_inversed)]
+                                         if xor(
+                                            current_matchday.number in
+                                            [int(x) for x in c.to_be_checked_on_matchdays.split(',')],
+                                            c.is_inversed
+                                         )]
         return checklist_items_this_matchday
 
     @staticmethod
@@ -86,8 +88,10 @@ class GetChecklistItemsForTodayView(JSONResponseMixin, View):
         )
         checklist_items_matchday_pattern = [c for c
                                             in checklist_items_matchday_pattern_pre
-                                            if bool(current_matchday.number % c.to_be_checked_on_matchday_pattern == 0)
-                                            ^ bool(c.is_inversed)]
+                                            if xor(
+                                                current_matchday.number % c.to_be_checked_on_matchday_pattern == 0,
+                                                c.is_inversed
+                                            )]
         return checklist_items_matchday_pattern
 
 
@@ -234,3 +238,7 @@ def _validate_boolean(value):
         return False
     else:
         return value
+
+
+def xor(a, b):
+    return bool(a) ^ bool(b)
