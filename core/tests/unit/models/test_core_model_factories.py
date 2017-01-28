@@ -45,6 +45,7 @@ class CoreModelFactoriesTest(TestCase):
         self.assertTrue(cli.to_be_checked_on_matchdays is None)
         self.assertTrue(cli.to_be_checked_on_matchday_pattern is None)
         self.assertFalse(cli.to_be_checked_if_home_match_tomorrow)
+        self.assertTrue(cli.is_inversed)
 
     def test_create_parsing_setting(self):
         ps = ParsingSettingFactory.create()

@@ -54,6 +54,7 @@ class ChecklistItemFactory(factory.django.DjangoModelFactory):
     to_be_checked_on_matchdays = None
     to_be_checked_on_matchday_pattern = None
     to_be_checked_if_home_match_tomorrow = False
+    is_inversed = False
 
 
 class ParsingSettingFactory(factory.django.DjangoModelFactory):
