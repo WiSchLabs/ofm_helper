@@ -42,11 +42,13 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue('checked' in returned_json_data[0])
         self.assertEqual(returned_json_data[0]['name'], 'do more unit tests')
         self.assertEqual(returned_json_data[0]['checked'], False)
+        self.assertEqual(returned_json_data[0]['is_inversed'], False)
 
     def test_create_standard_checklist_item(self):
         self.client.login(username='second', password='second')
         response = self.client.get(reverse('core:checklist:add_checklist_item'))
         self.assertEqual(response.status_code, 200)
+
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data)
         self.assertTrue('name' in returned_json_data)
@@ -54,6 +56,7 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertNotEqual(returned_json_data['name'], 'do more unit tests')
         self.assertNotEqual(returned_json_data['name'], 'do less unit tests')
         self.assertEqual(returned_json_data['checked'], False)
+        self.assertEqual(returned_json_data['is_inversed'], False)
 
     def test_update_checklist_item_name(self):
         self.client.login(username='temporary', password='temporary')
@@ -225,6 +228,40 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(ChecklistItem.objects.get(id=third_item.id).priority, 0)
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).priority, 1)
         self.assertEqual(ChecklistItem.objects.get(id=second_item.id).priority, 2)
+
+    def test_update_checklist_item_inversion_true(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition_inversion'),
+                                    {'checklist_item_id': self.checklist_item.id,
+                                     'checklist_item_inversion': True
+                                     })
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(ChecklistItem.objects.get(id=self.checklist_item.id).is_inversed)
+
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('id' in returned_json_data[0])
+        self.assertTrue('name' in returned_json_data[0])
+        self.assertTrue('checked' in returned_json_data[0])
+        self.assertEqual(returned_json_data[0]['is_inversed'], True)
+
+    def test_update_checklist_item_inversion_false(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition_inversion'),
+                                    {'checklist_item_id': self.checklist_item.id,
+                                     'checklist_item_inversion': False
+                                     })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(ChecklistItem.objects.get(id=self.checklist_item.id).is_inversed)
+
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('id' in returned_json_data[0])
+        self.assertTrue('name' in returned_json_data[0])
+        self.assertTrue('checked' in returned_json_data[0])
+        self.assertEqual(returned_json_data[0]['is_inversed'], False)
 
     def test_delete_checklist_item(self):
         self.client.login(username='temporary', password='temporary')

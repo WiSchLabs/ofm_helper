@@ -161,6 +161,22 @@ class UpdateChecklistItemConditionView(CsrfExemptMixin, JSONResponseMixin, View)
 
 
 @method_decorator(login_required, name='dispatch')
+class UpdateChecklistItemConditionInversionView(CsrfExemptMixin, JSONResponseMixin, View):
+    def post(self, request):
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item_inversion = request.POST.get('checklist_item_inversion')
+
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+
+        if checklist_item:
+            checklist_item.is_inversed = checklist_item_inversion
+            checklist_item.save()
+            return self.render_json_response({'success': True})
+
+        return self.render_json_response({'success': False})
+
+
+@method_decorator(login_required, name='dispatch')
 class DeleteChecklistItemView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
@@ -182,5 +198,6 @@ def _get_checklist_item_in_json(checklist_item):
     if checklist_item.to_be_checked_on_matchday_pattern is not None:
         checklist_item_json['type_matchday_pattern'] = checklist_item.to_be_checked_on_matchday_pattern
     checklist_item_json['checked'] = checklist_item.last_checked_on_matchday == Matchday.get_current()
+    checklist_item_json['is_inversed'] = checklist_item.is_inversed
 
     return checklist_item_json
