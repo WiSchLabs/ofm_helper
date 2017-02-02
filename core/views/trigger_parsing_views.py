@@ -69,3 +69,11 @@ def trigger_match_parsing(request):
     pm = ParserManager()
     redirect_to = 'core:ofm:matches_overview'
     return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)
+
+
+def trigger_transfer_download(request, matchday=None):
+    site_manager = SiteManager(request.user)
+    site_manager.login()
+    site_manager.download_transfer_excel(matchday)
+
+    return redirect('core:ofm:player_statistics')

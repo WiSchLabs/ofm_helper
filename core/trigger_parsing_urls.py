@@ -16,4 +16,6 @@ urlpatterns = [
         name='trigger_finances_parsing'),
     url(r'^trigger_match_parsing/?$', core.views.trigger_parsing_views.trigger_match_parsing,
         name='trigger_match_parsing'),
+    url(r'^trigger_transfer_download/?$', core.views.trigger_parsing_views.trigger_transfer_download,
+        name='trigger_transfer_download'),
 ]

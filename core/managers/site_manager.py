@@ -42,6 +42,14 @@ class SiteManager:
         self.browser.close()
         self.browser.quit()
 
+    def download_transfer_excel(self, matchday=None):
+        if not matchday:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
+        else:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
+
+        print(self.browser.page_source)
+
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
             from pyvirtualdisplay import Display
