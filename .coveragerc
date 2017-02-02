@@ -1,5 +1,5 @@
 [report]
-omit =  
+omit =
     */python?.?/*
     */site-packages/nose/*
     */migrations/*
@@ -8,6 +8,7 @@ omit =
     */wsgi*
     *__init__*
     manage.py
+    gunicorn_conf.py
     *settings*
 
 exclude_lines =
