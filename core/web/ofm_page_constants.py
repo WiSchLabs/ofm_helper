@@ -33,7 +33,7 @@ class Constants:
         AWP_CALCULATOR = 'http://www.onlinefussballmanager.de/010_transfer/awp_rechner_noplus.php'
         MARKET_VALUES = 'http://www.onlinefussballmanager.de/transfer/marketvalues.php'
         DOWNLOAD_TRANSFERS = 'http://www.onlinefussballmanager.de/transfer/spielerwechsel_export.php'
-        DOWNLOAD_TRANSFERS_FROM_MATCHDAY = 'http://www.onlinefussballmanager.de/transfer/spielerwechsel_export.php?select_spieltag={}&seite=alle'
+        DOWNLOAD_TRANSFERS_FROM_MATCHDAY = 'http://www.onlinefussballmanager.de/transfer/spielerwechsel_export.php?select_spieltag={}&seite=alle'  # pylint: disable=line-too-long
 
     class Stadium:
         OVERVIEW = 'http://www.onlinefussballmanager.de/stadium/stadium.php'
