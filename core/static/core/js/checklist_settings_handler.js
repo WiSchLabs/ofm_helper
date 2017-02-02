@@ -21,14 +21,18 @@ $('document').ready( function (){
                 "</div>" +
                 "<span class='current_type'></span>" +
                 "<div class='checklist_item_matchdays hide' data-toggle='tooltip' title='Komma-getrennte List, z.B. 3,6,7'>" +
-                    "<input class='form-control' type='text' name'" + item['id'] + "_matchdays' value='0' min='0' max='34' maxlength='255'> " +
+                    "<input class='form-control' type='text' name='" + item['id'] + "_matchdays' value='0' min='0' max='34' maxlength='255'> " +
                 "</div>" +
                 "<div class='input-group spinner checklist_item_matchday_pattern hide' data-toggle='tooltip' title='z.B. 5 heißt: 5, 10, 15, etc.'>" +
-                    "<input class='form-control' type='number' name'" + item['id'] + "_matchday_pattern' value='1' min='1' max='17'>" +
+                    "<input class='form-control' type='number' name='" + item['id'] + "_matchday_pattern' value='1' min='1' max='17'>" +
                     "<div class='input-group-btn-vertical'>" +
                         "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-top'></i></button>" +
                         "<button class='btn btn-default' type='button'><i class='glyphicon glyphicon-triangle-bottom'></i></button>" +
                     "</div>" +
+                "</div>" +
+                "<div class='checklist_item_inversion_container'>" +
+                    "<span class='checklist_item_inversion glyphicon glyphicon-unchecked' id='" + item['id'] + "_inversion'></span>" +
+                    "Bedingung invertieren" +
                 "</div>" +
             "</div>"
         );
@@ -49,6 +53,11 @@ $('document').ready( function (){
         }
         if (item['type_home_match']) { active_item_type = item_types.filter('.home_match'); }
         active_item_type.addClass('active');
+
+        var checklist_item_inversion = new_checklist_item.find('.checklist_item_inversion');
+        if (item_types.filter('.everyday').hasClass('active')) { checklist_item_inversion.parent().addClass('hide'); }
+        if (item['is_inversed']) { checkItem(checklist_item_inversion); }
+
         new_checklist_item.find('.current_type').html(active_item_type.find('a').html());
         new_checklist_item.animate({opacity:1}, 'fast');
         new_checklist_item.removeClass('new');
@@ -189,6 +198,7 @@ $('document').ready( function (){
         }, 200);
     });
 
+    /* change checklist item condition */
     $('#checklist_items').on('click', '.checklist_type a', function(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -203,6 +213,9 @@ $('document').ready( function (){
         var matchday_pattern_input = checklist_item.find('.checklist_item_matchday_pattern');
         matchdays_input.addClass('hide');
         matchday_pattern_input.addClass('hide');
+
+        var checklist_item_inversion = checklist_item.find('.checklist_item_inversion');
+            checklist_item_inversion.parent().removeClass('hide');
 
         var params = {
             checklist_item_id: checklist_item.attr('id')
@@ -220,9 +233,29 @@ $('document').ready( function (){
         }
         else {
             params['checklist_item_everyday'] = true;
+            checklist_item_inversion.parent().addClass('hide');
         }
 
         $.post("/checklist/update_checklist_item_condition", params);
+    });
+
+    $('#checklist_items').on('click', '.checklist_item_inversion_container', function() {
+        var checklistItemInversion = $(this).find('.checklist_item_inversion');
+        var checklistItemInversionGotChecked = checklistItemInversion.hasClass("glyphicon-unchecked");
+
+        var checklist_item = $(this).closest('.checklist_item_container');
+        var params = {
+            checklist_item_id: checklist_item.attr('id'),
+            checklist_item_inversion: checklistItemInversionGotChecked
+        };
+        $.post("/checklist/update_checklist_item_condition_inversion", params);
+
+        if (checklistItemInversionGotChecked) {
+            checkItem(checklistItemInversion);
+        } else {
+            uncheckItem(checklistItemInversion);
+        }
+
     });
 
 

@@ -27,44 +27,72 @@ class GetChecklistItemsForTodayView(JSONResponseMixin, View):
             matchday__number=current_matchday.number + 1,
             is_home_match=True
         )
-        checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
-        checklist_items_everyday = checklist_items.filter(
-            to_be_checked_on_matchdays=None,
-            to_be_checked_on_matchday_pattern=None,
-            to_be_checked_if_home_match_tomorrow=False
-        )
+
         filtered_checklist_items = []
-        filtered_checklist_items.extend(checklist_items_everyday)
-        checklist_items_this_matchday = checklist_items.filter(
-            to_be_checked_on_matchdays__isnull=False,
-            to_be_checked_on_matchday_pattern=None,
-            to_be_checked_if_home_match_tomorrow=False
-        )
-        filtered_checklist_items.extend([c for c in checklist_items_this_matchday if
-                                         current_matchday.number in [int(x) for x in
-                                                                     c.to_be_checked_on_matchdays.split(',')]])
-        if home_match_tomorrow:
-            checklist_items_home_match = checklist_items.filter(
-                to_be_checked_on_matchdays=None,
-                to_be_checked_on_matchday_pattern=None,
-                to_be_checked_if_home_match_tomorrow=True
-            )
-            filtered_checklist_items.extend(checklist_items_home_match)
+        checklist_items = ChecklistItem.objects.filter(checklist__user=request.user)
+
+        filtered_checklist_items.extend(self.get_checklist_items_everyday(checklist_items))
+        filtered_checklist_items.extend(self.get_checklist_items_this_matchday(checklist_items, current_matchday))
+        filtered_checklist_items.extend(self.get_checklist_items_home_match(checklist_items, not home_match_tomorrow))
+
         if current_matchday.number > 0:
-            checklist_items_matchday_pattern_pre = checklist_items.filter(
-                to_be_checked_on_matchdays=None,
-                to_be_checked_on_matchday_pattern__isnull=False,
-                to_be_checked_if_home_match_tomorrow=False
-            )
-            checklist_items_matchday_pattern = [c for c
-                                                in checklist_items_matchday_pattern_pre
-                                                if current_matchday.number % c.to_be_checked_on_matchday_pattern == 0]
-            filtered_checklist_items.extend(checklist_items_matchday_pattern)
+            filtered_checklist_items.extend(self.get_checklist_items_matchday_pattern(checklist_items,
+                                                                                      current_matchday))
 
         sorted_checklist_items = sorted(filtered_checklist_items, key=lambda x: x.priority, reverse=False)
         checklist_items_json = [_get_checklist_item_in_json(item) for item in sorted_checklist_items]
 
         return self.render_json_response(checklist_items_json)
+
+    @staticmethod
+    def get_checklist_items_everyday(checklist_items):
+        checklist_items_everyday = checklist_items.filter(
+            to_be_checked_on_matchdays=None,
+            to_be_checked_on_matchday_pattern=None,
+            to_be_checked_if_home_match_tomorrow=False
+        )
+        return checklist_items_everyday
+
+    @staticmethod
+    def get_checklist_items_this_matchday(checklist_items, current_matchday):
+        checklist_items_this_matchday = checklist_items.filter(
+            to_be_checked_on_matchdays__isnull=False,
+            to_be_checked_on_matchday_pattern=None,
+            to_be_checked_if_home_match_tomorrow=False
+        )
+        checklist_items_this_matchday = [c for c
+                                         in checklist_items_this_matchday
+                                         if xor(
+                                                current_matchday.number in
+                                                [int(x) for x in c.to_be_checked_on_matchdays.split(',')],
+                                                c.is_inversed
+                                         )]
+        return checklist_items_this_matchday
+
+    @staticmethod
+    def get_checklist_items_home_match(checklist_items, inversion):
+        checklist_items_home_match = checklist_items.filter(
+            to_be_checked_on_matchdays=None,
+            to_be_checked_on_matchday_pattern=None,
+            to_be_checked_if_home_match_tomorrow=True,
+            is_inversed=inversion
+        )
+        return checklist_items_home_match
+
+    @staticmethod
+    def get_checklist_items_matchday_pattern(checklist_items, current_matchday):
+        checklist_items_matchday_pattern_pre = checklist_items.filter(
+            to_be_checked_on_matchdays=None,
+            to_be_checked_on_matchday_pattern__isnull=False,
+            to_be_checked_if_home_match_tomorrow=False
+        )
+        checklist_items_matchday_pattern = [c for c
+                                            in checklist_items_matchday_pattern_pre
+                                            if xor(
+                                                current_matchday.number % c.to_be_checked_on_matchday_pattern == 0,
+                                                c.is_inversed
+                                            )]
+        return checklist_items_matchday_pattern
 
 
 @method_decorator(login_required, name='dispatch')
@@ -161,6 +189,22 @@ class UpdateChecklistItemConditionView(CsrfExemptMixin, JSONResponseMixin, View)
 
 
 @method_decorator(login_required, name='dispatch')
+class UpdateChecklistItemConditionInversionView(CsrfExemptMixin, JSONResponseMixin, View):
+    def post(self, request):
+        checklist_item_id = request.POST.get('checklist_item_id')
+        checklist_item_inversion = request.POST.get('checklist_item_inversion')
+
+        checklist_item = ChecklistItem.objects.get(checklist__user=request.user, id=checklist_item_id)
+
+        if checklist_item:
+            checklist_item.is_inversed = _validate_boolean(checklist_item_inversion)
+            checklist_item.save()
+            return self.render_json_response({'success': True})
+
+        return self.render_json_response({'success': False})
+
+
+@method_decorator(login_required, name='dispatch')
 class DeleteChecklistItemView(CsrfExemptMixin, JSONResponseMixin, View):
     def post(self, request):
         checklist_item_id = request.POST.get('checklist_item_id')
@@ -182,5 +226,19 @@ def _get_checklist_item_in_json(checklist_item):
     if checklist_item.to_be_checked_on_matchday_pattern is not None:
         checklist_item_json['type_matchday_pattern'] = checklist_item.to_be_checked_on_matchday_pattern
     checklist_item_json['checked'] = checklist_item.last_checked_on_matchday == Matchday.get_current()
+    checklist_item_json['is_inversed'] = checklist_item.is_inversed
 
     return checklist_item_json
+
+
+def _validate_boolean(value):
+    if value == 'true':
+        return True
+    elif value == 'false':
+        return False
+    else:
+        return value
+
+
+def xor(a, b):
+    return bool(a) ^ bool(b)
