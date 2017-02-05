@@ -8,3 +8,7 @@ django-encrypted-fields
 django-braces
 django-extensions
 werkzeug
+matplotlib
+numpy
+pandas
+pandas-datareader

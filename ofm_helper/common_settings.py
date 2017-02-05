@@ -153,3 +153,5 @@ LOGOUT_REDIRECT_URL = '/'
 USE_DISPLAY_FOR_AWS = False
 
 PHANTOMJS_REMOTE = False
+
+TRANSFERS_DIR = 'ofm_transfer_data'

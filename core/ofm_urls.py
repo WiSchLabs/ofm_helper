@@ -1,5 +1,6 @@
 from django.conf.urls import url
 
+from core.views.ofm import plotting_views
 from core.views.ofm.base_views import GetCurrentMatchdayView
 from core.views.ofm.finance_views import FinanceBalanceChartView, FinanceDataView, FinanceExpensesChartView, \
                                          FinanceIncomeChartView, FinancesAsJsonView
@@ -35,4 +36,6 @@ urlpatterns = [
         name='stadium_stand_statistics_chart_json'),
 
     url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
+
+    url(r'^foobar/?$', plotting_views.render_plot, name='plot'),
 ]
