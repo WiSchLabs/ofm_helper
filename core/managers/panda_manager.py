@@ -20,6 +20,10 @@ class TransferFilter(AttrDict):
             self.seasons = None
         if not hasattr(self, 'matchdays'):
             self.matchdays = None
+        if not hasattr(self, 'min_price'):
+            self.min_price = None
+        if not hasattr(self, 'max_price'):
+            self.max_price = None
 
 
 class PandaManager:
@@ -45,6 +49,10 @@ class PandaManager:
                 filtered_df = filtered_df[filtered_df.Season.isin(transfer_filter.seasons)]
             if transfer_filter.matchdays:
                 filtered_df = filtered_df[filtered_df.Matchday.isin(transfer_filter.matchdays)]
+            if transfer_filter.min_price:
+                filtered_df = filtered_df[filtered_df.Price >= transfer_filter.min_price]
+            if transfer_filter.max_price:
+                filtered_df = filtered_df[filtered_df.Price <= transfer_filter.max_price]
             return filtered_df
         else:
             return self.data_frame
