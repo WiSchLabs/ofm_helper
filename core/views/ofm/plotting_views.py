@@ -1,7 +1,10 @@
 import matplotlib.ticker as mtick
 import numpy
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
 from matplotlib import pyplot
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
@@ -29,3 +32,8 @@ def render_plot(request):
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
     return response
+
+
+@method_decorator(login_required, name='dispatch')
+class TransfersView(TemplateView):
+    template_name = 'core/ofm/transfers.html'

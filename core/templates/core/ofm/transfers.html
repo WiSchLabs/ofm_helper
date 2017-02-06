@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    {% load staticfiles %}
+
+    <h1 class="page-header">
+        Transfers
+    </h1>
+
+    <img id="transfers_image"
+         src="{% url 'core:ofm:render_plot' %}"
+         style="max-width: 100%; max-height: 100%"
+         alt="transfers"
+    >
+{% endblock %}

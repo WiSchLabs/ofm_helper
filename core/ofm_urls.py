@@ -37,5 +37,6 @@ urlpatterns = [
 
     url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
 
-    url(r'^foobar/?$', plotting_views.render_plot, name='plot'),
+    url(r'^render_plot/?$', plotting_views.render_plot, name='render_plot'),
+    url(r'^transfers/?$', plotting_views.TransfersView.as_view(), name='transfers'),
 ]
