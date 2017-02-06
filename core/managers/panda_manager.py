@@ -2,15 +2,27 @@ import os
 
 import numpy as np
 import pandas as pd
-from matplotlib import style
+from attrdict import AttrDict
 
 from ofm_helper.common_settings import TRANSFERS_DIR
 
-style.use('ggplot')
+
+class TransferFilter(AttrDict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not hasattr(self, 'positions'):
+            self.positions = None
+        if not hasattr(self, 'ages'):
+            self.ages = None
+        if not hasattr(self, 'strengths'):
+            self.strengths = None
+        if not hasattr(self, 'seasons'):
+            self.seasons = None
+        if not hasattr(self, 'matchdays'):
+            self.matchdays = None
 
 
 class PandaManager:
-
     def __init__(self):
         self.data_frame = self._load_data()
 
@@ -21,6 +33,7 @@ class PandaManager:
 
     def filter_transfers(self, transfer_filter=None):
         filtered_df = self.get_data().copy()
+
         if transfer_filter:
             if transfer_filter.positions:
                 filtered_df = filtered_df[filtered_df.Position.isin(transfer_filter.positions)]
@@ -36,21 +49,8 @@ class PandaManager:
         else:
             return self.data_frame
 
-    def get_prices_grouped_by_strength(self, position='MS', age=33):
-        transfer_filter = TransferFilter(positions=[position], ages=[age])
-        df = self.filter_transfers(transfer_filter)
-
-        return df.groupby('Strength').Price
-
-    def get_prices_grouped_by_age(self, position='MS', strength=16):
-        transfer_filter = TransferFilter(positions=[position], strengths=[strength])
-        df = self.filter_transfers(transfer_filter)
-
-        return df.groupby('Age').Price
-
-    def get_grouped_prices(self, group_by='Strength', transfer_filter=TransferFilter()):
-        df = self.filter_transfers(transfer_filter)
-
+    def get_grouped_prices(self, group_by='Strength', **kwargs):
+        df = self.filter_transfers(TransferFilter(**kwargs))
         return df.groupby(group_by).Price
 
     def _load_data(self):
@@ -78,16 +78,3 @@ class PandaManager:
                     self.data_frame = self.data_frame.append(df)
 
         return self.data_frame
-
-
-class TransferFilter:
-    def __init__(self, *kwargs):
-        if kwargs:
-            for kwarg in kwargs:
-                self.kwarg = kwarg
-        else:
-            self.positions = None
-            self.ages = None
-            self.strengths = None
-            self.seasons = None
-            self.matchdays = None

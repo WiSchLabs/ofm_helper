@@ -12,3 +12,4 @@ matplotlib
 numpy
 pandas
 pandas-datareader
+attrdict

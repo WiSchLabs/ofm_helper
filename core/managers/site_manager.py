@@ -18,8 +18,6 @@ class SiteManager:
         else:
             self.browser = webdriver.PhantomJS()
 
-        #self.browser = webdriver.Remote(Constants.BASE, webdriver.DesiredCapabilities.HTMLUNIT.copy())
-
         self._handle_aws_display_bug()
 
         if self.user:
@@ -50,15 +48,7 @@ class SiteManager:
         else:
             self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
 
-        #time.sleep(5)
-        #self.browser.switchTo().alert().accept()
-        #self.browser.execute_script("window.confirm = function(msg) { return true; }")
-        self.browser.execute_script("console.log(window.confirm)")
         self.browser.execute_script("window.confirm = function(){return true;}")
-
-        #Alert(self.browser).accept()
-
-        print(self.browser.page_source)
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
