@@ -65,7 +65,7 @@ class PandaManager:
         self.data_frame = pd.DataFrame()
         for file in os.listdir(TRANSFERS_DIR):
             if file.endswith('csv'):
-                df = pd.read_csv('{}/{}'.format(TRANSFERS_DIR, file),
+                df = pd.read_csv(os.path.join(TRANSFERS_DIR, file),
                                  index_col=0,
                                  dtype={7: np.int32, 8: np.int32, 9: np.int32},
                                  skip_blank_lines=True,

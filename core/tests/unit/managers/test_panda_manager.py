@@ -67,7 +67,7 @@ class PandaManagerTest(TestCase):
         test_df = df.Strength.isin([17, 18])
         self.assertTrue(test_df.all())
 
-    def test_filter_for_single_seasons(self):
+    def test_filter_for_single_season(self):
         tf = TransferFilter(seasons=[146])
         df = self.panda_manager.filter_transfers(tf)
         test_df = df.Season == 146
