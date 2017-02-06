@@ -43,6 +43,42 @@ class PandaManagerTest(TestCase):
         test_df = df.Position.isin(['MS', 'TW'])
         self.assertTrue(test_df.all())
 
+    def test_filter_for_single_age(self):
+        tf = TransferFilter(ages=[33])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Age == 33
+        self.assertTrue(test_df.all())
+
+    def test_filter_for_multiple_ages(self):
+        tf = TransferFilter(ages=[32, 33])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Age.isin([32, 33])
+        self.assertTrue(test_df.all())
+
+    def test_filter_for_single_strength(self):
+        tf = TransferFilter(strengths=[17])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Strength == 17
+        self.assertTrue(test_df.all())
+
+    def test_filter_for_multiple_strengths(self):
+        tf = TransferFilter(strengths=[17, 18])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Strength.isin([17, 18])
+        self.assertTrue(test_df.all())
+
+    def test_filter_for_single_seasons(self):
+        tf = TransferFilter(seasons=[146])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Season == 146
+        self.assertTrue(test_df.all())
+
+    def test_filter_for_single_matchday(self):
+        tf = TransferFilter(matchdays=[0])
+        df = self.panda_manager.filter_transfers(tf)
+        test_df = df.Matchday == 0
+        self.assertTrue(test_df.all())
+
     def test_filter_for_min_price(self):
         min_price = 100000
         tf = TransferFilter(min_price=min_price)
