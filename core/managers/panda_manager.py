@@ -37,14 +37,21 @@ class PandaManager:
             return self.data_frame
 
     def get_prices_grouped_by_strength(self, position='MS', age=33):
-        df = self.filter_transfers(positions=[position], ages=[age])
+        transfer_filter = TransferFilter(positions=[position], ages=[age])
+        df = self.filter_transfers(transfer_filter)
 
         return df.groupby('Strength').Price
 
     def get_prices_grouped_by_age(self, position='MS', strength=16):
-        df = self.filter_transfers(positions=[position], strengths=[strength])
+        transfer_filter = TransferFilter(positions=[position], strengths=[strength])
+        df = self.filter_transfers(transfer_filter)
 
         return df.groupby('Age').Price
+
+    def get_grouped_prices(self, group_by='Strength', transfer_filter=TransferFilter()):
+        df = self.filter_transfers(transfer_filter)
+
+        return df.groupby(group_by).Price
 
     def _load_data(self):
         self.data_frame = pd.DataFrame()
