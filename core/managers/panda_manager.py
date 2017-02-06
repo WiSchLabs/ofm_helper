@@ -19,19 +19,22 @@ class PandaManager:
             self.data_frame = self._load_data()
         return self.data_frame
 
-    def filter_transfers(self, positions=None, ages=None, strengths=None, seasons=None, matchdays=None):
+    def filter_transfers(self, transfer_filter=None):
         filtered_df = self.get_data().copy()
-        if positions:
-            filtered_df = filtered_df[filtered_df.Position.isin(positions)]
-        if ages:
-            filtered_df = filtered_df[filtered_df.Age.isin(ages)]
-        if strengths:
-            filtered_df = filtered_df[filtered_df.Strength.isin(strengths)]
-        if seasons:
-            filtered_df = filtered_df[filtered_df.Season.isin(seasons)]
-        if matchdays:
-            filtered_df = filtered_df[filtered_df.Matchday.isin(matchdays)]
-        return filtered_df
+        if transfer_filter:
+            if transfer_filter.positions:
+                filtered_df = filtered_df[filtered_df.Position.isin(transfer_filter.positions)]
+            if transfer_filter.ages:
+                filtered_df = filtered_df[filtered_df.Age.isin(transfer_filter.ages)]
+            if transfer_filter.strengths:
+                filtered_df = filtered_df[filtered_df.Strength.isin(transfer_filter.strengths)]
+            if transfer_filter.seasons:
+                filtered_df = filtered_df[filtered_df.Season.isin(transfer_filter.seasons)]
+            if transfer_filter.matchdays:
+                filtered_df = filtered_df[filtered_df.Matchday.isin(transfer_filter.matchdays)]
+            return filtered_df
+        else:
+            return self.data_frame
 
     def get_prices_grouped_by_strength(self, position='MS', age=33):
         df = self.filter_transfers(positions=[position], ages=[age])
@@ -68,3 +71,16 @@ class PandaManager:
                     self.data_frame = self.data_frame.append(df)
 
         return self.data_frame
+
+
+class TransferFilter:
+    def __init__(self, *kwargs):
+        if kwargs:
+            for kwarg in kwargs:
+                self.kwarg = kwarg
+        else:
+            self.positions = None
+            self.ages = None
+            self.strengths = None
+            self.seasons = None
+            self.matchdays = None

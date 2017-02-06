@@ -1,4 +1,3 @@
-import matplotlib.ticker as mtick
 import numpy
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -6,7 +5,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from matplotlib import pyplot
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib import ticker
+from matplotlib.backends.backend_agg import FigureCanvas
 
 from core.managers.panda_manager import PandaManager
 
@@ -24,7 +24,7 @@ def render_plot(request):
     y = prices.mean()
     yerr = prices.std()
 
-    ax.yaxis.set_major_formatter(mtick.StrMethodFormatter('{x:,.0f}'))
+    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
 
     pyplot.errorbar(x, y, yerr=yerr, fmt='o')
 
