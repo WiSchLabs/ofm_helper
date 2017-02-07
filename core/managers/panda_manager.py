@@ -29,6 +29,8 @@ class TransferFilter(AttrDict):
 class PandaManager:
     def __init__(self):
         self.data_frame = self._load_data()
+        self.df_filterable_attributes = list(self.data_frame.columns.values)
+        self.df_filterable_attributes.remove('Price')
 
     def get_data(self):
         if self.data_frame is None or self.data_frame.empty:
@@ -39,16 +41,8 @@ class PandaManager:
         filtered_df = self.get_data().copy()
 
         if transfer_filter:
-            if transfer_filter.positions:
-                filtered_df = filtered_df[filtered_df.Position.isin(transfer_filter.positions)]
-            if transfer_filter.ages:
-                filtered_df = filtered_df[filtered_df.Age.isin(transfer_filter.ages)]
-            if transfer_filter.strengths:
-                filtered_df = filtered_df[filtered_df.Strength.isin(transfer_filter.strengths)]
-            if transfer_filter.seasons:
-                filtered_df = filtered_df[filtered_df.Season.isin(transfer_filter.seasons)]
-            if transfer_filter.matchdays:
-                filtered_df = filtered_df[filtered_df.Matchday.isin(transfer_filter.matchdays)]
+            for attribute in self.df_filterable_attributes:
+                filtered_df = self._filter_for(filtered_df, transfer_filter, attribute)
             if transfer_filter.min_price:
                 filtered_df = filtered_df[filtered_df.Price >= transfer_filter.min_price]
             if transfer_filter.max_price:
@@ -56,6 +50,14 @@ class PandaManager:
             return filtered_df
         else:
             return self.data_frame
+
+    @staticmethod
+    def _filter_for(data_frame, transfer_filter, attribute):
+        transfer_filter_attribute = str(attribute).lower()+'s'
+        if transfer_filter[transfer_filter_attribute]:
+            filtered_df = data_frame[data_frame[attribute].isin(transfer_filter[transfer_filter_attribute])]
+            return filtered_df
+        return data_frame
 
     def get_grouped_prices(self, group_by='Strength', **kwargs):
         df = self.filter_transfers(TransferFilter(**kwargs))
