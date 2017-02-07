@@ -18,7 +18,7 @@ style.use('ggplot')
 def render_plot(request):
     panda_manager = PandaManager()
 
-    prices = panda_manager.get_grouped_prices('Strength', positions=['MS'], ages=[33])
+    prices = panda_manager.get_grouped_prices('Strength', positions=['MS'], ages=[17])
 
     fig = pyplot.figure(figsize=(16, 9), dpi=120)
     ax = fig.add_subplot(111)

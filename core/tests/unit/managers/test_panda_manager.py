@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest import mock
 
 from django.test import TestCase
 
@@ -8,11 +8,8 @@ TESTDATA_PATH = 'core/tests/assets'
 
 
 class PandaManagerTest(TestCase):
-    @patch('core.managers.panda_manager')
-    def setUp(self, panda_manager_mock):
-        panda_manager_mock = PandaManager
-        panda_manager_mock.transfers_dir = TESTDATA_PATH
-
+    @mock.patch('core.managers.panda_manager.TRANSFERS_DIR', new=TESTDATA_PATH)
+    def setUp(self):
         self.panda_manager = PandaManager()
 
     def test_loading(self):
