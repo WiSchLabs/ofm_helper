@@ -13,7 +13,6 @@ class PandaManagerTest(TestCase):
         self.panda_manager = PandaManager()
 
     def test_loading(self):
-
         self.assertIsNotNone(self.panda_manager)
         self.assertIsNotNone(self.panda_manager.data_frame)
 
