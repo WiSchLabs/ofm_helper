@@ -1,6 +1,5 @@
 from django.conf.urls import url
 
-from core.views.ofm import plotting_views
 from core.views.ofm.base_views import GetCurrentMatchdayView
 from core.views.ofm.finance_views import FinanceBalanceChartView, FinanceDataView, FinanceExpensesChartView, \
                                          FinanceIncomeChartView, FinancesAsJsonView
@@ -9,10 +8,13 @@ from core.views.ofm.player_views import PlayerChartView, PlayerDetailView, Playe
                                         PlayerStatisticsView
 from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, \
                                          StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
+from core.views.ofm.transfers_views import render_plot, TransfersView
 
 app_name = 'ofm'
 
 urlpatterns = [
+    url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
+
     url(r'^player_statistics/?$', PlayerStatisticsView.as_view(), name='player_statistics'),
     url(r'^player_statistics_json/?$', PlayerStatisticsAsJsonView.as_view(), name='player_statistics_json'),
     url(r'^players/(?P<pk>[0-9]+)/?$', PlayerDetailView.as_view(), name='player_detail'),
@@ -35,8 +37,6 @@ urlpatterns = [
     url(r'^stadium_stand_chart_json/?$', StadiumStandStatisticsChartView.as_view(),
         name='stadium_stand_statistics_chart_json'),
 
-    url(r'^get_current_matchday/?$', GetCurrentMatchdayView.as_view(), name='get_current_matchday'),
-
-    url(r'^render_plot/?$', plotting_views.render_plot, name='render_plot'),
-    url(r'^transfers/?$', plotting_views.TransfersView.as_view(), name='transfers'),
+    url(r'^render_plot/?$', render_plot, name='render_plot'),
+    url(r'^transfers/?$', TransfersView.as_view(), name='transfers'),
 ]
