@@ -9,21 +9,11 @@ from ofm_helper.common_settings import TRANSFERS_DIR
 
 class TransferFilter(AttrDict):
     def __init__(self, *args, **kwargs):
+        filterable_attributes = ['positions', 'ages', 'strengths', 'seasons', 'matchdays', 'min_price', 'max_price']
         super().__init__(*args, **kwargs)
-        if not hasattr(self, 'positions'):
-            self.positions = None
-        if not hasattr(self, 'ages'):
-            self.ages = None
-        if not hasattr(self, 'strengths'):
-            self.strengths = None
-        if not hasattr(self, 'seasons'):
-            self.seasons = None
-        if not hasattr(self, 'matchdays'):
-            self.matchdays = None
-        if not hasattr(self, 'min_price'):
-            self.min_price = None
-        if not hasattr(self, 'max_price'):
-            self.max_price = None
+        for attribute in filterable_attributes:
+            if not hasattr(self, attribute):
+                self[attribute] = None
 
 
 class PandaManager:
