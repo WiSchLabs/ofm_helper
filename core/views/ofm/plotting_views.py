@@ -19,7 +19,7 @@ style.use('ggplot')
 def render_plot(request):
     panda_manager = PandaManager()
 
-    prices = panda_manager.get_grouped_prices('Strength', positions=['MS'], ages=[32], max_price=3*10**7)
+    prices = panda_manager.get_grouped_prices('Strength', positions=['MS'], ages=[32], max_price=3 * 10 ** 7)
 
     fig = pyplot.figure(figsize=(16, 9), dpi=120)
     ax = fig.add_subplot(1, 1, 1)
@@ -51,7 +51,7 @@ def _get_biggest_power_which_is_smaller_than_max_data(prices):
     i = 0
     while 10 ** i < max_price:
         i += 1
-    return 10 ** (i-2)
+    return 10 ** (i - 2)
 
 
 @method_decorator(login_required, name='dispatch')
