@@ -43,7 +43,7 @@ class PandaManager:
 
     @staticmethod
     def _filter_for(data_frame, transfer_filter, attribute):
-        transfer_filter_attribute = str(attribute).lower()+'s'
+        transfer_filter_attribute = str(attribute).lower() + 's'
         if transfer_filter[transfer_filter_attribute]:
             filtered_df = data_frame[data_frame[attribute].isin(transfer_filter[transfer_filter_attribute])]
             return filtered_df
