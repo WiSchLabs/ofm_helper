@@ -88,3 +88,16 @@ class PandaManagerTest(TestCase):
         df = self.panda_manager.filter_transfers(tf)
         test_df = df.Price <= max_price
         self.assertTrue(test_df.all())
+
+    def test_grouped_prices_default(self):
+        prices = self.panda_manager.get_grouped_prices()
+        self.assertEqual(prices.count().index.name, 'Strength')
+
+    def test_grouped_prices_by_age(self):
+        prices = self.panda_manager.get_grouped_prices('Age')
+        self.assertEqual(prices.count().index.name, 'Age')
+
+    def test_grouped_prices_by_age_with_filtered_age(self):
+        prices = self.panda_manager.get_grouped_prices('Age', ages=range(20, 37))
+        self.assertEqual(prices.count().index.name, 'Age')
+        self.assertEqual(prices.count().index.min(), 20)
