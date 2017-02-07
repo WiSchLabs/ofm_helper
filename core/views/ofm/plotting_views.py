@@ -8,7 +8,7 @@ from matplotlib import pyplot
 from matplotlib import style
 from matplotlib import ticker
 from matplotlib.backends.backend_agg import FigureCanvas
-from matplotlib.ticker import MultipleLocator
+from matplotlib.ticker import AutoMinorLocator
 
 from core.managers.panda_manager import PandaManager
 
@@ -28,9 +28,9 @@ def render_plot(request):
     y = prices.mean()
     y_error = prices.std()
 
-    ax.xaxis.set_major_locator(MultipleLocator(1))
+    pyplot.xticks(x)
     ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
-    ax.yaxis.set_minor_locator(MultipleLocator(_get_biggest_power_which_is_smaller_than_max_data(prices)))
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.tick_params(which='both', direction='out', length=4, width=1)
 
     ax.grid(which='minor', alpha=0.4)
@@ -44,14 +44,6 @@ def render_plot(request):
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
     return response
-
-
-def _get_biggest_power_which_is_smaller_than_max_data(prices):
-    max_price = prices.mean().max()
-    i = 0
-    while 10 ** i < max_price:
-        i += 1
-    return 10 ** (i - 2)
 
 
 @method_decorator(login_required, name='dispatch')
