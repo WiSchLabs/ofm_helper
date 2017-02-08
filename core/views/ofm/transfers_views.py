@@ -13,7 +13,7 @@ from matplotlib import ticker
 from matplotlib.backends.backend_agg import FigureCanvas
 from matplotlib.ticker import AutoMinorLocator
 
-from core.managers.panda_manager import PandaManager, TransferFilter
+from core.managers.panda_manager import PandaManager
 
 style.use('ggplot')
 
