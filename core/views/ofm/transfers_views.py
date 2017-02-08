@@ -54,28 +54,16 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     def get(self, request):
         group_by = request.GET.get('group_by', default='Age')
 
-        ages = request.GET.get('ages', default=None)
-        strengths = request.GET.get('strengths', default=None)
-        positions = request.GET.get('positions', default=None)
-        seasons = request.GET.get('seasons', default=None)
-        matchdays = request.GET.get('matchdays', default=None)
-        min_price = request.GET.get('min_price', default=None)
-        max_price = request.GET.get('max_price', default=None)
+        ages = self._to_int_list(request.GET.get('ages', default=None))
+        strengths = self._to_int_list(request.GET.get('strengths', default=None))
+        positions = self._to_list(request.GET.get('positions', default=None))
+        seasons = self._to_int_list(request.GET.get('seasons', default=None))
+        matchdays = self._to_int_list(request.GET.get('matchdays', default=None))
+        min_price = self._to_int(request.GET.get('min_price', default=None))
+        max_price = self._to_int(request.GET.get('max_price', default=None))
 
-        if ages:
-            ages = self._to_int_list(ages)
-        if strengths:
-            strengths = self._to_int_list(strengths)
-        if positions:
-            positions = self._to_list(positions)
-        if seasons:
-            seasons = self._to_int_list(seasons)
-        if matchdays:
-            matchdays = self._to_int_list(matchdays)
-        if min_price:
-            min_price = self._to_int(min_price)
-        if max_price:
-            max_price = self._to_int(max_price)
+        if positions == 'All':
+            positions = None
 
         panda_manager = PandaManager()
         prices = panda_manager.get_grouped_prices(group_by,
@@ -88,25 +76,11 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                                                   max_price=max_price,
                                                   )
 
-        mins = prices.min()
-        quantiles = prices.quantile([0.25, 0.75])
-        medians = prices.median()
-        maxs = prices.max()
-
-        data = []
-        for x_index in numpy.array(prices.mean().index):
-            data.append([float(mins[x_index]),
-                         float(quantiles[x_index][0.25]),
-                         float(medians[x_index]),
-                         float(quantiles[x_index][0.75]),
-                         float(maxs[x_index])
-                         ])
-
         chart_json = {
             "series": [
                 {
                     "name": 'Preise',
-                    "data": data
+                    "data": self.get_data_from_dataframe(prices)
                 },
             ],
             "categories":
@@ -115,17 +89,38 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         return self.render_json_response(chart_json)
 
+    def get_data_from_dataframe(self, prices):
+        mins = prices.min()
+        quantiles = prices.quantile([0.25, 0.75])
+        medians = prices.median()
+        maxs = prices.max()
+        data = []
+        for x_index in numpy.array(prices.mean().index):
+            data.append([float(mins[x_index]),
+                         float(quantiles[x_index][0.25]),
+                         float(medians[x_index]),
+                         float(quantiles[x_index][0.75]),
+                         float(maxs[x_index])
+                         ])
+        return data
+
     @staticmethod
     def _to_int_list(l):
-        return list(map(lambda x: int(x), l.split(',')))
+        if l:
+            return list(map(lambda x: int(x), l.split(',')))
+        return None
 
     @staticmethod
     def _to_list(l):
-        return l.split(',')
+        if l:
+            return l.split(',')
+        return None
 
     @staticmethod
     def _to_int(l):
-        return int(l)
+        if l:
+            return int(l)
+        return None
 
 
 @method_decorator(login_required, name='dispatch')
