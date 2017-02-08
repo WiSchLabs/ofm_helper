@@ -4,7 +4,6 @@ from braces.views import JsonRequestResponseMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
 from core.managers.panda_manager import PandaManager
@@ -12,7 +11,7 @@ from core.managers.panda_manager import PandaManager
 
 @method_decorator(login_required, name='dispatch')
 class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
-    @cache_page(60 * 60)
+
     def get(self, request):
         group_by = request.GET.get('group_by', default='Strength')
 
