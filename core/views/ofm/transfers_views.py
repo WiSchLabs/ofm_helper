@@ -11,8 +11,8 @@ from core.managers.panda_manager import PandaManager
 
 
 @method_decorator(login_required, name='dispatch')
-@cache_page(60 * 60)
 class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    @cache_page(60 * 60)
     def get(self, request):
         group_by = request.GET.get('group_by', default='Strength')
 
