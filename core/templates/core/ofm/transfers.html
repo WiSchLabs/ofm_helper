@@ -7,67 +7,80 @@
         Transfers
     </h1>
 
-    <div id="TransferPositionFilter" class="dropdown">
-        <button id="positionFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Positionen
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="positionFilterLabel">
-            <li><a href="#" data-value="All">Alle</a></li>
-            <li><a href="#" data-value="TW">TW</a></li>
-            <li><a href="#" data-value="LIB">LIB</a></li>
-            <li><a href="#" data-value="LV">LV</a></li>
-            <li><a href="#" data-value="LMD">LMD</a></li>
-            <li><a href="#" data-value="RMD">RMD</a></li>
-            <li><a href="#" data-value="RV">RV</a></li>
-            <li><a href="#" data-value="VS">VS</a></li>
-            <li><a href="#" data-value="LM">LM</a></li>
-            <li><a href="#" data-value="DM">DM</a></li>
-            <li><a href="#" data-value="ZM">ZM</a></li>
-            <li><a href="#" data-value="RM">RM</a></li>
-            <li><a href="#" data-value="LS">LS</a></li>
-            <li><a href="#" data-value="MS">MS</a></li>
-            <li><a href="#" data-value="RS">RS</a></li>
-        </ul>
-    </div>
+    <div id="transfers-toolbar">
 
-    <div id="TransferAgeFilter" class="dropdown">
-        <button id="AgeFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Alter
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="positionFilterLabel">
-            <li><a href="#" data-value="17">17</a></li>
-            <li><a href="#" data-value="18">18</a></li>
-            <li><a href="#" data-value="19">19</a></li>
-            <li><a href="#" data-value="20">20</a></li>
-            <li><a href="#" data-value="21">21</a></li>
-            <li><a href="#" data-value="22">22</a></li>
-            <li><a href="#" data-value="23">23</a></li>
-            <li><a href="#" data-value="24">24</a></li>
-            <li><a href="#" data-value="25">25</a></li>
-            <li><a href="#" data-value="26">26</a></li>
-            <li><a href="#" data-value="27">27</a></li>
-            <li><a href="#" data-value="28">28</a></li>
-            <li><a href="#" data-value="29">29</a></li>
-            <li><a href="#" data-value="30">30</a></li>
-            <li><a href="#" data-value="31">31</a></li>
-            <li><a href="#" data-value="32">32</a></li>
-            <li><a href="#" data-value="33">33</a></li>
-            <li><a href="#" data-value="34">34</a></li>
-            <li><a href="#" data-value="35">35</a></li>
-            <li><a href="#" data-value="36">36</a></li>
-        </ul>
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <label id="price-slider-label" for="price-slider" data-toggle="tooltip" data-placement="top" >Preis: </label>
+                <input id="price-slider" data-provide="slider" data-slider-max="200000000" data-slider-value="[0,30000000]" data-slider-step="1000000" type="text"/>
+            </div>
+        </div>
+
+        <div id="TransferPositionFilter" class="dropdown">
+            <button id="positionFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Positionen
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="positionFilterLabel">
+                <li><a href="#" data-value="All">Alle</a></li>
+                <li><a href="#" data-value="TW">TW</a></li>
+                <li><a href="#" data-value="LIB">LIB</a></li>
+                <li><a href="#" data-value="LV">LV</a></li>
+                <li><a href="#" data-value="LMD">LMD</a></li>
+                <li><a href="#" data-value="RMD">RMD</a></li>
+                <li><a href="#" data-value="RV">RV</a></li>
+                <li><a href="#" data-value="VS">VS</a></li>
+                <li><a href="#" data-value="LM">LM</a></li>
+                <li><a href="#" data-value="DM">DM</a></li>
+                <li><a href="#" data-value="ZM">ZM</a></li>
+                <li><a href="#" data-value="RM">RM</a></li>
+                <li><a href="#" data-value="LS">LS</a></li>
+                <li><a href="#" data-value="MS">MS</a></li>
+                <li><a href="#" data-value="RS">RS</a></li>
+            </ul>
+        </div>
+
+        <div id="TransferAgeFilter" class="dropdown">
+            <button id="AgeFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Alter
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="positionFilterLabel">
+                <li><a href="#" data-value="17">17</a></li>
+                <li><a href="#" data-value="18">18</a></li>
+                <li><a href="#" data-value="19">19</a></li>
+                <li><a href="#" data-value="20">20</a></li>
+                <li><a href="#" data-value="21">21</a></li>
+                <li><a href="#" data-value="22">22</a></li>
+                <li><a href="#" data-value="23">23</a></li>
+                <li><a href="#" data-value="24">24</a></li>
+                <li><a href="#" data-value="25">25</a></li>
+                <li><a href="#" data-value="26">26</a></li>
+                <li><a href="#" data-value="27">27</a></li>
+                <li><a href="#" data-value="28">28</a></li>
+                <li><a href="#" data-value="29">29</a></li>
+                <li><a href="#" data-value="30">30</a></li>
+                <li><a href="#" data-value="31">31</a></li>
+                <li><a href="#" data-value="32">32</a></li>
+                <li><a href="#" data-value="33">33</a></li>
+                <li><a href="#" data-value="34">34</a></li>
+                <li><a href="#" data-value="35">35</a></li>
+                <li><a href="#" data-value="36">36</a></li>
+            </ul>
+        </div>
+
     </div>
 
     <script>
         var position = 'MS';
         var age = '32';
+        var min_price=0;
+        var max_price=30000000;
 
         var transfers_chart_options =  {
             chart: {
                 type: 'boxplot',
-                height: 700
+                height: 650
 
             },
             title: {
@@ -102,11 +115,13 @@
             $.ajax({
                 type: "GET",
                 url: "{% url 'core:ofm:transfers_chart_json' %}",
-                data: {group_by: 'Strength',
+                data: {
+                    group_by: 'Strength',
                     positions: position,
                     // strengths: '14,15,16',
                     ages: age,
-                    max_price: 30000000,
+                    min_price: min_price,
+                    max_price: max_price,
                     // matchdays: '0,1,2'
                 },
                 dataType: 'json',
@@ -125,6 +140,13 @@
 
         $("#TransferAgeFilter a").click(function(){
             age = $(this).attr('data-value');
+            requestChartData();
+        });
+
+        $('#price-slider').slider().on('slideStop', function(){
+            min_price = parseInt($('#price-slider').attr('value').split(',')[0], 10);
+            max_price = parseInt($('#price-slider').attr('value').split(',')[1], 10);
+
             requestChartData();
         });
 
