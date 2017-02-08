@@ -80,8 +80,10 @@
         var transfers_chart_options =  {
             chart: {
                 type: 'boxplot',
-                height: 650
-
+                height: 650,
+                zoomType: 'xy',
+                panKey: 'ctrl',
+                panning: true,
             },
             title: {
                 text: 'Spielerpreise'
