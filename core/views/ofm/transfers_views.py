@@ -80,7 +80,7 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             "series": [
                 {
                     "name": 'Preise',
-                    "data": self.get_data_from_dataframe(prices)
+                    "data": self._get_data_from_dataframe(prices)
                 },
             ],
             "categories":
@@ -89,7 +89,8 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
         return self.render_json_response(chart_json)
 
-    def get_data_from_dataframe(self, prices):
+    @staticmethod
+    def _get_data_from_dataframe(prices):
         mins = prices.min()
         quantiles = prices.quantile([0.25, 0.75])
         medians = prices.median()
