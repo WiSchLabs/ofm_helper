@@ -7,9 +7,98 @@
         Transfers
     </h1>
 
-    <img id="transfers_image"
-         src="{% url 'core:ofm:render_plot' %}"
-         style="max-width: 100%; max-height: 100%"
-         alt="transfers"
-    >
+    <div id="TransferPositionFilter" class="dropdown">
+        <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Positionen
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dLabel">
+            <li><a href="#" data-value="All">Alle</a></li>
+            <li><a href="#" data-value="TW">TW</a></li>
+            <li><a href="#" data-value="LIB">LIB</a></li>
+            <li><a href="#" data-value="LV">LV</a></li>
+            <li><a href="#" data-value="LMD">LMD</a></li>
+            <li><a href="#" data-value="RMD">RMD</a></li>
+            <li><a href="#" data-value="RV">RV</a></li>
+            <li><a href="#" data-value="VS">VS</a></li>
+            <li><a href="#" data-value="LM">LM</a></li>
+            <li><a href="#" data-value="DM">DM</a></li>
+            <li><a href="#" data-value="ZM">ZM</a></li>
+            <li><a href="#" data-value="RM">RM</a></li>
+            <li><a href="#" data-value="LS">LS</a></li>
+            <li><a href="#" data-value="MS">MS</a></li>
+            <li><a href="#" data-value="RS">RS</a></li>
+        </ul>
+    </div>
+
+    <script>
+        position = 'MS';
+
+        var transfers_chart_options =  {
+            chart: {
+                type: 'boxplot',
+                height: 700
+
+            },
+            title: {
+                text: 'Spielerpreise'
+            },
+            xAxis: {
+                categories: [], // has to be overwritten
+                title: {
+                    text: 'Stärke'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Preis'
+                }
+            },
+            plotOptions: {
+                boxplot: {
+                    fillColor: '#F0F0E0',
+                    lineWidth: 2,
+                    medianColor: '#0C5DA5',
+                    medianWidth: 3,
+                    stemColor: '#A63400',
+                    stemDashStyle: 'dot',
+                    stemWidth: 1,
+                    whiskerColor: '#3D9200',
+                    whiskerLength: '20%',
+                    whiskerWidth: 3
+                }
+            },
+            series: [] // has to be overwritten
+        };
+
+        function requestChartData() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:transfers_chart_json' %}",
+                data: {group_by: 'Strength', positions: position, ages: '32', max_price: 30000000},
+                dataType: 'json',
+                success: function (data) {
+                    transfers_chart_options.series = data['series'];
+                    transfers_chart_options.xAxis.categories = data['categories'];
+                    $('#transfers_chart_container').highcharts(transfers_chart_options);
+                }
+            });
+        }
+
+        $('#foo').on('click', function () {
+            requestChartData();
+        });
+
+        $("#TransferPositionFilter a").click(function(){
+            position = $(this).attr('data-value');
+            requestChartData();
+        });
+
+        $(document).ready(function() {
+            requestChartData();
+        });
+    </script>
+
+    <br>
+    <div id="transfers_chart_container"></div>
 {% endblock %}
