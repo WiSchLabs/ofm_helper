@@ -8,7 +8,7 @@ from core.views.ofm.player_views import PlayerChartView, PlayerDetailView, Playe
                                         PlayerStatisticsView
 from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, \
                                          StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
-from core.views.ofm.transfers_views import render_plot, TransfersView, TransfersChartView
+from core.views.ofm.transfers_views import TransfersView, TransfersChartView
 
 app_name = 'ofm'
 
