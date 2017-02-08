@@ -9,13 +9,6 @@
 
     <div id="transfers-toolbar">
 
-        <div class="form-inline" role="form">
-            <div class="form-group">
-                <label id="price-slider-label" for="price-slider" data-toggle="tooltip" data-placement="top" >Preis: </label>
-                <input id="price-slider" data-provide="slider" data-slider-max="200000000" data-slider-value="[0,30000000]" data-slider-step="1000000" type="text"/>
-            </div>
-        </div>
-
         <div id="TransferPositionFilter" class="dropdown">
             <button id="positionFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Positionen
@@ -74,8 +67,6 @@
     <script>
         var position = 'MS';
         var age = '32';
-        var min_price=0;
-        var max_price=30000000;
 
         var transfers_chart_options =  {
             chart: {
@@ -122,8 +113,8 @@
                     positions: position,
                     // strengths: '14,15,16',
                     ages: age,
-                    min_price: min_price,
-                    max_price: max_price,
+                    // min_price: min_price,
+                    // max_price: max_price,
                     // matchdays: '0,1,2'
                 },
                 dataType: 'json',
@@ -142,13 +133,6 @@
 
         $("#TransferAgeFilter a").click(function(){
             age = $(this).attr('data-value');
-            requestChartData();
-        });
-
-        $('#price-slider').slider().on('slideStop', function(){
-            min_price = parseInt($('#price-slider').attr('value').split(',')[0], 10);
-            max_price = parseInt($('#price-slider').attr('value').split(',')[1], 10);
-
             requestChartData();
         });
 
