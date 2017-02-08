@@ -108,7 +108,7 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     @staticmethod
     def _to_int_list(l):
         if l:
-            return list(map(lambda x: int(x), l.split(',')))
+            return list(map(int, l.split(',')))
         return None
 
     @staticmethod
