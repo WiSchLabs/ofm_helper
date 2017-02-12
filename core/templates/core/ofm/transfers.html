@@ -9,7 +9,8 @@
 
     <div class="row">
         <div class="col-md-2">
-            <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach">
+            <label for="TransferGroupByFilter">Gruppieren nach</label>
+            <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
                 <option value="Strength">Stärke</option>
                 <option value="Age">Alter</option>
                 <option value="Position">Position</option>
@@ -19,50 +20,140 @@
         </div>
 
         <div class="col-md-2">
-            <label>Positionen</label>
-            <select id="TransferPositionsFilter" class="transfer-filter" data-placeholder="Positionen" multiple>
+            <label for="TransferPositionsFilter"><span class="flaticon-football-list-and-field-outline"></span> Positionen</label>
+            <select id="TransferPositionsFilter" class="transfer-filter selectpicker" data-placeholder="Positionen" multiple>
+                <option value="TW">TW</option>
+                <option value="LIB">LIB</option>
+                <option value="LV">LV</option>
+                <option value="LMD">LMD</option>
+                <option value="RMD">RMD</option>
+                <option value="RV">RV</option>
+                <option value="VS">VS</option>
+                <option value="LM">LM</option>
+                <option value="DM">DM</option>
+                <option value="ZM">ZM</option>
+                <option value="RM">RM</option>
+                <option value="LS">LS</option>
+                <option value="MS">MS</option>
+                <option value="RS">RS</option>
             </select>
         </div>
 
         <div class="col-md-2">
-            <label>Alter</label>
-            <select id="TransferAgesFilter" class="transfer-filter" data-placeholder="Alter" multiple>
+            <label for="TransferAgesFilter"><span class="glyphicon glyphicon-gift"></span> Alter</label>
+            <select id="TransferAgesFilter" class="transfer-filter selectpicker" data-placeholder="Alter" multiple>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
+                <option value="35">35</option>
+                <option value="36">36</option>
             </select>
         </div>
 
         <div class="col-md-2">
-            <label>Stärke</label>
-            <select id="TransferStrengthsFilter" class="transfer-filter" data-placeholder="Stärke" multiple>
+            <label for="TransferStrengthsFilter"><span class="flaticon-flaming-football"></span> Stärke</label>
+            <select id="TransferStrengthsFilter" class="transfer-filter selectpicker" data-placeholder="Stärke" multiple>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
             </select>
         </div>
 
         <div class="col-md-2">
-            <label>Saison</label>
-            <select id="TransferSeasonsFilter" class="transfer-filter" data-placeholder="Saison" multiple>
+            <label for="TransferSeasonsFilter"><span class="glyphicon glyphicon-calendar"></span> Saison</label>
+            <select id="TransferSeasonsFilter" class="transfer-filter selectpicker" data-placeholder="Saison" multiple>
             </select>
         </div>
 
         <div class="col-md-2">
-            <label>Spieltag</label>
-            <select id="TransferMatchdaysFilter" class="transfer-filter" data-placeholder="Spieltag" multiple>
+            <label for="TransferMatchdaysFilter"><span class="glyphicon glyphicon-calendar"></span> Spieltag</label>
+            <select id="TransferMatchdaysFilter" class="transfer-filter selectpicker" data-placeholder="Spieltag" multiple>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
             </select>
         </div>
     </div>
 
-    <button id="TransferFilterButton">
-        Click me!!!
-    </button>
+    <button id="TransferFilterButton"><span class="glyphicon glyphicon-filter"></span> Filter</button>
 
-    <button id="TransferResetButton">
-        Reset me!!!
-    </button>
+    <button id="TransferResetButton"><span class="glyphicon glyphicon-repeat"></span> zurücksetzen</button>
 
     <script>
-        $(function () {
-            $('.chosen-select').chosen();
-            $('.chosen-select-deselect').chosen({allow_single_deselect: true});
-        });
-
         var groupby = 'Strength';
         var strengths = '';
         var positions = '';
@@ -147,7 +238,7 @@
 
                     filters.forEach(function(filter) {
                         var filter_id = 'Transfer' + filter[0].toUpperCase() + filter.substring(1) + 'Filter';
-                        fillFilterDropdown(filter_id, data[filter]);
+                        //fillFilterDropdown(filter_id, data[filter]);
                     });
                 }
             });

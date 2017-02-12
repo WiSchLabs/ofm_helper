@@ -46,12 +46,6 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                                                   max_price=max_price,
                                                   )
 
-        available_ages_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Age').Age.nunique().index)))
-        available_strengths_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Strength').Strength.nunique().index)))
-        available_positions_after_filtering = list(ungrouped_dataframe.groupby('Position').Position.nunique().index)
-        available_seasons_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Season').Season.nunique().index)))
-        available_matchdays_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Matchday').Matchday.nunique().index)))
-
         chart_json = {
             "series": [
                 {
@@ -60,11 +54,11 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 },
             ],
             "categories": self.convert_to_json_serializable_list(prices),
-            "ages": available_ages_after_filtering,
-            "strengths": available_strengths_after_filtering,
-            "positions": available_positions_after_filtering,
-            "seasons": available_seasons_after_filtering,
-            "matchdays": available_matchdays_after_filtering,
+            "ages": (list(map(int, list(ungrouped_dataframe.groupby('Age').Age.nunique().index)))),
+            "strengths": (list(map(int, list(ungrouped_dataframe.groupby('Strength').Strength.nunique().index)))),
+            "positions": (list(ungrouped_dataframe.groupby('Position').Position.nunique().index)),
+            "seasons": (list(map(int, list(ungrouped_dataframe.groupby('Season').Season.nunique().index)))),
+            "matchdays": (list(map(int, list(ungrouped_dataframe.groupby('Matchday').Matchday.nunique().index)))),
         }
 
         return self.render_json_response(chart_json)
