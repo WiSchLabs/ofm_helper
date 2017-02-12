@@ -9,7 +9,7 @@ for FILE in *.xls; do
         libreoffice --headless --convert-to csv $FILE
 
         # get start index of header line
-        START=$(grep -n Nr\\. $FILENAME.csv | awk '{split($0,a,":"); print a[1]}')
+        START=$(grep -n Nr\\.,Spieltag $FILENAME.csv | awk '{split($0,a,":"); print a[1]}')
 
         # drop first lines until start of header line
         tail -n +$START "$FILENAME.csv" > "$FILENAME.tmp"
