@@ -180,6 +180,14 @@
 
         resetFilterValues();
 
+        $('.selectpicker').selectpicker({
+            actionsBox: true,
+            selectAllText: 'Alle auswählen',
+            deselectAllText: 'Alle abwählen',
+            noneSelectedText: 'Alle'
+        });
+
+
         var transfers_chart_options =  {
             chart: {
                 type: 'boxplot',
@@ -242,12 +250,11 @@
                     transfers_chart_options.xAxis.categories = data['categories'];
                     $('#transfers_chart_container').highcharts(transfers_chart_options);
 
-                    var filters = ['ages', 'strengths', 'positions', 'seasons', 'matchdays'];
+                    // var filters = ['ages', 'strengths', 'positions', 'seasons', 'matchdays'];
 
-                    filters.forEach(function(filter) {
-                        var filter_id = 'Transfer' + filter[0].toUpperCase() + filter.substring(1) + 'Filter';
-                        //fillFilterDropdown(filter_id, data[filter]);
-                    });
+                    // filters.forEach(function(filter) {
+                    //     var filter_id = 'Transfer' + filter[0].toUpperCase() + filter.substring(1) + 'Filter';
+                    // });
                 }
             });
         }
@@ -257,23 +264,43 @@
         });
 
         $('#TransferPositionsFilter').change(function () {
-            positions = $(this).val().join(",");
+            if ($(this).val()) {
+                positions = $(this).val().join(",");
+            } else {
+                positions = ''
+            }
         });
 
         $('#TransferAgesFilter').change(function () {
-            ages = $(this).val().join(",");
+            if ($(this).val()) {
+                ages = $(this).val().join(",");
+            } else {
+                ages = ''
+            }
         });
 
         $('#TransferStrengthsFilter').change(function () {
-            strengths = $(this).val().join(",");
+            if ($(this).val()) {
+                strengths = $(this).val().join(",");
+            } else {
+                strengths = ''
+            }
         });
 
         $('#TransferSeasonsFilter').change(function () {
-            seasons = $(this).val().join(",");
+            if ($(this).val()) {
+                seasons = $(this).val().join(",");
+            } else {
+                seasons = ''
+            }
         });
 
         $('#TransferMatchdaysFilter').change(function () {
-            matchdays = $(this).val().join(",");
+            if ($(this).val()) {
+                matchdays = $(this).val().join(",");
+            } else {
+                matchdays = ''
+            }
         });
 
         $('#TransferFilterButton').click(function(){
