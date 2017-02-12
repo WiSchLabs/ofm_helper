@@ -59,16 +59,23 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                     "data": self._get_data_from_dataframe(prices)
                 },
             ],
-            "categories": list(map(int, numpy.array(prices.mean().index))),
+            "categories": self.convert_to_json_serializable_list(prices),
             "ages": available_ages_after_filtering,
             "strengths": available_strengths_after_filtering,
             "positions": available_positions_after_filtering,
             "seasons": available_seasons_after_filtering,
             "matchdays": available_matchdays_after_filtering,
-
         }
 
         return self.render_json_response(chart_json)
+
+    @staticmethod
+    def convert_to_json_serializable_list(prices):
+        try:
+            int(numpy.array(prices.mean().index[0]))
+            return list(map(int, numpy.array(prices.mean().index)))
+        except TypeError:
+            return list(map(str, numpy.array(prices.mean().index)))
 
     @staticmethod
     def _get_data_from_dataframe(prices):
