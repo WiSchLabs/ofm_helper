@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
 
-from core.managers.panda_manager import PandaManager
+from core.managers.panda_manager import PandaManager, TransferFilter
 
 
 @method_decorator(login_required, name='dispatch')
@@ -27,6 +27,15 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             positions = None
 
         panda_manager = PandaManager()
+
+        ungrouped_dataframe = panda_manager.filter_transfers(TransferFilter(ages=ages,
+                                                                            strengths=strengths,
+                                                                            positions=positions,
+                                                                            seasons=seasons,
+                                                                            matchdays=matchdays,
+                                                                            min_price=min_price,
+                                                                            max_price=max_price,))
+
         prices = panda_manager.get_grouped_prices(group_by,
                                                   ages=ages,
                                                   strengths=strengths,
@@ -37,6 +46,12 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                                                   max_price=max_price,
                                                   )
 
+        available_ages_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Age').Age.nunique().index)))
+        available_strengths_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Strength').Strength.nunique().index)))
+        available_positions_after_filtering = list(ungrouped_dataframe.groupby('Position').Position.nunique().index)
+        available_seasons_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Season').Season.nunique().index)))
+        available_matchdays_after_filtering = list(map(int, list(ungrouped_dataframe.groupby('Matchday').Matchday.nunique().index)))
+
         chart_json = {
             "series": [
                 {
@@ -44,8 +59,13 @@ class TransfersChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                     "data": self._get_data_from_dataframe(prices)
                 },
             ],
-            "categories":
-                list(map(int, numpy.array(prices.mean().index)))
+            "categories": list(map(int, numpy.array(prices.mean().index))),
+            "ages": available_ages_after_filtering,
+            "strengths": available_strengths_after_filtering,
+            "positions": available_positions_after_filtering,
+            "seasons": available_seasons_after_filtering,
+            "matchdays": available_matchdays_after_filtering,
+
         }
 
         return self.render_json_response(chart_json)

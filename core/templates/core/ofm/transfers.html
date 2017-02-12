@@ -9,7 +9,7 @@
 
     <div id="transfers-toolbar">
 
-        <div id="TransferPositionFilter" class="dropdown">
+        <div id="TransferPositionsFilter" class="dropdown">
             <button id="positionFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Positionen
                 <span class="caret"></span>
@@ -33,7 +33,7 @@
             </ul>
         </div>
 
-        <div id="TransferAgeFilter" class="dropdown">
+        <div id="TransferAgesFilter" class="dropdown">
             <button id="AgeFilterLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Alter
                 <span class="caret"></span>
@@ -65,7 +65,7 @@
     </div>
 
     <script>
-        var position = 'MS';
+        var position = 'MS,TW';
         var age = '32';
 
         var transfers_chart_options =  {
@@ -74,7 +74,7 @@
                 height: 650,
                 zoomType: 'xy',
                 panKey: 'ctrl',
-                panning: true,
+                panning: true
             },
             title: {
                 text: 'Spielerpreise'
@@ -98,11 +98,18 @@
                     medianWidth: 2,
                     stemWidth: 2,
                     whiskerColor: '#24a52f',
-                    whiskerLength: '40%',
+                    whiskerLength: '40%'
                 }
             },
             series: [] // has to be overwritten
         };
+
+        function fillFilterDropdown(filter_id, attribute) {
+            $('#' + filter_id + ' ul').html('');
+            attribute.forEach(function(item) {
+                $('#' + filter_id + ' ul').append("<li><a href='#' data-value='" + item + "'>" + item + "</a></li>");
+            });
+        }
 
         function requestChartData() {
             $.ajax({
@@ -112,7 +119,7 @@
                     group_by: 'Strength',
                     positions: position,
                     // strengths: '14,15,16',
-                    ages: age,
+                    ages: age
                     // min_price: min_price,
                     // max_price: max_price,
                     // matchdays: '0,1,2'
@@ -122,16 +129,23 @@
                     transfers_chart_options.series = data['series'];
                     transfers_chart_options.xAxis.categories = data['categories'];
                     $('#transfers_chart_container').highcharts(transfers_chart_options);
+
+                    var filters = ['ages', 'strengths', 'positions', 'seasons', 'matchdays'];
+
+                    filters.forEach(function(filter) {
+                        var filter_id = 'Transfer' + filter[0].toUpperCase() + filter.substring(1) + 'Filter';
+                        fillFilterDropdown(filter_id, data[filter]);
+                    });
                 }
             });
         }
 
-        $("#TransferPositionFilter a").click(function(){
+        $("#TransferPositionsFilter a").click(function(){
             position = $(this).attr('data-value');
             requestChartData();
         });
 
-        $("#TransferAgeFilter a").click(function(){
+        $("#TransferAgesFilter a").click(function(){
             age = $(this).attr('data-value');
             requestChartData();
         });
