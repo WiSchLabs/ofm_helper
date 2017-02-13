@@ -293,12 +293,14 @@
         $('#TransferFilterButton').click(function(){
             requestChartDetailData();
             requestChartOverviewData();
+            setTimeout(makeTableSelectable, 1000);
         });
 
         $('#TransferResetButton').click(function(){
             resetFilterValues();
             requestChartDetailData();
             requestChartOverviewData();
+            setTimeout(makeTableSelectable, 1000);
         });
 
         resetFilterValues();
