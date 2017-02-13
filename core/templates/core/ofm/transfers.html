@@ -16,7 +16,7 @@
         </div>
 
         <div class="row filters">
-            <div class="col-md-2">
+            <div class="col-md-2 groupby">
                 <label for="TransferGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Gruppieren nach</label>
                 <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
                     <option value="Strength">Stärke</option>
@@ -150,11 +150,15 @@
         };
 
         function fillFilterDropdown(filter_id, attribute) {
-            $('#' + filter_id).html('');
-
-            attribute.forEach(function(item) {
-                $('#' + filter_id).append("<option value='" + item + "'>" + item + "</option>");
-            });
+            if ($.trim($('#' + filter_id).html()) === '') {
+                attribute.forEach(function (item) {
+                    $('#' + filter_id).append("<option value='" + item + "'>" + item + "</option>");
+                });
+            } else {
+                attribute.forEach(function (item) {
+                    $('#' + filter_id).find('option[value=' + item + ']').prop('selected', true)
+                });
+            }
         }
 
         function requestChartDetailData() {

@@ -382,7 +382,7 @@ input::-webkit-inner-spin-button {
     color: #666;
 }
 
-.transfer-detail .filters div:first-child {
+.transfer-detail .filters .groupby {
     top: -22px;
     border-right: 2px solid #FFF;
     padding-bottom: 25px;
