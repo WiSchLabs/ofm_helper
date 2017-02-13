@@ -156,9 +156,6 @@
                     $('#' + filter_id).append("<option value='" + item + "'>" + item + "</option>");
                 });
             }
-            if (filter.find('option:not(:selected)').size() == 0) {
-                filter.find('option').removeProp('selected')
-            }
         }
 
         function requestChartDetailData() {
