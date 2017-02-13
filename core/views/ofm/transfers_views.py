@@ -117,22 +117,22 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
                                                   max_price=max_price,
                                                   )
 
-        strengths = list(set(map(lambda x: x[0], prices.groups)))
-        ages = list(set(map(lambda x: x[1], prices.groups)))
-        ages.sort()
-        strengths.sort()
+        group1 = list(set(map(lambda x: x[0], prices.groups)))
+        group2 = list(set(map(lambda x: x[1], prices.groups)))
+        group1.sort()
+        group2.sort()
 
         table_json = dict()
 
-        table_json['ages'] = ages
-        table_json['strengths'] = strengths
+        table_json['group1'] = group1
+        table_json['group2'] = group2
 
         medians = []
-        for age in ages:
+        for group2_item in group2:
             row = []
-            for strength in strengths:
+            for group1_item in group1:
                 try:
-                    row.append(prices.get_group((strength, age)).median())
+                    row.append(prices.get_group((group1_item, group2_item)).median())
                 except KeyError:
                     row.append('NA')
             medians.append(row)

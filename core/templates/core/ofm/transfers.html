@@ -317,17 +317,17 @@
 
             var header_row = '<tr><th></th>';
 
-            var strengthsLength = data.strengths.length;
-            for (var i = 0; i < strengthsLength; i++) {
-                header_row += '<th>' + data.strengths[i] + '</th>'
+            var group1Length = data.group1.length;
+            for (var i = 0; i < group1Length; i++) {
+                header_row += '<th>' + data.group1[i] + '</th>'
             }
             header_row += '</tr>';
 
             $('#TransfersOverviewTable').append(header_row);
 
-            var agesLength = data.ages.length;
-            for (var i = 0; i < agesLength; i++) {
-                var row = '<tr><th>' + data.ages[i] + '</th>';
+            var group2Length = data.group2.length;
+            for (var i = 0; i < group2Length; i++) {
+                var row = '<tr><th>' + data.group2[i] + '</th>';
 
                 var rowLength = data.medians[i].length;
                 for (var j = 0; j < rowLength; j++) {
@@ -360,6 +360,14 @@
 
         $('#TransferGroupByFilter').change(function () {
             detail_groupby = $(this).val();
+        });
+
+        $('#TransferOverviewGroupByFilter').change(function () {
+            if ($(this).val()) {
+                overview_groupby = $(this).val().join(",");
+            } else {
+                overview_groupby = ''
+            }
         });
 
         $('#TransferPositionsFilter').change(function () {
