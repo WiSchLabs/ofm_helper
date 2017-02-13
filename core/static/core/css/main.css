@@ -30,7 +30,7 @@
 body {
     font-family: Gotham, "Helvetica Neue", Helvetica, sans-serif;
     font-weight: bold;
-    background-color: rgba(177, 180, 151, 0.35);
+    background-color: #E0E1D9;
     padding-bottom: 10rem;
 }
 
@@ -39,7 +39,7 @@ var { font-style: inherit; }
 label { font-weight: inherit !important; }
 
 .overlay {
-    background-color: rgba(255,255,255,0.6);
+    background-color: rgba(255, 255, 255, 0.6);
     bottom: 0;
     display: none;
     height: 100%;
@@ -366,6 +366,27 @@ input::-webkit-inner-spin-button {
   position: absolute;
   top: 0;
   left: 4px;
+}
+
+.horizontal-text-separator {
+    text-align: center;
+    border-bottom: 2px solid #FFF;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    font-size: 1.5em;
+}
+
+.horizontal-text-separator span {
+    background: #E0E1D9;
+    padding: 0 10px;
+    color: #666;
+}
+
+.transfer-detail .filters div:first-child {
+    top: -22px;
+    border-right: 2px solid #FFF;
+    padding-bottom: 25px;
+    margin-bottom: -10px;
 }
 
 
