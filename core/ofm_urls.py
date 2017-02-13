@@ -38,6 +38,7 @@ urlpatterns = [
         name='stadium_stand_statistics_chart_json'),
 
     url(r'^transfers/?$', TransfersView.as_view(), name='transfers'),
-    url(r'^transfers_detail_chart_json/?$', TransfersDetailChartView.as_view(), name='transfers_chart_json'),
-    url(r'^transfers_overview_chart_json/?$', TransfersOverviewTableView.as_view(), name='transfers_overview_chart_json'),
+    url(r'^transfers_detail_chart_json/?$', TransfersDetailChartView.as_view(), name='transfers_detail_chart_json'),
+    url(r'^transfers_overview_table_json/?$', TransfersOverviewTableView.as_view(),
+        name='transfers_overview_table_json'),
 ]
