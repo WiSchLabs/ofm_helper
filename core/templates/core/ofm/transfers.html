@@ -10,7 +10,7 @@
     <div class="transfer-detail">
         <div class="row">
             <div class="col-md-2">
-                <label for="TransferGroupByFilter">Gruppieren nach</label>
+                <label for="TransferGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Gruppieren nach</label>
                 <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
                     <option value="Strength">Stärke</option>
                     <option value="Age">Alter</option>
@@ -71,7 +71,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <label for="TransferOverviewGroupByFilter">Gruppieren nach</label>
+            <label for="TransferOverviewGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Gruppieren nach</label>
             <select id="TransferOverviewGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker" multiple>
                 <option value="Strength" selected>Stärke</option>
                 <option value="Age" selected>Alter</option>
@@ -171,7 +171,7 @@
         function requestChartDetailData() {
             $.ajax({
                 type: "GET",
-                url: "{% url 'core:ofm:transfers_chart_json' %}",
+                url: "{% url 'core:ofm:transfers_detail_chart_json' %}",
                 data: {
                     group_by: detail_groupby,
                     positions: positions,
@@ -203,8 +203,8 @@
             var header_row = '<tr><th></th>';
 
             var strengthsLength = data.strengths.length;
-            for (var i = 0; i < strengthsLength; i++) {
-                header_row += '<th>' + data.strengths[i] + '</th>'
+            for (var k = 0; k < strengthsLength; k++) {
+                header_row += '<th>' + data.strengths[k] + '</th>'
             }
             header_row += '</tr>';
 
@@ -219,7 +219,7 @@
                     row += '<td>' + data.medians[i][j] + '</td>';
                 }
 
-                row += '</tr>'
+                row += '</tr>';
                 $('#TransfersOverviewTable').append(row);
             }
         }
@@ -227,7 +227,7 @@
         function requestChartOverviewData() {
             $.ajax({
                 type: "GET",
-                url: "{% url 'core:ofm:transfers_overview_chart_json' %}",
+                url: "{% url 'core:ofm:transfers_overview_table_json' %}",
                 data: {
                     group_by: overview_groupby,
                     positions: positions,

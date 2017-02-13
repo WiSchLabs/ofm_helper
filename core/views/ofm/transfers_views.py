@@ -54,11 +54,11 @@ class TransfersDetailChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 },
             ],
             "categories": self.convert_to_json_serializable_list(prices),
-            "ages": (list(map(int, list(ungrouped_dataframe.groupby('Age').Age.nunique().index)))),
-            "strengths": (list(map(int, list(ungrouped_dataframe.groupby('Strength').Strength.nunique().index)))),
-            "positions": (list(ungrouped_dataframe.groupby('Position').Position.nunique().index)),
-            "seasons": (list(map(int, list(ungrouped_dataframe.groupby('Season').Season.nunique().index)))),
-            "matchdays": (list(map(int, list(ungrouped_dataframe.groupby('Matchday').Matchday.nunique().index)))),
+            "ages": list(map(int, list(ungrouped_dataframe.groupby('Age').Age.nunique().index))),
+            "strengths": list(map(int, list(ungrouped_dataframe.groupby('Strength').Strength.nunique().index))),
+            "positions": list(ungrouped_dataframe.groupby('Position').Position.nunique().index),
+            "seasons": list(map(int, list(ungrouped_dataframe.groupby('Season').Season.nunique().index))),
+            "matchdays": list(map(int, list(ungrouped_dataframe.groupby('Matchday').Matchday.nunique().index))),
         }
 
         return self.render_json_response(chart_json)
@@ -97,11 +97,6 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
         ages = _to_int_list(request.GET.get('ages', default=None))
         strengths = _to_int_list(request.GET.get('strengths', default=None))
         positions = _to_list(request.GET.get('positions', default=None))
-        seasons = _to_int_list(request.GET.get('seasons', default=None))
-        matchdays = _to_int_list(request.GET.get('matchdays', default=None))
-        min_price = _to_int(request.GET.get('min_price', default=None))
-        max_price = _to_int(request.GET.get('max_price', default=None))
-
         if positions == 'All':
             positions = None
 
@@ -111,10 +106,10 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
                                                   ages=ages,
                                                   strengths=strengths,
                                                   positions=positions,
-                                                  seasons=seasons,
-                                                  matchdays=matchdays,
-                                                  min_price=min_price,
-                                                  max_price=max_price,
+                                                  seasons=_to_int_list(request.GET.get('seasons', default=None)),
+                                                  matchdays=_to_int_list(request.GET.get('matchdays', default=None)),
+                                                  min_price=_to_int(request.GET.get('min_price', default=None)),
+                                                  max_price=_to_int(request.GET.get('max_price', default=None)),
                                                   )
 
         strengths = list(set(map(lambda x: x[0], prices.groups)))
@@ -126,7 +121,12 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
 
         table_json['ages'] = ages
         table_json['strengths'] = strengths
+        table_json['medians'] = self._get_medians(ages, prices, strengths)
 
+        return self.render_json_response(table_json)
+
+    @staticmethod
+    def _get_medians(ages, prices, strengths):
         medians = []
         for age in ages:
             row = []
@@ -136,10 +136,7 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
                 except KeyError:
                     row.append('NA')
             medians.append(row)
-
-        table_json['medians'] = medians
-
-        return self.render_json_response(table_json)
+        return medians
 
 
 @method_decorator(login_required, name='dispatch')
