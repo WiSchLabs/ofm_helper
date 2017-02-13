@@ -155,10 +155,6 @@
                 attribute.forEach(function (item) {
                     $('#' + filter_id).append("<option value='" + item + "'>" + item + "</option>");
                 });
-            } else {
-                attribute.forEach(function (item) {
-                    $('#' + filter_id).find('option[value=' + item + ']').prop('selected', true)
-                });
             }
             if (filter.find('option:not(:selected)').size() == 0) {
                 filter.find('option').removeProp('selected')
