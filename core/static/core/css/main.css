@@ -368,6 +368,26 @@ input::-webkit-inner-spin-button {
   left: 4px;
 }
 
+.horizontal-text-separator {
+    text-align: center;
+    border-bottom: 1px solid #FFF;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    font-size: 1.5em;
+}
+
+.horizontal-text-separator span {
+    background: #E0E1D9;
+    padding: 0 10px;
+    color: #666;
+}
+
+.transfer-detail .filters .groupby {
+    top: -22px;
+    padding-bottom: 25px;
+    margin-bottom: -10px;
+}
+
 
 
 

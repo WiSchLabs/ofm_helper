@@ -9,9 +9,16 @@
 
     <div class="transfer-detail">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-10 horizontal-text-separator">
+                <span>Filter</span>
+            </div>
+        </div>
+
+        <div class="row filters">
+            <div class="col-md-2 groupby">
                 <label for="TransferGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Gruppieren nach</label>
-                <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
+                <select id="TransferGroupByFilter" data-placeholder="Gruppieren" class="selectpicker">
                     <option value="Strength">Stärke</option>
                     <option value="Age">Alter</option>
                     <option value="Position">Position</option>
@@ -21,7 +28,7 @@
             </div>
 
             <div class="col-md-2">
-                <label for="TransferPositionsFilter"><span class="flaticon-football-list-and-field-outline"></span> Positionen</label>
+                <label for="TransferPositionsFilter"><span class="flaticon-football-list-and-field-outline"></span> Position</label>
                 <select id="TransferPositionsFilter" class="transfer-filter selectpicker" data-placeholder="Positionen" multiple>
                 </select>
             </div>
@@ -143,10 +150,14 @@
         };
 
         function fillFilterDropdown(filter_id, attribute) {
-            if ($.trim($('#' + filter_id).html()) === '') {
+            var filter = $('#' + filter_id);
+            if ($.trim(filter.html()) === '') {
                 attribute.forEach(function (item) {
                     $('#' + filter_id).append("<option value='" + item + "'>" + item + "</option>");
                 });
+            }
+            if (filter.find('option:not(:selected)').size() == 0) {
+                filter.find('option').removeProp('selected')
             }
         }
 
