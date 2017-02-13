@@ -8,7 +8,7 @@ from core.views.ofm.player_views import PlayerChartView, PlayerDetailView, Playe
                                         PlayerStatisticsView
 from core.views.ofm.stadium_views import StadiumDetailView, StadiumStandStatisticsChartView, \
                                          StadiumStandStatisticsView, StadiumStatisticsAsJsonView, StadiumStatisticsView
-from core.views.ofm.transfers_views import TransfersView, TransfersChartView
+from core.views.ofm.transfers_views import TransfersView, TransfersDetailChartView, TransfersOverviewTableView
 
 app_name = 'ofm'
 
@@ -38,5 +38,6 @@ urlpatterns = [
         name='stadium_stand_statistics_chart_json'),
 
     url(r'^transfers/?$', TransfersView.as_view(), name='transfers'),
-    url(r'^transfers_chart_json/?$', TransfersChartView.as_view(), name='transfers_chart_json'),
+    url(r'^transfers_detail_chart_json/?$', TransfersDetailChartView.as_view(), name='transfers_chart_json'),
+    url(r'^transfers_overview_chart_json/?$', TransfersOverviewTableView.as_view(), name='transfers_overview_chart_json'),
 ]

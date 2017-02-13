@@ -7,145 +7,147 @@
         Transfers
     </h1>
 
-    <div class="row">
-        <div class="col-md-2">
-            <label for="TransferGroupByFilter">Gruppieren nach</label>
-            <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
-                <option value="Strength">Stärke</option>
-                <option value="Age">Alter</option>
-                <option value="Position">Position</option>
-                <option value="Season">Saison</option>
-                <option value="Matchday">Spieltag</option>
-            </select>
-        </div>
+    <div class="transfer-detail">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="TransferGroupByFilter">Gruppieren nach</label>
+                <select id="TransferGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker">
+                    <option value="Strength" selected>Stärke</option>
+                    <option value="Age">Alter</option>
+                    <option value="Position">Position</option>
+                    <option value="Season">Saison</option>
+                    <option value="Matchday">Spieltag</option>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label for="TransferPositionsFilter"><span class="flaticon-football-list-and-field-outline"></span> Positionen</label>
-            <select id="TransferPositionsFilter" class="transfer-filter selectpicker" data-placeholder="Positionen" multiple>
-                <option value="TW">TW</option>
-                <option value="LIB">LIB</option>
-                <option value="LV">LV</option>
-                <option value="LMD">LMD</option>
-                <option value="RMD">RMD</option>
-                <option value="RV">RV</option>
-                <option value="VS">VS</option>
-                <option value="LM">LM</option>
-                <option value="DM">DM</option>
-                <option value="ZM">ZM</option>
-                <option value="RM">RM</option>
-                <option value="LS">LS</option>
-                <option value="MS">MS</option>
-                <option value="RS">RS</option>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label for="TransferPositionsFilter"><span class="flaticon-football-list-and-field-outline"></span> Positionen</label>
+                <select id="TransferPositionsFilter" class="transfer-filter selectpicker" data-placeholder="Positionen" multiple>
+                    <option value="TW">TW</option>
+                    <option value="LIB">LIB</option>
+                    <option value="LV">LV</option>
+                    <option value="LMD">LMD</option>
+                    <option value="RMD">RMD</option>
+                    <option value="RV">RV</option>
+                    <option value="VS">VS</option>
+                    <option value="LM">LM</option>
+                    <option value="DM">DM</option>
+                    <option value="ZM">ZM</option>
+                    <option value="RM">RM</option>
+                    <option value="LS">LS</option>
+                    <option value="MS">MS</option>
+                    <option value="RS">RS</option>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label for="TransferAgesFilter"><span class="glyphicon glyphicon-gift"></span> Alter</label>
-            <select id="TransferAgesFilter" class="transfer-filter selectpicker" data-placeholder="Alter" multiple>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-                <option value="32">32</option>
-                <option value="33">33</option>
-                <option value="34">34</option>
-                <option value="35">35</option>
-                <option value="36">36</option>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label for="TransferAgesFilter"><span class="glyphicon glyphicon-gift"></span> Alter</label>
+                <select id="TransferAgesFilter" class="transfer-filter selectpicker" data-placeholder="Alter" multiple>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                    <option value="32">32</option>
+                    <option value="33">33</option>
+                    <option value="34">34</option>
+                    <option value="35">35</option>
+                    <option value="36">36</option>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label for="TransferStrengthsFilter"><span class="flaticon-flaming-football"></span> Stärke</label>
-            <select id="TransferStrengthsFilter" class="transfer-filter selectpicker" data-placeholder="Stärke" multiple>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label for="TransferStrengthsFilter"><span class="flaticon-flaming-football"></span> Stärke</label>
+                <select id="TransferStrengthsFilter" class="transfer-filter selectpicker" data-placeholder="Stärke" multiple>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label for="TransferSeasonsFilter"><span class="glyphicon glyphicon-calendar"></span> Saison</label>
-            <select id="TransferSeasonsFilter" class="transfer-filter selectpicker" data-placeholder="Saison" multiple>
-            </select>
-        </div>
+            <div class="col-md-2">
+                <label for="TransferSeasonsFilter"><span class="glyphicon glyphicon-calendar"></span> Saison</label>
+                <select id="TransferSeasonsFilter" class="transfer-filter selectpicker" data-placeholder="Saison" multiple>
+                </select>
+            </div>
 
-        <div class="col-md-2">
-            <label for="TransferMatchdaysFilter"><span class="glyphicon glyphicon-calendar"></span> Spieltag</label>
-            <select id="TransferMatchdaysFilter" class="transfer-filter selectpicker" data-placeholder="Spieltag" multiple>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-                <option value="32">32</option>
-                <option value="33">33</option>
-                <option value="34">34</option>
-            </select>
+            <div class="col-md-2">
+                <label for="TransferMatchdaysFilter"><span class="glyphicon glyphicon-calendar"></span> Spieltag</label>
+                <select id="TransferMatchdaysFilter" class="transfer-filter selectpicker" data-placeholder="Spieltag" multiple>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                    <option value="32">32</option>
+                    <option value="33">33</option>
+                    <option value="34">34</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -160,9 +162,51 @@
     </button>
 
     <br>
+    <br>
+
+    <div id="transfers_chart_container"></div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label for="TransferOverviewGroupByFilter">Gruppieren nach</label>
+            <select id="TransferOverviewGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker" multiple>
+                <option value="Strength" selected>Stärke</option>
+                <option value="Age" selected>Alter</option>
+                <option value="Position">Position</option>
+                <option value="Season">Saison</option>
+                <option value="Matchday">Spieltag</option>
+            </select>
+        </div>
+    </div>
+
+    <br>
+
+    <table id="TransfersOverviewTable" class="table table-striped table-bordered table-hover">
+        <tr>
+            <th></th>
+            <th>29</th>
+            <th>30</th>
+            <th>31</th>
+        </tr>
+        <tr>
+            <th>10</th>
+            <td>6</td>
+            <td>5</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <th>11</th>
+            <td>11</td>
+            <td>10</td>
+            <td>9</td>
+        </tr>
+    </table>
 
     <script>
-        var groupby = 'Strength';
+        var detail_groupby = 'Strength';
+        var overview_groupby = 'Strength,Age';
         var strengths = '';
         var positions = '';
         var ages = '';
@@ -170,7 +214,8 @@
         var matchdays = '';
 
         function resetFilterValues(){
-            groupby = 'Strength';
+            detail_groupby = 'Strength';
+            overview_groupby = 'Strength,Age';
             strengths = '';
             positions = '';
             ages = '';
@@ -180,11 +225,19 @@
 
         resetFilterValues();
 
-        $('.selectpicker').selectpicker({
+        $('.transfer-detail .selectpicker').selectpicker({
             actionsBox: true,
             selectAllText: 'Alle auswählen',
             deselectAllText: 'Alle abwählen',
             noneSelectedText: 'Alle'
+        });
+
+        $('#TransferOverviewGroupByFilter').selectpicker({
+            //actionsBox: true,
+            //selectAllText: 'Alle auswählen',
+            //deselectAllText: 'Alle abwählen',
+            noneSelectedText: 'Foobar',
+            maxOptions: 2
         });
 
 
@@ -232,12 +285,12 @@
             });
         }
 
-        function requestChartData() {
+        function requestChartDetailData() {
             $.ajax({
                 type: "GET",
                 url: "{% url 'core:ofm:transfers_chart_json' %}",
                 data: {
-                    group_by: groupby,
+                    group_by: detail_groupby,
                     positions: positions,
                     strengths: strengths,
                     ages: ages,
@@ -259,8 +312,54 @@
             });
         }
 
+        function fillOverviewTable(data){
+            $('#TransfersOverviewTable').html('');
+
+            var header_row = '<tr><th></th>';
+
+            var strengthsLength = data.strengths.length;
+            for (var i = 0; i < strengthsLength; i++) {
+                header_row += '<th>' + data.strengths[i] + '</th>'
+            }
+            header_row += '</tr>';
+
+            $('#TransfersOverviewTable').append(header_row);
+
+            var agesLength = data.ages.length;
+            for (var i = 0; i < agesLength; i++) {
+                var row = '<tr><th>' + data.ages[i] + '</th>';
+
+                var rowLength = data.medians[i].length;
+                for (var j = 0; j < rowLength; j++) {
+                    row += '<td>' + data.medians[i][j] + '</td>';
+                }
+
+                row += '</tr>'
+                $('#TransfersOverviewTable').append(row);
+            }
+        }
+
+        function requestChartOverviewData() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:ofm:transfers_overview_chart_json' %}",
+                data: {
+                    group_by: overview_groupby,
+                    positions: positions,
+                    strengths: strengths,
+                    ages: ages,
+                    seasons: seasons,
+                    matchdays: matchdays
+                },
+                dataType: 'json',
+                success: function (data) {
+                    fillOverviewTable(data);
+                }
+            });
+        }
+
         $('#TransferGroupByFilter').change(function () {
-            groupby = $(this).val();
+            detail_groupby = $(this).val();
         });
 
         $('#TransferPositionsFilter').change(function () {
@@ -304,19 +403,19 @@
         });
 
         $('#TransferFilterButton').click(function(){
-            requestChartData();
+            requestChartDetailData();
+            requestChartOverviewData();
         });
 
         $('#TransferResetButton').click(function(){
             resetFilterValues();
-            requestChartData();
+            requestChartDetailData();
+            requestChartOverviewData();
         });
 
         $(document).ready(function() {
-            requestChartData();
+            requestChartDetailData();
+            requestChartOverviewData();
         });
     </script>
-
-    <br>
-    <div id="transfers_chart_container"></div>
 {% endblock %}
