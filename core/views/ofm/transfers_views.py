@@ -132,7 +132,7 @@ class TransfersOverviewTableView(CsrfExemptMixin, JsonRequestResponseMixin, View
             row = []
             for group1_item in group1:
                 try:
-                    row.append(prices.get_group((group1_item, group2_item)).median())
+                    row.append("{:,}".format(prices.get_group((group1_item, group2_item)).median()))
                 except KeyError:
                     row.append('NA')
             medians.append(row)
