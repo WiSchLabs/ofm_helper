@@ -3,6 +3,11 @@
 {% block content %}
     {% load staticfiles %}
 
+    <style>
+        tr { cursor: default; }
+        .highlight { background: yellow; }
+    </style>
+
     <h1 class="page-header">
         Transfers
     </h1>
@@ -315,6 +320,25 @@
                 noneSelectedText: 'Keine Gruppierung gewählt',
                 maxOptions: 2
             });
+
+            setTimeout(makeTableSelectable, 1000);
         });
+
+        function makeTableSelectable(){
+            var cells = $('td').not(':first');
+
+            cells.on('click', function (e) {
+                var cell = $(this);
+
+                if (e.ctrlKey || e.metaKey) {
+                    /* If pressed highlight the other cell that was clicked */
+                    cell.addClass('success');
+                } else {
+                    /* Otherwise just highlight one cell and clean other cells */
+                    cells.removeClass('success');
+                    cell.addClass('success');
+                }
+            });
+        }
     </script>
 {% endblock %}
