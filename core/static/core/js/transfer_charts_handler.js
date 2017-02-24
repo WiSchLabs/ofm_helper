@@ -68,8 +68,7 @@ function requestChartDetailData() {
         success: function (data) {
             transfers_chart_options.series = data['series'];
             transfers_chart_options.xAxis.categories = data['categories'];
-            var translation = translateGroupby();
-            transfers_chart_options.xAxis.title.text=translation;
+            transfers_chart_options.xAxis.title.text=translateGroupby();
             $('#transfers_chart_container').highcharts(transfers_chart_options);
 
             var filters = ['ages', 'strengths', 'positions', 'seasons', 'matchdays'];
@@ -134,70 +133,54 @@ function addFilterOnChangeHandlers(){
     });
 
     $('#TransferOverviewGroupByFilter').change(function () {
-        if ($(this).val()) {
-            overview_groupby = $(this).val().join(",");
-        } else {
-            overview_groupby = ''
-        }
+        overview_groupby = getFilterValues($(this));
     });
 
     $('#TransferPositionsFilter').change(function () {
-        if ($(this).val()) {
-            positions = $(this).val().join(",");
-        } else {
-            positions = ''
-        }
+        positions = getFilterValues($(this));
     });
 
     $('#TransferAgesFilter').change(function () {
-        if ($(this).val()) {
-            ages = $(this).val().join(",");
-        } else {
-            ages = ''
-        }
+        ages = getFilterValues($(this));
     });
 
     $('#TransferStrengthsFilter').change(function () {
-        if ($(this).val()) {
-            strengths = $(this).val().join(",");
-        } else {
-            strengths = ''
-        }
+        strengths = getFilterValues($(this));
     });
 
     $('#TransferSeasonsFilter').change(function () {
-        if ($(this).val()) {
-            seasons = $(this).val().join(",");
-        } else {
-            seasons = ''
-        }
+        seasons = getFilterValues($(this));
     });
 
     $('#TransferMatchdaysFilter').change(function () {
-        if ($(this).val()) {
-            matchdays = $(this).val().join(",");
-        } else {
-            matchdays = ''
-        }
+        matchdays = getFilterValues($(this));
     });
+
+    function getFilterValues(filter) {
+        if (filter.val()) {
+            return filter.val().join(",");
+        } else {
+            return ''
+        }
+    }
 }
 
 function addButtonClickHandlers() {
-    $('#TransferFilterButton').click(function(){
+    $('#TransferFilterButton, #TransferTableGroupingButton').click(function(){
         requestChartDetailData();
-        requestChartOverviewData();
+        requestOverviewTableData();
         setTimeout(makeTableSelectable, 1000);
     });
 
     $('#TransferResetButton').click(function(){
         resetFilterValues();
         requestChartDetailData();
-        requestChartOverviewData();
+        requestOverviewTableData();
         setTimeout(makeTableSelectable, 1000);
     });
 }
 
-function requestChartOverviewData() {
+function requestOverviewTableData() {
     $.ajax({
         type: "GET",
         url: transfersOverviewTableJsonURL,
@@ -249,14 +232,12 @@ function makeTableSelectable(){
     cells.on('click', function (e) {
         var cell = $(this);
 
-        if (e.ctrlKey || e.metaKey) {
-            /* If pressed highlight the other cell that was clicked */
-            cell.addClass('success');
-        } else {
+        if (!(e.ctrlKey || e.metaKey)) {
+            /* If CTRL key pressed, highlight the other cell that was clicked */
             /* Otherwise just highlight one cell and clean other cells */
             cells.removeClass('success');
-            cell.addClass('success');
         }
+        cell.addClass('success');
     });
 }
 
@@ -267,7 +248,7 @@ $(function () {
     addButtonClickHandlers();
 
     requestChartDetailData();
-    requestChartOverviewData();
+    requestOverviewTableData();
 
     setTimeout(makeTableSelectable, 1000);
 });
