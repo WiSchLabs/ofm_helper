@@ -50,6 +50,10 @@ function resetFilterValues(){
     ages = '';
     seasons = '';
     matchdays = '';
+    $('.selectpicker').val('');
+    $('#TransferGroupByFilter').find("option[value='Strength']").prop('selected', true);
+    $('#TransferOverviewGroupByFilter').find("option[value='Strength'], option[value='Age']").prop('selected', true);
+    $('.selectpicker').selectpicker('refresh');
 }
 
 function requestChartDetailData() {
