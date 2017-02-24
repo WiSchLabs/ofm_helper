@@ -166,13 +166,13 @@ function addFilterOnChangeHandlers(){
 }
 
 function addButtonClickHandlers() {
-    $('#TransferFilterButton, #TransferTableGroupingButton').click(function(){
+    $('.TransferFilterApplyButton').click(function(){
         requestChartDetailData();
         requestOverviewTableData();
         setTimeout(makeTableSelectable, 1000);
     });
 
-    $('#TransferResetButton').click(function(){
+    $('.TransferResetButton').click(function(){
         resetFilterValues();
         requestChartDetailData();
         requestOverviewTableData();
@@ -237,7 +237,11 @@ function makeTableSelectable(){
             /* Otherwise just highlight one cell and clean other cells */
             cells.removeClass('success');
         }
-        cell.addClass('success');
+        if (cell.hasClass('success')) {
+            cell.removeClass('success');
+        } else {
+            cell.addClass('success');
+        }
     });
 }
 

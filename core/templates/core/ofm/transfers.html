@@ -8,23 +8,12 @@
     </h1>
 
     <div class="transfer-detail">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10 horizontal-text-separator">
-                <span>Filter</span>
-            </div>
-        </div>
 
         <div class="row filters">
             <div class="col-md-2">
-                <label for="TransferGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Diagramm gruppieren nach</label>
-                <select id="TransferGroupByFilter" data-placeholder="Gruppieren" class="selectpicker">
-                    <option value="Strength">Stärke</option>
-                    <option value="Age">Alter</option>
-                    <option value="Position">Position</option>
-                    <option value="Season">Saison</option>
-                    <option value="Matchday">Spieltag</option>
-                </select>
+                <span class="filter-header">
+                    Globale Filter
+                </span>
             </div>
 
             <div class="col-md-2">
@@ -60,16 +49,31 @@
     </div>
 
     <br>
-
-    <button id="TransferFilterButton" class='btn btn-default'>
-        <span class="glyphicon glyphicon-filter"></span> anwenden
-    </button>
-
-    <button id="TransferResetButton" class='btn btn-default'>
-        <span class="glyphicon glyphicon-repeat"></span> zurücksetzen
-    </button>
-
     <br>
+
+    <div class="row">
+        <div class="col-md-4">
+            <label for="TransferGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Diagramm gruppieren nach</label>
+            <select id="TransferGroupByFilter" data-placeholder="Gruppieren" class="selectpicker">
+                <option value="Strength">Stärke</option>
+                <option value="Age">Alter</option>
+                <option value="Position">Position</option>
+                <option value="Season">Saison</option>
+                <option value="Matchday">Spieltag</option>
+            </select>
+        </div>
+        <div class="col-md-8">
+            <label>&nbsp;</label><br>
+            <button class='btn btn-success TransferFilterApplyButton'>
+                <span class="glyphicon glyphicon-filter"></span> anwenden
+            </button>
+            <button class='btn btn-default TransferResetButton'>
+                <span class="glyphicon glyphicon-repeat"></span> zurücksetzen
+            </button>
+        </div>
+    </div>
+
+
     <br>
 
     <div id="transfers_chart_container"></div>
@@ -78,7 +82,7 @@
     <br>
 
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-4">
             <label for="TransferOverviewGroupByFilter"><span class="glyphicon glyphicon-th-large"></span> Tabelle gruppieren nach</label>
             <select id="TransferOverviewGroupByFilter" data-placeholder="Gruppieren nach" class="selectpicker" multiple>
                 <option value="Strength" selected>Stärke</option>
@@ -88,10 +92,13 @@
                 <option value="Matchday">Spieltag</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <label for="TransferTableGroupingButton">&nbsp;</label><br>
-            <button id="TransferTableGroupingButton" class='btn btn-default'>
+        <div class="col-md-8">
+            <label>&nbsp;</label><br>
+            <button class='btn btn-success TransferFilterApplyButton'>
                 <span class="glyphicon glyphicon-filter"></span> anwenden
+            </button>
+            <button class='btn btn-default TransferResetButton'>
+                <span class="glyphicon glyphicon-repeat"></span> zurücksetzen
             </button>
         </div>
     </div>
