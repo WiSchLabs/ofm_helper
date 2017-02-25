@@ -68,7 +68,7 @@ class TransfersDetailChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         try:
             int(numpy.array(prices.mean().index[0]))
             return list(map(int, numpy.array(prices.mean().index)))
-        except TypeError:
+        except (TypeError, IndexError):
             return list(map(str, numpy.array(prices.mean().index)))
 
     @staticmethod
