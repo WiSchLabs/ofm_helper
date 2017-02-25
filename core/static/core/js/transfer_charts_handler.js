@@ -126,8 +126,7 @@ function initFilters(){
     });
 
     $('#TransferOverviewGroupByFilter').selectpicker({
-        noneSelectedText: 'Keine Gruppierung gewählt',
-        maxOptions: 2
+        noneSelectedText: 'Keine Gruppierung gewählt'
     });
 }
 
@@ -137,7 +136,19 @@ function addFilterOnChangeHandlers(){
     });
 
     $('#TransferOverviewGroupByFilter').change(function () {
-        overview_groupby = getFilterValues($(this));
+        if ($(this).val() && $(this).val().length == 2) {
+            overview_groupby = getFilterValues($(this));
+            $('.TransferFilterApplyButton').removeClass('disabled');
+        } else {
+            $('#TransferOverviewGroupByFilter').parent().find('.dropdown-menu').append(
+                "<div class='notify alert-danger'>" +
+                    "<span class='glyphicon glyphicon-exclamation-sign'></span> " +
+                    "bitte zwei wählen" +
+                "</div>"
+            );
+            $('#TransferOverviewGroupByFilter').parent().find('.dropdown-menu div.notify').fadeOut(2000);
+            $('.TransferFilterApplyButton').addClass('disabled');
+        }
     });
 
     $('#TransferPositionsFilter').change(function () {
@@ -171,9 +182,11 @@ function addFilterOnChangeHandlers(){
 
 function addButtonClickHandlers() {
     $('.TransferFilterApplyButton').click(function(){
-        requestChartDetailData();
-        requestOverviewTableData();
-        setTimeout(makeTableSelectable, 1000);
+        if (!$(this).hasClass('disabled')) {
+            requestChartDetailData();
+            requestOverviewTableData();
+            setTimeout(makeTableSelectable, 1000);
+        }
     });
 
     $('.TransferResetButton').click(function(){
