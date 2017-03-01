@@ -23,7 +23,7 @@ class TransfersDetailChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         min_price = _to_int(request.GET.get('min_price', default=None))
         max_price = _to_int(request.GET.get('max_price', default=None))
 
-        if positions == 'All':
+        if positions == ['All']:
             positions = None
 
         panda_manager = PandaManager()
