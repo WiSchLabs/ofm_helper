@@ -9,8 +9,8 @@ from users.models import OFMUser
 TESTDATA_PATH = 'core/tests/assets'
 
 
+@mock.patch('core.managers.panda_manager.TRANSFERS_DIR', new=TESTDATA_PATH)
 class OFMTransfersViewTestCase(TestCase):
-    @mock.patch('core.managers.panda_manager.TRANSFERS_DIR', new=TESTDATA_PATH)
     def setUp(self):
         self.user = OFMUser.objects.create_user(
             username='alice',
