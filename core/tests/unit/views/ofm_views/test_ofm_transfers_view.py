@@ -22,8 +22,8 @@ class OFMTransfersViewTestCase(TestCase):
         self.client.login(username='alice', password='alice')
 
         self.json_response_keys = ["series", "categories", "ages", "strengths", "positions", "seasons", "matchdays"]
-        self.all_strengths = list(range(1, 26))
-        self.all_ages = list(range(17, 37))
+        self.all_strengths = list(range(1, 24))
+        self.all_ages = list(range(18, 37))
         self.all_positions = ['LS', 'MS', 'RS', 'LM', 'ZM', 'RM', 'DM', 'VS', 'LIB', 'LV', 'LMD', 'RMD', 'RV', 'TW']
 
     def test_get_all_transfers_given_no_filters(self):
@@ -33,7 +33,6 @@ class OFMTransfersViewTestCase(TestCase):
         returned_json_data = json.loads(response.content.decode('utf-8'))
         for key in self.json_response_keys:
             self.assertTrue(key in returned_json_data)
-
         for strength in self.all_strengths:
             self.assertTrue(strength in returned_json_data['strengths'])
 
