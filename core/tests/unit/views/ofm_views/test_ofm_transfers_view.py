@@ -1,12 +1,16 @@
 import json
+from unittest import mock
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from users.models import OFMUser
 
+TESTDATA_PATH = 'core/tests/assets'
+
 
 class OFMTransfersViewTestCase(TestCase):
+    @mock.patch('core.managers.panda_manager.TRANSFERS_DIR', new=TESTDATA_PATH)
     def setUp(self):
         self.user = OFMUser.objects.create_user(
             username='alice',
@@ -49,12 +53,20 @@ class OFMTransfersViewTestCase(TestCase):
         for position in self.all_positions:
             self.assertTrue(position in returned_json_data['positions'])
 
-    def test_get_transfers_with_empty_positions(self):
-        options = {'positions': None}
+    def test_get_transfers_with_only_MS_position(self):
+        options = {'positions': 'MS'}
 
         response = self.client.get(reverse('core:ofm:transfers_detail_chart_json'), options)
         self.assertEqual(response.status_code, 200)
 
         returned_json_data = json.loads(response.content.decode('utf-8'))
-        for position in self.all_positions:
-            self.assertTrue(position in returned_json_data['positions'])
+        self.assertListEqual(returned_json_data['positions'], ['MS'])
+
+    def test_get_transfers_with_two_positions(self):
+        options = {'positions': 'MS,TW'}
+
+        response = self.client.get(reverse('core:ofm:transfers_detail_chart_json'), options)
+        self.assertEqual(response.status_code, 200)
+
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertListEqual(returned_json_data['positions'], ['MS', 'TW'])
