@@ -3,7 +3,8 @@ from django.conf.urls import url
 from core.views.checklist_views import CreateChecklistItemView, DeleteChecklistItemView, \
                                        GetChecklistItemsForTodayView, GetChecklistItemsView, \
                                        UpdateChecklistItemNameView, UpdateChecklistPriorityView, \
-                                       UpdateChecklistItemStatusView, UpdateChecklistItemConditionView
+                                       UpdateChecklistItemStatusView, UpdateChecklistItemConditionView, \
+                                       UpdateChecklistItemConditionInversionView
 
 app_name = 'checklist'
 
@@ -21,6 +22,8 @@ urlpatterns = [
         name='update_checklist_item_name'),
     url(r'^update_checklist_item_condition/?$', UpdateChecklistItemConditionView.as_view(),
         name='update_checklist_item_condition'),
+    url(r'^update_checklist_item_condition_inversion/?$', UpdateChecklistItemConditionInversionView.as_view(),
+        name='update_checklist_item_condition_inversion'),
     url(r'^update_checklist_item_status/?$', UpdateChecklistItemStatusView.as_view(),
         name='update_checklist_item_status'),
     url(r'^update_checklist_priority/?$', UpdateChecklistPriorityView.as_view(),

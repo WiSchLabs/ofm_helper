@@ -42,11 +42,13 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue('checked' in returned_json_data[0])
         self.assertEqual(returned_json_data[0]['name'], 'do more unit tests')
         self.assertEqual(returned_json_data[0]['checked'], False)
+        self.assertEqual(returned_json_data[0]['is_inversed'], False)
 
     def test_create_standard_checklist_item(self):
         self.client.login(username='second', password='second')
         response = self.client.get(reverse('core:checklist:add_checklist_item'))
         self.assertEqual(response.status_code, 200)
+
         returned_json_data = json.loads(response.content.decode('utf-8'))
         self.assertTrue('id' in returned_json_data)
         self.assertTrue('name' in returned_json_data)
@@ -54,6 +56,7 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertNotEqual(returned_json_data['name'], 'do more unit tests')
         self.assertNotEqual(returned_json_data['name'], 'do less unit tests')
         self.assertEqual(returned_json_data['checked'], False)
+        self.assertEqual(returned_json_data['is_inversed'], False)
 
     def test_update_checklist_item_name(self):
         self.client.login(username='temporary', password='temporary')
@@ -226,6 +229,40 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertEqual(ChecklistItem.objects.get(id=self.checklist_item.id).priority, 1)
         self.assertEqual(ChecklistItem.objects.get(id=second_item.id).priority, 2)
 
+    def test_update_checklist_item_inversion_true(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition_inversion'),
+                                    {'checklist_item_id': self.checklist_item.id,
+                                     'checklist_item_inversion': True
+                                     })
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(ChecklistItem.objects.get(id=self.checklist_item.id).is_inversed)
+
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('id' in returned_json_data[0])
+        self.assertTrue('name' in returned_json_data[0])
+        self.assertTrue('checked' in returned_json_data[0])
+        self.assertEqual(returned_json_data[0]['is_inversed'], True)
+
+    def test_update_checklist_item_inversion_false(self):
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('core:checklist:update_checklist_item_condition_inversion'),
+                                    {'checklist_item_id': self.checklist_item.id,
+                                     'checklist_item_inversion': False
+                                     })
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(ChecklistItem.objects.get(id=self.checklist_item.id).is_inversed)
+
+        response = self.client.get(reverse('core:checklist:get_checklist_items'))
+        self.assertEqual(response.status_code, 200)
+        returned_json_data = json.loads(response.content.decode('utf-8'))
+        self.assertTrue('id' in returned_json_data[0])
+        self.assertTrue('name' in returned_json_data[0])
+        self.assertTrue('checked' in returned_json_data[0])
+        self.assertEqual(returned_json_data[0]['is_inversed'], False)
+
     def test_delete_checklist_item(self):
         self.client.login(username='temporary', password='temporary')
         response = self.client.post(reverse('core:checklist:delete_checklist_item'),
@@ -265,6 +302,36 @@ class ChecklistSettingsTestCase(TestCase):
             name='on 6th matchday',
             to_be_checked_on_matchdays='6,9'
         )
+        c6 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on 6th matchday',
+            to_be_checked_on_matchdays='6,9',
+            is_inversed=True
+        )
+        c7 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on 9th matchday',
+            to_be_checked_on_matchdays='9',
+            is_inversed=True
+        )
+        c8 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on every 6th matchday',
+            to_be_checked_on_matchday_pattern=6,
+            is_inversed=True
+        )
+        c9 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='not on every 9th matchday',
+            to_be_checked_on_matchday_pattern=9,
+            is_inversed=True
+        )
+        c10 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='if not tomorrow home_match',
+            to_be_checked_if_home_match_tomorrow=True,
+            is_inversed=True
+        )
 
         response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
@@ -277,6 +344,11 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue(c3.id in returned_checklist_item_ids)
         self.assertTrue(c4.id not in returned_checklist_item_ids)
         self.assertTrue(c5.id in returned_checklist_item_ids)
+        self.assertTrue(c6.id not in returned_checklist_item_ids)
+        self.assertTrue(c7.id in returned_checklist_item_ids)
+        self.assertTrue(c8.id not in returned_checklist_item_ids)
+        self.assertTrue(c9.id in returned_checklist_item_ids)
+        self.assertTrue(c10.id in returned_checklist_item_ids)
 
     def test_get_checklist_items_for_today_if_tomorrow_home_match(self):
         matchday2 = MatchdayFactory.create(number=7)
@@ -303,6 +375,12 @@ class ChecklistSettingsTestCase(TestCase):
             name='if tomorrow home_match',
             to_be_checked_if_home_match_tomorrow=True
         )
+        c5 = ChecklistItemFactory.create(
+            checklist=self.checklist,
+            name='if not tomorrow home_match',
+            to_be_checked_if_home_match_tomorrow=True,
+            is_inversed=True
+        )
 
         response = self.client.get(reverse('core:checklist:get_checklist_items_for_today'))
 
@@ -314,3 +392,4 @@ class ChecklistSettingsTestCase(TestCase):
         self.assertTrue(c2.id in returned_checklist_item_ids)
         self.assertTrue(c3.id not in returned_checklist_item_ids)
         self.assertTrue(c4.id in returned_checklist_item_ids)
+        self.assertTrue(c5.id not in returned_checklist_item_ids)

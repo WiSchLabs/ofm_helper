@@ -236,13 +236,22 @@ ul.nav-sub {  padding-left: 10%; }
 .panel-title { font-size: 20px; }
     .panel-title .glyphicon { width: 50px; }
 
+
 #checklist_items { width: 100%; }
 .checklist_item_name {
     display: inline-block;
     width: 80%;
     margin: 5px 5px;
 }
+
 .checklist_item_container { background-color: rgba(255, 255, 255, 0.5); }
+#checklist_items .checklist_item_container .checklist_item_inversion_container {
+    display: inline-block;
+    float: right;
+}
+#checklist_items .checklist_item_container .checklist_item_inversion_container span.glyphicon { margin-right: 15px; }
+#checklist_items .checklist_item_container .checklist_item_inversion_container span.glyphicon-check { color: #239123; }
+
 #add_checklist_item { margin: 5px; }
 .delete_checklist_item {
     cursor: pointer;

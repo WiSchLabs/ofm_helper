@@ -243,7 +243,7 @@ class Country(models.Model):
         ('TH', "Thailand"),
         ('TG', "Togo"),
         ('TO', "Tonga"),
-        ('TT', "Trinidad und Tobago"),
+        ('TT', "Trinidad & Tobago"),
         ('TD', "Tschad"),
         ('CZ', "Tschechien"),
         ('TN', "Tunesien"),
@@ -854,6 +854,7 @@ class ChecklistItem(models.Model):
                                                   validators=[validate_comma_separated_integer_list])
     to_be_checked_on_matchday_pattern = models.IntegerField(blank=True, null=True)
     to_be_checked_if_home_match_tomorrow = models.BooleanField(default=False)
+    is_inversed = models.BooleanField(default=False)
 
 
 class ParsingSetting(models.Model):

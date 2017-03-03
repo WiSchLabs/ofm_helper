@@ -126,7 +126,8 @@ class ChecklistItemAdmin(admin.ModelAdmin):
                     'name',
                     'to_be_checked_on_matchdays',
                     'to_be_checked_on_matchday_pattern',
-                    'to_be_checked_if_home_match_tomorrow']
+                    'to_be_checked_if_home_match_tomorrow',
+                    'is_inversed']
     search_fields = ['checklist__user__username', 'name']
 
 
