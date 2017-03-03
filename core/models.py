@@ -243,7 +243,7 @@ class Country(models.Model):
         ('TH', "Thailand"),
         ('TG', "Togo"),
         ('TO', "Tonga"),
-        ('TT', "Trinidad und Tobago"),
+        ('TT', "Trinidad & Tobago"),
         ('TD', "Tschad"),
         ('CZ', "Tschechien"),
         ('TN', "Tunesien"),
