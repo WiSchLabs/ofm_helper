@@ -20,10 +20,10 @@ do
         docker-compose up -d
 
         echo "Migrating database"
-        docker exec -it ofmhelper_web_1 python manage.py migrate
+        docker exec -it ofmhelper_django_1 python manage.py migrate
 
         echo "Copying static files"
-        docker exec -it ofmhelper_web_1 python manage.py collectstatic
+        docker exec -it ofmhelper_django_1 python manage.py collectstatic
     else
         echo "$NAME up to date"
     fi
