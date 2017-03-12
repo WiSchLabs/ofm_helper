@@ -7,7 +7,7 @@ from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from timeout_decorator import timeout
-from timeout_decorator.timeout_decorator import TimeoutError
+from timeout_decorator.timeout_decorator import TimeoutError   # pylint: disable=redefined-builtin
 from xvfbwrapper import Xvfb
 
 from core.web.ofm_page_constants import Constants
@@ -72,7 +72,7 @@ class OFMSiteManager:
 
 
 class OFMTransferSiteManager(OFMSiteManager):
-    def __init__(self, user=None):
+    def __init__(self, user=None):   # pylint: disable=super-init-not-called
         self.user = user
         if self.user:
             self._login_user = self.user.ofm_username
@@ -93,12 +93,12 @@ class OFMTransferSiteManager(OFMSiteManager):
         self.login()
 
         try:
-            self.jump_to_transfer_page(self, matchday=matchday)
+            self._jump_to_transfer_page(self, matchday=matchday)   # pylint: disable=redundant-keyword-arg
         except TimeoutError:
             pass
 
     @timeout(5, use_signals=False)
-    def jump_to_transfer_page(self, matchday=None):
+    def _jump_to_transfer_page(self, matchday=None):
         if not matchday:
             self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
         else:
