@@ -73,7 +73,6 @@ def trigger_match_parsing(request):
 
 def trigger_transfer_download(request, matchday=None):
     site_manager = SiteManager(request.user)
-    site_manager.login()
     site_manager.download_transfer_excel(matchday)
 
     return redirect('core:ofm:player_statistics')
