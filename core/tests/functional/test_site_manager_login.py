@@ -4,7 +4,7 @@ from unittest import skip
 
 from django.conf import settings
 
-from core.managers.site_manager import SiteManager
+from core.managers.site_manager import OFMSiteManager
 from core.web.ofm_page_constants import Constants
 from users.models import OFMUser
 
@@ -12,7 +12,7 @@ from users.models import OFMUser
 @skip
 class LoginTest(unittest.TestCase):
     def setUp(self):
-        self.site_manager = SiteManager()
+        self.site_manager = OFMSiteManager()
         self.site_manager.login()
 
     def tearDown(self):
@@ -34,6 +34,6 @@ class LoginTest(unittest.TestCase):
         ofm_username = os.environ('OFM_USERNAME')
         ofm_password = os.environ('OFM_PASSWORD')
         user = OFMUser('name', 'mail@pro.com', 'pass', ofm_username=ofm_username, ofm_password=ofm_password)
-        self.site_manager = SiteManager(user)
+        self.site_manager = OFMSiteManager(user)
         self.site_manager.login()
         self.assertIn("OFM", self.site_manager.browser.title)

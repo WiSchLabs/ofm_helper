@@ -1,14 +1,15 @@
 from django.contrib import messages
 from django.shortcuts import redirect
+from selenium.common.exceptions import WebDriverException
 
 from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
-from core.managers.site_manager import SiteManager
+from core.managers.site_manager import OFMSiteManager, OFMTransferSiteManager
 
 
 def trigger_parsing(request):
     if request.user.is_authenticated():
-        site_manager = SiteManager(request.user)
+        site_manager = OFMSiteManager(request.user)
         site_manager.login()
 
         pm = ParserManager()
@@ -33,7 +34,7 @@ def trigger_parsing(request):
 
 def trigger_single_parsing(request, parsing_function, redirect_to='core:account:home'):
     if request.user.is_authenticated():
-        site_manager = SiteManager(request.user)
+        site_manager = OFMSiteManager(request.user)
         site_manager.login()
         parsing_function(site_manager)
         return redirect(redirect_to)
@@ -72,7 +73,8 @@ def trigger_match_parsing(request):
 
 
 def trigger_transfer_download(request, matchday=None):
-    site_manager = SiteManager(request.user)
+    site_manager = OFMTransferSiteManager(request.user)
     site_manager.download_transfer_excel(matchday)
+    site_manager.kill()
 
-    return redirect('core:ofm:player_statistics')
+    return redirect('core:ofm:transfers')

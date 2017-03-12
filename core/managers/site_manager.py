@@ -1,4 +1,6 @@
 import os
+import shlex
+import subprocess
 import time
 
 from django.conf import settings
@@ -12,7 +14,7 @@ from core.web.ofm_page_constants import Constants
 from ofm_helper.common_settings import BASE_DIR
 
 
-class SiteManager:
+class OFMSiteManager:
     def __init__(self, user=None):
         self.user = user
 
@@ -46,35 +48,6 @@ class SiteManager:
         self.browser.close()
         self.browser.quit()
 
-    def download_transfer_excel(self, matchday=None):
-        self.display = Xvfb()
-        self.display.start()
-
-        profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
-        profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
-
-        old_browser = self.browser
-        self.browser = webdriver.Firefox(firefox_profile=profile)
-
-        self.login()
-
-        try:
-            self.jump_to_transfer_page(self, matchday=matchday)
-        except TimeoutError:
-            pass
-
-        self.kill()
-        self.display.stop()
-
-        self.browser = old_browser
-
-    @timeout(5, use_signals=False)
-    def jump_to_transfer_page(self, matchday=None):
-        if not matchday:
-            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
-        else:
-            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
-
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
             from pyvirtualdisplay import Display
@@ -96,3 +69,45 @@ class SiteManager:
         login_button = self.browser.find_element_by_xpath("//form[@id='login_form']//button[@id='logingrafikbutton']")
         login_button.click()
         time.sleep(1)
+
+
+class OFMTransferSiteManager(OFMSiteManager):
+    def __init__(self, user=None):
+        self.user = user
+        if self.user:
+            self._login_user = self.user.ofm_username
+            self._login_password = self.user.ofm_password
+        else:
+            self._login_user = os.environ('OFM_USERNAME')
+            self._login_password = os.environ('OFM_PASSWORD')
+
+        self.display = Xvfb()
+        self.display.start()
+
+    def download_transfer_excel(self, matchday=None):
+        profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
+        profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
+
+        self.browser = webdriver.Firefox(firefox_profile=profile)
+
+        self.login()
+
+        try:
+            self.jump_to_transfer_page(self, matchday=matchday)
+        except TimeoutError:
+            pass
+
+    @timeout(5, use_signals=False)
+    def jump_to_transfer_page(self, matchday=None):
+        if not matchday:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
+        else:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
+
+    def kill(self):
+        self.browser.stop_client()
+        self.display.stop()
+
+        kill_command = "kill $(ps aux | grep firefox | grep marionette | awk '{print $2}')"
+        args = shlex.split(kill_command)
+        subprocess.call(args)
