@@ -30,7 +30,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
         site_manager_instance_mock = site_manager_mock.return_value
@@ -55,7 +55,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_player_statistics(self, site_manager_mock, parse_matchday_mock,  # pylint: disable=too-many-arguments
                                                         parse_players_mock, parse_player_statistics_mock,
                                                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
@@ -90,7 +90,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_finances(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                parse_player_statistics_mock, parse_finances_mock,
                                                parse_all_matches_mock, parse_awp_mock, parse_version_mock):
@@ -125,7 +125,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_matches(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                               parse_player_statistics_mock, parse_finances_mock,
                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
@@ -161,7 +161,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_awp_boundaries(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                      parse_player_statistics_mock, parse_finances_mock,
                                                      parse_all_matches_mock, parse_awp_mock, parse_version_mock):
@@ -196,7 +196,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_stadium_statistics(self, site_manager_mock, parse_matchday_mock,  # pylint: disable=too-many-arguments
                                                          parse_players_mock, parse_player_statistics_mock,
                                                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
@@ -232,7 +232,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_not_callable_if_logged_out(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                     parse_player_statistics_mock, parse_finances_mock,
                                                     parse_all_matches_mock, parse_awp_mock, parse_version_mock):

@@ -34,51 +34,51 @@ class ParserViewTest(TestCase):
         self.client.login(username='name', password='pass')
 
     @patch('core.managers.parser_manager.MatchdayParser.parse')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_matchday_parser_view(self, site_manager_mock, matchday_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
 
         self.assertEqual(response.status_code, 302)
 
-        assert core.views.trigger_parsing_views.SiteManager.called
+        assert core.views.trigger_parsing_views.OFMSiteManager.called
         assert matchday_parser_mock.called
 
     @patch('core.managers.parser_manager.PlayersParser.parse')
     @patch('core.managers.parser_manager.MatchdayParser.parse')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_player_parser_view(self, site_manager_mock, matchday_parser_mock, players_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_players_parsing'))
 
         self.assertEqual(response.status_code, 302)
 
-        assert core.views.trigger_parsing_views.SiteManager.called
+        assert core.views.trigger_parsing_views.OFMSiteManager.called
         assert matchday_parser_mock.called
         assert players_parser_mock.called
 
     @patch('core.managers.parser_manager.PlayerStatisticsParser.parse')
     @patch('core.managers.parser_manager.PlayersParser.parse')
     @patch('core.managers.parser_manager.MatchdayParser.parse')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_player_statistics_parser_view(self, site_manager_mock, matchday_parser_mock, player_parser_mock,
                                            player_statistics_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_player_statistics_parsing'))
 
         self.assertEqual(response.status_code, 302)
 
-        assert core.views.trigger_parsing_views.SiteManager.called
+        assert core.views.trigger_parsing_views.OFMSiteManager.called
         assert matchday_parser_mock.called
         assert player_parser_mock.called
         assert player_statistics_parser_mock.called
 
     @patch('core.managers.parser_manager.FinancesParser.parse')
     @patch('core.managers.parser_manager.MatchdayParser.parse')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_finances_parser_view(self, site_manager_mock, matchday_parser_mock, finances_parser_mock):
         response = self.client.get(reverse('core:trigger:trigger_finances_parsing'))
 
         self.assertEqual(response.status_code, 302)
 
-        assert core.views.trigger_parsing_views.SiteManager.called
+        assert core.views.trigger_parsing_views.OFMSiteManager.called
         assert matchday_parser_mock.called
         assert finances_parser_mock.called
 
@@ -89,7 +89,7 @@ class ParserViewTest(TestCase):
     def test_match_details_parser_view(self, matchday_parser_mock, match_details_parser_mock,
                                        parse_stadium_statistics_mock, is_current_matchday_mock):
         with open(os.path.join(TESTDATA_PATH, 'match_schedule.html'), encoding='utf8') as match_schedule_html:
-            with patch('core.views.trigger_parsing_views.SiteManager') as site_manager_mock:
+            with patch('core.views.trigger_parsing_views.OFMSiteManager') as site_manager_mock:
                 site_manager_instance_mock = site_manager_mock.return_value
                 site_manager_instance_mock.browser.page_source = match_schedule_html
                 site_manager_instance_mock.user = self.user
@@ -104,7 +104,7 @@ class ParserViewTest(TestCase):
                 assert parse_stadium_statistics_mock.called
 
     @patch('core.managers.parser_manager.MatchdayParser.parse')
-    @patch('core.views.trigger_parsing_views.SiteManager')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_matchday_parser_view_not_callable_if_not_logged_in(self, site_manager_mock, matchday_parser_mock):
         self.client.get(reverse('core:account:logout'))
         response = self.client.get(reverse('core:trigger:trigger_matchday_parsing'))
@@ -112,5 +112,5 @@ class ParserViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('core:account:login'))
 
-        assert not core.views.trigger_parsing_views.SiteManager.called
+        assert not core.views.trigger_parsing_views.OFMSiteManager.called
         assert not matchday_parser_mock.called
