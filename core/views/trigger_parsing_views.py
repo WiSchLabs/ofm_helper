@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.shortcuts import redirect
-from selenium.common.exceptions import WebDriverException
 
 from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
