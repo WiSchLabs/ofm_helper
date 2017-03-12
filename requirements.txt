@@ -13,3 +13,5 @@ numpy
 pandas
 pandas-datareader
 attrdict
+xvfbwrapper
+timeout_decorator
