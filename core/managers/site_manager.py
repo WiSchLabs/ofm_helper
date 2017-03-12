@@ -1,11 +1,11 @@
 import os
-import threading
 import time
 
 from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.common.alert import Alert
+from timeout_decorator import timeout
+from timeout_decorator.timeout_decorator import TimeoutError
 from xvfbwrapper import Xvfb
 
 from core.web.ofm_page_constants import Constants
@@ -47,86 +47,33 @@ class SiteManager:
         self.browser.quit()
 
     def download_transfer_excel(self, matchday=None):
+        self.display = Xvfb()
+        self.display.start()
 
-        #self.display = Xvfb()
-        #self.display.start()
-
-        # options = webdriver.ChromeOptions()
-        # options.add_argument("no-startup-window")
-        # options.add_argument("disable-default-apps")
-        #
-        # print("2")
-        # chrome_capabilities = DesiredCapabilities.CHROME
-        # chrome_capabilities["savefile"] = {
-        #     "default_directory": "/home/sh4ke/repos/ofm_helper/ofm_transfer_data"
-        # }
-        # print("3")
-        #
-        # chrome = webdriver.Chrome(chrome_options=options)
-        # print("4")
-        #
-        # chrome_capabilities.update(options.to_capabilities())
-        # chrome.capabilities.update(chrome_capabilities)
-        # print("5")
-
-        profile = webdriver.FirefoxProfile()
-
-        profile.set_preference("browser.download.folderList", 2)
-        profile.set_preference("browser.download.manager.showWhenStarting", False)
+        profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
         profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
-        profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.ms-excel")
-        profile.set_preference("browser.helperApps.alwaysAsk.force", False)
-
-        # profile.set_preference("browser.download.folderList", 2)
-        # profile.set_preference("browser.download.manager.showWhenStarting", False)
-        # profile.set_preference("browser.download.manager.focusWhenStarting", False)
-        # profile.set_preference("browser.download.manager.alertOnEXEOpen", False)
-        # profile.set_preference("browser.download.manager.closeWhenDone", True)
-        # profile.set_preference("browser.download.manager.openDelay", 1000)
-        # profile.set_preference("browser.download.manager.scanWhenDone", False)
-        # profile.set_preference("browser.download.manager.skipWinSecurityPolicyChecks", True)
-        # profile.set_preference("browser.download.manager.useWindow", False)
-        # profile.set_preference("browser.download.defaultFolder", '/home/sh4ke/repos/ofm_helper/ofm_transfer_data')
-        # profile.set_preference("browser.download.dir", '/home/sh4ke/repos/ofm_helper/ofm_transfer_data')
-        # profile.set_preference("browser.download.downloadDir", '/home/sh4ke/repos/ofm_helper/ofm_transfer_data')
-        # profile.set_preference("browser.download.hide_plugins_without_extensions", True)
-        # profile.set_preference("browser.download.show_plugins_in_list", False)
-        # profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.ms-excel")
-        # profile.set_preference("browser.helperApps.alwaysAsk.force", False)
 
         old_browser = self.browser
-
         self.browser = webdriver.Firefox(firefox_profile=profile)
-
-        self.browser.set_page_load_timeout(30)
 
         self.login()
 
-        #download_thread = threading.Thread(target=self._accept_alert)
-        #download_thread.start()
+        try:
+            self.jump_to_transfer_page(self, matchday=matchday)
+        except TimeoutError:
+            pass
 
-        if not matchday:
-            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
-        else:
-            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
-
-        print('waiting for it....')
-        time.sleep(30)
-
+        self.kill()
         self.display.stop()
 
         self.browser = old_browser
 
-    def _accept_alert(self):
-        print("1")
-        time.sleep(15)
-        alert = Alert(self.browser)
-        #alert = self.browser.switch_to.alert
-        print("2")
-        #time.sleep(15)
-        print(alert.text)
-        #alert.accept()
-        print("3")
+    @timeout(5, use_signals=False)
+    def jump_to_transfer_page(self, matchday=None):
+        if not matchday:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS)
+        else:
+            self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
 
     def _handle_aws_display_bug(self):
         if settings.USE_DISPLAY_FOR_AWS:
