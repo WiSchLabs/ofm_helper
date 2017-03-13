@@ -1,9 +1,12 @@
+import os
+import subprocess
 from django.contrib import messages
 from django.shortcuts import redirect
 
 from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
 from core.managers.site_manager import OFMSiteManager, OFMTransferSiteManager
+from ofm_helper.common_settings import BASE_DIR
 
 
 def trigger_parsing(request):
@@ -23,7 +26,7 @@ def trigger_parsing(request):
         except IOError:
             pass
 
-        site_manager.kill()
+        site_manager.kill_browser()
 
         return redirect('core:ofm:player_statistics')
     else:
@@ -74,6 +77,10 @@ def trigger_match_parsing(request):
 def trigger_transfer_download(request, matchday=None):
     site_manager = OFMTransferSiteManager(request.user)
     site_manager.download_transfer_excel(matchday)
-    site_manager.kill()
+    site_manager.kill_browser()
+
+    data_folder = os.path.join(BASE_DIR, 'ofm_transfer_data')
+    script_file = os.path.join(data_folder, 'convert_xls_to_csv.sh')
+    subprocess.call([script_file], cwd=data_folder)
 
     return redirect('core:ofm:transfers')
