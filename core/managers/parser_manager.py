@@ -1,8 +1,8 @@
-import time
 from bs4 import BeautifulSoup
 
 from core.models import ParsingSetting
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
+from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_details_parser import MatchDetailsParser
 from core.parsers.matchday_parser import MatchdayParser
@@ -11,7 +11,6 @@ from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.web.ofm_page_constants import Constants
 
 
