@@ -123,7 +123,3 @@ class OFMTransferSiteManager(OFMSiteManager):
     def kill_browser(self):
         self.browser.stop_client()
         self.display.stop()
-
-        kill_command = "kill $(ps aux | grep firefox | grep marionette | awk '{print $2}')"
-        args = shlex.split(kill_command)
-        subprocess.call(args)
