@@ -68,6 +68,7 @@ class ParserChainViewTest(TestCase):
         parsing_setting.parsing_chain_includes_finances = True
         parsing_setting.parsing_chain_includes_matches = True
         parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
         parsing_setting.parsing_chain_includes_stadium_details = True
         parsing_setting.save()
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -102,6 +103,7 @@ class ParserChainViewTest(TestCase):
         parsing_setting.parsing_chain_includes_finances = False
         parsing_setting.parsing_chain_includes_matches = True
         parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
         parsing_setting.parsing_chain_includes_stadium_details = True
         parsing_setting.save()
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -117,6 +119,7 @@ class ParserChainViewTest(TestCase):
         assert parse_awp_mock.called
         assert parse_version_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager._parse_match_details')
     @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
@@ -129,7 +132,7 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_matches(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                               parse_player_statistics_mock, parse_finances_mock,
                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
-                                              parse_stadium_statistics_mock):
+                                              parse_stadium_statistics_mock, parse_match_details_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -138,6 +141,7 @@ class ParserChainViewTest(TestCase):
         parsing_setting.parsing_chain_includes_finances = True
         parsing_setting.parsing_chain_includes_matches = False
         parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
         parsing_setting.parsing_chain_includes_stadium_details = True
         parsing_setting.save()
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -150,6 +154,7 @@ class ParserChainViewTest(TestCase):
         assert parse_player_statistics_mock.called
         assert parse_finances_mock.called
         assert not parse_all_matches_mock.called
+        assert not parse_match_details_mock.called
         assert not parse_stadium_statistics_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
@@ -173,6 +178,7 @@ class ParserChainViewTest(TestCase):
         parsing_setting.parsing_chain_includes_finances = True
         parsing_setting.parsing_chain_includes_matches = True
         parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
         parsing_setting.parsing_chain_includes_stadium_details = True
         parsing_setting.save()
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -188,6 +194,7 @@ class ParserChainViewTest(TestCase):
         assert not parse_awp_mock.called
         assert parse_version_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager._parse_match_details')
     @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
@@ -200,7 +207,8 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_stadium_statistics(self, site_manager_mock, parse_matchday_mock,  # pylint: disable=too-many-arguments
                                                          parse_players_mock, parse_player_statistics_mock,
                                                          parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
-                                                         parse_version_mock, parse_stadium_statistics_mock):
+                                                         parse_version_mock, parse_stadium_statistics_mock,
+                                                         parse_match_details_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -209,6 +217,7 @@ class ParserChainViewTest(TestCase):
         parsing_setting.parsing_chain_includes_finances = True
         parsing_setting.parsing_chain_includes_matches = True
         parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
         parsing_setting.parsing_chain_includes_stadium_details = False
         parsing_setting.save()
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -221,6 +230,7 @@ class ParserChainViewTest(TestCase):
         assert parse_player_statistics_mock.called
         assert parse_finances_mock.called
         assert parse_all_matches_mock.called
+        assert parse_match_details_mock.called
         assert not parse_stadium_statistics_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called

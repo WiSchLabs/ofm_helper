@@ -69,6 +69,7 @@ class GetParsingSettingsView(JSONResponseMixin, View):
         settings_dict['parsing_finances'] = parsing_setting.parsing_chain_includes_finances
         settings_dict['parsing_matches'] = parsing_setting.parsing_chain_includes_matches
         settings_dict['parsing_match_details'] = parsing_setting.parsing_chain_includes_match_details
+        settings_dict['parsing_match_details_only_for_current_matchday'] = parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday
         settings_dict['parsing_stadium_details'] = parsing_setting.parsing_chain_includes_stadium_details
 
         return self.render_json_response(settings_dict)
@@ -94,6 +95,10 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
         parsing_match_details = self._validate_boolean(
                 request.POST.get('parsing_match_details',
                                  default=parsing_setting.parsing_chain_includes_match_details))
+        parsing_match_details_only_for_current_matchday = self._validate_boolean(
+                request.POST.get('parsing_match_details_only_for_current_matchday',
+                                 default=parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday)
+        )
         parsing_stadium_details = self._validate_boolean(
                 request.POST.get('parsing_stadium_details',
                                  default=parsing_setting.parsing_chain_includes_stadium_details))
@@ -103,6 +108,7 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
             parsing_stadium_details = False
 
         if not parsing_match_details:
+            parsing_match_details_only_for_current_matchday = False
             parsing_stadium_details = False
 
         parsing_setting.parsing_chain_includes_player_statistics = parsing_player_statistics
@@ -110,6 +116,7 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
         parsing_setting.parsing_chain_includes_finances = parsing_finances
         parsing_setting.parsing_chain_includes_matches = parsing_matches
         parsing_setting.parsing_chain_includes_match_details = parsing_match_details
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = parsing_match_details_only_for_current_matchday
         parsing_setting.parsing_chain_includes_stadium_details = parsing_stadium_details
         parsing_setting.save()
 

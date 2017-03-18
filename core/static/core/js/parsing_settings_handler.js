@@ -34,17 +34,22 @@ $('document').ready( function (){
                     addParsingSettingItem("Finanzen", data['parsing_finances'], 'parsing_finances');
                     addParsingSettingItem("Alle Spiele", data['parsing_matches'], 'parsing_matches');
                     addParsingSettingItem("Ligaspiel-Details", data['parsing_match_details'], 'parsing_match_details');
-                    addParsingSettingItem("Stadiondaten bei Heimspielen", data['parsing_stadium_details'], 'parsing_stadium_details');
+                    addParsingSettingItem("nur für den aktuellen Spieltag", data['parsing_match_details_only_for_current_matchday'], 'parsing_match_details_only_for_current_matchday');
+                    addParsingSettingItem("Stadiondaten bei Heimspielen für aktuellen Spieltag", data['parsing_stadium_details'], 'parsing_stadium_details');
 
 
                     findCheckboxByItemId('parsing_match_details').addClass('subitem');
+                    findCheckboxByItemId('parsing_match_details_only_for_current_matchday').addClass('sub-subitem');
                     findCheckboxByItemId('parsing_stadium_details').addClass('sub-subitem');
 
                     if (!data['parsing_matches']) {
                         disableItem(findCheckboxByItemId('parsing_match_details'));
+                        disableItem(findCheckboxByItemId('parsing_stadium_details'));
+                        disableItem(findCheckboxByItemId('parsing_match_details_only_for_current_matchday'));
                     }
                     if (!data['parsing_match_details']) {
                         disableItem(findCheckboxByItemId('parsing_stadium_details'));
+                        disableItem(findCheckboxByItemId('parsing_match_details_only_for_current_matchday'));
                     }
                 }
             );
@@ -73,12 +78,15 @@ $('document').ready( function (){
         } else if ($(this).attr('id') == "parsing_matches" && !parsingSettingGotChecked) {
             disableItem(findCheckboxByItemId('parsing_match_details'));
             disableItem(findCheckboxByItemId('parsing_stadium_details'));
+            disableItem(findCheckboxByItemId('parsing_match_details_only_for_current_matchday'));
         }
 
         if ($(this).attr('id') == "parsing_match_details" && parsingSettingGotChecked) {
             enableItem(findCheckboxByItemId('parsing_stadium_details'));
+            enableItem(findCheckboxByItemId('parsing_match_details_only_for_current_matchday'));
         } else if ($(this).attr('id') == "parsing_match_details" && !parsingSettingGotChecked) {
             disableItem(findCheckboxByItemId('parsing_stadium_details'));
+            disableItem(findCheckboxByItemId('parsing_match_details_only_for_current_matchday'));
         }
 
     });

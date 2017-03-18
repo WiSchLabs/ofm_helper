@@ -865,4 +865,5 @@ class ParsingSetting(models.Model):
     parsing_chain_includes_finances = models.BooleanField(default=True)
     parsing_chain_includes_matches = models.BooleanField(default=True)
     parsing_chain_includes_match_details = models.BooleanField(default=False)
+    parsing_chain_includes_match_details_only_for_current_matchday = models.BooleanField(default=False)
     parsing_chain_includes_stadium_details = models.BooleanField(default=False)
