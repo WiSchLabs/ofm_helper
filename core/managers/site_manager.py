@@ -7,9 +7,10 @@ from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from timeout_decorator import timeout
-from timeout_decorator.timeout_decorator import TimeoutError   # pylint: disable=redefined-builtin
+from timeout_decorator.timeout_decorator import TimeoutError  # pylint: disable=redefined-builtin
 from xvfbwrapper import Xvfb
 
+from core.models import Matchday
 from core.web.ofm_page_constants import Constants
 from ofm_helper.common_settings import BASE_DIR
 
@@ -72,7 +73,7 @@ class OFMSiteManager:
 
 
 class OFMTransferSiteManager(OFMSiteManager):
-    def __init__(self, user=None):   # pylint: disable=super-init-not-called
+    def __init__(self, user=None):  # pylint: disable=super-init-not-called
         self.user = user
         if self.user:
             self._login_user = self.user.ofm_username
@@ -85,17 +86,32 @@ class OFMTransferSiteManager(OFMSiteManager):
         self.display.start()
 
     def download_transfer_excel(self, matchday=None):
-        profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
-        profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
+        if not self._is_transfer_file_present(matchday):
+            profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
+            profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
 
-        self.browser = webdriver.Firefox(firefox_profile=profile)
+            self.browser = webdriver.Firefox(firefox_profile=profile)
 
-        self.login()
+            self.login()
 
-        try:
-            self._jump_to_transfer_page(self, matchday=matchday)   # pylint: disable=redundant-keyword-arg
-        except TimeoutError:
-            pass
+            try:
+                self._jump_to_transfer_page(self, matchday=matchday)  # pylint: disable=redundant-keyword-arg
+            except TimeoutError:
+                pass
+
+    @staticmethod
+    def _is_transfer_file_present(matchday=None):
+        if not matchday:
+            matchday = Matchday.get_current()
+
+        if not os.path.isfile(os.path.join(BASE_DIR,
+                                           'ofm_transfer_data',
+                                           'ofm_spielerwechsel_{}_{}.csv'.format(
+                                                matchday.season.number,
+                                                matchday.number)
+                                           )):
+            return True
+        return False
 
     @timeout(5, use_signals=False)
     def _jump_to_transfer_page(self, matchday=None):

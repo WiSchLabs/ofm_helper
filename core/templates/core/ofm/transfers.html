@@ -5,6 +5,7 @@
 
     <h1 class="page-header">
         Transfers
+        <form class="parseTrigger" action="{% url 'core:trigger:trigger_transfer_download' %}" method="get">{% csrf_token %}</form>
     </h1>
 
     <div class="transfer-detail">
@@ -109,9 +110,10 @@
     </table>
 
     <script>
-    var transfersOverviewTableJsonURL = "{% url 'core:ofm:transfers_overview_table_json' %}";
-    var transfersDetailChartJsonURL = "{% url 'core:ofm:transfers_detail_chart_json' %}";
+        var transfersOverviewTableJsonURL = "{% url 'core:ofm:transfers_overview_table_json' %}";
+        var transfersDetailChartJsonURL = "{% url 'core:ofm:transfers_detail_chart_json' %}";
     </script>
 
+    <script src="{% static 'core/js/parsing_overlay.js' %}"></script>
     <script src="{% static 'core/js/transfer_charts_handler.js' %}"></script>
 {% endblock %}
