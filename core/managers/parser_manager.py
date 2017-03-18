@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 
 from core.models import ParsingSetting
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
+from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.parsers.finances_parser import FinancesParser
 from core.parsers.match_details_parser import MatchDetailsParser
 from core.parsers.matchday_parser import MatchdayParser
@@ -10,7 +11,6 @@ from core.parsers.player_statistics_parser import PlayerStatisticsParser
 from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
-from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.web.ofm_page_constants import Constants
 
 
@@ -98,14 +98,11 @@ class ParserManager:
         is_home_match = "black" in row.find_all('td')[1].a.get('class')
         match_report_image = row.find_all('img', class_='changeMatchReportImg')
 
-        if match_report_image and self._should_parse_match_details(parsing_setting):
+        if match_report_image and self._should_parse_match_details(parsing_setting, self._is_current_matchday(row)):
             # match took place and should be parsed in detail
             link_to_match = match_report_image[0].find_parent('a')['href']
             if "spielbericht" in link_to_match:
-                site_manager.jump_to_frame(Constants.BASE + link_to_match)
-                match_details_parser = MatchDetailsParser(site_manager.browser.page_source,
-                                                          site_manager.user, is_home_match)
-                match = match_details_parser.parse()
+                match = self._parse_match_details(is_home_match, link_to_match, site_manager)
 
                 if is_home_match and self._is_current_matchday(row) and \
                    self._should_parse_stadium_statistics(parsing_setting):
@@ -116,21 +113,37 @@ class ParserManager:
             # match was won by default
             # or match details should not be parsed
             # or match is scheduled, but did not take place yet
-            return BasicMatchRowParser(row, site_manager.user).parse()
+            match = BasicMatchRowParser(row, site_manager.user).parse()
+
+            if is_home_match and self._is_current_matchday(row) and \
+               self._should_parse_stadium_statistics(parsing_setting):
+                self._parse_stadium_statistics(site_manager, match)
+
+            return match
+
+    @staticmethod
+    def _parse_match_details(is_home_match, link_to_match, site_manager):
+        site_manager.jump_to_frame(Constants.BASE + link_to_match)
+        match_details_parser = MatchDetailsParser(site_manager.browser.page_source,
+                                                  site_manager.user, is_home_match)
+        match = match_details_parser.parse()
+        return match
 
     def _is_current_matchday(self, row):
         return int(row.find_all('td')[0].get_text()) == self.parsed_matchday.number
 
     @staticmethod
-    def _should_parse_match_details(parsing_setting):
+    def _should_parse_match_details(parsing_setting, is_current_matchday):
         if parsing_setting:
-            return parsing_setting.parsing_chain_includes_match_details
+            return parsing_setting.parsing_chain_includes_match_details and \
+                   (not parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday or
+                    is_current_matchday)
         return True
 
     @staticmethod
     def _should_parse_stadium_statistics(parsing_setting):
         if parsing_setting:
-            return parsing_setting.parsing_chain_includes_match_details
+            return parsing_setting.parsing_chain_includes_stadium_details
         return True
 
     @staticmethod
