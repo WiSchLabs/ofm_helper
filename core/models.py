@@ -94,6 +94,7 @@ class Country(models.Model):
         ('BA', "Bosnien und Herzegowina"),
         ('BW', "Botswana"),
         ('BR', "Brasilien"),
+        ('VG', "Britische Jungferninseln"),
         ('BN', "Brunei"),
         ('BG', "Bulgarien"),
         ('BF', "Burkina Faso"),
