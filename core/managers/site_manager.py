@@ -1,6 +1,4 @@
 import os
-import shlex
-import subprocess
 import time
 
 from django.conf import settings
