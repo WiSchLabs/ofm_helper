@@ -117,7 +117,7 @@ class ParserChainViewTest(TestCase):
         assert parse_awp_mock.called
         assert parse_version_mock.called
 
-    @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
+    @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -188,7 +188,7 @@ class ParserChainViewTest(TestCase):
         assert not parse_awp_mock.called
         assert parse_version_mock.called
 
-    @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
+    @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
