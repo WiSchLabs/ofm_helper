@@ -109,7 +109,7 @@ class ParserManager:
 
                 if is_home_match and self._is_current_matchday(row) and \
                    self._should_parse_stadium_statistics(parsing_setting):
-                    self._parse_stadium_statistics(site_manager, match)
+                    self.parse_stadium_statistics(site_manager, match)
 
                 return match
         else:
@@ -134,7 +134,7 @@ class ParserManager:
         return True
 
     @staticmethod
-    def _parse_stadium_statistics(site_manager, match):
+    def parse_stadium_statistics(site_manager, match):
         site_manager.jump_to_frame(Constants.Stadium.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source,
                                                             site_manager.user, match)

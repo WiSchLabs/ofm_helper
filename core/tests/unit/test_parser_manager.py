@@ -117,7 +117,7 @@ class ParserManagerTest(TestCase):
         MatchStadiumStatisticsFactory.create(match=match)
         with patch('core.managers.site_manager.SiteManager') as site_manager_mock:
             site_manager_mock.browser.page_source.return_value = "<html></html>"
-            self.parser_manager._parse_stadium_statistics(site_manager_mock, match)
+            self.parser_manager.parse_stadium_statistics(site_manager_mock, match)
 
         assert parse_stadium_mock.called
         assert parse_stand_mock.called
