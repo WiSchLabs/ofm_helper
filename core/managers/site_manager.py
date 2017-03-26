@@ -107,7 +107,7 @@ class OFMTransferSiteManager(OFMSiteManager):
                                            'ofm_spielerwechsel_{}_{}.csv'.format(
                                                 matchday.season.number,
                                                 matchday.number)
-                                           )):
+                                      )):
             return True
         return False
 
