@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
 from core.managers.site_manager import OFMSiteManager, OFMTransferSiteManager
+from core.models import Matchday
 from ofm_helper.common_settings import BASE_DIR
 
 
@@ -74,7 +75,17 @@ def trigger_match_parsing(request):
     return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)
 
 
-def trigger_transfer_download(request, matchday=None):
+def trigger_transfer_download(request):
+    matchday = request.GET.get("matchday")
+    current_matchday = Matchday.get_current()
+
+    filtered_matchdays = Matchday.objects.filter(season__number=current_matchday.season.number,
+                                                 number=matchday if matchday else current_matchday.number)
+    if len(filtered_matchdays) == 1:
+        matchday = filtered_matchdays[0]
+    else:
+        matchday = current_matchday
+
     site_manager = OFMTransferSiteManager(request.user)
     site_manager.download_transfer_excel(matchday)
     site_manager.kill_browser()

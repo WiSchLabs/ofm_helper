@@ -87,7 +87,6 @@ class OFMTransferSiteManager(OFMSiteManager):
         if not self._is_transfer_file_present(matchday):
             profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
             profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
-
             self.browser = webdriver.Firefox(firefox_profile=profile)
 
             self.login()
@@ -99,10 +98,11 @@ class OFMTransferSiteManager(OFMSiteManager):
 
     @staticmethod
     def _is_transfer_file_present(matchday=None):
+
         if not matchday:
             matchday = Matchday.get_current()
 
-        if not os.path.isfile(os.path.join(BASE_DIR,
+        if os.path.isfile(os.path.join(BASE_DIR,
                                            'ofm_transfer_data',
                                            'ofm_spielerwechsel_{}_{}.csv'.format(
                                                 matchday.season.number,
