@@ -119,5 +119,6 @@ class OFMTransferSiteManager(OFMSiteManager):
             self.jump_to_frame(Constants.Transfer.DOWNLOAD_TRANSFERS_FROM_MATCHDAY.format(matchday.number))
 
     def kill_browser(self):
-        self.browser.stop_client()
+        if self.browser:
+            self.browser.stop_client()
         self.display.stop()
