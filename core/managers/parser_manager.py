@@ -102,11 +102,11 @@ class ParserManager:
             # match took place and should be parsed in detail
             link_to_match = match_report_image[0].find_parent('a')['href']
             if "spielbericht" in link_to_match:
-                match = self._parse_match_details(is_home_match, link_to_match, site_manager)
+                match = self.parse_match_details(is_home_match, link_to_match, site_manager)
 
                 if is_home_match and self._is_current_matchday(row) and \
                    self._should_parse_stadium_statistics(parsing_setting):
-                    self._parse_stadium_statistics(site_manager, match)
+                    self.parse_stadium_statistics(site_manager, match)
 
                 return match
         else:
@@ -117,12 +117,12 @@ class ParserManager:
 
             if is_home_match and self._is_current_matchday(row) and \
                self._should_parse_stadium_statistics(parsing_setting):
-                self._parse_stadium_statistics(site_manager, match)
+                self.parse_stadium_statistics(site_manager, match)
 
             return match
 
     @staticmethod
-    def _parse_match_details(is_home_match, link_to_match, site_manager):
+    def parse_match_details(is_home_match, link_to_match, site_manager):
         site_manager.jump_to_frame(Constants.BASE + link_to_match)
         match_details_parser = MatchDetailsParser(site_manager.browser.page_source,
                                                   site_manager.user, is_home_match)
@@ -147,7 +147,7 @@ class ParserManager:
         return True
 
     @staticmethod
-    def _parse_stadium_statistics(site_manager, match):
+    def parse_stadium_statistics(site_manager, match):
         site_manager.jump_to_frame(Constants.Stadium.ENVIRONMENT)
         stadium_statistics_parser = StadiumStatisticsParser(site_manager.browser.page_source,
                                                             site_manager.user, match)

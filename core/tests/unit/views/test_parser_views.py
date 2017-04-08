@@ -83,7 +83,7 @@ class ParserViewTest(TestCase):
         assert finances_parser_mock.called
 
     @patch('core.managers.parser_manager.ParserManager._is_current_matchday')
-    @patch('core.managers.parser_manager.ParserManager._parse_stadium_statistics')
+    @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
     @patch('core.managers.parser_manager.MatchDetailsParser.parse')
     @patch('core.managers.parser_manager.MatchdayParser.parse')
     def test_match_details_parser_view(self, matchday_parser_mock, match_details_parser_mock,
