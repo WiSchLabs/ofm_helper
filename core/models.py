@@ -53,7 +53,10 @@ class Matchday(models.Model):
         matchday = Matchday.objects.all()[0]
         finances = Finance.objects.all().order_by('matchday')
         player_statistics = PlayerStatistics.objects.all().order_by('matchday')
-        matches = [m for m in Match.objects.filter(matchday__season__number__gte=matchday.season.number).order_by('matchday') if not m.is_in_future]
+        matches = [m for m in Match.objects
+                   .filter(matchday__season__number__gte=matchday.season.number)
+                   .order_by('matchday')
+                   if not m.is_in_future]
         if finances.count() > 0 and finances[0].matchday.number < matchday.number:
             matchday = finances[0].matchday
         if player_statistics.count() > 0 and player_statistics[0].matchday.number > matchday.number:
