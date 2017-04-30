@@ -61,7 +61,7 @@ class Matchday(models.Model):
             matchday = finances[0].matchday
         if player_statistics.count() > 0 and player_statistics[0].matchday.number > matchday.number:
             matchday = player_statistics[0].matchday
-        if len(matches) > 0 and matches[0].matchday.number > matchday.number:
+        if matches and matches[0].matchday.number > matchday.number:
             matchday = matches[0].matchday
 
         return matchday
