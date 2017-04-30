@@ -157,7 +157,7 @@ class PlayerDetailView(DetailView):
 
         return context
 
-    def get_object(self, **kwargs):
+    def get_object(self, **kwargs):  # pylint: disable=arguments-differ
         player = super(PlayerDetailView, self).get_object()
         contracts = Contract.objects.filter(user=self.request.user, player=player, sold_on_matchday=None)
         return player if contracts.count() > 0 else None

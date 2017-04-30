@@ -204,7 +204,7 @@ class StadiumDetailView(DetailView):
 
         return context
 
-    def get_object(self, **kwargs):
+    def get_object(self, **kwargs):  # pylint: disable=arguments-differ
         stadium_stat = super(StadiumDetailView, self).get_object()
         matches = Match.objects.filter(user=self.request.user, stadium_statistics=stadium_stat)
         return stadium_stat if matches.count() > 0 else None
