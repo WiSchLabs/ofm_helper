@@ -98,27 +98,32 @@ class FinanceIncomeChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     @staticmethod
     def create_income_series(diffs):
-        income_visitors_league = [diff.income_visitors_league for diff in diffs]
-        income_sponsoring = [diff.income_sponsoring for diff in diffs]
-        income_cup = [diff.income_cup for diff in diffs]
-        income_interests = [diff.income_interests for diff in diffs]
-        income_loan = [diff.income_loan for diff in diffs]
-        income_transfer = [diff.income_transfer for diff in diffs]
-        income_visitors_friendlies = [diff.income_visitors_friendlies for diff in diffs]
-        income_friendlies = [diff.income_friendlies for diff in diffs]
-        income_funcup = [diff.income_funcup for diff in diffs]
-        income_betting = [diff.income_betting for diff in diffs]
+        income_visitors_league = _get_finance_attribute_json('Ticketeinnahmen Liga',
+                                                             [diff.income_visitors_league for diff in diffs])
+        income_sponsoring = _get_finance_attribute_json('Sponsor', [diff.income_sponsoring for diff in diffs])
+        income_cup = _get_finance_attribute_json('Pokal', [diff.income_cup for diff in diffs])
+        income_interests = _get_finance_attribute_json('Zinsen', [diff.income_interests for diff in diffs])
+        income_loan = _get_finance_attribute_json('Kredite', [diff.income_loan for diff in diffs])
+        income_transfer = _get_finance_attribute_json('Spielertransfers', [diff.income_transfer for diff in diffs])
+        income_visitors_friendlies = _get_finance_attribute_json('Ticketeinnahmen Freundschaftsspiele',
+                                                                 [diff.income_visitors_friendlies for diff in diffs])
+        income_friendlies = _get_finance_attribute_json('Freundschaftsspiele',
+                                                        [diff.income_friendlies for diff in diffs])
+        income_funcup = _get_finance_attribute_json('Fun-Cup', [diff.income_funcup for diff in diffs])
+        income_betting = _get_finance_attribute_json('Wetten', [diff.income_betting for diff in diffs])
 
-        series = [_get_finance_attribute_json('Ticketeinnahmen Liga', income_visitors_league),
-                  _get_finance_attribute_json('Sponsor', income_sponsoring),
-                  _get_finance_attribute_json('Pokal', income_cup),
-                  _get_finance_attribute_json('Zinsen', income_interests),
-                  _get_finance_attribute_json('Kredite', income_loan),
-                  _get_finance_attribute_json('Spielertransfers', income_transfer),
-                  _get_finance_attribute_json('Ticketeinnahmen Freundschaftsspiele', income_visitors_friendlies),
-                  _get_finance_attribute_json('Freundschaftsspiele', income_friendlies),
-                  _get_finance_attribute_json('Fun-Cup', income_funcup),
-                  _get_finance_attribute_json('Wetten', income_betting)]
+        series = []
+        series += filter(None, [income_visitors_league])
+        series += filter(None, [income_sponsoring])
+        series += filter(None, [income_cup])
+        series += filter(None, [income_interests])
+        series += filter(None, [income_loan])
+        series += filter(None, [income_transfer])
+        series += filter(None, [income_visitors_friendlies])
+        series += filter(None, [income_friendlies])
+        series += filter(None, [income_funcup])
+        series += filter(None, [income_betting])
+
         return series
 
 
@@ -130,27 +135,32 @@ class FinanceExpensesChartView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
     @staticmethod
     def create_expenses_series(diffs):
-        expenses_player_salaries = [diff.expenses_player_salaries for diff in diffs]
-        expenses_stadium = [diff.expenses_stadium for diff in diffs]
-        expenses_youth = [diff.expenses_youth for diff in diffs]
-        expenses_interests = [diff.expenses_interests for diff in diffs]
-        expenses_trainings = [diff.expenses_trainings for diff in diffs]
-        expenses_transfer = [diff.expenses_transfer for diff in diffs]
-        expenses_compensation = [diff.expenses_compensation for diff in diffs]
-        expenses_friendlies = [diff.expenses_friendlies for diff in diffs]
-        expenses_funcup = [diff.expenses_funcup for diff in diffs]
-        expenses_betting = [diff.expenses_betting for diff in diffs]
+        expenses_player_salaries = _get_finance_attribute_json('Spielergehalt',
+                                                               [diff.expenses_player_salaries for diff in diffs])
+        expenses_stadium = _get_finance_attribute_json('Stadion', [diff.expenses_stadium for diff in diffs])
+        expenses_youth = _get_finance_attribute_json(u'Jugendförderung', [diff.expenses_youth for diff in diffs])
+        expenses_interests = _get_finance_attribute_json('Zinsen', [diff.expenses_interests for diff in diffs])
+        expenses_trainings = _get_finance_attribute_json('Training', [diff.expenses_trainings for diff in diffs])
+        expenses_transfer = _get_finance_attribute_json('Spielertransfers', [diff.expenses_transfer for diff in diffs])
+        expenses_compensation = _get_finance_attribute_json('Abfindungen',
+                                                            [diff.expenses_compensation for diff in diffs])
+        expenses_friendlies = _get_finance_attribute_json('Freundschaftsspiele',
+                                                          [diff.expenses_friendlies for diff in diffs])
+        expenses_funcup = _get_finance_attribute_json('Fun-Cup', [diff.expenses_funcup for diff in diffs])
+        expenses_betting = _get_finance_attribute_json('Wetten', [diff.expenses_betting for diff in diffs])
 
-        series = [_get_finance_attribute_json('Spielergehalt', expenses_player_salaries),
-                  _get_finance_attribute_json('Stadion', expenses_stadium),
-                  _get_finance_attribute_json(u'Jugendförderung', expenses_youth),
-                  _get_finance_attribute_json('Zinsen', expenses_interests),
-                  _get_finance_attribute_json('Training', expenses_trainings),
-                  _get_finance_attribute_json('Spielertransfers', expenses_transfer),
-                  _get_finance_attribute_json('Abfindungen', expenses_compensation),
-                  _get_finance_attribute_json('Freundschaftsspiele', expenses_friendlies),
-                  _get_finance_attribute_json('Fun-Cup', expenses_funcup),
-                  _get_finance_attribute_json('Wetten', expenses_betting)]
+        series = []
+        series += filter(None, [expenses_player_salaries])
+        series += filter(None, [expenses_stadium])
+        series += filter(None, [expenses_youth])
+        series += filter(None, [expenses_interests])
+        series += filter(None, [expenses_trainings])
+        series += filter(None, [expenses_transfer])
+        series += filter(None, [expenses_compensation])
+        series += filter(None, [expenses_friendlies])
+        series += filter(None, [expenses_funcup])
+        series += filter(None, [expenses_betting])
+
         return series
 
 
@@ -184,4 +194,4 @@ def _get_matchdays_from_existing_finances(finances_this_season):
 def _get_finance_attribute_json(name, finance_data):
     if sum(finance_data) is not 0:
         return {"name": name, "data": finance_data}
-    return {}
+    return None

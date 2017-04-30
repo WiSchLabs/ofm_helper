@@ -62,7 +62,7 @@ class MatchDetailsParser(BaseParser):
             match.guest_team_statistics.yellow_cards = guest_team_yellow_cards
             match.guest_team_statistics.red_cards = guest_team_red_cards
             match.guest_team_statistics.save()
-        elif len(existing_match) == 0:
+        elif not existing_match:
             home_team_stat = MatchTeamStatistics.objects.create(
                 score=home_team_score,
                 team_name=home_team_name,
