@@ -1,5 +1,9 @@
+import os
+import subprocess
+
 from bs4 import BeautifulSoup
 
+from core.managers.site_manager import OFMTransferSiteManager
 from core.models import ParsingSetting
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.basic_match_row_parser import BasicMatchRowParser
@@ -12,6 +16,7 @@ from core.parsers.players_parser import PlayersParser
 from core.parsers.stadium_stand_statistics_parser import StadiumStandStatisticsParser
 from core.parsers.stadium_statistics_parser import StadiumStatisticsParser
 from core.web.ofm_page_constants import Constants
+from ofm_helper.common_settings import BASE_DIR
 
 
 class ParserManager:
@@ -33,6 +38,8 @@ class ParserManager:
             self.parse_finances(site_manager)
         if parsing_setting.parsing_chain_includes_matches:
             self.parse_all_matches(site_manager, parsing_setting)
+        if parsing_setting.parsing_chain_includes_transfers:
+            self.parse_transfer(site_manager, parsing_setting)
 
         self.reset_parsing_flags()
 
@@ -157,3 +164,13 @@ class ParserManager:
         stadium_stand_stat_parser = StadiumStandStatisticsParser(site_manager.browser.page_source,
                                                                  site_manager.user, match)
         stadium_stand_stat_parser.parse()
+
+    @staticmethod
+    def parse_transfers(site_manager, matchdays=None):
+        site_manager = OFMTransferSiteManager(site_manager.user)
+        site_manager.download_transfer_excels(matchdays)
+        site_manager.kill_browser()
+
+        data_folder = os.path.join(BASE_DIR, 'ofm_transfer_data')
+        script_file = os.path.join(data_folder, 'convert_xls_to_csv.sh')
+        subprocess.call([script_file], cwd=data_folder)

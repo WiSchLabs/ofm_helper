@@ -76,22 +76,16 @@ def trigger_match_parsing(request):
 
 
 def trigger_transfer_download(request):
-    matchday = request.GET.get("matchday")
-    current_matchday = Matchday.get_current()
+    get_matchday = request.GET.get("matchday", default=Matchday.get_current().number)
+    matchday_numbers = get_matchday.split(',')
 
-    filtered_matchdays = Matchday.objects.filter(season__number=current_matchday.season.number,
-                                                 number=matchday if matchday else current_matchday.number)
-    if len(filtered_matchdays) == 1:
-        matchday = filtered_matchdays[0]
-    else:
-        matchday = current_matchday
+    matchdays = [Matchday.objects.filter(
+        number=matchday_number,
+        season__number=Matchday.get_current().season.number
+    )
+                 for matchday_number in matchday_numbers]
 
-    site_manager = OFMTransferSiteManager(request.user)
-    site_manager.download_transfer_excel(matchday)
-    site_manager.kill_browser()
+    pm = ParserManager()
+    pm.parse_transfers(matchdays)
 
-    data_folder = os.path.join(BASE_DIR, 'ofm_transfer_data')
-    script_file = os.path.join(data_folder, 'convert_xls_to_csv.sh')
-    subprocess.call([script_file], cwd=data_folder)
-
-    return redirect('core:ofm:transfers')
+    #return redirect('core:ofm:transfers')

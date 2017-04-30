@@ -83,18 +83,22 @@ class OFMTransferSiteManager(OFMSiteManager):
         self.display = Xvfb()
         self.display.start()
 
-    def download_transfer_excel(self, matchday=None):
-        if not self._is_transfer_file_present(matchday):
-            profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
-            profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
-            self.browser = webdriver.Firefox(firefox_profile=profile)
+    def download_transfer_excels(self, matchdays=None):
+        profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
+        profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
+        self.browser = webdriver.Firefox(firefox_profile=profile)
 
-            self.login()
+        self.login()
 
-            try:
-                self._jump_to_transfer_page(self, matchday=matchday)  # pylint: disable=redundant-keyword-arg
-            except TimeoutError:
-                pass
+        if not matchdays:
+            matchdays = [Matchday.get_current()]
+
+        for matchday in matchdays:
+            if not self._is_transfer_file_present(matchday):
+                try:
+                    self._jump_to_transfer_page(self, matchday=matchday)  # pylint: disable=redundant-keyword-arg
+                except TimeoutError:
+                    pass
 
     @staticmethod
     def _is_transfer_file_present(matchday=None):
@@ -107,7 +111,7 @@ class OFMTransferSiteManager(OFMSiteManager):
                                            'ofm_spielerwechsel_{}_{}.csv'.format(
                                                 matchday.season.number,
                                                 matchday.number)
-                                      )):
+                                       )):
             return True
         return False
 
