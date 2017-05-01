@@ -4,7 +4,7 @@ import subprocess
 from bs4 import BeautifulSoup
 
 from core.managers.site_manager import OFMTransferSiteManager
-from core.models import ParsingSetting
+from core.models import ParsingSetting, Matchday
 from core.parsers.awp_boundaries_parser import AwpBoundariesParser
 from core.parsers.basic_match_row_parser import BasicMatchRowParser
 from core.parsers.finances_parser import FinancesParser
@@ -39,7 +39,7 @@ class ParserManager:
         if parsing_setting.parsing_chain_includes_matches:
             self.parse_all_matches(site_manager, parsing_setting)
         if parsing_setting.parsing_chain_includes_transfers:
-            self.parse_transfer(site_manager, parsing_setting)
+            self.parse_transfers(site_manager, [self.parsed_matchday])
 
         self.reset_parsing_flags()
 
@@ -90,7 +90,6 @@ class ParserManager:
         return finances_parser.parse()
 
     def parse_all_matches(self, site_manager, parsing_setting=None):
-
         if not self.parsed_matchday:
             self.parsed_matchday = self.parse_matchday(site_manager)
         site_manager.jump_to_frame(Constants.League.MATCH_SCHEDULE)
@@ -165,8 +164,21 @@ class ParserManager:
                                                                  site_manager.user, match)
         stadium_stand_stat_parser.parse()
 
-    @staticmethod
-    def parse_transfers(site_manager, matchdays=None):
+    def parse_transfers(self, site_manager, matchdays=None):
+        if not self.parsed_matchday:
+            self.parsed_matchday = self.parse_matchday(site_manager)
+
+        if not matchdays:  # get all data until current matchday
+            current_season = self.parsed_matchday.season
+            matchdays = []
+
+            for matchday_number in range(self.parsed_matchday.number + 1):
+                matchday, _ = Matchday.objects.get_or_create(
+                                number=matchday_number,
+                                season=current_season
+                              )
+                matchdays.append(matchday)
+
         site_manager = OFMTransferSiteManager(site_manager.user)
         site_manager.download_transfer_excels(matchdays)
         site_manager.kill_browser()

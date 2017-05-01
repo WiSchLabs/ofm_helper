@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 import core.views.trigger_parsing_views
 
 app_name = 'trigger'

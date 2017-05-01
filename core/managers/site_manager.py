@@ -87,6 +87,7 @@ class OFMTransferSiteManager(OFMSiteManager):
         profile = webdriver.FirefoxProfile(os.path.join(BASE_DIR, 'ofm_transfer_data', 'firefox_profile'))
         profile.set_preference("browser.download.dir", os.path.join(BASE_DIR, 'ofm_transfer_data'))
         self.browser = webdriver.Firefox(firefox_profile=profile)
+        self.browser.set_page_load_timeout(10)
 
         self.login()
 

@@ -25,7 +25,7 @@ class Season(models.Model):
         return "%s" % self.number
 
 
-class Quarter(models.Model):
+class Quarter(models.Model):  # TODO use or delete
     QUARTERS = ((0, '1'), (1, '2'), (2, '3'), (3, '4'))
 
     season = models.ForeignKey(Season)

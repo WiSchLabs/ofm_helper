@@ -1,13 +1,10 @@
-import os
-import subprocess
 from django.contrib import messages
 from django.shortcuts import redirect
 
 from core.localization.messages import NOT_LOGGED_IN, NEWER_OFM_VERSION_AVAILABLE
 from core.managers.parser_manager import ParserManager
-from core.managers.site_manager import OFMSiteManager, OFMTransferSiteManager
+from core.managers.site_manager import OFMSiteManager
 from core.models import Matchday
-from ofm_helper.common_settings import BASE_DIR
 
 
 def trigger_parsing(request):
@@ -75,17 +72,23 @@ def trigger_match_parsing(request):
     return trigger_single_parsing(request, pm.parse_all_matches, redirect_to)
 
 
-def trigger_transfer_download(request):
-    get_matchday = request.GET.get("matchday", default=Matchday.get_current().number)
-    matchday_numbers = get_matchday.split(',')
+def trigger_transfer_download(request):  # not for the chain
+    get_matchday = request.GET.get("matchday_numbers")
+    matchdays = []
 
-    matchdays = [Matchday.objects.filter(
-        number=matchday_number,
-        season__number=Matchday.get_current().season.number
-    )
-                 for matchday_number in matchday_numbers]
+    if get_matchday:
+        matchday_numbers = get_matchday.split(',')
+
+        for matchday_number in matchday_numbers:
+            matchday, _ = Matchday.objects.get_or_create(
+                            number=matchday_number,
+                            season__number=Matchday.get_current().season.number
+                          )
+            matchdays.append(matchday)
+
+    site_manager = OFMSiteManager(request.user)
 
     pm = ParserManager()
-    pm.parse_transfers(matchdays)
+    pm.parse_transfers(site_manager, matchdays)
 
-    #return redirect('core:ofm:transfers')
+    return redirect('core:ofm:transfers')
