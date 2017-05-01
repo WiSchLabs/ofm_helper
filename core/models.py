@@ -861,7 +861,7 @@ class ChecklistItem(models.Model):
     is_inversed = models.BooleanField(default=False)
 
 
-class ParsingSetting(models.Model):
+class ParsingSetting(models.Model):  # TODO: refactor to a dictionary?
     user = models.OneToOneField(OFMUser)
     parsing_chain_includes_player_statistics = models.BooleanField(default=True)
     parsing_chain_includes_awp_boundaries = models.BooleanField(default=True)
@@ -870,3 +870,4 @@ class ParsingSetting(models.Model):
     parsing_chain_includes_match_details = models.BooleanField(default=False)
     parsing_chain_includes_match_details_only_for_current_matchday = models.BooleanField(default=False)
     parsing_chain_includes_stadium_details = models.BooleanField(default=False)
+    parsing_chain_includes_transfers = models.BooleanField(default=True)

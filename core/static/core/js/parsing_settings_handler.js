@@ -36,6 +36,7 @@ $('document').ready( function (){
                     addParsingSettingItem("Ligaspiel-Details", data['parsing_match_details'], 'parsing_match_details');
                     addParsingSettingItem("nur für den aktuellen Spieltag", data['parsing_match_details_only_for_current_matchday'], 'parsing_match_details_only_for_current_matchday');
                     addParsingSettingItem("Stadiondaten bei Heimspielen für aktuellen Spieltag", data['parsing_stadium_details'], 'parsing_stadium_details');
+                    addParsingSettingItem("Transferdaten des aktuellen Spieltags", data['parsing_transfers'], 'parsing_transfers');
 
 
                     findCheckboxByItemId('parsing_match_details').addClass('subitem');

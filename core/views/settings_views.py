@@ -72,6 +72,7 @@ class GetParsingSettingsView(JSONResponseMixin, View):
         settings_dict['parsing_match_details_only_for_current_matchday'] = \
             parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday
         settings_dict['parsing_stadium_details'] = parsing_setting.parsing_chain_includes_stadium_details
+        settings_dict['parsing_transfers'] = parsing_setting.parsing_chain_includes_transfers
 
         return self.render_json_response(settings_dict)
 
@@ -103,6 +104,9 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
         parsing_stadium_details = self._validate_boolean(
                 request.POST.get('parsing_stadium_details',
                                  default=parsing_setting.parsing_chain_includes_stadium_details))
+        parsing_transfers = self._validate_boolean(
+                request.POST.get('parsing_transfers',
+                                 default=parsing_setting.parsing_chain_includes_transfers))
 
         if not parsing_matches:
             parsing_match_details = False
@@ -120,6 +124,7 @@ class UpdateParsingSettingItemStatusView(CsrfExemptMixin, JSONResponseMixin, Vie
         parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = \
             parsing_match_details_only_for_current_matchday
         parsing_setting.parsing_chain_includes_stadium_details = parsing_stadium_details
+        parsing_setting.parsing_chain_includes_transfers = parsing_transfers
         parsing_setting.save()
 
         return self.render_json_response({'success': True})
