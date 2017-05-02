@@ -183,6 +183,10 @@ class ParserManager:
         site_manager.download_transfer_excels(matchdays)
         site_manager.kill_browser()
 
+        self._convert_transfer_data()
+
+    @staticmethod
+    def _convert_transfer_data():
         data_folder = os.path.join(BASE_DIR, 'ofm_transfer_data')
         script_file = os.path.join(data_folder, 'convert_xls_to_csv.sh')
         subprocess.call([script_file], cwd=data_folder)
