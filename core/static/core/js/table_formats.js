@@ -158,7 +158,11 @@ function numberFormatter(value) {
     return value.toLocaleString('de-DE');
 }
 function moneyFormatter(value) {
-    return numberFormatter(value) + " &euro;";
+    if (typeof value === 'number') {
+        return numberFormatter(value) + " &euro;";
+    } else {
+        return value
+    }
 }
 
 window.onload=table_loader;

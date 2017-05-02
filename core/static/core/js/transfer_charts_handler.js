@@ -221,21 +221,19 @@ function fillOverviewTable(data){
 
     var header_row = '<tr><th></th>';
 
-    var group1Length = data.group1.length;
-    for (var k = 0; k < group1Length; k++) {
+    for (var k = 0; k < data.group1.length; k++) {
         header_row += '<th>' + data.group1[k] + '</th>'
     }
     header_row += '</tr>';
 
     $('#TransfersOverviewTable').append(header_row);
 
-    var group2Length = data.group2.length;
-    for (var i = 0; i < group2Length; i++) {
+    for (var i = 0; i < data.group2.length; i++) {
         var row = '<tr><th>' + data.group2[i] + '</th>';
 
         var rowLength = data.medians[i].length;
         for (var j = 0; j < rowLength; j++) {
-            row += '<td>' + data.medians[i][j] + '</td>';
+            row += '<td>' + moneyFormatter(data.medians[i][j]) + '</td>';
         }
 
         row += '</tr>';
@@ -271,5 +269,5 @@ $(function () {
     requestChartDetailData();
     requestOverviewTableData();
 
-    setTimeout(makeTableSelectable, 1000);
+    setTimeout(makeTableSelectable, 3000);
 });
