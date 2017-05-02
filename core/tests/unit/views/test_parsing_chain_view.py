@@ -262,9 +262,10 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
-    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
-                         parse_player_statistics_mock, parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
-                         parse_version_mock, parse_transfer_mock):
+    def test_parser_view_do_not_parse_transfer_data(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
+                                                    parse_player_statistics_mock, parse_finances_mock,
+                                                    parse_all_matches_mock, parse_awp_mock,
+                                                    parse_version_mock, parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
