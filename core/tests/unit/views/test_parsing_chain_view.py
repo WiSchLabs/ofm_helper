@@ -139,7 +139,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
-    def test_parser_view_do_not_parse_matches(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
+    def test_parser_view_do_not_parse_matches(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments,too-many-locals
                                               parse_player_statistics_mock, parse_finances_mock,
                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
                                               parse_stadium_statistics_mock, parse_match_details_mock,
@@ -218,7 +218,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
-    def test_parser_view_do_not_parse_stadium_statistics(self, parse_matchday_mock,  # pylint: disable=too-many-arguments
+    def test_parser_view_do_not_parse_stadium_statistics(self, parse_matchday_mock,  # pylint: disable=too-many-arguments,too-many-locals
                                                          parse_players_mock, parse_player_statistics_mock,
                                                          parse_finances_mock, parse_awp_mock,
                                                          parse_version_mock, parse_stadium_statistics_mock,
