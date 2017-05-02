@@ -24,6 +24,7 @@ class ParserChainViewTest(TestCase):
         )
         self.client.login(username='name', password='pass')
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -32,8 +33,9 @@ class ParserChainViewTest(TestCase):
     @patch('core.managers.parser_manager.ParserManager.parse_players')
     @patch('core.managers.parser_manager.ParserManager.parse_matchday')
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
-    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock, parse_player_statistics_mock,  # pylint: disable=too-many-arguments
-                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
+                         parse_player_statistics_mock, parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
+                         parse_version_mock, parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         response = self.client.get(reverse('core:trigger:trigger_parsing'))
@@ -48,7 +50,9 @@ class ParserChainViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
+        assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -60,7 +64,7 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_player_statistics(self, site_manager_mock, parse_matchday_mock,  # pylint: disable=too-many-arguments
                                                         parse_players_mock, parse_player_statistics_mock,
                                                         parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
-                                                        parse_version_mock):
+                                                        parse_version_mock, parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -84,7 +88,9 @@ class ParserChainViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
+        assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -95,7 +101,8 @@ class ParserChainViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_finances(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                parse_player_statistics_mock, parse_finances_mock,
-                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
+                                               parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -119,7 +126,9 @@ class ParserChainViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
+        assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_match_details')
     @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
@@ -133,7 +142,8 @@ class ParserChainViewTest(TestCase):
     def test_parser_view_do_not_parse_matches(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                               parse_player_statistics_mock, parse_finances_mock,
                                               parse_all_matches_mock, parse_awp_mock, parse_version_mock,
-                                              parse_stadium_statistics_mock, parse_match_details_mock):
+                                              parse_stadium_statistics_mock, parse_match_details_mock,
+                                              parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -159,7 +169,9 @@ class ParserChainViewTest(TestCase):
         assert not parse_stadium_statistics_mock.called
         assert parse_awp_mock.called
         assert parse_version_mock.called
+        assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -170,7 +182,8 @@ class ParserChainViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_do_not_parse_awp_boundaries(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                      parse_player_statistics_mock, parse_finances_mock,
-                                                     parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+                                                     parse_all_matches_mock, parse_awp_mock, parse_version_mock,
+                                                     parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
@@ -194,7 +207,9 @@ class ParserChainViewTest(TestCase):
         assert parse_all_matches_mock.called
         assert not parse_awp_mock.called
         assert parse_version_mock.called
+        assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_match_details')
     @patch('core.managers.parser_manager.ParserManager.parse_stadium_statistics')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
@@ -207,7 +222,7 @@ class ParserChainViewTest(TestCase):
                                                          parse_players_mock, parse_player_statistics_mock,
                                                          parse_finances_mock, parse_awp_mock,
                                                          parse_version_mock, parse_stadium_statistics_mock,
-                                                         parse_match_details_mock):
+                                                         parse_match_details_mock, parse_transfer_mock):
 
         with open(os.path.join(TESTDATA_PATH, 'match_schedule.html'), encoding='utf8') as match_schedule_html:
             with patch('core.views.trigger_parsing_views.OFMSiteManager') as site_manager_mock:
@@ -236,7 +251,47 @@ class ParserChainViewTest(TestCase):
                 assert not parse_stadium_statistics_mock.called
                 assert parse_awp_mock.called
                 assert parse_version_mock.called
+                assert parse_transfer_mock.called
 
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
+    @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
+    @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
+    @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
+    @patch('core.managers.parser_manager.ParserManager.parse_finances')
+    @patch('core.managers.parser_manager.ParserManager.parse_player_statistics')
+    @patch('core.managers.parser_manager.ParserManager.parse_players')
+    @patch('core.managers.parser_manager.ParserManager.parse_matchday')
+    @patch('core.views.trigger_parsing_views.OFMSiteManager')
+    def test_parser_view(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
+                         parse_player_statistics_mock, parse_finances_mock, parse_all_matches_mock, parse_awp_mock,
+                         parse_version_mock, parse_transfer_mock):
+        site_manager_instance_mock = site_manager_mock.return_value
+        site_manager_instance_mock.user = self.user
+        parsing_setting, _ = ParsingSetting.objects.get_or_create(user=self.user)
+        parsing_setting.parsing_chain_includes_player_statistics = True
+        parsing_setting.parsing_chain_includes_awp_boundaries = True
+        parsing_setting.parsing_chain_includes_finances = True
+        parsing_setting.parsing_chain_includes_matches = True
+        parsing_setting.parsing_chain_includes_match_details = True
+        parsing_setting.parsing_chain_includes_match_details_only_for_current_matchday = False
+        parsing_setting.parsing_chain_includes_stadium_details = True
+        parsing_setting.parsing_chain_includes_transfers = False
+        parsing_setting.save()
+        response = self.client.get(reverse('core:trigger:trigger_parsing'))
+
+        self.assertEqual(response.status_code, 302)
+
+        assert site_manager_mock.called
+        assert parse_matchday_mock.called
+        assert parse_players_mock.called
+        assert parse_player_statistics_mock.called
+        assert parse_finances_mock.called
+        assert parse_all_matches_mock.called
+        assert parse_awp_mock.called
+        assert parse_version_mock.called
+        assert not parse_transfer_mock.called
+
+    @patch('core.managers.parser_manager.ParserManager.parse_transfers')
     @patch('core.managers.parser_manager.ParserManager.parse_ofm_version')
     @patch('core.managers.parser_manager.ParserManager.parse_awp_boundaries')
     @patch('core.managers.parser_manager.ParserManager.parse_all_matches')
@@ -247,7 +302,7 @@ class ParserChainViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_not_callable_if_logged_out(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                     parse_player_statistics_mock, parse_finances_mock,
-                                                    parse_all_matches_mock, parse_awp_mock, parse_version_mock):
+                                                    parse_all_matches_mock, parse_awp_mock, parse_version_mock, parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         self.client.get(reverse('core:account:logout'))
@@ -264,3 +319,4 @@ class ParserChainViewTest(TestCase):
         assert not parse_all_matches_mock.called
         assert not parse_awp_mock.called
         assert not parse_version_mock.called
+        assert not parse_transfer_mock.called
