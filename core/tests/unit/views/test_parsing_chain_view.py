@@ -302,7 +302,8 @@ class ParserChainViewTest(TestCase):
     @patch('core.views.trigger_parsing_views.OFMSiteManager')
     def test_parser_view_not_callable_if_logged_out(self, site_manager_mock, parse_matchday_mock, parse_players_mock,  # pylint: disable=too-many-arguments
                                                     parse_player_statistics_mock, parse_finances_mock,
-                                                    parse_all_matches_mock, parse_awp_mock, parse_version_mock, parse_transfer_mock):
+                                                    parse_all_matches_mock, parse_awp_mock, parse_version_mock,
+                                                    parse_transfer_mock):
         site_manager_instance_mock = site_manager_mock.return_value
         site_manager_instance_mock.user = self.user
         self.client.get(reverse('core:account:logout'))
