@@ -239,6 +239,8 @@ function fillOverviewTable(data){
         row += '</tr>';
         $('#TransfersOverviewTable').append(row);
     }
+
+    makeTableSelectable();
 }
 
 function makeTableSelectable(){
@@ -268,6 +270,4 @@ $(function () {
 
     requestChartDetailData();
     requestOverviewTableData();
-
-    setTimeout(makeTableSelectable, 3000);
 });
